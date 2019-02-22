@@ -1,0 +1,11 @@
+# 工程绝对路径(实现更新页面不用重启)
+project:
+  base-dir: file:///E:/Code/bbs/JavaQuarkBBS/jf-bbs
+spring:
+  resources:
+    cache:
+      period: 0
+    static-locations: ${project.base-dir}/src/main/resources/static/
+  thymeleaf:
+    prefix: ${project.base-dir}/src/main/resources/templates/
+    cache: false

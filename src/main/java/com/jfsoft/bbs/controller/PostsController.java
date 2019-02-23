@@ -80,10 +80,9 @@ public class PostsController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @RequestMapping("/detail/{id}")
     public R info(@PathVariable("id") Integer id) {
         BbsPostsEntity bbsPosts = bbsPostsService.selectById(id);
-
         return R.ok().put("bbsPosts", bbsPosts);
     }
 

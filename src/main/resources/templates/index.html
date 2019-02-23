@@ -34,26 +34,25 @@
             <ul class="layui-nav fly-nav-user">
 
                 <!-- 未登入的状态 -->
-                <li class="layui-nav-item">
-                    <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="user/login.html">登入</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="user/reg.html">注册</a>
-                </li>
-                <li class="layui-nav-item layui-hide-xs">
-                    <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入"
-                       class="iconfont icon-qq"></a>
-                </li>
-                <li class="layui-nav-item layui-hide-xs">
-                    <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入"
-                       class="iconfont icon-weibo"></a>
-                </li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item">-->
+                    <!--<a href="user/login.html">登入</a>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item">-->
+                    <!--<a href="user/reg.html">注册</a>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item layui-hide-xs">-->
+                    <!--<a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入"-->
+                       <!--class="iconfont icon-qq"></a>-->
+                <!--</li>-->
+                <!--<li class="layui-nav-item layui-hide-xs">-->
+                    <!--<a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入"-->
+                       <!--class="iconfont icon-weibo"></a>-->
+                <!--</li>-->
 
                 <!-- 登入后的状态 -->
-                <!--
                 <li class="layui-nav-item">
                   <a class="fly-nav-avatar" href="javascript:;">
                     <cite class="layui-hide-xs">贤心</cite>
@@ -69,7 +68,6 @@
                     <dd><a href="/user/logout/" style="text-align: center;">退出</a></dd>
                   </dl>
                 </li>
-                -->
             </ul>
         </div>
     </div>
@@ -95,11 +93,11 @@
 
             <div class="fly-column-right layui-hide-xs">
                 <span class="fly-search"><i class="layui-icon"></i></span>
-                <a href="jie/add.html" class="layui-btn">发表新帖</a>
+                <a href="/jie/add" class="layui-btn">发表新帖</a>
             </div>
             <div class="layui-hide-sm layui-show-xs-block"
                  style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
-                <a href="jie/add.html" class="layui-btn">发表新帖</a>
+                <a href="/jie/add" class="layui-btn">发表新帖</a>
             </div>
         </div>
     </div>
@@ -273,7 +271,7 @@
                             </a>
                             <h2>
                                 <a class="layui-badge">分享</a>
-                                <a href="jie/detail.html">{{item.title}}</a>
+                                <a :href="'/jie/detail/' + item.id ">{{item.title}}</a>
                             </h2>
                             <div class="fly-list-info">
                                 <a href="user/home.html" link>

@@ -2,6 +2,7 @@ package com.jfsoft.bbs.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class BbsUserEntity implements Serializable {
 	/**
 	 * 
 	 */
+
 	private Date initTime;
 	/**
 	 * 
@@ -100,6 +102,7 @@ public class BbsUserEntity implements Serializable {
 	/**
 	 * 获取：
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getInitTime() {
 		return initTime;
 	}

@@ -11,8 +11,8 @@ server:
     min-spare-threads: 30
   port: 8080
   connection-timeout: 5000ms
-  servlet:
-    context-path: /jf-bbs
+#  servlet:
+#    context-path: /jf-bbs
 
 # mybatis
 mybatis-plus:

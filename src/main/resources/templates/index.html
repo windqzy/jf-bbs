@@ -252,20 +252,19 @@
                 </div>
 
                 <div class="fly-panel" style="margin-bottom: 0;">
-
                     <div class="fly-panel-title fly-filter">
-                        <a href="" class="layui-this">综合</a>
+                        <a style="cursor: pointer" :class="{'layui-this': active == 0}" @click="getList(0)">综合</a>
                         <span class="fly-mid"></span>
-                        <a href="">未结</a>
+                        <a style="cursor: pointer" :class="{'layui-this': active == 1}" @click="getList(1)">未结</a>
                         <span class="fly-mid"></span>
-                        <a href="">已结</a>
+                        <a style="cursor: pointer" :class="{'layui-this': active == 2}" @click="getList(2)">已结</a>
                         <span class="fly-mid"></span>
-                        <a href="">精华</a>
+                        <a style="cursor: pointer" :class="{'layui-this': active == 3}" @click="getList(3)">精华</a>
                         <span class="fly-filter-right layui-hide-xs">
-                        <a href="" class="layui-this">按最新</a>
-                        <span class="fly-mid"></span>
-                        <a href="">按热议</a>
-                      </span>
+                            <a style="cursor: pointer" :class="{'layui-this': orderActive == 0}" @click="setOrder(0)">按最新</a>
+                            <span class="fly-mid"></span>
+                            <a style="cursor: pointer" :class="{'layui-this': orderActive == 1}" @click="setOrder(1)">按热议</a>
+                        </span>
                     </div>
                     <ul class="fly-list">
                         <li v-for="item in postList">
@@ -842,21 +841,39 @@
         el: '#fly-index',
         data() {
             return {
-                postList: []
+                currPage: 1,
+                pageSize: 10,
+                postList: [],
+                topList: [],
+                active: 0,
+                orderActive: 0,
+                sort: 0
             }
         },
         created() {
-            this.getList();
+            this.setOrder(0);
         },
         methods: {
-            getList() {
-                this.$http.get("/posts/list").then(res => {
+            getList(index) {
+                this.active = index;
+                this.$http.get("/posts/list?currPage=" + this.currPage + "&pageSize=" + this.pageSize + "&sort=" + this.sort).then(res => {
                     console.log(res.data.data.list)
                     this.postList = res.data.data.list;
                 })
+            },
+            getTopList() {
+
+            },
+            setOrder(index) {
+                this.orderActive = index;
+                this.sort = index;
+                this.getList(this.active);
             }
         }
     })
 </script>
+<style scope>
+
+</style>
 </body>
 </html>

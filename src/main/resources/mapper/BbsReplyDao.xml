@@ -11,7 +11,14 @@
         <result property="up" column="up"/>
         <result property="postsId" column="posts_id"/>
         <result property="userId" column="user_id"/>
+        <result property="author" column="author"/>
+        <result property="accept" column="accept"/>
     </resultMap>
 
+    <select id="getReplyByPostId" parameterType="integer" resultMap="bbsReplyMap">
+        SELECT br.*,bu.username as author
+        FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
+        WHERE br.posts_id = #{postId}
+    </select>
 
 </mapper>

@@ -20,4 +20,6 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 	List<BbsPostsEntity> getList(Map<String, Object> params);
 
 	List<BbsPostsEntity> getTopList(Map<String, Object> params);
+
+	BbsPostsEntity getPostByID(Integer ID);
 }

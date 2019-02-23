@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,8 +43,16 @@ public class ReplyController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Integer id){
         BbsReplyEntity bbsReply = bbsReplyService.selectById(id);
+        return R.ok().put("data", bbsReply);
+    }
 
-        return R.ok().put("bbsReply", bbsReply);
+    /**
+     * 根据postId获取回复
+     */
+    @RequestMapping("/postInfo/{postId}")
+    public R postInfo(@PathVariable("postId") Integer postId){
+        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId);
+        return R.ok().put("data", replyList);
     }
 
     /**
@@ -52,7 +61,6 @@ public class ReplyController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsReplyEntity bbsReply){
         bbsReplyService.insert(bbsReply);
-
         return R.ok();
     }
 

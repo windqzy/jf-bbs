@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface BbsReplyService extends IService<BbsReplyEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<BbsReplyEntity> getReplyByPostid(Integer postId);
 }
 

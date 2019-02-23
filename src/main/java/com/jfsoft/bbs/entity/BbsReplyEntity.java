@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -42,6 +43,33 @@ public class BbsReplyEntity implements Serializable {
 	 * 
 	 */
 	private Integer userId;
+
+	/**
+	 *
+	 */
+	@TableField(exist = false)
+	private String author;
+
+	/**
+	 *
+	 */
+	private Boolean accept;
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public Boolean getAccept() {
+		return accept;
+	}
+
+	public void setAccept(Boolean accept) {
+		this.accept = accept;
+	}
 
 	/**
 	 * 设置：

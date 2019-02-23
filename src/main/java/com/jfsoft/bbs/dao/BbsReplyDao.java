@@ -4,6 +4,9 @@ import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * 
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
+
+	List<BbsReplyEntity> getReplyByPostId(Integer postId);
 	
 }

@@ -52,13 +52,6 @@ public class PostsController {
 	 */
 	@RequestMapping("/top")
 	public R top() {
-//		Map<String, Object> map = new HashMap<>();
-//		EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
-//		map.put("currPage", 1);
-//		map.put("pageSize", 4);
-//		wrapper.eq("top = {0}", true);
-//		wrapper.orderBy("reply_count desc");
-//		PageUtils page = bbsPostsService.queryPage(map, wrapper);
 		List<BbsPostsEntity> topList = bbsPostsService.getTopList();
 		return R.ok().put("data", topList);
 	}
@@ -69,8 +62,8 @@ public class PostsController {
 	 */
 	@RequestMapping("/detail/{id}")
 	public R info(@PathVariable("id") Integer id) {
-		BbsPostsEntity bbsPosts = bbsPostsService.selectById(id);
-		return R.ok().put("bbsPosts", bbsPosts);
+		BbsPostsEntity bbsPosts = bbsPostsService.getPostByID(id);
+		return R.ok().put("data", bbsPosts);
 	}
 
 	/**

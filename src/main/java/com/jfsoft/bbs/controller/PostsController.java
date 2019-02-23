@@ -5,15 +5,13 @@ import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-
-
-
-
-
 
 /**
  * 
@@ -23,8 +21,8 @@ import java.util.Map;
  * @date 2019-02-23 12:51:46
  */
 @RestController
-@RequestMapping("/bbsposts")
-public class BbsPostsController {
+@RequestMapping("/posts")
+public class PostsController {
 
     @Autowired
     private BbsPostsService bbsPostsService;
@@ -33,11 +31,12 @@ public class BbsPostsController {
      * 列表
      */
     @RequestMapping("/list")
-
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = bbsPostsService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R list(){
+        Map<String,Object> map= new HashMap<>();
+        map.put("currPage", 1);
+        map.put("pageSize", 5);
+        PageUtils page = bbsPostsService.queryPage(map);
+        return R.ok().put("data", page);
     }
 
 
@@ -45,7 +44,6 @@ public class BbsPostsController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-
     public R info(@PathVariable("id") Integer id){
         BbsPostsEntity bbsPosts = bbsPostsService.selectById(id);
 

@@ -28,4 +28,10 @@ public class HomeController {
         model.addAttribute("postId", id);
         return "views/post/detail";
     }
+
+    @RequestMapping("/post/block/{id}")
+    public String blockList(@PathVariable Integer id, Model model) {
+        model.addAttribute("labelId", id);
+        return "views/post/block";
+    }
 }

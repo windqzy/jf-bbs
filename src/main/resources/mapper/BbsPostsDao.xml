@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jfsoft.bbs.dao.BbsPostsDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.jfsoft.bbs.entity.BbsPostsEntity" id="bbsPostsMap">
         <result property="id" column="id"/>
         <result property="content" column="content"/>
@@ -15,7 +15,43 @@
         <result property="top" column="top"/>
         <result property="userId" column="user_id"/>
         <result property="end" column="end"/>
+        <result property="author" column="author"/>
     </resultMap>
 
+    <select id="getList" parameterType="map" resultMap="bbsPostsMap">
+        SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
+        bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end, bu.username as author
+        FROM bbs_posts bp
+        LEFT JOIN bbs_user bu ON bp.user_id=bu.id
+        WHERE 1 = 1
+        <if test="good != null and good != ''">
+            AND bp.good = true
+        </if>
+        <if test="end != null and end != ''">
+            AND bp.end = #{end}
+        </if>
+        <if test="order != null and order != ''">
+            ORDER BY
+            <choose>
+                <when test="order == 'init_time'">
+                    bp.init_time DESC
+                </when>
+                <when test="order == 'reply_count'">
+                    bp.reply_count DESC
+                </when>
+            </choose>
+        </if>
+        LIMIT #{startPage}, #{endPage}
+    </select>
 
+    <select id="getTopList" parameterType="map" resultMap="bbsPostsMap">
+        SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
+        bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end, bu.username as author
+        FROM bbs_posts bp
+        LEFT JOIN bbs_user bu ON bp.user_id=bu.id
+        WHERE 1 = 1
+          AND bp.top = TRUE
+          ORDER BY bp.init_time DESC , bp.reply_count DESC
+        LIMIT 0, 4
+    </select>
 </mapper>

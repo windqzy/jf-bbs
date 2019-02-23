@@ -5,6 +5,7 @@ import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsPostsService;
+import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,98 +26,84 @@ import java.util.Map;
 @RequestMapping("/posts")
 public class PostsController {
 
-    @Autowired
-    private BbsPostsService bbsPostsService;
+	@Autowired
+	private BbsPostsService bbsPostsService;
 
-    /**
-     * 首页列表查询
-     *
-     * @param currPage
-     * @param pageSize
-     * @param sort          排序：0 时间， 1 热度
-     * @param searchType    查询：0 所有， 1 未结， 2 已结， 3 精华
-     * @return
-     */
-    @RequestMapping("/list")
-    public R list(Integer currPage, Integer pageSize, Integer sort, Integer searchType) {
-        Map<String, Object> map = new HashMap<>();
-        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
-        map.put("currPage", currPage);
-        map.put("pageSize", pageSize);
-        if (sort == 0) {
-            map.put("sidx", "init_time");
-            map.put("order", "desc");
-        } else {
-            map.put("sidx", "reply_count");
-            map.put("order", "desc");
-        }
-        if (searchType == 3) {
-            wrapper.eq("good = {0}", 1);
-        }
-        //TODO 已完结和未完结未写
-
-        PageUtils page = bbsPostsService.queryPage(map,wrapper);
-        return R.ok().put("data", page);
-    }
+	/**
+	 * 首页列表查询
+	 *
+	 * @param currPage
+	 * @param pageSize
+	 * @param sort       排序：0 时间， 1 热度
+	 * @param searchType 查询：0 所有， 1 未结， 2 已结， 3 精华
+	 * @return
+	 */
+	@RequestMapping("/list")
+	public R list(Integer currPage, Integer pageSize, Integer sort, Integer searchType) {
+		List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sort, searchType);
+		return R.ok().put("data", list);
+	}
 
 
-    /**
-     * 查询置顶
-     * @return
-     */
-    @RequestMapping("/top")
-    public R top() {
-        Map<String, Object> map = new HashMap<>();
-        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
-        map.put("currPage", 1);
-        map.put("pageSize", 4);
-        wrapper.eq("top = {0}", true);
-        wrapper.orderBy("reply_count desc");
-        PageUtils page = bbsPostsService.queryPage(map, wrapper);
-        return R.ok().put("data", page);
-    }
+	/**
+	 * 查询置顶
+	 *
+	 * @return
+	 */
+	@RequestMapping("/top")
+	public R top() {
+//		Map<String, Object> map = new HashMap<>();
+//		EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+//		map.put("currPage", 1);
+//		map.put("pageSize", 4);
+//		wrapper.eq("top = {0}", true);
+//		wrapper.orderBy("reply_count desc");
+//		PageUtils page = bbsPostsService.queryPage(map, wrapper);
+		List<BbsPostsEntity> topList = bbsPostsService.getTopList();
+		return R.ok().put("data", topList);
+	}
 
 
-    /**
-     * 信息
-     */
-    @RequestMapping("/detail/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        BbsPostsEntity bbsPosts = bbsPostsService.selectById(id);
-        return R.ok().put("bbsPosts", bbsPosts);
-    }
+	/**
+	 * 信息
+	 */
+	@RequestMapping("/detail/{id}")
+	public R info(@PathVariable("id") Integer id) {
+		BbsPostsEntity bbsPosts = bbsPostsService.selectById(id);
+		return R.ok().put("bbsPosts", bbsPosts);
+	}
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
+	/**
+	 * 保存
+	 */
+	@RequestMapping("/save")
 
-    public R save(@RequestBody BbsPostsEntity bbsPosts) {
-        bbsPostsService.insert(bbsPosts);
+	public R save(@RequestBody BbsPostsEntity bbsPosts) {
+		bbsPostsService.insert(bbsPosts);
 
-        return R.ok();
-    }
+		return R.ok();
+	}
 
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/update")
 
-    public R update(@RequestBody BbsPostsEntity bbsPosts) {
+	public R update(@RequestBody BbsPostsEntity bbsPosts) {
 //        ValidatorUtils.validateEntity(bbsPosts);
 //        bbsPostsService.updateAllColumnById(bbsPosts);//全部更新
 
-        return R.ok();
-    }
+		return R.ok();
+	}
 
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        bbsPostsService.deleteBatchIds(Arrays.asList(ids));
+	/**
+	 * 删除
+	 */
+	@RequestMapping("/delete")
+	public R delete(@RequestBody Integer[] ids) {
+		bbsPostsService.deleteBatchIds(Arrays.asList(ids));
 
-        return R.ok();
-    }
+		return R.ok();
+	}
 
 }

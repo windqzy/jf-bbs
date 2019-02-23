@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,5 +18,9 @@ import java.util.Map;
 public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     PageUtils queryPage(Map<String, Object> params, EntityWrapper<BbsPostsEntity> wrapper);
+
+    List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sort, Integer searchType);
+
+    List<BbsPostsEntity> getTopList();
 }
 

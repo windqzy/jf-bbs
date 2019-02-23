@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -60,6 +61,17 @@ public class BbsPostsEntity implements Serializable {
 	 *
 	 */
 	private Boolean end;
+
+	@TableField(exist = false)
+	private String author;
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
 	public Boolean getEnd() {
 		return end;

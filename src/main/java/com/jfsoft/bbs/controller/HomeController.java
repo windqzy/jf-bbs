@@ -18,14 +18,14 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/jie/add")
+    @RequestMapping("/post/add")
     public String addPost() {
-        return "jie/add";
+        return "views/post/add";
     }
 
-    @RequestMapping("/jie/detail/{id}")
+    @RequestMapping("/post/detail/{id}")
     public String postDetail(@PathVariable Integer id, Model model) {
         model.addAttribute("postId", id);
-        return "jie/detail";
+        return "views/post/detail";
     }
 }

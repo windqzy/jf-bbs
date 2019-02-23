@@ -18,10 +18,10 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
 
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params, EntityWrapper<BbsPostsEntity> wrapper) {
         Page<BbsPostsEntity> page = this.selectPage(
                 new Query<BbsPostsEntity>(params).getPage(),
-                new EntityWrapper<BbsPostsEntity>()
+                wrapper
         );
 
         return new PageUtils(page);

@@ -33,12 +33,14 @@ public class PostsController {
      *
      * @param currPage
      * @param pageSize
-     * @param sort     排序：0 时间， 1 热度
+     * @param sort          排序：0 时间， 1 热度
+     * @param searchType    查询：0 所有， 1 未结， 2 已结， 3 精华
      * @return
      */
     @RequestMapping("/list")
-    public R list(Integer currPage, Integer pageSize, Integer sort) {
+    public R list(Integer currPage, Integer pageSize, Integer sort, Integer searchType) {
         Map<String, Object> map = new HashMap<>();
+        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
         map.put("currPage", currPage);
         map.put("pageSize", pageSize);
         if (sort == 0) {
@@ -48,9 +50,15 @@ public class PostsController {
             map.put("sidx", "reply_count");
             map.put("order", "desc");
         }
-        PageUtils page = bbsPostsService.queryPage(map);
+        if (searchType == 3) {
+            wrapper.eq("good = {0}", 1);
+        }
+        //TODO 已完结和未完结未写
+
+        PageUtils page = bbsPostsService.queryPage(map,wrapper);
         return R.ok().put("data", page);
     }
+
 
     /**
      * 查询置顶
@@ -58,17 +66,14 @@ public class PostsController {
      */
     @RequestMapping("/top")
     public R top() {
+        Map<String, Object> map = new HashMap<>();
         EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+        map.put("currPage", 1);
+        map.put("pageSize", 4);
         wrapper.eq("top = {0}", true);
         wrapper.orderBy("reply_count desc");
-        List<BbsPostsEntity> postList = bbsPostsService.selectList(wrapper);
-        return R.ok().put("data", postList);
-    }
-
-    @RequestMapping("/end")
-    public R end() {
-//        PageUtils page = bbsPostsService.queryPage(map);
-        return R.ok();
+        PageUtils page = bbsPostsService.queryPage(map, wrapper);
+        return R.ok().put("data", page);
     }
 
 

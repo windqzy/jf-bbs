@@ -114,14 +114,14 @@
                            style="color: #FF5722;">去签到</a>
                     </div>
                     <ul class="fly-list">
-                        <li>
+                        <li v-for="topItem in topList">
                             <a href="user/home.html" class="fly-avatar">
                                 <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
                                      alt="贤心">
                             </a>
                             <h2>
                                 <a class="layui-badge">动态</a>
-                                <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
+                                <a href="jie/detail.html">{{topItem.title}}</a>
                             </h2>
                             <div class="fly-list-info">
                                 <a href="user/home.html" link>
@@ -129,14 +129,14 @@
                                     <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                                     <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                                 </a>
-                                <span>刚刚</span>
+                                <span>{{topItem.initTime}}</span>
 
                                 <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">-->
                                     <!--<i class="iconfont icon-kiss"></i> 60-->
                                 <!--</span>-->
-                                <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                                <span v-if="topItem.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                                 <span class="fly-list-nums">
-                                    <i class="iconfont icon-pinglun1" title="回答"></i> 66
+                                    <i class="iconfont icon-pinglun1" title="回答"></i> {{topItem.replyCount}}
                                 </span>
                             </div>
                             <div class="fly-list-badge">
@@ -283,10 +283,11 @@
                                     <i class="layui-badge fly-badge-vip">VIP3</i>
                                     -->
                                 </a>
-                                <span>刚刚</span>
+                                <span>{{item.initTime}}</span>
 
                                 <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>-->
-                                <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+
+                                <span v-if="item.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                                 <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {{item.replyCount}}</span>
                             </div>
                             <div class="fly-list-badge">
@@ -756,7 +757,8 @@
                     <!--</dd>-->
                     <!--<dd>-->
                         <!--<a href="jie/detail.html">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                        <!--<span><i class="
+                        iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
                         <!--<a href="jie/detail.html">基于 layui 的极简社区页面模版</a>-->
@@ -852,17 +854,21 @@
         },
         created() {
             this.setOrder(0);
+            this.getTopList();
         },
         methods: {
             getList(index) {
                 this.active = index;
-                this.$http.get("/posts/list?currPage=" + this.currPage + "&pageSize=" + this.pageSize + "&sort=" + this.sort).then(res => {
+                this.$http.get("/posts/list?currPage=" + this.currPage + "&pageSize=" + this.pageSize + "&sort=" + this.sort + "&searchType=" + this.active).then(res => {
                     console.log(res.data.data.list)
                     this.postList = res.data.data.list;
                 })
             },
             getTopList() {
-
+                this.$http.get("/posts/top?)").then(res => {
+                    console.log(res.data.data.list)
+                    this.topList = res.data.data.list;
+                })
             },
             setOrder(index) {
                 this.orderActive = index;

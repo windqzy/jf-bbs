@@ -56,6 +56,19 @@ public class BbsPostsEntity implements Serializable {
 	private Integer userId;
 
 	/**
+	 *
+	 */
+	private Boolean end;
+
+	public Boolean getEnd() {
+		return end;
+	}
+
+	public void setEnd(Boolean end) {
+		this.end = end;
+	}
+
+	/**
 	 * 设置：
 	 */
 	public void setId(Integer id) {

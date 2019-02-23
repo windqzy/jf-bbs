@@ -14,6 +14,7 @@
         <result property="title" column="title"/>
         <result property="top" column="top"/>
         <result property="userId" column="user_id"/>
+        <result property="end" column="end"/>
     </resultMap>
 
 

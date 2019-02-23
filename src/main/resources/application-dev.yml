@@ -1,6 +1,6 @@
 # 工程绝对路径(实现更新页面不用重启)
 project:
-  base-dir: file:///D:/WorkSpace/idea-workspace/jf-bbs
+  base-dir: file:///E:/chenxc/code/jf-bbs
 spring:
   resources:
     cache:

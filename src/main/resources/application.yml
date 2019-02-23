@@ -6,6 +6,7 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+
 # Tomcat
 server:
   tomcat:
@@ -46,3 +47,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     call-setters-on-nulls: true
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.jfosft.entity: debug

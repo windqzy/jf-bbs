@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2019-02-23 21:02:32
  */
 @RestController
-@RequestMapping("label")
+@RequestMapping("/label")
 public class LabelController {
 
     @Autowired

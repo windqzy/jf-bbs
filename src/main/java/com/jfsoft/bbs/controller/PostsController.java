@@ -1,11 +1,8 @@
 package com.jfsoft.bbs.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsPostsService;
-import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenxc
@@ -34,13 +29,14 @@ public class PostsController {
 	 *
 	 * @param currPage
 	 * @param pageSize
-	 * @param sort       排序：0 时间， 1 热度
-	 * @param searchType 查询：0 所有， 1 未结， 2 已结， 3 精华
+	 * @param labelId    板块ID
+	 * @param sortType    排序：0 时间， 1 热度
+	 * @param postType   查询：0 所有， 1 未结， 2 已结， 3 精华
 	 * @return
 	 */
 	@RequestMapping("/list")
-	public R list(Integer currPage, Integer pageSize, Integer sort, Integer searchType) {
-		List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sort, searchType);
+	public R list(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId) {
+		List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sortType, postType, labelId);
 		return R.ok().put("data", list);
 	}
 

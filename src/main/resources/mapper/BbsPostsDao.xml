@@ -30,6 +30,9 @@
         <if test="end != null and end != ''">
             AND bp.end = #{end}
         </if>
+        <if test="labelId != null and labelId != ''">
+            AND bp.label_id = #{labelId}
+        </if>
         <if test="order != null and order != ''">
             ORDER BY
             <choose>

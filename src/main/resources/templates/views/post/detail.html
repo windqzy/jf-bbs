@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/resources :: resources">
-<body>
-<!-- Header -->
-<div th:replace="fragments/header :: header"></div>
-
+<head th:include="/common/common :: head('文章详情')"></head>
+<!-- 顶部菜单开始 -->
+<div class="app-header" th:include="/common/header :: header"></div>
+<!-- 内容区域 -->
 <div class="layui-container">
     <div id="postDetail">
         <span th:text="${postId}" style="display: none" ref="postId"></span>
-
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md8 content detail">
                 <div class="fly-panel detail-box">
@@ -25,13 +23,13 @@
 
                         <!--TODO 权限验证:管理员-->
                         <!--<div class="fly-admin-box" data-id="123">-->
-                            <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
+                        <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
 
-                            <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
-                            <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;-->
+                        <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
+                        <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;-->
 
-                            <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
-                            <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;-->
+                        <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
+                        <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;-->
                         <!--</div>-->
                         <span class="fly-list-nums">
                             <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
@@ -74,7 +72,8 @@
                             <a name="item-1111111111"></a>
                             <div class="detail-about detail-about-reply">
                                 <a class="fly-avatar" href="">
-                                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt=" ">
+                                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                                         alt=" ">
                                 </a>
                                 <div class="fly-detail-user">
                                     <a href="" class="fly-link">
@@ -118,39 +117,39 @@
                         </li>
 
                         <!--<li data-id="111">-->
-                            <!--<a name="item-1111111111"></a>-->
-                            <!--<div class="detail-about detail-about-reply">-->
-                                <!--<a class="fly-avatar" href="">-->
-                                    <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"-->
-                                         <!--alt=" ">-->
-                                <!--</a>-->
-                                <!--<div class="fly-detail-user">-->
-                                    <!--<a href="" class="fly-link">-->
-                                        <!--<cite>贤心</cite>-->
-                                    <!--</a>-->
-                                <!--</div>-->
-                                <!--<div class="detail-hits">-->
-                                    <!--<span>2017-11-30</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="detail-body jieda-body photos">-->
-                                <!--<p>蓝瘦那个香菇，这是一条没被采纳的回帖</p>-->
-                            <!--</div>-->
-                            <!--<div class="jieda-reply">-->
-                                <!--<span class="jieda-zan" type="zan">-->
-                                    <!--<i class="iconfont icon-zan"></i>-->
-                                    <!--<em>0</em>-->
-                                <!--</span>-->
-                                <!--<span type="reply">-->
-                                    <!--<i class="iconfont icon-svgmoban53"></i>-->
-                                    <!--回复-->
-                                <!--</span>-->
-                                <!--<div class="jieda-admin">-->
-                                    <!--<span type="edit">编辑</span>-->
-                                    <!--<span type="del">删除</span>-->
-                                    <!--<span class="jieda-accept" type="accept">采纳</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                        <!--<a name="item-1111111111"></a>-->
+                        <!--<div class="detail-about detail-about-reply">-->
+                        <!--<a class="fly-avatar" href="">-->
+                        <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"-->
+                        <!--alt=" ">-->
+                        <!--</a>-->
+                        <!--<div class="fly-detail-user">-->
+                        <!--<a href="" class="fly-link">-->
+                        <!--<cite>贤心</cite>-->
+                        <!--</a>-->
+                        <!--</div>-->
+                        <!--<div class="detail-hits">-->
+                        <!--<span>2017-11-30</span>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="detail-body jieda-body photos">-->
+                        <!--<p>蓝瘦那个香菇，这是一条没被采纳的回帖</p>-->
+                        <!--</div>-->
+                        <!--<div class="jieda-reply">-->
+                        <!--<span class="jieda-zan" type="zan">-->
+                        <!--<i class="iconfont icon-zan"></i>-->
+                        <!--<em>0</em>-->
+                        <!--</span>-->
+                        <!--<span type="reply">-->
+                        <!--<i class="iconfont icon-svgmoban53"></i>-->
+                        <!--回复-->
+                        <!--</span>-->
+                        <!--<div class="jieda-admin">-->
+                        <!--<span type="edit">编辑</span>-->
+                        <!--<span type="del">删除</span>-->
+                        <!--<span class="jieda-accept" type="accept">采纳</span>-->
+                        <!--</div>-->
+                        <!--</div>-->
                         <!--</li>-->
 
                         <!-- 无数据时 -->
@@ -162,12 +161,14 @@
                             <div class="layui-form-item layui-form-text">
                                 <a name="comment"></a>
                                 <div class="layui-input-block">
-                                    <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容" class="layui-textarea fly-editor" style="height: 150px;"></textarea>
+                                    <textarea id="L_content" name="content" required lay-verify="required"
+                                              placeholder="请输入内容" class="layui-textarea fly-editor"
+                                              style="height: 150px;"></textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <input type="hidden" name="jid" value="123">
-                                <button class="layui-btn" lay-filter="*" lay-submit  >提交回复</button>
+                                <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
                             </div>
                         </form>
                     </div>
@@ -181,40 +182,40 @@
                         <span><i class="iconfont icon-pinglun1"></i> 16</span>
                     </dd>
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
                     <!--<dd>-->
-                        <!--<a href="">基于 layui 的极简社区页面模版</a>-->
-                        <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
+                    <!--<a href="">基于 layui 的极简社区页面模版</a>-->
+                    <!--<span><i class="iconfont icon-pinglun1"></i> 16</span>-->
                     <!--</dd>-->
 
                     <!-- 无数据时 -->
@@ -228,7 +229,8 @@
                         这里可作为广告区域
                     </div>
                     <div class="fly-panel-main">
-                        <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">
+                        <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
+                           time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">
                             LayIM 3.0 - layui 旗舰之作
                         </a>
                     </div>
@@ -244,50 +246,47 @@
     </div>
 
 </div>
-
 <!-- footer -->
-<div th:replace="fragments/footer :: footer">&copy; 2017 blog.codeleak.pl</div>
-
+<div class="fly-footer" th:include="/common/footer :: footer"></div>
 <script>
-    var app = new Vue({
+    let detail = new Vue({
         el: '#postDetail',
         data() {
             return {
                 postId: '',
-                postInfo : '',
-                replyInfo : []
+                postInfo: '',
+                replyInfo: []
             }
         },
         mounted() {
-            this.postId = this.$refs.postId.innerText ;
+            this.postId = this.$refs.postId.innerText;
             this.getDetailInfo(this.postId);
             this.getReplyInfo(this.postId);
+
         },
         created() {
 
         },
         methods: {
-            getDetailInfo (postId) {
-                this.$http.get('/posts/detail/'+ postId).then(res => {
+            getDetailInfo(postId) {
+                this.$http.get('/posts/detail/' + postId).then(res => {
                     // console.log(res.data);
                     this.postInfo = res.data.data;
                 })
             },
-            getReplyInfo (postId) {
-                this.$http.get('/bbs/bbsreply/postInfo/'+ postId).then(res => {
+            getReplyInfo(postId) {
+                this.$http.get('/bbs/bbsreply/postInfo/' + postId).then(res => {
                     // console.log(res.data.data);
                     this.replyInfo = res.data.data;
                 })
             },
-            toUp: function () {
+            toUp() {
                 // `this` 在方法里指向当前 Vue 实例
                 console.log('Hello ')
-                console.log(this.)
+                // console.log(this.)
 
             }
         }
     });
-
 </script>
-</body>
 </html>

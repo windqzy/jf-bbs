@@ -79,11 +79,11 @@
                                 <div class="fly-detail-user">
                                     <a href="" class="fly-link">
                                         <cite>{{reply.author}}</cite>
-                                        <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                                        <i class="layui-badge fly-badge-vip">VIP3</i>
+                                        <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
+                                        <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                                     </a>
 
-                                    <span>(楼主)</span>
+                                    <span v-if="reply.userId === postInfo.userId">(楼主)</span>
                                     <!--
                                     <span style="color:#5FB878">(管理员)</span>
                                     <span style="color:#FF9E3F">（社区之光）</span>
@@ -101,8 +101,8 @@
 
                             </div>
                             <div class="jieda-reply">
-                                <span class="jieda-zan" type="zan">
-                                    <i class="iconfont icon-zan"></i>
+                                <span v-bind:class="{ zanok : reply.up>0 }" class="jieda-zan" type="zan">
+                                    <i v-on:click="toUp" class="iconfont icon-zan"></i>
                                     <em>{{reply.up}}</em>
                                 </span>
                                 <span type="reply">
@@ -162,14 +162,12 @@
                             <div class="layui-form-item layui-form-text">
                                 <a name="comment"></a>
                                 <div class="layui-input-block">
-                                <textarea id="L_content" name="content" required lay-verify="required"
-                                          placeholder="请输入内容" class="layui-textarea fly-editor"
-                                          style="height: 150px;"></textarea>
+                                    <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容" class="layui-textarea fly-editor" style="height: 150px;"></textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <input type="hidden" name="jid" value="123">
-                                <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                                <button class="layui-btn" lay-filter="*" lay-submit  >提交回复</button>
                             </div>
                         </form>
                     </div>
@@ -262,12 +260,11 @@
         },
         mounted() {
             this.postId = this.$refs.postId.innerText ;
-            console.log(this.postId)
             this.getDetailInfo(this.postId);
             this.getReplyInfo(this.postId);
         },
         created() {
-            console.log("sdad ")
+
         },
         methods: {
             getDetailInfo (postId) {
@@ -278,9 +275,15 @@
             },
             getReplyInfo (postId) {
                 this.$http.get('/bbs/bbsreply/postInfo/'+ postId).then(res => {
-                    console.log(res.data.data);
+                    // console.log(res.data.data);
                     this.replyInfo = res.data.data;
                 })
+            },
+            toUp: function () {
+                // `this` 在方法里指向当前 Vue 实例
+                console.log('Hello ')
+                console.log(this.)
+
             }
         }
     });

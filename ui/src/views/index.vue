@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header @change="changeLabel"></v-header>
+    <!-- <v-header @change="changeLabel"></v-header>-->
     <div class="layui-container">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
@@ -14,7 +14,8 @@
             <ul class="fly-list">
               <li v-for="top in topPostList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="top.author">
+                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                       alt="top.author">
                 </a>
                 <h2>
                   <a class="layui-badge">动态</a>
@@ -64,7 +65,8 @@
             <ul class="fly-list">
               <li v-for="post in postList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="post.author">
+                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                       alt="post.author">
                 </a>
                 <h2>
                   <a class="layui-badge">分享</a>
@@ -302,13 +304,14 @@
   </div>
 </template>
 <script>
-  import Header from '@/components/Header';
+  /*import Header from '@/components/Header';*/
   import * as post from '@/api/post';
+
   export default {
     name: "index",
-    components: {
+   /* components: {
       'v-header': Header
-    },
+    },*/
     data() {
       return {
         postList: [],
@@ -324,12 +327,18 @@
       }
     },
     created() {
-      this.getPostList();
+      let id = this.$route.query.id ? this.$route.query.id : '';
+      this.changeLabel(id);
       this.getTopPostList();
+    },
+    watch: {
+      '$route.query.id'(val) {
+        this.changeLabel(val);
+      }
     },
     methods: {
       changeLabel(e) {
-        this.$router.push('/');
+        console.log(e);
         this.labelId = e;
         this.getPostList();
       },

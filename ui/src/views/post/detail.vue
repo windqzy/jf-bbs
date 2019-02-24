@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header></v-header>
+    <!--<v-header></v-header>-->
     <div class="layui-container">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8 content detail">
@@ -228,13 +228,13 @@
 </template>
 
 <script>
-  import Header from '@/components/Header';
+  /*import Header from '@/components/Header';*/
   import * as post from '@/api/post';
   export default {
     name: "detail",
-    components: {
+  /*  components: {
       'v-header': Header
-    },
+    },*/
     data() {
       return {
         postId: '',

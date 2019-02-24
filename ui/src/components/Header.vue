@@ -113,7 +113,7 @@
       },
       getPost(id, index) {
         this.activeLabel = index;
-        this.$emit('change', id)
+        this.$router.push('/home/index?id=' + id);
       }
     }
   }

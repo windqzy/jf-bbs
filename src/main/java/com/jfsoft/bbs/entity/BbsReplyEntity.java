@@ -3,6 +3,7 @@ package com.jfsoft.bbs.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.internal.constraintvalidators.bv.time.past.AbstractPastInstantBasedValidator;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -49,11 +50,24 @@ public class BbsReplyEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private String author;
+	/**
+	 *
+	 */
+	@TableField(exist = false)
+	private String icon;
 
 	/**
 	 *
 	 */
 	private Boolean accept;
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	public String getAuthor() {
 		return author;

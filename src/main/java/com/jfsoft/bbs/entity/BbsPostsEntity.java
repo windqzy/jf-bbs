@@ -61,9 +61,24 @@ public class BbsPostsEntity implements Serializable {
 	 *
 	 */
 	private Boolean end;
-
+	/**
+	 *
+	 */
 	@TableField(exist = false)
 	private String author;
+	/**
+	 *
+	 */
+	@TableField(exist = false)
+	private String icon;
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	public String getAuthor() {
 		return author;

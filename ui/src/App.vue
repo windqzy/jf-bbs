@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-  #app {
-    overflow: hidden;
-  }
+  /*#app {*/
+    /*overflow: hidden;*/
+  /*}*/
 </style>

@@ -3,11 +3,13 @@ package com.jfsoft.bbs.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.jfsoft.bbs.common.utils.BaseContants;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsReplyDao;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.jfsoft.bbs.service.BbsReplyService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,20 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
         params.put("postId",postId);
         params.put("userId",userId);
         return bbsReplyDao.getReplyByPostId(params);
+    }
+
+    @Override
+    public List<BbsReplyEntity> getTop(String beginTime, String endTime) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startPage", 1);
+        params.put("endPage", 10);
+        if (StringUtils.isNotBlank(beginTime)) {
+            params.put("beginTime", beginTime + BaseContants.BEGIN_TIME_EXT);
+        }
+        if (StringUtils.isNotBlank(endTime)) {
+            params.put("endTime", endTime + BaseContants.END_TIME_EXT);
+        }
+        return bbsReplyDao.getTop(params);
     }
 
 }

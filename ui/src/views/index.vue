@@ -18,7 +18,7 @@
                        :alt="top.author">
                 </a>
                 <h2>
-                  <a class="layui-badge">动态</a>
+                  <a class="layui-badge">{{top.labelName}}</a>
                   <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}</router-link>
                 </h2>
                 <div class="fly-list-info">
@@ -69,7 +69,7 @@
                        :alt="post.author">
                 </a>
                 <h2>
-                  <a class="layui-badge">分享</a>
+                  <a class="layui-badge">{{post.labelName}}</a>
                   <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}</router-link>
                 </h2>
                 <div class="fly-list-info">
@@ -94,7 +94,7 @@
             </ul>
             <div style="text-align: center">
               <div class="laypage-main">
-                <a href="jie/index.html" class="laypage-next">更多求解</a>
+                <a @click="nextPage" class="laypage-next">更多求解</a>
               </div>
             </div>
           </div>
@@ -152,76 +152,9 @@
             <h3 class="fly-panel-title">回贴周榜</h3>
             <dl>
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
-              <dd>
+              <dd v-for="replyTop in replyTopList">
                 <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-                </a>
-              </dd>
-              <dd>
-                <a href="user/home.html">
-                  <img
-                    src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
+                  <img :src="replyTop.icon"><cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
                 </a>
               </dd>
             </dl>
@@ -229,47 +162,10 @@
           <!-- 本周热议 -->
           <dl class="fly-panel fly-list-one">
             <dt class="fly-panel-title">本周热议</dt>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
+            <dd v-for="hot in hotList">
+              <router-link :to="'/post/detail?postId=' + hot.id + '&labelId=' + hot.labelId">{{hot.title}}</router-link>
+              <span><i class="iconfont icon-pinglun1"></i>{{hot.replyCount}}</span>
             </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-            <dd>
-              <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-              <span><i class="iconfont icon-pinglun1"></i> 16</span>
-            </dd>
-
             <!-- 无数据时 -->
             <!--
             <div class="fly-none">没有相关数据</div>
@@ -306,6 +202,8 @@
 <script>
   /*import Header from '@/components/Header';*/
   import * as post from '@/api/post';
+  import * as reply from '@/api/reply';
+  import * as time from '@/utils/time';
 
   export default {
     name: "index",
@@ -316,6 +214,8 @@
       return {
         postList: [],
         topPostList: [],
+        replyTopList: [],
+        hotList: [],
         currPage: 1,
         pageSize: 10,
         sortType: 0,         // 排序类型：0 时间， 1 热度
@@ -330,6 +230,8 @@
       let id = this.$route.query.id ? this.$route.query.id : '';
       this.changeLabel(id);
       this.getTopPostList();
+      this.getReplyTop();
+      this.getWeekHot();
     },
     watch: {
       '$route.query.id'(val) {
@@ -376,9 +278,49 @@
         this.postType = type;
         this.getPostList();
       },
-      // 设置Label
-      setLabel(labelId) {
-
+      // 查询回复周榜
+      getReplyTop() {
+        let obj = {
+          beginTime: time.getWeekStartDate(),
+          endTime: time.getWeekEndDate()
+        }
+        reply.getTop(obj).then(res => {
+            this.replyTopList = res.data;
+        })
+      },
+      // 获取本周热议
+      getWeekHot() {
+        console.log(this.labelId)
+        let obj = {
+          currPage: 1,
+          pageSize: 10,
+          sortType: 0,
+          postType: 0,
+          labelId: this.labelId,
+          beginTime: time.getWeekStartDate(),
+          endTime: time.getWeekEndDate(),
+        }
+        // console.log(obj)
+        post.getList(obj).then(res => {
+          this.hotList = res.data;
+        })
+      },
+      nextPage() {
+        this.currPage += 1;
+        console.log(this.currPage)
+        let obj = {
+          currPage: this.currPage,
+          pageSize: this.pageSize,
+          sortType: this.sortType,
+          postType: this.postType,
+          labelId: this.labelId,
+          beginTime: '',
+          endTime: ''
+        };
+        post.getList(obj).then(res => {
+          console.log(res.data)
+          this.postList.push(res.data);
+        })
       }
     }
   }

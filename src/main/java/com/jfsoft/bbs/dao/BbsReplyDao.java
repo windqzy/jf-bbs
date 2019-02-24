@@ -17,8 +17,12 @@ import java.util.Map;
 @Mapper
 public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
+	List<BbsReplyEntity> getReplyByPostId(Integer postId);
+
+	List<BbsReplyEntity> getTop(Map<String, Object> params);
+
 	List<BbsReplyEntity> getReplyByPostId(Map<String,Object> params);
 
 	Integer updateUpById(Map<String,Object> params);
-	
+
 }

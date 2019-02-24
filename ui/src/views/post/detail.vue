@@ -85,7 +85,7 @@
 
                 </div>
                 <div class="jieda-reply">
-                  <span :class="{ zanok : reply.up > 0 }" class="jieda-zan" type="zan">
+                  <span :class="{ zanok : reply.status}" class="jieda-zan" type="zan">
                     <i @click="toUp" class="iconfont icon-zan"></i>
                     <em>{{reply.up}}</em>
                   </span>

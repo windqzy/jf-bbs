@@ -14,7 +14,7 @@
         <result property="author" column="author"/>
         <result property="accept" column="accept"/>
         <result property="icon" column="icon"/>
-        <result property="status" column="status"/>
+        <result property="replyCount" column="reply_count"/>
     </resultMap>
 
     <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
@@ -24,6 +24,15 @@
         WHERE br.posts_id = #{postId}
     </select>
 
+    <select id="getTop" parameterType="map" resultMap="bbsReplyMap">
+        SELECT bu.username as author, bu.icon as icon, COUNT(user_id) AS reply_count, br.user_id as user_id
+        FROM bbs_reply br
+        LEFT JOIN bbs_user bu ON bu.id = br.user_id
+        WHERE 1 = 1
+        AND br.init_time &gt;= #{beginTime}
+        AND br.init_time &lt; #{endTime}
+        GROUP BY br.user_id ORDER BY reply_count DESC
+    </select>
     <update id="updateUpById" parameterType="map">
         UPDATE bbs_reply
         SET

@@ -18,6 +18,9 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+
+    List<BbsReplyEntity> getTop(String beginTime, String endTime);
+
     List<BbsReplyEntity> getReplyByPostid(Integer postId, Integer userId);
 }
 

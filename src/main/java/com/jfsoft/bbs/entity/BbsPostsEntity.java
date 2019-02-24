@@ -72,6 +72,17 @@ public class BbsPostsEntity implements Serializable {
 	@TableField(exist = false)
 	private String icon;
 
+	@TableField(exist = false)
+	private String labelName;
+
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
+
 	public String getIcon() {
 		return icon;
 	}

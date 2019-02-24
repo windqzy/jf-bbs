@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-
 /**
- * 
- *
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 18:10:32
@@ -30,17 +27,30 @@ public class ReplyController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = bbsReplyService.queryPage(params);
         return R.ok().put("page", page);
     }
 
 
     /**
+     * 获取回复周榜
+     *
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping("/top")
+    public R top(String beginTime, String endTime) {
+        List<BbsReplyEntity> topList = bbsReplyService.getTop(beginTime, endTime);
+        return R.ok().put("data", topList);
+    }
+
+    /**
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id){
+    public R info(@PathVariable("id") Integer id) {
         BbsReplyEntity bbsReply = bbsReplyService.selectById(id);
         return R.ok().put("data", bbsReply);
     }
@@ -58,7 +68,7 @@ public class ReplyController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BbsReplyEntity bbsReply){
+    public R save(@RequestBody BbsReplyEntity bbsReply) {
         bbsReplyService.insert(bbsReply);
         return R.ok();
     }
@@ -67,10 +77,10 @@ public class ReplyController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody BbsReplyEntity bbsReply){
+    public R update(@RequestBody BbsReplyEntity bbsReply) {
 //        ValidatorUtils.validateEntity(bbsReply);
         bbsReplyService.updateAllColumnById(bbsReply);//全部更新
-        
+
         return R.ok();
     }
 
@@ -78,7 +88,7 @@ public class ReplyController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids){
+    public R delete(@RequestBody Integer[] ids) {
         bbsReplyService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }

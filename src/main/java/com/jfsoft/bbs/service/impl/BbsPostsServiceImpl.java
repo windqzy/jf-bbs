@@ -38,8 +38,8 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
     public List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sortType, Integer postType,
                                         Integer labelId, String beginTime, String endTime) {
         Map<String, Object> params = new HashMap<>();
-        params.put("startPage", (currPage - 1) * pageSize);
-        params.put("endPage", currPage * pageSize);
+        params.put("startPage", pageSize * (currPage - 1));
+        params.put("endPage", pageSize);
         params.put("labelId", labelId);
         if (StringUtils.isNotBlank(beginTime)) {
             params.put("beginTime", beginTime + BaseContants.BEGIN_TIME_EXT);

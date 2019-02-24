@@ -4,11 +4,13 @@ package com.jfsoft.bbs.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.jfsoft.bbs.common.utils.BaseContants;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsPostsDao;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsPostsService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +36,17 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
 
     @Override
     public List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sortType, Integer postType,
-                                        Integer labelId) {
+                                        Integer labelId, String beginTime, String endTime) {
         Map<String, Object> params = new HashMap<>();
         params.put("startPage", (currPage - 1) * pageSize);
         params.put("endPage", currPage * pageSize);
         params.put("labelId", labelId);
+        if (StringUtils.isNotBlank(beginTime)) {
+            params.put("beginTime", beginTime + BaseContants.BEGIN_TIME_EXT);
+        }
+        if (StringUtils.isNotBlank(endTime)) {
+            params.put("endTime", endTime + BaseContants.END_TIME_EXT);
+        }
         if (sortType == 0) {
             params.put("order", "init_time");
         } else {

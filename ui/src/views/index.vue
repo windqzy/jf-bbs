@@ -5,7 +5,7 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
           <!-- 置顶区 -->
-          <div class="fly-panel">
+          <div class="fly-panel" v-if="labelId == 0">
             <div class="fly-panel-title fly-filter">
               <a>置顶</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
@@ -14,12 +14,12 @@
             <ul class="fly-list">
               <li v-for="top in topPostList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                       alt="top.author">
+                  <img :src="top.icon"
+                       :alt="top.author">
                 </a>
                 <h2>
                   <a class="layui-badge">动态</a>
-                  <router-link :to="'/post/detail?postId=' + top.id">{{top.title}}</router-link>
+                  <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}</router-link>
                 </h2>
                 <div class="fly-list-info">
                   <a href="" link>
@@ -65,12 +65,12 @@
             <ul class="fly-list">
               <li v-for="post in postList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                       alt="post.author">
+                  <img :src="post.icon"
+                       :alt="post.author">
                 </a>
                 <h2>
                   <a class="layui-badge">分享</a>
-                  <router-link :to="'/post/detail?postId=' + post.id">{{post.title}}</router-link>
+                  <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}</router-link>
                 </h2>
                 <div class="fly-list-info">
                   <a href="user/home.html" link>
@@ -102,7 +102,7 @@
         <!-- 右侧卡片 -->
         <div class="layui-col-md4">
           <!-- 温馨通道 -->
-          <div class="fly-panel">
+          <div class="fly-panel" v-if="labelId == 0">
             <h3 class="fly-panel-title">温馨通道</h3>
             <ul class="fly-panel-main fly-list-static">
               <li>
@@ -127,7 +127,7 @@
             </ul>
           </div>
           <!-- 签到 -->
-          <div class="fly-panel fly-signin">
+          <div class="fly-panel fly-signin" v-if="labelId == 0">
             <div class="fly-panel-title">
               签到
               <i class="fly-mid"></i>
@@ -148,7 +148,7 @@
             </div>
           </div>
           <!-- 回帖周榜 -->
-          <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
+          <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank" v-if="labelId == 0">
             <h3 class="fly-panel-title">回贴周榜</h3>
             <dl>
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
@@ -349,9 +349,12 @@
           pageSize: this.pageSize,
           sortType: this.sortType,
           postType: this.postType,
-          labelId: this.labelId
+          labelId: this.labelId,
+          beginTime: '',
+          endTime: ''
         };
         post.getList(obj).then(res => {
+          console.log(res.data)
           this.postList = res.data;
         })
       },

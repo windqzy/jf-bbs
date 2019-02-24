@@ -21,78 +21,79 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostsController {
 
-	@Autowired
-	private BbsPostsService bbsPostsService;
+    @Autowired
+    private BbsPostsService bbsPostsService;
 
-	/**
-	 * 首页列表查询
-	 *
-	 * @param currPage
-	 * @param pageSize
-	 * @param labelId    板块ID
-	 * @param sortType    排序：0 时间， 1 热度
-	 * @param postType   查询：0 所有， 1 未结， 2 已结， 3 精华
-	 * @return
-	 */
-	@RequestMapping("/list")
-	public R list(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId) {
-		List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sortType, postType, labelId);
-		return R.ok().put("data", list);
-	}
-
-
-	/**
-	 * 查询置顶
-	 *
-	 * @return
-	 */
-	@RequestMapping("/top")
-	public R top() {
-		List<BbsPostsEntity> topList = bbsPostsService.getTopList();
-		return R.ok().put("data", topList);
-	}
+    /**
+     * 首页列表查询
+     *
+     * @param currPage
+     * @param pageSize
+     * @param labelId  板块ID
+     * @param sortType 排序：0 时间， 1 热度
+     * @param postType 查询：0 所有， 1 未结， 2 已结， 3 精华
+     * @return
+     */
+    @RequestMapping("/list")
+    public R list(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId,
+                  String beginTime, String endTime) {
+        List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sortType, postType, labelId, beginTime, endTime);
+        return R.ok().put("data", list);
+    }
 
 
-	/**
-	 * 信息
-	 */
-	@RequestMapping("/detail/{id}")
-	public R info(@PathVariable("id") Integer id) {
-		BbsPostsEntity bbsPosts = bbsPostsService.getPostByID(id);
-		return R.ok().put("data", bbsPosts);
-	}
+    /**
+     * 查询置顶
+     *
+     * @return
+     */
+    @RequestMapping("/top")
+    public R top() {
+        List<BbsPostsEntity> topList = bbsPostsService.getTopList();
+        return R.ok().put("data", topList);
+    }
 
-	/**
-	 * 保存
-	 */
-	@RequestMapping("/save")
 
-	public R save(@RequestBody BbsPostsEntity bbsPosts) {
-		bbsPostsService.insert(bbsPosts);
+    /**
+     * 信息
+     */
+    @RequestMapping("/detail/{id}")
+    public R info(@PathVariable("id") Integer id) {
+        BbsPostsEntity bbsPosts = bbsPostsService.getPostByID(id);
+        return R.ok().put("data", bbsPosts);
+    }
 
-		return R.ok();
-	}
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
 
-	/**
-	 * 修改
-	 */
-	@RequestMapping("/update")
+    public R save(@RequestBody BbsPostsEntity bbsPosts) {
+        bbsPostsService.insert(bbsPosts);
 
-	public R update(@RequestBody BbsPostsEntity bbsPosts) {
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+
+    public R update(@RequestBody BbsPostsEntity bbsPosts) {
 //        ValidatorUtils.validateEntity(bbsPosts);
 //        bbsPostsService.updateAllColumnById(bbsPosts);//全部更新
 
-		return R.ok();
-	}
+        return R.ok();
+    }
 
-	/**
-	 * 删除
-	 */
-	@RequestMapping("/delete")
-	public R delete(@RequestBody Integer[] ids) {
-		bbsPostsService.deleteBatchIds(Arrays.asList(ids));
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    public R delete(@RequestBody Integer[] ids) {
+        bbsPostsService.deleteBatchIds(Arrays.asList(ids));
 
-		return R.ok();
-	}
+        return R.ok();
+    }
 
 }

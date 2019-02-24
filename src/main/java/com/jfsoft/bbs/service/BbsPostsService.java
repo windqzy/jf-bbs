@@ -19,7 +19,8 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     PageUtils queryPage(Map<String, Object> params, EntityWrapper<BbsPostsEntity> wrapper);
 
-    List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId);
+    List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sortType, Integer postType,
+                                 Integer labelId, String beginTime, String endTime);
 
     List<BbsPostsEntity> getTopList();
 

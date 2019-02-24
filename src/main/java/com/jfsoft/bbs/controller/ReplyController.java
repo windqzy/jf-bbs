@@ -21,7 +21,7 @@ import java.util.Map;
  * @date 2019-02-23 18:10:32
  */
 @RestController
-@RequestMapping("bbs/bbsreply")
+@RequestMapping("/reply")
 public class ReplyController {
     @Autowired
     private BbsReplyService bbsReplyService;
@@ -32,7 +32,6 @@ public class ReplyController {
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = bbsReplyService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -49,7 +48,7 @@ public class ReplyController {
     /**
      * 根据postId获取回复
      */
-    @RequestMapping("/postInfo/{postId}")
+    @RequestMapping("/list/{postId}")
     public R postInfo(@PathVariable("postId") Integer postId){
         List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId);
         return R.ok().put("data", replyList);
@@ -81,7 +80,6 @@ public class ReplyController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Integer[] ids){
         bbsReplyService.deleteBatchIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

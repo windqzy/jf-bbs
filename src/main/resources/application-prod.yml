@@ -1,0 +1,44 @@
+# 工程绝对路径(实现更新页面不用重启)
+project:
+#  base-dir: file:///E:/chenxc/code/jf-bbs
+spring:
+  resources:
+    cache:
+      period: 0
+#    static-locations: ${project.base-dir}/src/main/resources/static/
+  thymeleaf:
+#    prefix: ${project.base-dir}/src/main/resources/templates/
+#    cache: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    druid:
+      url: jdbc:mysql://140.143.153.135:3306/jf_bbs?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: Cxc170016
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+

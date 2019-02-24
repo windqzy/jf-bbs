@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Layer from '@/views/Layer'
 import Index from '@/views/index'
 import Detail from '@/views/post/detail'
+import Add from '@/views/Add'
 
 Vue.use(Router)
 
@@ -29,6 +30,15 @@ export default new Router({
         {
           path:'detail',
           component: Detail
+        }
+      ]
+    },{
+      path: '/add',
+      component: Layer,
+      children:[
+        {
+          path:'index',
+          component: Add
         }
       ]
     },

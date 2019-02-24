@@ -14,12 +14,26 @@
         <result property="author" column="author"/>
         <result property="accept" column="accept"/>
         <result property="icon" column="icon"/>
+        <result property="status" column="status"/>
     </resultMap>
 
-    <select id="getReplyByPostId" parameterType="integer" resultMap="bbsReplyMap">
-        SELECT br.*,bu.username as author, bu.icon as icon
+    <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
+        SELECT br.*,bu.username as author, bu.icon as icon, IFNULL(bz.status,FALSE) as status
         FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
+        LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
         WHERE br.posts_id = #{postId}
     </select>
+
+    <update id="updateUpById" parameterType="map">
+        UPDATE bbs_reply
+        SET
+        <if test="type == 1 ">
+            up = up + 1
+        </if>
+        <if test="type == 0 ">
+            up = up - 1
+        </if>
+        WHERE id = #{replyId}
+    </update>
 
 </mapper>

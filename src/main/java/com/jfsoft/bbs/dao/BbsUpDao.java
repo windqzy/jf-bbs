@@ -4,6 +4,8 @@ import com.jfsoft.bbs.entity.BbsUpEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 /**
  * 点赞记录表
  * 
@@ -13,5 +15,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsUpDao extends BaseMapper<BbsUpEntity> {
+
+	Integer insertUp(Map<String,Object> params);
+
+	Integer updateUp(Map<String,Object> params);
 	
 }

@@ -12,5 +12,17 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <insert id="insertUp" parameterType="map">
+        INSERT INTO bbs_up
+        (reply_id, user_id, init_time, status)
+        VALUES
+        (#{replyId}, #{userId}, now(), TRUE)
+    </insert>
+
+    <update id="updateUp" parameterType="map">
+        UPDATE bbs_up
+        SET status = !status
+        WHERE user_id = #{userId} AND reply_id = #{replyId}
+    </update>
 
 </mapper>

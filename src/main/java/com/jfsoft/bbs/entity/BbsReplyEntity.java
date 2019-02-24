@@ -57,9 +57,22 @@ public class BbsReplyEntity implements Serializable {
 	private String icon;
 
 	/**
+	 * 点赞
+	 */
+	private Boolean status;
+
+	/**
 	 *
 	 */
 	private Boolean accept;
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 
 	public String getIcon() {
 		return icon;

@@ -33,8 +33,11 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     }
 
     @Override
-    public List<BbsReplyEntity> getReplyByPostid(Integer postId) {
-        return bbsReplyDao.getReplyByPostId(postId);
+    public List<BbsReplyEntity> getReplyByPostid(Integer postId, Integer userId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("postId",postId);
+        params.put("userId",userId);
+        return bbsReplyDao.getReplyByPostId(params);
     }
 
 }

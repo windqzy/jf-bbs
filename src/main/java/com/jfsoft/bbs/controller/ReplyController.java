@@ -50,7 +50,7 @@ public class ReplyController {
      */
     @RequestMapping("/list/{postId}")
     public R postInfo(@PathVariable("postId") Integer postId){
-        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId);
+        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId,2);
         return R.ok().put("data", replyList);
     }
 

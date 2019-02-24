@@ -18,6 +18,6 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    List<BbsReplyEntity> getReplyByPostid(Integer postId);
+    List<BbsReplyEntity> getReplyByPostid(Integer postId, Integer userId);
 }
 

@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/up")
-public class BbsUpController {
+public class UpController {
     @Autowired
     private BbsUpService bbsUpService;
 
@@ -31,7 +31,6 @@ public class BbsUpController {
 
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = bbsUpService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -42,28 +41,27 @@ public class BbsUpController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Integer id) {
         BbsUpEntity bbsUp = bbsUpService.selectById(id);
-
         return R.ok().put("bbsUp", bbsUp);
     }
 
     /**
      * 保存
+     * TODO 用户ID未获取
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody BbsUpEntity bbsUp) {
-        bbsUpService.insert(bbsUp);
-
+    @RequestMapping("/save/{replyId}")
+    public R save(@PathVariable("replyId") Integer replyId) {
+        bbsUpService.insertUp(2,replyId);
         return R.ok();
     }
 
     /**
      * 修改
+     * TODO 用户ID未获取
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody BbsUpEntity bbsUp) {
-//        ValidatorUtils.validateEntity(bbsUp);
-        bbsUpService.updateAllColumnById(bbsUp);//全部更新
+    @RequestMapping("/update/{replyId}")
+    public R update(@PathVariable("replyId") Integer replyId) {
 
+        bbsUpService.updateUp(2,replyId);
         return R.ok();
     }
 
@@ -73,7 +71,6 @@ public class BbsUpController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Integer[] ids) {
         bbsUpService.deleteBatchIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

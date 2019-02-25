@@ -16,3 +16,12 @@ export function getTop(obj) {
   })
 }
 
+// 添加回复
+export function addReply(ReplyForm) {
+  return request({
+    url: '/reply/save/',
+    method: 'POST',
+    data: ReplyForm
+  })
+}
+

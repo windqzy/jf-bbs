@@ -139,19 +139,17 @@
             </ul>
 
             <div class="layui-form layui-form-pane">
-              <form action="/jie/reply/" method="post">
-                <div class="layui-form-item layui-form-text">
-                  <a name="comment"></a>
-                  <div class="layui-input-block">
+              <div class="layui-form-item layui-form-text">
+                <a name="comment"></a>
+                <div class="layui-input-block">
                     <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"
-                              class="layui-textarea fly-editor" style="height: 150px;"></textarea>
-                  </div>
+                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content"></textarea>
                 </div>
-                <div class="layui-form-item">
-                  <input type="hidden" name="jid" value="123">
-                  <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
-                </div>
-              </form>
+              </div>
+              <div class="layui-form-item">
+                <input type="hidden" name="jid" value="123"/>
+                <button class="layui-btn" lay-filter="*" @click="addReply()">提交回复</button>
+              </div>
             </div>
           </div>
         </div>
@@ -203,6 +201,7 @@
         postId: '',
         labelId: '',
         postInfo: '',
+        content: '',
         replyList: [],
         hotList: []
       }
@@ -244,9 +243,18 @@
         post.getList(obj).then(res => {
           this.hotList = res.data;
         })
+      },
+      addReply() {
+        let bbsReply = {
+          postsId: this.postId,
+          content: this.content,
+        }
+        console.log(bbsReply)
+        reply.addReply(bbsReply).then(res => {
+          //TODO 提示回复成功
+          // this.getReplyList(this.postId);
+        })
       }
-
-
     }
   }
 </script>

@@ -6,15 +6,15 @@
           <img src="../../static/images/logo.png" alt="layui">
         </a>
         <!--<ul class="layui-nav fly-nav layui-hide-xs">-->
-          <!--<li class="layui-nav-item layui-this">-->
-            <!--<a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>-->
-          <!--</li>-->
-          <!--<li class="layui-nav-item">-->
-            <!--<a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>-->
-          <!--</li>-->
-          <!--<li class="layui-nav-item">-->
-            <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
-          <!--</li>-->
+        <!--<li class="layui-nav-item layui-this">-->
+        <!--<a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>-->
+        <!--</li>-->
+        <!--<li class="layui-nav-item">-->
+        <!--<a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>-->
+        <!--</li>-->
+        <!--<li class="layui-nav-item">-->
+        <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
+        <!--</li>-->
         <!--</ul>-->
 
         <ul class="layui-nav fly-nav-user">
@@ -37,9 +37,9 @@
           <!-- 登入后的状态 -->
           <li class="layui-nav-item">
             <a class="fly-nav-avatar" href="javascript:;">
-              <cite class="layui-hide-xs">贤心</cite>
-              <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
-              <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+              <cite class="layui-hide-xs">{{userInfo.name}}</cite>
+              <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
+              <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
               <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
             </a>
             <dl class="layui-nav-child">
@@ -89,8 +89,8 @@
 </template>
 
 <script>
-
-  import * as label from '@/api/label'
+  import * as user from '@/api/user';
+  import * as label from '@/api/label';
 
   export default {
     name: "Header",
@@ -98,11 +98,13 @@
       return {
         labelList: [],
         activeLabel: -1,
-        isAdd:true
+        isAdd: true,
+        userInfo: ''
       }
     },
     created() {
       this.getAllLabel();
+      this.getUser();
     },
     methods: {
       // 查询所有 Label
@@ -119,6 +121,12 @@
       toAdd() {
         this.isAdd = false;
         this.$router.push('/add/index');
+      },
+      getUser() {
+        user.getUser().then(res => {
+          console.log(res.data);
+          this.userInfo = res.data;
+        })
       }
     }
   }

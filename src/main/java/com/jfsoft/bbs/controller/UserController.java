@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends AbstractController {
     @Autowired
     private BbsUserService bbsUserService;
 
@@ -32,7 +32,6 @@ public class UserController {
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = bbsUserService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -41,10 +40,21 @@ public class UserController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id){
+    public R getInfoById(@PathVariable("id") Integer id){
         BbsUserEntity bbsUser = bbsUserService.selectById(id);
 
         return R.ok().put("bbsUser", bbsUser);
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @RequestMapping("/info")
+    public R info(){
+        Integer userId =  getUserId();
+        BbsUserEntity bbsUser = bbsUserService.selectById(userId);
+        return R.ok().put("data", bbsUser);
     }
 
     /**

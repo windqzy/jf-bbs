@@ -3,6 +3,7 @@ package com.jfsoft.bbs.controller;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
+import com.jfsoft.bbs.form.ReplyForm;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/reply")
-public class ReplyController {
+public class ReplyController extends AbstractController {
     @Autowired
     private BbsReplyService bbsReplyService;
 
@@ -59,18 +60,23 @@ public class ReplyController {
      * 根据postId获取回复
      */
     @RequestMapping("/list/{postId}")
-    public R postInfo(@PathVariable("postId") Integer postId){
-        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId,2);
+    public R postInfo(@PathVariable("postId") Integer postId) {
+        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId, 2);
         return R.ok().put("data", replyList);
     }
 
+
     /**
-     * 保存
+     * 回帖
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody BbsReplyEntity bbsReply) {
+    @PostMapping("/save")
+    public R addReply(@RequestBody ReplyForm ReplyForm) {
+        BbsReplyEntity bbsReply = new BbsReplyEntity();
+        bbsReply.setPostsId(getUserId());
+        bbsReply.setUserId(ReplyForm.getPostsId());
+        bbsReply.setContent(ReplyForm.getContent());
         bbsReplyService.insert(bbsReply);
-        return R.ok();
+        return R.ok("评论成功");
     }
 
     /**

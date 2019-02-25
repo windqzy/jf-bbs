@@ -57,6 +57,46 @@ public class BbsUserEntity implements Serializable {
 	 */
 	private String email;
 
+	private String position;
+
+	private String name;
+
+	private String mobile;
+
+	private String unionId;
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
+
 	/**
 	 * 设置：
 	 */

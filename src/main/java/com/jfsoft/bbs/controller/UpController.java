@@ -46,11 +46,11 @@ public class UpController {
 
     /**
      * 保存
-     * TODO 用户ID未获取
+     *
      */
     @RequestMapping("/save/{replyId}")
     public R save(@PathVariable("replyId") Integer replyId) {
-        bbsUpService.insertUp(2,replyId);
+        bbsUpService.insertUp(2, replyId);
         return R.ok();
     }
 
@@ -60,8 +60,12 @@ public class UpController {
      */
     @RequestMapping("/update/{replyId}")
     public R update(@PathVariable("replyId") Integer replyId) {
-
-        bbsUpService.updateUp(2,replyId);
+        BbsUpEntity bbsUpEntity = bbsUpService.getUpByRidUid(2,replyId);
+        if (bbsUpEntity == null) {
+            bbsUpService.insertUp(2, replyId);
+        } else {
+            bbsUpService.updateUp(2, replyId, bbsUpEntity.getStatus());
+        }
         return R.ok();
     }
 

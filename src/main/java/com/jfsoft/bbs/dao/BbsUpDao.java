@@ -16,6 +16,8 @@ import java.util.Map;
 @Mapper
 public interface BbsUpDao extends BaseMapper<BbsUpEntity> {
 
+	BbsUpEntity getUpByRidUid(Map<String,Object> params);
+
 	Integer insertUp(Map<String,Object> params);
 
 	Integer updateUp(Map<String,Object> params);

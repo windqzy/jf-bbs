@@ -36,6 +36,14 @@ public class BbsUpServiceImpl extends ServiceImpl<BbsUpDao, BbsUpEntity> impleme
     }
 
     @Override
+    public BbsUpEntity getUpByRidUid(Integer userId, Integer replyId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",userId);
+        params.put("replyId",replyId);
+        return bbsUpDao.getUpByRidUid(params);
+    }
+
+    @Override
     public Integer insertUp(Integer userId, Integer replyId) {
         Map<String,Object> params = new HashMap<>();
         params.put("userId",userId);
@@ -46,11 +54,15 @@ public class BbsUpServiceImpl extends ServiceImpl<BbsUpDao, BbsUpEntity> impleme
     }
 
     @Override
-    public Integer updateUp(Integer userId, Integer replyId) {
+    public Integer updateUp(Integer userId, Integer replyId, Boolean status) {
         Map<String,Object> params = new HashMap<>();
         params.put("userId",userId);
         params.put("replyId",replyId);
-        params.put("type",0);
+        if (status) {
+            params.put("type",0);
+        } else {
+            params.put("type",1);
+        }
         bbsReplyDao.updateUpById(params);
         return bbsUpDao.updateUp(params);
     }

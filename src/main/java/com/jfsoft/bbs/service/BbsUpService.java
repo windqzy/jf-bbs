@@ -17,10 +17,10 @@ public interface BbsUpService extends IService<BbsUpEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-//    BbsUpEntity getUpByRidUid(Map<String,Object> params);
+    BbsUpEntity getUpByRidUid(Integer userId, Integer replyId);
 
     Integer insertUp(Integer userId, Integer replyId);
 
-    Integer updateUp(Integer userId, Integer replyId);
+    Integer updateUp(Integer userId, Integer replyId, Boolean status);
 }
 

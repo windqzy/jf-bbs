@@ -12,6 +12,12 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <select id="getUpByRidUid" parameterType="map" resultMap="bbsUpMap">
+        SELECT *
+        FROM bbs_up
+        WHERE reply_id = #{replyId} AND user_id = #{userId}
+    </select>
+
     <insert id="insertUp" parameterType="map">
         INSERT INTO bbs_up
         (reply_id, user_id, init_time, status)

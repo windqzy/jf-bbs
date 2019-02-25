@@ -19,7 +19,7 @@ public class LoginController {
     @Autowired
     private BbsUserService bbsUserService;
 
-    @PostMapping
+    @PostMapping("/login")
     public R login(@RequestBody LoginForm loginForm) {
         String unionId = loginForm.getUnionId();
         String name = loginForm.getName();

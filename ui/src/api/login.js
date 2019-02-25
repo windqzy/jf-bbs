@@ -45,7 +45,7 @@ export function getUser(companyToken, userId) {
 
 export function addUser(LoginForm) {
   return request({
-    url: '/user/info/',
+    url: '/login',
     method: 'POST',
     data: LoginForm
   })

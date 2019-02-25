@@ -145,10 +145,11 @@
 
         login.addUser(loginForm).then(res => {
           console.log(res)
+          let token = res.token
+          window.localStorage['B-Token'] = token;
+          // 'B-Token'
         })
       }
-
-
     },
 
   }

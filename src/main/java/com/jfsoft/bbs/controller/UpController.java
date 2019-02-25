@@ -20,62 +20,60 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/up")
-public class UpController {
-    @Autowired
-    private BbsUpService bbsUpService;
+public class UpController extends AbstractController {
+	@Autowired
+	private BbsUpService bbsUpService;
 
-    /**
-     * 列表
-     */
-    @RequestMapping("/list")
+	/**
+	 * 列表
+	 */
+	@RequestMapping("/list")
 
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = bbsUpService.queryPage(params);
-        return R.ok().put("page", page);
-    }
+	public R list(@RequestParam Map<String, Object> params) {
+		PageUtils page = bbsUpService.queryPage(params);
+		return R.ok().put("page", page);
+	}
 
 
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        BbsUpEntity bbsUp = bbsUpService.selectById(id);
-        return R.ok().put("bbsUp", bbsUp);
-    }
+	/**
+	 * 信息
+	 */
+	@RequestMapping("/info/{id}")
+	public R info(@PathVariable("id") Integer id) {
+		BbsUpEntity bbsUp = bbsUpService.selectById(id);
+		return R.ok().put("bbsUp", bbsUp);
+	}
 
-    /**
-     * 保存
-     *
-     */
-    @RequestMapping("/save/{replyId}")
-    public R save(@PathVariable("replyId") Integer replyId) {
-        bbsUpService.insertUp(2, replyId);
-        return R.ok();
-    }
+	/**
+	 * 保存
+	 */
+	@RequestMapping("/save/{replyId}")
+	public R save(@PathVariable("replyId") Integer replyId) {
+		bbsUpService.insertUp(getUserId(), replyId);
+		return R.ok();
+	}
 
-    /**
-     * 修改
-     * TODO 用户ID未获取
-     */
-    @RequestMapping("/update/{replyId}")
-    public R update(@PathVariable("replyId") Integer replyId) {
-        BbsUpEntity bbsUpEntity = bbsUpService.getUpByRidUid(2,replyId);
-        if (bbsUpEntity == null) {
-            bbsUpService.insertUp(2, replyId);
-        } else {
-            bbsUpService.updateUp(2, replyId, bbsUpEntity.getStatus());
-        }
-        return R.ok();
-    }
+	/**
+	 * 修改
+	 */
+	@RequestMapping("/update/{replyId}")
+	public R update(@PathVariable("replyId") Integer replyId) {
+		BbsUpEntity bbsUpEntity = bbsUpService.getUpByRidUid(getUserId(), replyId);
+		if (bbsUpEntity == null) {
+			bbsUpService.insertUp(getUserId(), replyId);
+		} else {
+			bbsUpService.updateUp(getUserId(), replyId, bbsUpEntity.getStatus());
+		}
+		return R.ok();
+	}
 
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        bbsUpService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
-    }
+	/**
+	 * 删除
+	 */
+	@RequestMapping("/delete")
+	public R delete(@RequestBody Integer[] ids) {
+		bbsUpService.deleteBatchIds(Arrays.asList(ids));
+		return R.ok();
+	}
 
 }

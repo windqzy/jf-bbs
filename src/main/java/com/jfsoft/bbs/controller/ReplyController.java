@@ -8,6 +8,7 @@ import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,7 @@ public class ReplyController extends AbstractController {
      */
     @RequestMapping("/list/{postId}")
     public R postInfo(@PathVariable("postId") Integer postId) {
-        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId, 2);
+        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId, getUserId());
         return R.ok().put("data", replyList);
     }
 
@@ -72,8 +73,9 @@ public class ReplyController extends AbstractController {
     @PostMapping("/save")
     public R addReply(@RequestBody ReplyForm ReplyForm) {
         BbsReplyEntity bbsReply = new BbsReplyEntity();
-        bbsReply.setPostsId(getUserId());
-        bbsReply.setUserId(ReplyForm.getPostsId());
+        bbsReply.setPostsId(ReplyForm.getPostsId());
+        bbsReply.setInitTime(new Date());
+        bbsReply.setUserId(getUserId());
         bbsReply.setContent(ReplyForm.getContent());
         bbsReplyService.insert(bbsReply);
         return R.ok("评论成功");

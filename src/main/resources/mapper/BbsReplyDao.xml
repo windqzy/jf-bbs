@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jfsoft.bbs.dao.BbsReplyDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.jfsoft.bbs.entity.BbsReplyEntity" id="bbsReplyMap">
         <result property="id" column="id"/>
         <result property="content" column="content"/>
@@ -18,10 +18,10 @@
     </resultMap>
 
     <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
-        SELECT br.*,bu.username as author, bu.icon as icon, IFNULL(bz.status,FALSE) as status
+        SELECT br.*,bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
         FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
         LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
-        WHERE br.posts_id = #{postId}
+        WHERE br.posts_id = #{postId} ORDER BY br.init_time DESC
     </select>
 
     <select id="getTop" parameterType="map" resultMap="bbsReplyMap">

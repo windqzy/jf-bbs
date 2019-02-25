@@ -25,3 +25,11 @@ export function addReply(ReplyForm) {
   })
 }
 
+// 点赞
+export function replyUp(replyId) {
+  return request({
+    url: '/up/update/' + replyId,
+    method: 'get'
+  })
+}
+

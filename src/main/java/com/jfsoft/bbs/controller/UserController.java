@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 
-
-
 /**
  * 
  *
@@ -23,6 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController extends AbstractController {
+
     @Autowired
     private BbsUserService bbsUserService;
 

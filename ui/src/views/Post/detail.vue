@@ -86,7 +86,7 @@
                 </div>
                 <div class="jieda-reply">
                   <span :class="{ zanok : reply.status}" class="jieda-zan" type="zan">
-                    <i @click="toUp" class="iconfont icon-zan"></i>
+                    <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
                     <em>{{reply.up}}</em>
                   </span>
                   <span type="reply">
@@ -225,9 +225,6 @@
           this.replyList = res.data;
         })
       },
-      toUp() {
-
-      },
       getWeekHot() {
         console.log(this.labelId)
         let obj = {
@@ -252,7 +249,14 @@
         console.log(bbsReply)
         reply.addReply(bbsReply).then(res => {
           //TODO 提示回复成功
-          // this.getReplyList(this.postId);
+          this.content = '';
+          this.getReplyList(this.postId);
+        })
+      },
+      replyUp(replyId) {
+        reply.replyUp(replyId).then(res => {
+          console.log(res.data)
+          this.getReplyList(this.postId);
         })
       }
     }

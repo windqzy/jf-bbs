@@ -20,9 +20,6 @@
           </form>
         </div>
       </div>
-      <div class="layui-col-xs2 layui-col-md4">
-        .
-      </div>
     </div>
   </div>
 </template>

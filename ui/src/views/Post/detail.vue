@@ -245,6 +245,8 @@
           this.hotList = res.data;
         })
       }
+
+
     }
   }
 </script>

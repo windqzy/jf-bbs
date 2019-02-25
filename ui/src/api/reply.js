@@ -15,3 +15,4 @@ export function getTop(obj) {
     method: 'GET'
   })
 }
+

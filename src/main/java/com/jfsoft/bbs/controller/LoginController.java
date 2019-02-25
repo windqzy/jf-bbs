@@ -1,6 +1,7 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfsoft.bbs.common.utils.JWTUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.form.LoginForm;
@@ -24,6 +25,7 @@ public class LoginController {
         String name = loginForm.getName();
         String mobile = loginForm.getMobile();
         String position = loginForm.getPosition();
+        String token = null;
 
         EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("union_id", unionId);
@@ -31,21 +33,19 @@ public class LoginController {
         BbsUserEntity bbsUser = bbsUserService.selectOne(wrapper);
         if (bbsUser == null) {
             //insert
-
             BbsUserEntity bbsUserEntity = new BbsUserEntity();
-
             bbsUserEntity.setInitTime(new Date());
             bbsUserEntity.setUnionId(unionId);
             bbsUserEntity.setName(name);
             bbsUserEntity.setMobile(mobile);
             bbsUserEntity.setPosition(position);
-
             bbsUserService.insert(bbsUserEntity);
             int id = bbsUserEntity.getId();
-            return R.ok().put("data", bbsUserEntity);
-
+            token = JWTUtils.sign(String.valueOf(id), unionId);
+            return R.ok().put("data", bbsUserEntity).put("token", token);
         } else {
-            return R.ok().put("data", bbsUser);
+            token = JWTUtils.sign(String.valueOf(bbsUser.getId()), unionId);
+            return R.ok().put("data", bbsUser).put("token", token);
         }
     }
 }

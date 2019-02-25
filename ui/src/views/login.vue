@@ -13,7 +13,8 @@
             <!-- 二维码区域 -->
             <div>
               <button class="layui-btn" @click="ddLogin">钉钉登录</button>
-              <button class="layui-btn" @click="testLogin">测试登录</button>
+              <button class="layui-btn" @click="testLogin">测试登录1</button>
+              <button class="layui-btn" @click="testLogin2">测试登录2</button>
               <!--<a href="https://oapi.dingtalk.com/connect/qrconnect?appid=dingoagzpnxuezq1lukowt&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http%3a%2f%2f10.0.2.157%3a8080%2f%23%2f">钉钉登录</a>-->
             </div>
           </form>
@@ -167,6 +168,10 @@
         //   window.localStorage['B-Token'] = token;
         //   this.$router.push('/home/index');
         // })
+      },
+      testLogin2() {
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNTcyNjkyLCJ1c2VySWQiOiI3NyJ9.hKIKuYkohEgEDmSo8eTtGlxyrGY4H1CX8-LZvJgyYqw';
+        this.$router.push('/home/index');
       }
     },
 

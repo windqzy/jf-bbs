@@ -41,6 +41,7 @@ public class LoginController {
             bbsUserEntity.setPosition(position);
 
             bbsUserService.insert(bbsUserEntity);
+            int id = bbsUserEntity.getId();
             return R.ok().put("data", bbsUserEntity);
 
         } else {

@@ -11,8 +11,9 @@
               <h1>用户登录</h1>
             </div>
             <!-- 二维码区域 -->
-            <div id="qrcode_container">
+            <div>
               <button class="layui-btn" @click="ddLogin">钉钉登录</button>
+              <button class="layui-btn" @click="testLogin">测试登录</button>
               <!--<a href="https://oapi.dingtalk.com/connect/qrconnect?appid=dingoagzpnxuezq1lukowt&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http%3a%2f%2f10.0.2.157%3a8080%2f%23%2f">钉钉登录</a>-->
             </div>
           </form>
@@ -30,7 +31,7 @@
     data() {
       return {
         go: 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=dingoagzpnxuezq1lukowt&response_type=code' +
-        '&scope=snsapi_login&state=STATE&redirect_uri=http://10.0.2.157:8080/',
+          '&scope=snsapi_login&state=STATE&redirect_uri=http://10.0.2.157:8080/',
         loginTmpCode: '',
         accessToken: '',
         companyToken: '',
@@ -66,29 +67,29 @@
       //     console.log(res.data)
       //   })
       // }
-      createQrCode() {
-        var obj = DDLogin({
-          id: "qrcode_container",
-          goto: encodeURIComponent(this.go),
-          style: "border:none;background-color:#FFFFFF;",
-          width: "365",
-          height: "400"
-        });
-        var hanndleMessage = function (event) {
-          var origin = event.origin;
-          console.log("origin", event.origin);
-          if (origin == "https://login.dingtalk.com") { //判断是否来自ddLogin扫码事件。
-            this.loginTmpCode = event.data; //拿到loginTmpCode后就可以在这里构造跳转链接进行跳转了
-            console.log('loginTmpCode：' + this.loginTmpCode)
-          }
-        };
-        if (typeof window.addEventListener != 'undefined') {
-          window.addEventListener('message', hanndleMessage, false);
-        } else if (typeof window.attachEvent != 'undefined') {
-          window.attachEvent('onmessage', hanndleMessage);
-        }
-
-      },
+      // createQrCode() {
+      //   var obj = DDLogin({
+      //     id: "qrcode_container",
+      //     goto: encodeURIComponent(this.go),
+      //     style: "border:none;background-color:#FFFFFF;",
+      //     width: "365",
+      //     height: "400"
+      //   });
+      //   var hanndleMessage = function (event) {
+      //     var origin = event.origin;
+      //     console.log("origin", event.origin);
+      //     if (origin == "https://login.dingtalk.com") { //判断是否来自ddLogin扫码事件。
+      //       this.loginTmpCode = event.data; //拿到loginTmpCode后就可以在这里构造跳转链接进行跳转了
+      //       console.log('loginTmpCode：' + this.loginTmpCode)
+      //     }
+      //   };
+      //   if (typeof window.addEventListener != 'undefined') {
+      //     window.addEventListener('message', hanndleMessage, false);
+      //   } else if (typeof window.attachEvent != 'undefined') {
+      //     window.attachEvent('onmessage', hanndleMessage);
+      //   }
+      //
+      // },
       getAccessToken() {
         login.getAccessToken().then(res => {
           console.log('accessToken：' + res.data.access_token)
@@ -144,11 +145,28 @@
         }
 
         login.addUser(loginForm).then(res => {
+          console.log('bbb');
           console.log(res)
           let token = res.token
           window.localStorage['B-Token'] = token;
           this.$router.push('/home/index');
         })
+      },
+      testLogin() {
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpRWlFIiwiZXhwIjoxNTUyNTY5NzM5LCJ1c2VySWQiOiI3NiJ9.hB4Ge8qJ7jv1VZ74GsbQrouWwcj3jbcU2dyEsiLYuj8';
+        this.$router.push('/home/index');
+        // let loginForm = {
+        //   unionId: 'gDJv4xQT2iivMfSaTobeNFAiEiE',
+        //   name: '',
+        //   mobile: '',
+        //   position: ''
+        // }
+        // login.addUser(loginForm).then(res => {
+        //   console.log('aaa');
+        //   let token = res.token;
+        //   window.localStorage['B-Token'] = token;
+        //   this.$router.push('/home/index');
+        // })
       }
     },
 

@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layer from '@/views/Layer'
 import Index from '@/views/index'
-import Detail from '@/views/post/detail'
+import Detail from '@/views/Post/detail'
 import Add from '@/views/Add'
+import Login from '@/views/login'
 
 Vue.use(Router)
 
@@ -11,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/home/index',
+      component: Login,
     },
     {
       path: '/home',

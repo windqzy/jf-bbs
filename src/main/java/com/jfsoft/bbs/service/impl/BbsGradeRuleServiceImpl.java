@@ -8,6 +8,7 @@ import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsGradeRuleDao;
 import com.jfsoft.bbs.entity.BbsGradeRuleEntity;
 import com.jfsoft.bbs.service.BbsGradeRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -15,6 +16,9 @@ import java.util.Map;
 
 @Service("bbsGradeRuleService")
 public class BbsGradeRuleServiceImpl extends ServiceImpl<BbsGradeRuleDao, BbsGradeRuleEntity> implements BbsGradeRuleService {
+
+    @Autowired
+    BbsGradeRuleDao bbsGradeRuleDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -28,7 +32,7 @@ public class BbsGradeRuleServiceImpl extends ServiceImpl<BbsGradeRuleDao, BbsGra
 
     @Override
     public Integer getGradeByRule(Integer signCount) {
-        return null;
+        return bbsGradeRuleDao.getGradeByRule(signCount);
     }
 
 }

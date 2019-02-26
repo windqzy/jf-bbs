@@ -3,7 +3,9 @@ package com.jfsoft.bbs.controller;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeRuleEntity;
+import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.service.BbsGradeRuleService;
+import com.jfsoft.bbs.service.BbsSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,32 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/grade/rule")
-public class GradeRuleController {
+public class GradeRuleController extends AbstractController {
     @Autowired
     private BbsGradeRuleService bbsGradeRuleService;
+
+    @Autowired
+    private BbsSignService bbsSignService;
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/curr")
+    public R curr(){
+        Integer grade;
+        // 查询最大连签
+        BbsSignEntity signByUserId = bbsSignService.getSignByUserId(getUserId());
+        // 查询应得的分数
+        if (signByUserId == null) {
+            grade = bbsGradeRuleService.getGradeByRule(1);
+        } else {
+            grade = bbsGradeRuleService.getGradeByRule(signByUserId.getSignCount());
+        }
+
+        return R.ok().put("data", grade);
+    }
+
 
     /**
      * 列表

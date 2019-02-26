@@ -3,7 +3,9 @@ package com.jfsoft.bbs.controller;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
+import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.service.BbsGradeService;
+import com.jfsoft.bbs.service.BbsSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,11 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/grade")
-public class GradeController {
+public class GradeController extends AbstractController {
     @Autowired
     private BbsGradeService bbsGradeService;
+
+
 
     /**
      * 列表
@@ -43,9 +47,10 @@ public class GradeController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Integer id){
         BbsGradeEntity bbsGrade = bbsGradeService.selectById(id);
-
         return R.ok().put("bbsGrade", bbsGrade);
     }
+
+
 
     /**
      * 保存

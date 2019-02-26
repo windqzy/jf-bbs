@@ -11,5 +11,10 @@
         <result property="userId" column="user_id"/>
     </resultMap>
 
+    <update id="updateGradeByUserId" parameterType="com.jfsoft.bbs.entity.BbsGradeEntity">
+        UPDATE bbs_grade
+        SET grade = #{grade}
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

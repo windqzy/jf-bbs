@@ -4,6 +4,8 @@ import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 /**
  * 用户积分表
  * 
@@ -13,5 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsGradeDao extends BaseMapper<BbsGradeEntity> {
-	
+
+	Integer updateGradeByUserId(BbsGradeEntity bbsGradeEntity);
+
 }

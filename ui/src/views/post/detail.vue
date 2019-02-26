@@ -59,7 +59,7 @@
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
                   <a class="fly-avatar" href="">
-                    <img :src="reply.icon"
+                    <img :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
                          :alt="reply.author">
                   </a>
                   <div class="fly-detail-user">
@@ -257,12 +257,11 @@
           postsId: this.postId,
           content: this.layedit.getContent(this.editIndex),
         }
-        // console.log('aaaaa', this.layedit.getContent(this.editIndex))
 
         reply.addReply(bbsReply).then(res => {
           //TODO 提示回复成功
-          this.content = '';
           this.getReplyList(this.postId);
+          this.layedit.setContent(this.editIndex, '');
         })
       },
       replyUp(replyId) {

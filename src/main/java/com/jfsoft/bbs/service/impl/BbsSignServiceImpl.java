@@ -18,7 +18,7 @@ import java.util.Map;
 public class BbsSignServiceImpl extends ServiceImpl<BbsSignDao, BbsSignEntity> implements BbsSignService {
 
     @Autowired
-    BbsSignDao bbsSignDao;
+    private BbsSignDao bbsSignDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -43,6 +43,7 @@ public class BbsSignServiceImpl extends ServiceImpl<BbsSignDao, BbsSignEntity> i
     @Override
     public int updateSign(BbsSignEntity bbsSignEntity) {
         //TODO 用户签到后，需要更新签到状态和积分
+
         return bbsSignDao.updateSign(bbsSignEntity);
     }
 

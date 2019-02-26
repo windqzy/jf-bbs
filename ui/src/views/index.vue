@@ -141,7 +141,7 @@
             <div class="fly-panel-main fly-signin-main">
               <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
               <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
-              <span>可获得<cite>5</cite>飞吻</span>
+              <span>可获得<cite v-text="currGrade"></cite>飞吻</span>
 
               <!-- 已签到状态 -->
               <!--
@@ -209,6 +209,7 @@
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
   import * as sign from '@/api/sign';
+  import * as grade from '@/api/grade';
 
   export default {
     name: "index",
@@ -229,7 +230,8 @@
         sortTypeActive: 0,
         postTypeActive: 0,
         signCount: 0, //连续签到次数
-        isSign: false
+        isSign: false,
+        currGrade: 0, //今天签到应得的分数
       }
     },
     created() {
@@ -254,6 +256,7 @@
       // this.init_layui();
       // this.getCount();
       this.getBool();
+      this.getCurrGrade();
     },
     watch: {
       '$route.query.id'(val) {
@@ -379,6 +382,11 @@
         post.getList(obj).then(res => {
           console.log(res.data)
           this.postList.push(res.data);
+        })
+      },
+      getCurrGrade() {
+        grade.getCurr().then(res => {
+          this.currGrade = res.data;
         })
       }
     }

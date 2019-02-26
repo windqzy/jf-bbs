@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jfsoft.bbs.dao.BbsGradeRuleDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.jfsoft.bbs.entity.BbsGradeRuleEntity" id="bbsGradeRuleMap">
         <result property="id" column="id"/>
         <result property="expression" column="expression"/>
@@ -12,8 +12,10 @@
         <result property="initTime" column="init_time"/>
     </resultMap>
 
-    <select id="getGradeByRule" parameterType="integer">
-
+    <select id="getGradeByRule" parameterType="integer" resultType="integer">
+    SELECT grade FROM bbs_grade_rule WHERE days <![CDATA[ <= ]]> #{signCount}  AND expression ='ge'
+    UNION
+    SELECT grade FROM bbs_grade_rule WHERE days > #{signCount} AND expression ='lt' ORDER BY grade DESC
     </select>
 
 </mapper>

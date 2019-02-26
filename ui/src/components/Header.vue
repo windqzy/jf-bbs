@@ -62,6 +62,9 @@
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
             <a @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
+          <li v-for="(label, index) in labelList">
+            <a @click="getPost(label.id, index)">{{label.name}}</a>
+          </li>
           <!--<li><a >分享<span class="layui-badge-dot"></span></a></li>-->
           <!--<li><a href="jie/index.html">讨论</a></li>-->
           <!--<li><a href="jie/index.html">建议</a></li>-->

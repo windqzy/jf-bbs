@@ -48,7 +48,7 @@
               <dd><router-link to="/user/index"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</router-link>
               </dd>
               <hr style="margin: 5px 0;">
-              <dd><a href="/user/logout/" style="text-align: center;">退出</a></dd>
+              <dd><a @click="logOut()" style="text-align: center; cursor: pointer">退出</a></dd>
             </dl>
           </li>
         </ul>
@@ -130,6 +130,10 @@
           console.log(res.data);
           this.userInfo = res.data;
         })
+      },
+      logOut() {
+        window.localStorage.clear();
+        this.$router.push('/');
       }
     }
   }

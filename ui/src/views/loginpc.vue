@@ -2,6 +2,7 @@
   <div class="container demo-1">
     <div class="content">
       <div id="large-header" class="large-header">
+        <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin">开发者登录</a>
         <canvas id="demo-canvas"></canvas>
         <div class="logo_box">
           <h3>欢迎登录</h3>
@@ -119,6 +120,11 @@
       // 钉钉登录结束
     },
     methods: {
+      testLogin() {
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTY' +
+          'VRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjQwNTMyLCJ1c2VySWQiOiI3NyJ9.gRf9M48lHPjefOp_JKxsD4-jmOVm4x0iyPbLQRBDTio';
+        this.$router.push('/home/index');
+      },
       getAccessToken() {
         login.getAccessToken().then(res => {
           console.log('accessToken：' + res.data.access_token)

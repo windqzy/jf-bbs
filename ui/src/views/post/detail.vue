@@ -204,6 +204,8 @@
         content: '',
         replyList: [],
         hotList: [],
+        editIndex: '',
+        layedit: null
       }
     },
     created() {
@@ -211,6 +213,15 @@
       this.labelId = this.$route.query.labelId;
       this.getDetailById(this.postId);
       this.getWeekHot();
+    },
+    mounted() {
+      let _this = this;
+      layui.use('layedit', function(){
+        _this.layedit = layui.layedit;
+        _this.editIndex = _this.layedit.build('L_content', {
+          height: 191
+        }); //建立编辑器
+      });
     },
     methods: {
       getDetailById(postId) {
@@ -244,9 +255,10 @@
       addReply() {
         let bbsReply = {
           postsId: this.postId,
-          content: this.content,
+          content: this.layedit.getContent(this.editIndex),
         }
-        console.log(bbsReply)
+        // console.log('aaaaa', this.layedit.getContent(this.editIndex))
+
         reply.addReply(bbsReply).then(res => {
           //TODO 提示回复成功
           this.content = '';

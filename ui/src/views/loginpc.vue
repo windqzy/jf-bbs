@@ -123,6 +123,10 @@
       testLogin() {
         window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl' +
           '2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjU3NjY3LCJ1c2VySWQiOiI3NyJ9._Fj9u6QJD2sM5Jg0gqA8pbjrqxRfQm7U61Kgyb3FbRI';
+        let userInfo = {
+          id: 77
+        }
+        window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
         this.$router.push('/home/index');
       },
       getAccessToken() {

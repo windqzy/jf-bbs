@@ -41,8 +41,8 @@
                 <span>{{postInfo.initTime}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                <!--<span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>-->
-                <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>
+                <span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>
+                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit"><a>编辑此贴</a></span>
               </div>
             </div>
             <!-- 文章内容 -->
@@ -94,8 +94,8 @@
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <span type="edit">编辑</span>
-                    <span type="del">删除</span>
+                    <span type="edit" v-if="userInfo.id == reply.userId">编辑</span>
+                    <span type="del" v-if="userInfo.id == reply.userId">删除</span>
                     <!-- <span class="jieda-accept" type="accept">采纳</span> -->
                   </div>
                 </div>
@@ -205,12 +205,14 @@
         replyList: [],
         hotList: [],
         editIndex: '',
-        layedit: null
+        layedit: null,
+        userInfo: null
       }
     },
     created() {
       this.postId = this.$route.query.postId;
       this.labelId = this.$route.query.labelId;
+      this.userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
       this.getDetailById(this.postId);
       this.getWeekHot();
     },
@@ -225,6 +227,7 @@
     },
     methods: {
       getDetailById(postId) {
+        this.postId = postId;
         post.getDetail(postId).then(res => {
           this.postInfo = res.data;
           this.getReplyList(postId);
@@ -257,7 +260,6 @@
           postsId: this.postId,
           content: this.layedit.getContent(this.editIndex),
         }
-
         reply.addReply(bbsReply).then(res => {
           //TODO 提示回复成功
           this.getReplyList(this.postId);

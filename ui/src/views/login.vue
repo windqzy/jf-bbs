@@ -168,6 +168,7 @@
           console.log('aaa');
           let token = res.token;
           window.localStorage['B-Token'] = token;
+          window.localStorage.userInfo = JSON.stringify(res.data);
           this.$router.push('/home/index');
         })
       },

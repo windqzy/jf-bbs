@@ -203,7 +203,7 @@
         postInfo: '',
         content: '',
         replyList: [],
-        hotList: []
+        hotList: [],
       }
     },
     created() {

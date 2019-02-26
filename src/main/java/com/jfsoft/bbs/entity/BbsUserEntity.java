@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -64,6 +65,7 @@ public class BbsUserEntity implements Serializable {
 	private String mobile;
 
 	private String unionId;
+
 
 	public String getPosition() {
 		return position;

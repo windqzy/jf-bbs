@@ -59,18 +59,15 @@ public class BbsSignEntity implements Serializable {
 	public Date getInitTime() {
 		return initTime;
 	}
-	/**
-	 * 设置：连续签到次数
-	 */
-	public void setSignCount(Integer signCount) {
-		this.signCount = signCount;
-	}
-	/**
-	 * 获取：连续签到次数
-	 */
+
 	public Integer getSignCount() {
 		return signCount;
 	}
+
+	public void setSignCount(Integer signCount) {
+		this.signCount = signCount;
+	}
+
 	/**
 	 * 设置：签到人ID
 	 */

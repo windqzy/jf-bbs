@@ -181,8 +181,8 @@
 
         login.addUser(loginForm).then(res => {
           console.log('bbb');
-          console.log(res.data)
-          let token = res.token
+          console.log(res.data);
+          let token = res.token;
           window.localStorage['B-Token'] = token;
           window.localStorage.setItem('userInfo', JSON.stringify(res.data));
           this.$router.push('/home/index');

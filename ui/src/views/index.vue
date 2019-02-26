@@ -136,10 +136,11 @@
               <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
               <i class="fly-mid"></i>
               <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>
-              <span class="fly-signin-days">已连续签到<cite>16</cite>天</span>
+              <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
             </div>
             <div class="fly-panel-main fly-signin-main">
-              <button class="layui-btn layui-btn-danger" id="LAY_signin">今日签到</button>
+              <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
+              <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
               <span>可获得<cite>5</cite>飞吻</span>
 
               <!-- 已签到状态 -->
@@ -207,6 +208,7 @@
   import * as post from '@/api/post';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
+  import * as sign from '@/api/sign';
 
   export default {
     name: "index",
@@ -226,29 +228,32 @@
         labelId: '',
         sortTypeActive: 0,
         postTypeActive: 0,
-
+        signCount: 0, //连续签到次数
+        isSign: false
       }
     },
     created() {
-      layui.cache.user = {
-        username: '游客'
-        ,uid: -1
-        ,avatar: '../../../static/images/avatar/00.jpg'
-        ,experience: 83
-        ,sex: '男'
-      };
-      layui.config({
-        version: "3.0.0"
-        ,base: '../../../static/mods/'
-      }).extend({
-        fly: 'index'
-      }).use('fly');
+      // layui.cache.user = {
+      //   username: '游客'
+      //   ,uid: -1
+      //   ,avatar: '../../../static/images/avatar/00.jpg'
+      //   ,experience: 83
+      //   ,sex: '男'
+      // };
+      // layui.config({
+      //   version: "3.0.0"
+      //   ,base: '../../../static/mods/'
+      // }).extend({
+      //   fly: 'index'
+      // }).use('fly');
       let id = this.$route.query.id ? this.$route.query.id : '';
       this.changeLabel(id);
       this.getTopPostList();
       this.getReplyTop();
       this.getWeekHot();
-      this.init_layui();
+      // this.init_layui();
+      // this.getCount();
+      this.getBool();
     },
     watch: {
       '$route.query.id'(val) {
@@ -256,22 +261,43 @@
       }
     },
     methods: {
-      //TODO userId
-      init_layui() {
-        layui.cache.user = {
-          username: '游客'
-          , uid: -1
-          , avatar: '../../../static/images/avatar/00.jpg'
-          , experience: 83
-          , sex: '男'
-        };
-        layui.config({
-          version: "3.0.0"
-          , base: '../../../static/mods/'
-        }).extend({
-          a: 'index'
-        }).use('a');
+      //获取连续签到次数
+      // getCount() {
+      //   sign.getCount().then(res => {
+      //     console.log(res.data);
+      //     this.signCount = res.data.signCount;
+      //   })
+      // },
+      //获取该用户今日签到与否
+      getBool() {
+        sign.getBool().then(res => {
+          console.log(res.data);
+          this.isSign = res.data.isSign;
+          this.signCount = res.data.count;
+        })
       },
+      saveSign() {
+        sign.saveSign().then(res => {
+          this.getBool();
+        })
+      },
+
+      //TODO userId
+      // init_layui() {
+      //   layui.cache.user = {
+      //     username: '游客'
+      //     , uid: -1
+      //     , avatar: '../../../static/images/avatar/00.jpg'
+      //     , experience: 83
+      //     , sex: '男'
+      //   };
+      //   layui.config({
+      //     version: "3.0.0"
+      //     , base: '../../../static/mods/'
+      //   }).extend({
+      //     a: 'index'
+      //   }).use('a');
+      // },
       changeLabel(e) {
         console.log(e);
         this.labelId = e;

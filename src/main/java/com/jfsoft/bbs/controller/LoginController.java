@@ -3,8 +3,10 @@ package com.jfsoft.bbs.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.JWTUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.form.LoginForm;
+import com.jfsoft.bbs.service.BbsSignService;
 import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,9 @@ public class LoginController {
 
     @Autowired
     private BbsUserService bbsUserService;
+
+    @Autowired
+    private BbsSignService bbsSignService;
 
     @PostMapping("/login")
     public R login(@RequestBody LoginForm loginForm) {

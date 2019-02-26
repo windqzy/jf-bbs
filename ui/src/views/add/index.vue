@@ -122,24 +122,28 @@
   export default {
     name: "index",
     created(){
-      layui.cache.user = {
-        username: '游客'
-        ,uid: -1
-        ,avatar: '../../../static/images/avatar/00.jpg'
-        ,experience: 83
-        ,sex: '男'
-      };
-      layui.config({
-        version: "3.0.0"
-        ,base: '../../../static/mods/'
-      }).extend({
-        fly: 'index'
-      }).use('fly');
+      this.init_layui();
     },
     data() {
       return {}
     },
-    methods: {}
+    methods: {
+      init_layui() {
+        layui.cache.user = {
+          username: '游客'
+          ,uid: -1
+          ,avatar: '../../../static/images/avatar/00.jpg'
+          ,experience: 83
+          ,sex: '男'
+        };
+        layui.config({
+          version: "3.0.0",
+          base: '../../../static/mods/'
+        }).extend({
+          fly: 'index'
+        }).use('fly');
+      }
+    }
   }
 </script>
 

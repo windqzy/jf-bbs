@@ -19,7 +19,8 @@
                 </a>
                 <h2>
                   <a class="layui-badge">{{top.labelName}}</a>
-                  <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}</router-link>
+                  <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}
+                  </router-link>
                 </h2>
                 <div class="fly-list-info">
                   <a href="" link>
@@ -70,7 +71,8 @@
                 </a>
                 <h2>
                   <a class="layui-badge">{{post.labelName}}</a>
-                  <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}</router-link>
+                  <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}
+                  </router-link>
                 </h2>
                 <div class="fly-list-info">
                   <a href="user/home.html" link>
@@ -154,7 +156,8 @@
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
               <dd v-for="replyTop in replyTopList">
                 <a href="user/home.html">
-                  <img :src="replyTop.icon"><cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
+                  <img
+                    :src="replyTop.icon"><cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
                 </a>
               </dd>
             </dl>
@@ -207,9 +210,9 @@
 
   export default {
     name: "index",
-   /* components: {
-      'v-header': Header
-    },*/
+    /* components: {
+       'v-header': Header
+     },*/
     data() {
       return {
         postList: [],
@@ -232,6 +235,7 @@
       this.getTopPostList();
       this.getReplyTop();
       this.getWeekHot();
+      this.init_layui();
     },
     watch: {
       '$route.query.id'(val) {
@@ -239,6 +243,22 @@
       }
     },
     methods: {
+      //TODO userId
+      init_layui() {
+        layui.cache.user = {
+          username: '游客'
+          , uid: -1
+          , avatar: '../../../static/images/avatar/00.jpg'
+          , experience: 83
+          , sex: '男'
+        };
+        layui.config({
+          version: "3.0.0"
+          , base: '../../../static/mods/'
+        }).extend({
+          a: 'index'
+        }).use('a');
+      },
       changeLabel(e) {
         console.log(e);
         this.labelId = e;
@@ -285,7 +305,7 @@
           endTime: time.getWeekEndDate()
         }
         reply.getTop(obj).then(res => {
-            this.replyTopList = res.data;
+          this.replyTopList = res.data;
         })
       },
       // 获取本周热议

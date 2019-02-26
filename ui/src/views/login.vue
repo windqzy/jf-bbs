@@ -1,23 +1,25 @@
 <template>
-  <div class="layui-container">
-    <div class="layui-row layui-row-space10">
-      <div class="layui-col-xs2 layui-col-md4">
-        .
-      </div>
-      <div class="layui-col-xs8 layui-col-md4">
-        <div class="layui-form" id="login-form">
-          <form class="layui-form" action="">
-            <div class="layui-form-item logo-title">
-              <h1>用户登录</h1>
-            </div>
-            <!-- 二维码区域 -->
-            <div>
-              <button class="layui-btn" @click="ddLogin">钉钉登录</button>
-              <button class="layui-btn" @click="testLogin">测试登录1</button>
-              <button class="layui-btn" @click="testLogin2">测试登录2</button>
-              <!--<a href="https://oapi.dingtalk.com/connect/qrconnect?appid=dingoagzpnxuezq1lukowt&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http%3a%2f%2f10.0.2.157%3a8080%2f%23%2f">钉钉登录</a>-->
-            </div>
-          </form>
+  <div class="login">
+    <div class="layui-container">
+      <div class="layui-row layui-row-space10">
+        <div class="layui-col-xs2 layui-col-md4">
+          .
+        </div>
+        <div class="layui-col-xs8 layui-col-md4">
+          <div class="layui-form" id="login-form">
+            <form class="layui-form" action="">
+              <div class="layui-form-item logo-title">
+                <h1>用户登录</h1>
+              </div>
+              <!-- 二维码区域 -->
+              <div>
+                <button class="layui-btn" @click="ddLogin">钉钉登录</button>
+                <button class="layui-btn" @click="testLogin">测试登录1</button>
+                <button class="layui-btn" @click="testLogin2">测试登录2</button>
+                <!--<a href="https://oapi.dingtalk.com/connect/qrconnect?appid=dingoagzpnxuezq1lukowt&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http%3a%2f%2f10.0.2.157%3a8080%2f%23%2f">钉钉登录</a>-->
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -147,30 +149,30 @@
 
         login.addUser(loginForm).then(res => {
           console.log('bbb');
-          console.log(res)
+          console.log(res.data)
           let token = res.token
           window.localStorage['B-Token'] = token;
           this.$router.push('/home/index');
         })
       },
       testLogin() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpRWlFIiwiZXhwIjoxNTUyNTY5NzM5LCJ1c2VySWQiOiI3NiJ9.hB4Ge8qJ7jv1VZ74GsbQrouWwcj3jbcU2dyEsiLYuj8';
-        this.$router.push('/home/index');
-        // let loginForm = {
-        //   unionId: 'gDJv4xQT2iivMfSaTobeNFAiEiE',
-        //   name: '',
-        //   mobile: '',
-        //   position: ''
-        // }
-        // login.addUser(loginForm).then(res => {
-        //   console.log('aaa');
-        //   let token = res.token;
-        //   window.localStorage['B-Token'] = token;
-        //   this.$router.push('/home/index');
-        // })
+        // window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjE0NTAyLCJ1c2VySWQiOiI3NyJ9.O7rwtbMoLKCsYwUm4qQH2g-54gindeN6Vmx3syqtmzg';
+        // this.$router.push('/home/index');
+        let loginForm = {
+          unionId: 'gDJv4xQT2iivMfSaTobeNFAiEiE',
+          name: '',
+          mobile: '',
+          position: ''
+        }
+        login.addUser(loginForm).then(res => {
+          console.log('aaa');
+          let token = res.token;
+          window.localStorage['B-Token'] = token;
+          this.$router.push('/home/index');
+        })
       },
       testLogin2() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNTcyNjkyLCJ1c2VySWQiOiI3NyJ9.hKIKuYkohEgEDmSo8eTtGlxyrGY4H1CX8-LZvJgyYqw';
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpRWlFIiwiZXhwIjoxNTUyNjE0NDUwLCJ1c2VySWQiOiI3NiJ9.pKcHa6lyCMF7aW4a6ZVS1ejYU0NXo-VRJA53EhX9Bx0';
         this.$router.push('/home/index');
       }
     },
@@ -179,4 +181,9 @@
 </script>
 
 <style scoped>
+  .login {
+    background-image: url("https://api.dujin.org/bing/1920.php");
+    width: 100vw;
+    height: 100vh;
+  }
 </style>

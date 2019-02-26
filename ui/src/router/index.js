@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layer from '@/views/Layer'
+import Layer from '@/views/layer'
 import Index from '@/views/index'
-import Detail from '@/views/Post/detail'
-import Add from '@/views/Add'
+import Detail from '@/views/post/detail'
+import Add from '@/views/add'
 import Login from '@/views/login'
+import UserIndex from '@/views/user/home'
 
 Vue.use(Router)
 
@@ -40,6 +41,15 @@ export default new Router({
         {
           path:'index',
           component: Add
+        }
+      ]
+    },{
+      path: '/user/index',
+      component: Layer,
+      children:[
+        {
+          path:'/user/index',
+          component: UserIndex
         }
       ]
     },

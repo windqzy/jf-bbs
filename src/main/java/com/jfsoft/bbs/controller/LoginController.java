@@ -48,4 +48,9 @@ public class LoginController {
             return R.ok().put("data", bbsUser).put("token", token);
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(JWTUtils.sign(String.valueOf(76), "gDJv4xQT2iivMfSaTobeNFAiEiE"));
+        System.out.println(JWTUtils.sign(String.valueOf(77), "gDJv4xQT2iivMfSaTobeNFAiaaa"));
+    }
 }

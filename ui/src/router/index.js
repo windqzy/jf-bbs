@@ -4,7 +4,7 @@ import Layer from '@/views/layer'
 import Index from '@/views/index'
 import Detail from '@/views/post/detail'
 import Add from '@/views/add'
-import Login from '@/views/login'
+import Login from '@/views/loginpc'
 import UserIndex from '@/views/user/home'
 
 Vue.use(Router)

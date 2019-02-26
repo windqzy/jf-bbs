@@ -16,5 +16,11 @@ import java.util.Map;
 public interface BbsSignService extends IService<BbsSignEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    BbsSignEntity getSignByUserId(Integer userId);
+
+    int insertSign(Integer userId);
+
+    int updateSign(BbsSignEntity bbsSignEntity);
 }
 

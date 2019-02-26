@@ -26,4 +26,9 @@ public class BbsGradeRuleServiceImpl extends ServiceImpl<BbsGradeRuleDao, BbsGra
         return new PageUtils(page);
     }
 
+    @Override
+    public Integer getGradeByRule(Integer signCount) {
+        return null;
+    }
+
 }

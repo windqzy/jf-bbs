@@ -1,7 +1,7 @@
 package com.jfsoft.bbs.dao;
 
-import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfsoft.bbs.entity.BbsSignEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +13,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsSignDao extends BaseMapper<BbsSignEntity> {
-	
+
+    BbsSignEntity getSignByUserId(Integer userId);
+
+    int insertSign(Integer userId);
+
+    int updateSign(BbsSignEntity bbsSignEntity);
+
 }

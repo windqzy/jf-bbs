@@ -29,7 +29,7 @@ public class BbsSignEntity implements Serializable {
 	/**
 	 * 连续签到次数
 	 */
-	private Integer count;
+	private Integer signCount;
 	/**
 	 * 签到人ID
 	 */
@@ -62,14 +62,14 @@ public class BbsSignEntity implements Serializable {
 	/**
 	 * 设置：连续签到次数
 	 */
-	public void setCount(Integer count) {
-		this.count = count;
+	public void setSignCount(Integer signCount) {
+		this.signCount = signCount;
 	}
 	/**
 	 * 获取：连续签到次数
 	 */
-	public Integer getCount() {
-		return count;
+	public Integer getSignCount() {
+		return signCount;
 	}
 	/**
 	 * 设置：签到人ID

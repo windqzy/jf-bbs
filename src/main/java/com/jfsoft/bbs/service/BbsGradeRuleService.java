@@ -16,5 +16,6 @@ import java.util.Map;
 public interface BbsGradeRuleService extends IService<BbsGradeRuleEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
-}
 
+    Integer getGradeByRule(Integer signCount);
+}

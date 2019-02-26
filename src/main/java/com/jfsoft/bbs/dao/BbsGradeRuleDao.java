@@ -13,5 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsGradeRuleDao extends BaseMapper<BbsGradeRuleEntity> {
+
+    Integer getGradeByRule(Integer signCount);
 	
 }

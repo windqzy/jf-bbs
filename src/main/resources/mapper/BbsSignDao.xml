@@ -3,13 +3,32 @@
 
 <mapper namespace="com.jfsoft.bbs.dao.BbsSignDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.jfsoft.bbs.entity.BbsSignEntity" id="bbsSignMap">
         <result property="id" column="id"/>
         <result property="initTime" column="init_time"/>
-        <result property="count" column="count"/>
+        <result property="signCount" column="sign_count"/>
         <result property="userId" column="user_id"/>
     </resultMap>
 
+    <select id="getSignByUserId" parameterType="integer" resultMap="bbsSignMap">
+        SELECT *
+        FROM bbs_sign
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insertSign" parameterType="integer">
+        INSERT
+        INTO bbs_sign
+        (init_time, sign_count, user_id)
+        VALUES
+        (now(), 1, #{userId})
+    </insert>
+
+    <update id="updateSign" parameterType="com.jfsoft.bbs.entity.BbsSignEntity">
+        UPDATE bbs_sign
+        SET init_time = now(), sign_count = #{signCount}
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

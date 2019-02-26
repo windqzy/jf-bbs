@@ -12,5 +12,8 @@
         <result property="initTime" column="init_time"/>
     </resultMap>
 
+    <select id="getGradeByRule" parameterType="integer">
+
+    </select>
 
 </mapper>

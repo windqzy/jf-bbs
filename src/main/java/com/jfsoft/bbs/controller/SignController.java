@@ -7,9 +7,12 @@ import com.jfsoft.bbs.service.BbsSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
-
 
 
 /**
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sign")
-public class SignController {
+public class SignController extends AbstractController {
     @Autowired
     private BbsSignService bbsSignService;
 
@@ -29,7 +32,7 @@ public class SignController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = bbsSignService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -40,7 +43,7 @@ public class SignController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id){
+    public R info(@PathVariable("id") Integer id) {
         BbsSignEntity bbsSign = bbsSignService.selectById(id);
 
         return R.ok().put("bbsSign", bbsSign);
@@ -50,7 +53,7 @@ public class SignController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BbsSignEntity bbsSign){
+    public R save(@RequestBody BbsSignEntity bbsSign) {
         bbsSignService.insert(bbsSign);
 
         return R.ok();
@@ -60,10 +63,22 @@ public class SignController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody BbsSignEntity bbsSign){
-//        ValidatorUtils.validateEntity(bbsSign);
-        bbsSignService.updateAllColumnById(bbsSign);//全部更新
-        
+    public R update() {
+        BbsSignEntity bbsSign = bbsSignService.getSignByUserId(getUserId());
+        if (bbsSign == null) {
+            bbsSignService.insertSign(getUserId());
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            long days = ChronoUnit.DAYS.between(LocalDate.parse(sdf.format(bbsSign.getInitTime())), LocalDate.parse(sdf.format(new Date())));
+            if (days == 1) {
+                bbsSign.setSignCount(bbsSign.getSignCount() + 1); //正在连续签到
+            } else {
+                bbsSign.setSignCount(1);                          //连续签到中断
+            }
+            bbsSign.setInitTime(new Date());
+            bbsSignService.updateSign(bbsSign);
+        }
+
         return R.ok();
     }
 
@@ -71,7 +86,7 @@ public class SignController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids){
+    public R delete(@RequestBody Integer[] ids) {
         bbsSignService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();

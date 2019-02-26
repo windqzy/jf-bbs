@@ -6,6 +6,7 @@ import Detail from '@/views/post/detail'
 import Add from '@/views/add'
 import Login from '@/views/loginpc'
 import UserIndex from '@/views/user/home'
+import setIndex from '@/views/set/index'
 
 Vue.use(Router)
 
@@ -50,6 +51,15 @@ export default new Router({
         {
           path:'/user/index',
           component: UserIndex
+        }
+      ]
+    },{
+      path: '/set',
+      component: Layer,
+      children:[
+        {
+          path:'index',
+          component: setIndex
         }
       ]
     },

@@ -7,6 +7,18 @@ import store from './store/index'
 
 Vue.config.productionTip = false
 
+// router.beforeEach((to, from, next) => {
+//   if (store.state.user.username) {
+//     next();
+//   } else {
+//     store.dispatch('addUserInfo').then(() => {
+//       if (!store.state.user.username) {
+//         router.push('/user/reg');
+//       }
+//     })
+//   }
+// })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -121,12 +121,7 @@
     },
     methods: {
       testLogin() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl' +
-          '2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjU3NjY3LCJ1c2VySWQiOiI3NyJ9._Fj9u6QJD2sM5Jg0gqA8pbjrqxRfQm7U61Kgyb3FbRI';
-        let userInfo = {
-          id: 77
-        }
-        window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjQyNzQ2LCJ1c2VySWQiOiI3NyJ9.R-fHINvUZxFzz1bJmGvgN28GaoLh6EseWly8HD55E74';
         this.$router.push('/home/index');
       },
       getAccessToken() {
@@ -185,8 +180,8 @@
 
         login.addUser(loginForm).then(res => {
           console.log('bbb');
-          console.log(res.data);
-          let token = res.token;
+          console.log(res.data)
+          let token = res.token
           window.localStorage['B-Token'] = token;
           window.localStorage.setItem('userInfo', JSON.stringify(res.data));
           this.$router.push('/home/index');

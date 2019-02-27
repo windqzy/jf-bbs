@@ -43,7 +43,7 @@
               <img :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
             </a>
             <dl class="layui-nav-child">
-              <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+              <dd><router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link></dd>
               <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
               <dd><router-link to="/user/index"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</router-link>
               </dd>
@@ -108,6 +108,11 @@
     created() {
       this.getAllLabel();
       this.getUser();
+    },
+    mounted() {
+      layui.use('element', function(){
+        let element = layui.element;
+      });
     },
     methods: {
       // 查询所有 Label

@@ -24,6 +24,4 @@ public class UploadController {
      */
     @Value("${app.staticUrl}")
     private String staticUrl;
-
-
 }

@@ -2,6 +2,7 @@ package com.jfsoft.bbs.controller;
 
 import com.jfsoft.bbs.common.utils.DateUtil;
 import com.jfsoft.bbs.common.utils.R;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,19 +47,25 @@ public class UploadController {
 
         String url = "";
         url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
-
-        Map<String, Object> map = new HashMap<>();
-        if (!file.isEmpty()) {
-            File imgFile = new File(absPath);
-            if (!imgFile.exists()) imgFile.mkdirs();
-            try {
-                file.transferTo(new File(absPath + "/" + fileName));
-            } catch (IOException e) {
-                e.printStackTrace();
+        if(!StringUtils.isBlank(suffix)){
+            if (".jpg".equals(suffix) || ".png".equals(suffix) || ".gif".equals(suffix)){
+                Map<String, Object> map = new HashMap<>();
+                if (!file.isEmpty()) {
+                    File imgFile = new File(absPath);
+                    if (!imgFile.exists()) imgFile.mkdirs();
+                    try {
+                        file.transferTo(new File(absPath + "/" + fileName));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return R.ok().put("data", url);
+                } else {
+                    return R.ok().put("data", "文件上传失败");
+                }
+            }else {
+                return R.ok().put("data", "上传文件需为图片格式");
             }
-            return R.ok().put("data", url);
-        } else {
-            return R.ok().put("data", "文件上传失败");
         }
+        return null;
     }
 }

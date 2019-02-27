@@ -16,3 +16,10 @@ export function upDateUser(UserForm) {
   })
 }
 
+export function upLoadFile() {
+  return request({
+    url: 'upload/uploadFile',
+    method: 'POST'
+  })
+}
+

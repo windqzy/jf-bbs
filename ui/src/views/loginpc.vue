@@ -188,8 +188,13 @@
           console.log(res.data);
           let token = res.token;
           window.localStorage['B-Token'] = token;
-          window.localStorage.setItem('userInfo', JSON.stringify(res.data));
-          this.$router.push('/home/index');
+          this.$store.dispatch('addUserInfo');
+          if (res.data.username == null) {
+            this.$router.push('/user/reg');
+          } else {
+            // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+            this.$router.push('/home/index');
+          }
         })
       },
       initHeader() {

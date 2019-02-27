@@ -18,7 +18,7 @@ server:
 
 app:
   filePath: E://Test/
-  staticUrl: http://10.0.2.63:8080/static/
+  staticUrl: http://10.0.2.63:8848/static/
 #  servlet:
 #    context-path: /jf-bbs
 

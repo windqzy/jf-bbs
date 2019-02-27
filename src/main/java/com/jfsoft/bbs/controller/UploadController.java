@@ -60,12 +60,12 @@ public class UploadController {
                     }
                     return R.ok().put("data", url);
                 } else {
-                    return R.ok().put("data", "文件上传失败");
+                    return R.ok("文件上传失败");
                 }
             }else {
-                return R.ok().put("data", "上传文件需为图片格式");
+                return R.ok("上传文件需为图片格式");
             }
         }
-        return null;
+        return R.error("格式不支持");
     }
 }

@@ -6,3 +6,13 @@ export function getUser() {
     method: 'POST',
   })
 }
+
+
+export function upDateUser(UserForm) {
+  return request({
+    url: '/user/update',
+    method: 'POST',
+    data: UserForm
+  })
+}
+

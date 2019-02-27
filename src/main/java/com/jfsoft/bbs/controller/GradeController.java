@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
-
-
 
 
 /**
@@ -29,12 +28,11 @@ public class GradeController extends AbstractController {
     private BbsGradeService bbsGradeService;
 
 
-
     /**
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = bbsGradeService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -44,19 +42,20 @@ public class GradeController extends AbstractController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id){
-        BbsGradeEntity bbsGrade = bbsGradeService.selectById(id);
-        return R.ok().put("bbsGrade", bbsGrade);
+    @RequestMapping("/info")
+    public R info() {
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("user_id", getUserId());
+        BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
+        return R.ok().put("data", bbsGrade);
     }
-
 
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BbsGradeEntity bbsGrade){
+    public R save(@RequestBody BbsGradeEntity bbsGrade) {
         bbsGradeService.insert(bbsGrade);
 
         return R.ok();
@@ -66,10 +65,10 @@ public class GradeController extends AbstractController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody BbsGradeEntity bbsGrade){
+    public R update(@RequestBody BbsGradeEntity bbsGrade) {
 //        ValidatorUtils.validateEntity(bbsGrade);
         bbsGradeService.updateAllColumnById(bbsGrade);//全部更新
-        
+
         return R.ok();
     }
 
@@ -77,7 +76,7 @@ public class GradeController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids){
+    public R delete(@RequestBody Integer[] ids) {
         bbsGradeService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();

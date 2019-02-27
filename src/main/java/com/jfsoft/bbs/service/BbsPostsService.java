@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- *
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 12:51:46
@@ -25,5 +23,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
     List<BbsPostsEntity> getTopList();
 
     BbsPostsEntity getPostByID(Integer ID);
+
+
 }
 

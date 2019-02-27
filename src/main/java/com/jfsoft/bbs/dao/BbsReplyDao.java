@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- * 
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 18:10:32
@@ -17,12 +15,14 @@ import java.util.Map;
 @Mapper
 public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
-	List<BbsReplyEntity> getReplyByPostId(Integer postId);
+    List<BbsReplyEntity> getReplyByPostId(Integer postId);
 
-	List<BbsReplyEntity> getTop(Map<String, Object> params);
+    List<BbsReplyEntity> getTop(Map<String, Object> params);
 
-	List<BbsReplyEntity> getReplyByPostId(Map<String,Object> params);
+    List<BbsReplyEntity> getReplyByPostId(Map<String, Object> params);
 
-	Integer updateUpById(Map<String,Object> params);
+    Integer updateUpById(Map<String, Object> params);
+
+    List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
 
 }

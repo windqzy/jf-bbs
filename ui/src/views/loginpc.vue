@@ -76,7 +76,7 @@
 
       var goto = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + window.localStorage.DD_APPID +
         "&response_type=code&scope=snsapi_login&state=STATE" +
-        "&redirect_uri=" + encodeURIComponent('http://10.0.2.72:8080/#/');
+        "&redirect_uri=" + encodeURIComponent('http://10.0.2.157:8080/#/');
       var qrcodeUrl = "https://login.dingtalk.com/login/qrcode.htm?goto=" + encodeURIComponent(goto);
       var obj = DDLogin({
         id: "login_container",
@@ -190,10 +190,10 @@
           let token = res.token;
           window.localStorage['B-Token'] = token;
           this.$store.dispatch('addUserInfo');
-          if (res.data.username == null) {
+          if (!res.data.username) {
             this.$router.push('/user/reg');
           } else {
-            // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+            window.localStorage.setItem('userInfo', JSON.stringify(res.data));
             this.$router.push('/home/index');
           }
         })

@@ -9,27 +9,27 @@
         <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
           <div class="layui-tab-item layui-show">
             <div class="layui-form layui-form-pane">
-              <form method="post">
+              <!--<form method="post">-->
                 <div class="layui-form-item">
                   <label for="L_username" class="layui-form-label">昵称</label>
                   <div class="layui-input-inline">
                     <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off"
-                           class="layui-input">
+                           class="layui-input" v-model="username">
                   </div>
                 </div>
                 <div class="layui-form-item">
                   <label for="L_email" class="layui-form-label">邮箱</label>
                   <div class="layui-input-inline">
                     <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off"
-                           class="layui-input">
+                           class="layui-input" v-model="email">
                   </div>
                   <!--<div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>-->
                 </div>
                 <div class="layui-form-item">
                   <label for="L_tel" class="layui-form-label">手机号</label>
                   <div class="layui-input-inline">
-                    <input type="password" id="L_tel" name="pass" required lay-verify="required" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" id="L_tel" name="mobile" required lay-verify="required" autocomplete="off"
+                           class="layui-input" v-model="mobile">
                   </div>
                   <!--<div class="layui-form-mid layui-word-aux">6到16个字符</div>-->
                 </div>
@@ -51,7 +51,7 @@
                   <!--</div>-->
                 <!--</div>-->
                 <div class="layui-form-item">
-                  <button class="layui-btn" lay-filter="*" lay-submit>立即注册</button>
+                  <button class="layui-btn" @click="upDateUser">立即注册</button>
                 </div>
                 <!--<div class="layui-form-item fly-form-app">-->
                   <!--<span>或者直接使用社交账号快捷注册</span>-->
@@ -60,7 +60,7 @@
                   <!--<a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo"-->
                      <!--title="微博登入"></a>-->
                 <!--</div>-->
-              </form>
+              <!--</form>-->
             </div>
           </div>
         </div>
@@ -70,14 +70,34 @@
 </template>
 
 <script>
+  import * as user from "@/api/user"
   export default {
     name: "reg",
     data() {
       return {
-
+        username: '',
+        mobile: '',
+        email: ''
       }
     },
     mounted() {
+    },
+    methods: {
+      upDateUser() {
+        let UserForm = {
+          username: this.username,
+          email: this.email,
+          mobile: this.mobile
+        };
+        user.upDateUser(UserForm).then(res => {
+          res.data.email = this.email;
+          res.data.username = this.username;
+          res.data.mobile = this.mobile;
+
+          window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+          this.$router.push('/home/index');
+        })
+      },
     }
   }
 </script>

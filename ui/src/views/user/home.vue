@@ -1,7 +1,9 @@
 <template>
   <div class="user_index">
     <div class="fly-home fly-panel" style="background-image: url();">
-      <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
+      <img
+        :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
+      <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
       <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
       <h1>
         {{userInfo.username}}
@@ -36,7 +38,7 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md6 fly-home-jie">
           <div class="fly-panel">
-            <h3 class="fly-panel-title">贤心 最近发布的文章</h3>
+            <h3 class="fly-panel-title">{{userInfo.username}} 最近发布的文章</h3>
             <ul class="jie-row">
               <li v-for="post in postList">
                 <span class="fly-jing" v-if="post.good">精</span>

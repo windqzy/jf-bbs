@@ -7,6 +7,7 @@ import Add from '@/views/add'
 import Login from '@/views/loginpc'
 import UserIndex from '@/views/user/home'
 import setIndex from '@/views/set/index'
+import userReg from '@/views/user/reg'
 
 Vue.use(Router)
 
@@ -60,6 +61,15 @@ export default new Router({
         {
           path:'index',
           component: setIndex
+        }
+      ]
+    },{
+      path: '/user',
+      component: Layer,
+      children:[
+        {
+          path:'reg',
+          component: userReg
         }
       ]
     },

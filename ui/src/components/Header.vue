@@ -37,15 +37,21 @@
           <!-- 登入后的状态 -->
           <li class="layui-nav-item">
             <a class="fly-nav-avatar" href="javascript:;">
-              <cite class="layui-hide-xs">{{userInfo.name}}</cite>
+              <cite class="layui-hide-xs">{{userInfo.username}}</cite>
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
-              <img :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
+              <img
+                :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
             </a>
             <dl class="layui-nav-child">
-              <dd><router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link></dd>
+              <dd>
+                <router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link>
+              </dd>
               <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-              <dd><router-link to="/user/index"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</router-link>
+              <dd>
+                <router-link to="/user/index"><i class="layui-icon"
+                                                 style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
+                </router-link>
               </dd>
               <hr style="margin: 5px 0;">
               <dd><a @click="logOut()" style="text-align: center; cursor: pointer">退出</a></dd>
@@ -110,7 +116,7 @@
       this.getUser();
     },
     mounted() {
-      layui.use('element', function(){
+      layui.use('element', function () {
         let element = layui.element;
       });
     },

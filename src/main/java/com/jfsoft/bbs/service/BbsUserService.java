@@ -15,6 +15,5 @@ public interface BbsUserService extends IService<BbsUserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-
 }
 

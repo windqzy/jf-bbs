@@ -64,7 +64,8 @@
             <button type="button" class="layui-btn upload-img">
               <i class="layui-icon">&#xe67c;</i>上传头像
             </button>
-            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+            <img
+              :src="icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : icon">
             <span class="loading"></span>
           </div>
         </div>
@@ -159,6 +160,7 @@
           this.city = res.data.city;
           this.signature = res.data.signature;
           this.mobile = res.data.mobile;
+          this.icon = res.data.icon;
         })
       },
 

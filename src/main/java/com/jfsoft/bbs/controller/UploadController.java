@@ -1,8 +1,14 @@
 package com.jfsoft.bbs.controller;
 
+import com.jfsoft.bbs.common.utils.DateUtil;
+import com.jfsoft.bbs.common.utils.R;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author chenxc
@@ -25,5 +31,34 @@ public class UploadController {
     @Value("${app.staticUrl}")
     private String staticUrl;
 
+    @PostMapping(value = "/uploadFile")
+    public R uploadFile(MultipartFile file) {
 
+        //文件名
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
+
+        Date date = new Date();
+        String dateStr = DateUtil.format(date, "yyyyMMdd");
+
+        String absPath = "";
+        absPath = filePath + dateStr.substring(0, 4) + "/" + dateStr;
+
+        String url = "";
+        url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
+
+        Map<String, Object> map = new HashMap<>();
+        if (!file.isEmpty()) {
+            File imgFile = new File(absPath);
+            if (!imgFile.exists()) imgFile.mkdirs();
+            try {
+                file.transferTo(new File(absPath + "/" + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return R.ok().put("data", url);
+        } else {
+            return R.ok().put("data", "文件上传失败");
+        }
+    }
 }

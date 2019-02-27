@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+
 // 查询文章列表
 export function getList(obj) {
   return request({
@@ -7,6 +8,7 @@ export function getList(obj) {
     method: 'GET'
   })
 }
+
 // 查询置顶文章
 export function getTop() {
   return request({
@@ -19,6 +21,14 @@ export function getTop() {
 export function getDetail(postId) {
   return request({
     url: '/posts/detail/' + postId,
+    method: 'GET'
+  })
+}
+
+// 查询个人发布文章列表
+export function getPersonList() {
+  return request({
+    url: '/posts/personList',
     method: 'GET'
   })
 }

@@ -221,7 +221,8 @@
       layui.use('layedit', function(){
         _this.layedit = layui.layedit;
         _this.editIndex = _this.layedit.build('L_content', {
-          height: 191
+          height: 191,
+          tool: ['face', 'image', 'link', 'code'],
         }); //建立编辑器
       });
     },

@@ -22,7 +22,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/static/**").addResourceLocations("file:" + staticUrl);
+        registry.addResourceHandler("/static/**").addResourceLocations("file:" + filePath);
         super.addResourceHandlers(registry);
     }
 

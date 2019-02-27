@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- *
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 18:10:32
@@ -22,5 +20,7 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
     List<BbsReplyEntity> getTop(String beginTime, String endTime);
 
     List<BbsReplyEntity> getReplyByPostid(Integer postId, Integer userId);
+
+    List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
 }
 

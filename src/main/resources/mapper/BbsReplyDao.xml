@@ -15,6 +15,7 @@
         <result property="accept" column="accept"/>
         <result property="icon" column="icon"/>
         <result property="replyCount" column="reply_count"/>
+        <result property="postsName" column="posts_name"/>
     </resultMap>
 
     <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
@@ -44,5 +45,13 @@
         </if>
         WHERE id = #{replyId}
     </update>
+
+    <select id="getPersonReplyList" parameterType="map" resultMap="bbsReplyMap">
+        select br.*, bp.title as posts_name
+        from bbs_reply br
+        left join bbs_posts bp
+        on br.posts_id = bp.id
+        where br.user_id=#{user_id}
+    </select>
 
 </mapper>

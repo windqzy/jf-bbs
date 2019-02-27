@@ -1,17 +1,17 @@
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.jfsoft.bbs.form.ReplyForm;
+import com.jfsoft.bbs.service.BbsPostsService;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -99,6 +99,19 @@ public class ReplyController extends AbstractController {
     public R delete(@RequestBody Integer[] ids) {
         bbsReplyService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    /**
+     * 获取个人文章的所有回复
+     */
+    @RequestMapping("/personReply")
+    public R getPersonReply() {
+
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("user_id", getUserId());
+        List<BbsReplyEntity> list = bbsReplyService.getPersonReplyList(param);
+        System.out.println(list.get(0));
+        return R.ok().put("data", list);
     }
 
 }

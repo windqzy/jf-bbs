@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsPostsService;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/posts")
-public class PostsController {
+public class PostsController extends AbstractController {
 
     @Autowired
     private BbsPostsService bbsPostsService;
@@ -41,6 +42,18 @@ public class PostsController {
         return R.ok().put("data", list);
     }
 
+
+    /**
+     * 个人中心发布文章列表
+     * * @return
+     */
+    @RequestMapping("/personList")
+    public R getPersonList() {
+        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("user_id", getUserId());
+        List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
+        return R.ok().put("data", list);
+    }
 
     /**
      * 查询置顶

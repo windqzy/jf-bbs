@@ -8,176 +8,196 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
- * 
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 18:10:32
  */
 @TableName("bbs_reply")
 public class BbsReplyEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	@TableId
-	private Integer id;
-	/**
-	 * 
-	 */
-	private String content;
-	/**
-	 * 
-	 */
-	private Date initTime;
-	/**
-	 * 
-	 */
-	private Integer up;
-	/**
-	 * 
-	 */
-	private Integer postsId;
-	/**
-	 * 
-	 */
-	private Integer userId;
+    /**
+     *
+     */
+    @TableId
+    private Integer id;
+    /**
+     *
+     */
+    private String content;
+    /**
+     *
+     */
+    private Date initTime;
+    /**
+     *
+     */
+    private Integer up;
+    /**
+     *
+     */
+    private Integer postsId;
+    /**
+     *
+     */
+    private Integer userId;
 
-	/**
-	 *
-	 */
-	@TableField(exist = false)
-	private String author;
-	/**
-	 *
-	 */
-	@TableField(exist = false)
-	private String icon;
+    /**
+     *
+     */
+    @TableField(exist = false)
+    private String author;
+    /**
+     *
+     */
+    @TableField(exist = false)
+    private String icon;
 
-	/**
-	 * 点赞
-	 */
-	private Boolean status;
+    /**
+     * 点赞
+     */
+    //private Boolean status;
 
-	@TableField(exist = false)
-	private Integer replyCount;
+    @TableField(exist = false)
+    private Integer replyCount;
 
-	/**
-	 *
-	 */
-	private Boolean accept;
+    @TableField(exist = false)
+    private String postsName;
 
-	public Boolean getStatus() {
+    /**
+     *
+     */
+    private Boolean accept;
+
+    public String getPostsName() {
+        return postsName;
+    }
+
+    public void setPostsName(String postsName) {
+        this.postsName = postsName;
+    }
+
+	/*public Boolean getStatus() {
 		return status;
 	}
 
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}
+	}*/
 
-	public Integer getReplyCount() {
-		return replyCount;
-	}
+    public Integer getReplyCount() {
+        return replyCount;
+    }
 
-	public void setReplyCount(Integer replyCount) {
-		this.replyCount = replyCount;
-	}
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public Boolean getAccept() {
-		return accept;
-	}
+    public Boolean getAccept() {
+        return accept;
+    }
 
-	public void setAccept(Boolean accept) {
-		this.accept = accept;
-	}
+    public void setAccept(Boolean accept) {
+        this.accept = accept;
+    }
 
-	/**
-	 * 设置：
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getContent() {
-		return content;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setInitTime(Date initTime) {
-		this.initTime = initTime;
-	}
-	/**
-	 * 获取：
-	 */
-	public Date getInitTime() {
-		return initTime;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setUp(Integer up) {
-		this.up = up;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getUp() {
-		return up;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setPostsId(Integer postsId) {
-		this.postsId = postsId;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getPostsId() {
-		return postsId;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getUserId() {
-		return userId;
-	}
+    /**
+     * 设置：
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setInitTime(Date initTime) {
+        this.initTime = initTime;
+    }
+
+    /**
+     * 获取：
+     */
+    public Date getInitTime() {
+        return initTime;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setUp(Integer up) {
+        this.up = up;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getUp() {
+        return up;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setPostsId(Integer postsId) {
+        this.postsId = postsId;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getPostsId() {
+        return postsId;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getUserId() {
+        return userId;
+    }
 }

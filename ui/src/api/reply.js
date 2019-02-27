@@ -33,3 +33,14 @@ export function replyUp(replyId) {
   })
 }
 
+
+// 个人文章回复列表
+export function getPersonReplyList(postId) {
+  return request({
+    url: '/reply/personReply',
+    method: 'GET'
+  })
+}
+
+
+

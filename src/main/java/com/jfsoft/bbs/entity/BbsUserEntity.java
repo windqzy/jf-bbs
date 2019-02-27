@@ -66,6 +66,15 @@ public class BbsUserEntity implements Serializable {
 
 	private String unionId;
 
+	private String city;
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
 
 	public String getPosition() {
 		return position;

@@ -18,6 +18,7 @@
         <result property="name" column="name"/>
         <result property="mobile" column="mobile"/>
         <result property="unionId" column="union_id"/>
+        <result property="city" column="city"/>
     </resultMap>
 
 

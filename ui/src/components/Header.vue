@@ -64,9 +64,9 @@
     <div class="fly-panel fly-column" v-show="isAdd">
       <div class="layui-container">
         <ul class="layui-clear">
-          <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'><a @click="getPost(0, -1)">首页</a></li>
+          <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'><a style="cursor: pointer" @click="getPost(0, -1)">首页</a></li>
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
-            <a @click="getPost(label.id, index)">{{label.name}}</a>
+            <a style="cursor: pointer" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <li v-for="(label, index) in labelList">
             <a @click="getPost(label.id, index)">{{label.name}}</a>

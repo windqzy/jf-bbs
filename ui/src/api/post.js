@@ -32,3 +32,13 @@ export function getPersonList() {
     method: 'GET'
   })
 }
+
+
+// 发布文章
+export function publish(post) {
+  return request({
+    url: '/posts/personList',
+    method: 'POST',
+    data: post
+  })
+}

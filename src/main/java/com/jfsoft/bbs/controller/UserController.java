@@ -62,7 +62,6 @@ public class UserController extends AbstractController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsUserEntity bbsUser) {
         bbsUserService.insert(bbsUser);
-
         return R.ok();
     }
 
@@ -75,15 +74,12 @@ public class UserController extends AbstractController {
 //        bbsUserService.updateAllColumnById(bbsUser);//全部更新
         Integer userId = getUserId();
         BbsUserEntity bbsUser = bbsUserService.selectById(userId);
-
         bbsUser.setEmail(userForm.getEmail());
         bbsUser.setUsername(userForm.getUsername());
         bbsUser.setCity(userForm.getCity());
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
-
         bbsUserService.updateById(bbsUser);
-
         return R.ok().put("data", bbsUser);
     }
 

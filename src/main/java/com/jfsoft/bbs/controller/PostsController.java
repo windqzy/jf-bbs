@@ -83,7 +83,6 @@ public class PostsController extends AbstractController {
 
     public R save(@RequestBody BbsPostsEntity bbsPosts) {
         bbsPostsService.insert(bbsPosts);
-
         return R.ok();
     }
 

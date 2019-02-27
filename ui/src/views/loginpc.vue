@@ -122,8 +122,8 @@
     },
     methods: {
       testLogin() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl' +
-          '2TWZTYVRvYmVORkFpYWFhIiwiZXhwIjoxNTUyNjU3NjY3LCJ1c2VySWQiOiI3NyJ9._Fj9u6QJD2sM5Jg0gqA8pbjrqxRfQm7U61Kgyb3FbRI';
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVR' +
+          'vYmVORkFpYWFhIiwiZXhwIjoxNTUyNzQzODk1LCJ1c2VySWQiOiI3NyJ9.2bO2b-pDKn_GHK9f1nfxGB-h4QQKyZX8l1P1x9eVy4U';
         let userInfo = {
           id: 77
         }
@@ -182,7 +182,7 @@
           name: this.user.name,
           mobile: this.user.mobile,
           position: this.user.position
-        }
+        };
 
         login.addUser(loginForm).then(res => {
           console.log('bbb');

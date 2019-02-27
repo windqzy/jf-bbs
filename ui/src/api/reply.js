@@ -25,10 +25,27 @@ export function addReply(ReplyForm) {
   })
 }
 
+// 添加回复
+export function updateReply(ReplyForm) {
+  return request({
+    url: '/reply/update/',
+    method: 'POST',
+    data: ReplyForm
+  })
+}
+
 // 点赞
 export function replyUp(replyId) {
   return request({
     url: '/up/update/' + replyId,
+    method: 'get'
+  })
+}
+
+// 删除评论
+export function delReply(replyId) {
+  return request({
+    url: '/reply/delete/' + replyId,
     method: 'get'
   })
 }

@@ -1,12 +1,9 @@
 package com.jfsoft.bbs.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
-import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.jfsoft.bbs.form.ReplyForm;
-import com.jfsoft.bbs.service.BbsPostsService;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -84,12 +81,26 @@ public class ReplyController extends AbstractController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody BbsReplyEntity bbsReply) {
-//        ValidatorUtils.validateEntity(bbsReply);
-        bbsReplyService.updateAllColumnById(bbsReply);//全部更新
+//    @RequestMapping("/update")
+//    public R update(@RequestBody BbsReplyEntity bbsReply) {
+////        ValidatorUtils.validateEntity(bbsReply);
+//        bbsReplyService.updateAllColumnById(bbsReply);//全部更新
+//
+//        return R.ok();
+//    }
 
-        return R.ok();
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    public R update(@RequestBody ReplyForm ReplyForm) {
+        BbsReplyEntity bbsReply = new BbsReplyEntity();
+        bbsReply.setPostsId(ReplyForm.getPostsId());
+        bbsReply.setInitTime(new Date());
+        bbsReply.setUserId(getUserId());
+        bbsReply.setContent(ReplyForm.getContent());
+        boolean b = bbsReplyService.updateById(bbsReply);
+        return R.ok().put("data", b);
     }
 
     /**
@@ -100,6 +111,16 @@ public class ReplyController extends AbstractController {
         bbsReplyService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
+
+    /**
+     * 根据评论id删除
+     */
+    @RequestMapping("/delete/{id}")
+    public R delete(@PathVariable("id") Integer id) {
+        Boolean flag = bbsReplyService.deleteById(id);
+        return R.ok().put("data", flag);
+    }
+
 
     /**
      * 获取个人文章的所有回复

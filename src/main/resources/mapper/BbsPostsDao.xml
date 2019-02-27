@@ -18,12 +18,13 @@
         <result property="author" column="author"/>
         <result property="icon" column="icon"/>
         <result property="labelName" column="label_name"/>
+        <result property="rewardGrade" column="reward_grade"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
         SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
         bp.label_id as label_id, bl.name as label_name, bp.reply_count as reply_count, bp.title as title, bp.top as top,
-        bp.end as end, bu.username as author, bu.icon as icon
+        bp.end as end, bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
         FROM bbs_posts bp
         LEFT JOIN bbs_user bu ON bp.user_id = bu.id
         LEFT JOIN bbs_label bl ON bl.id = bp.label_id
@@ -60,7 +61,7 @@
     <select id="getTopList" parameterType="map" resultMap="bbsPostsMap">
         SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
         bp.label_id as label_id, bl.name as label_name, bp.reply_count as reply_count, bp.title as title, bp.top as top,
-        bp.end as end, bu.username as author, bu.icon as icon
+        bp.end as end, bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
         FROM bbs_posts bp
         LEFT JOIN bbs_user bu ON bp.user_id=bu.id
         LEFT JOIN bbs_label bl ON bl.id = bp.label_id
@@ -72,7 +73,8 @@
 
     <select id="getPostByID" parameterType="integer" resultMap="bbsPostsMap">
         SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
-        bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end, bu.username as author, bu.icon as icon
+        bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end,
+        bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
         FROM bbs_posts bp
         LEFT JOIN bbs_user bu ON bp.user_id=bu.id
         WHERE bp.id = #{ID}

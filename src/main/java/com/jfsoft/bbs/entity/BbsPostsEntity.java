@@ -64,6 +64,10 @@ public class BbsPostsEntity implements Serializable {
 	/**
 	 *
 	 */
+	private Integer rewardGrade;
+	/**
+	 *
+	 */
 	@TableField(exist = false)
 	private String author;
 	/**
@@ -74,6 +78,14 @@ public class BbsPostsEntity implements Serializable {
 
 	@TableField(exist = false)
 	private String labelName;
+
+	public Integer getRewardGrade() {
+		return rewardGrade;
+	}
+
+	public void setRewardGrade(Integer rewardGrade) {
+		this.rewardGrade = rewardGrade;
+	}
 
 	public String getLabelName() {
 		return labelName;

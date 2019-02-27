@@ -41,7 +41,7 @@
                 <span>{{postInfo.initTime}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                <span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>
+                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}飞吻</span>
                 <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit"><a>编辑此贴</a></span>
               </div>
             </div>
@@ -94,7 +94,7 @@
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <span type="edit" v-if="userInfo.id == reply.userId">编辑</span>
+                    <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
                     <!-- <span class="jieda-accept" type="accept">采纳</span> -->
                   </div>
@@ -149,6 +149,7 @@
               <div class="layui-form-item">
                 <input type="hidden" name="jid" value="123"/>
                 <button class="layui-btn" lay-filter="*" @click="addReply()">提交回复</button>
+                <button v-if="replyId == null" class="layui-btn layui-btn-primary">取消</button>
               </div>
             </div>
           </div>
@@ -200,6 +201,7 @@
       return {
         postId: '',
         labelId: '',
+        replyId: '',
         postInfo: '',
         content: '',
         replyList: [],
@@ -218,6 +220,7 @@
       this.getWeekHot();
     },
     mounted() {
+      console.log('replyid+++++' + this.replyId)
       let _this = this;
       // layui.use(['layedit', 'layer'], function(){
       //   _this.layedit = layui.layedit;
@@ -300,6 +303,24 @@
         })
       },
       delReply(replyId) {
+        layer.confirm('真的删除行么', function(index){
+          //   reply.delReply(replyId).then(res => {
+          //   console.log(res.data)
+          //   layer.close(index);
+          //   layer.msg('删除成功！');
+          // })
+        });
+      },
+      updateReply(content, replyId) {
+        this.replyId = replyId;
+        console.log(content)
+        this.layedit.setContent(this.editIndex, content);
+      },
+      cancel() {
+        this.layedit.setContent(this.editIndex, '');
+        this.replyId = '';
+      },
+      delReply(replyId) {
         this.layer.confirm('是否删除？', {
           btn: ['重要','奇葩'] //按钮
         }, function(){
@@ -307,7 +328,7 @@
         })
       }
     }
-  }
+  };
 </script>
 
 <style scoped>

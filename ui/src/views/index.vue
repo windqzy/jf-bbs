@@ -14,7 +14,7 @@
             <ul class="fly-list">
               <li v-for="top in topPostList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img :src="top.icon"
+                  <img :src="top.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : top.icon"
                        :alt="top.author">
                 </a>
                 <h2>
@@ -29,17 +29,17 @@
                     <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                   </a>
                   <span>{{top.initTime}}</span>
-                  <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>-->
-                  <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{top.rewardGrade}}</span>
+                  <span v-if="top.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i> {{top.replyCount}}
               </span>
                 </div>
                 <div class="fly-list-badge">
-                  <!--
-                  <span class="layui-badge layui-bg-black">置顶</span>
-                  <span class="layui-badge layui-bg-red">精帖</span>
-                  -->
+
+                  <span v-if="top.top" class="layui-badge layui-bg-black">置顶</span>
+                  <span v-if="top.good" class="layui-badge layui-bg-red">精帖</span>
+
                 </div>
               </li>
             </ul>
@@ -66,7 +66,7 @@
             <ul class="fly-list">
               <li v-for="post in postList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img :src="post.icon"
+                  <img :src="post.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : post.icon"
                        :alt="post.author">
                 </a>
                 <h2>
@@ -83,14 +83,14 @@
                     -->
                   </a>
                   <span>{{post.initTime}}</span>
-                  <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>-->
-                  <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{post.rewardGrade}}</span>
+                  <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
                   </span>
                 </div>
                 <div class="fly-list-badge">
-                  <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+                  <span v-if="post.good" class="layui-badge layui-bg-red">精帖</span>
                 </div>
               </li>
             </ul>
@@ -157,8 +157,8 @@
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
               <dd v-for="replyTop in replyTopList">
                 <a href="user/home.html">
-                  <img
-                    :src="replyTop.icon"><cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
+                  <img :src="replyTop.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : replyTop.icon">
+                  <cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
                 </a>
               </dd>
             </dl>

@@ -95,7 +95,7 @@
                   </span>
                   <div class="jieda-admin">
                     <span type="edit" v-if="userInfo.id == reply.userId">编辑</span>
-                    <span type="del" v-if="userInfo.id == reply.userId">删除</span>
+                    <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
                     <!-- <span class="jieda-accept" type="accept">采纳</span> -->
                   </div>
                 </div>
@@ -206,6 +206,7 @@
         hotList: [],
         editIndex: '',
         layedit: null,
+        layer: null,
         userInfo: null
       }
     },
@@ -218,12 +219,37 @@
     },
     mounted() {
       let _this = this;
-      layui.use('layedit', function(){
-        _this.layedit = layui.layedit;
-        _this.editIndex = _this.layedit.build('L_content', {
-          height: 191,
-          tool: ['face', 'image', 'link', 'code'],
-        }); //建立编辑器
+      // layui.use(['layedit', 'layer'], function(){
+      //   _this.layedit = layui.layedit;
+      //   _this.layer = layui.layer;
+      //   _this.editIndex = _this.layedit.build('L_content', {
+      //     height: 191,
+      //     tool: ['face', 'image', 'link', 'code'],
+      //   }); //建立编辑器
+      // });
+      layui.cache.page = 'jie';
+      layui.cache.user = {
+        username: '游客'
+        ,uid: -1
+        ,avatar: '../../res/images/avatar/00.jpg'
+        ,experience: 83
+        ,sex: '男'
+      };
+      layui.config({
+        version: "3.0.0"
+        ,base: '../../static/mods/'
+      }).extend({
+        fly: 'index'
+      }).use(['fly', 'face'], function(){
+        var $ = layui.$
+          ,fly = layui.fly;
+        //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
+        /*
+        $('.detail-body').each(function(){
+          var othis = $(this), html = othis.html();
+          othis.html(fly.content(html));
+        });
+        */
       });
     },
     methods: {
@@ -271,6 +297,13 @@
         reply.replyUp(replyId).then(res => {
           console.log(res.data)
           this.getReplyList(this.postId);
+        })
+      },
+      delReply(replyId) {
+        this.layer.confirm('是否删除？', {
+          btn: ['重要','奇葩'] //按钮
+        }, function(){
+          layer.msg('的确很重要', {icon: 1});
         })
       }
     }

@@ -4,6 +4,36 @@
     <div class="layui-container">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
+          <!-- 标签区 -->
+          <div class="fly-panel" v-if="labelId != 0">
+            <div class="fly-panel-title fly-filter">
+              <a>标签</a>
+              <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right"
+                 style="color: #FF5722;">去签到</a>
+            </div>
+            <div class="layui-row fly-panel-main" style="padding: 15px;">
+              <div class="layui-clear fly-list-quick">
+                <div class="layui-col-xs2">
+                  <div><a href="/extend/" target="_blank"> 组件平台 </a></div>
+                </div>
+                <div class="layui-col-xs2">
+                  <div><a href="/case/2019/" target="_blank"> 年度案例 </a></div>
+                </div>
+                <!--<div class="layui-col-xs6">-->
+                  <!--<div><a href="http://fly.layui.com/jie/30227/" target="_blank"> 精贴集锦 </a></div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-xs6">-->
+                  <!--<div><a href="http://fly.layui.com/jie/4281/" target="_blank"> Git 仓库 </a></div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-xs6">-->
+                  <!--<div><a href="/store/" target="_blank"> layui 模板 </a></div>-->
+                <!--</div>-->
+                <!--<div class="layui-col-xs6">-->
+                  <!--<div><a href="http://fly.layui.com/jie/13435/" target="_blank"> 关于飞吻 </a></div>-->
+                <!--</div>-->
+                <a name="signin"> </a></div>
+            </div>
+          </div>
           <!-- 置顶区 -->
           <div class="fly-panel" v-if="labelId == 0">
             <div class="fly-panel-title fly-filter">
@@ -107,7 +137,7 @@
         <div class="layui-col-md4">
           <!-- 温馨通道 -->
           <div class="fly-panel" v-if="labelId == 0">
-            <h3 class="fly-panel-title">温馨通道</h3>
+            <h3 class="fly-panel-title">今日热点</h3>
             <ul class="fly-panel-main fly-list-static">
               <li>
                 <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
@@ -135,7 +165,7 @@
             <div class="fly-panel-title">
               签到
               <i class="fly-mid"></i>
-              <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
+              <a style="cursor: pointer" @click="signDoc" class="fly-link" id="LAY_signinHelp">说明</a>
               <i class="fly-mid"></i>
               <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>
               <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
@@ -235,6 +265,7 @@
         signCount: 0, //连续签到次数
         isSign: false,
         currGrade: 0, //今天签到应得的分数
+        layer: null
       }
     },
     created() {
@@ -261,6 +292,13 @@
       this.getBool();
       this.getCurrGrade();
     },
+    mounted() {
+      let _this = this;
+      layui.use(['layer'], function () {
+        _this.layer = layui.layer;
+
+      });
+    },
     watch: {
       '$route.query.id'(val) {
         this.changeLabel(val);
@@ -285,7 +323,35 @@
       saveSign() {
         sign.saveSign().then(res => {
           this.getBool();
+          this.layer.msg('签到成功，飞吻+' + this.grade);
         })
+      },
+      signDoc() {
+        this.layer.open({
+          type: 1
+          , title: '签到说明'
+          , area: '300px'
+          , shade: 0.8
+          , shadeClose: true
+          , content: ['<div class="layui-text" style="padding: 20px;">'
+            , '<blockquote class="layui-elem-quote">“签到”可获得社区飞吻，规则如下</blockquote>'
+            , '<table class="layui-table">'
+            , '<thead>'
+            , '<tr><th>连续签到天数</th><th>每天可获飞吻</th></tr>'
+            , '</thead>'
+            , '<tbody>'
+            , '<tr><td>＜5</td><td>5</td></tr>'
+            , '<tr><td>≥5</td><td>10</td></tr>'
+            , '<tr><td>≥15</td><td>15</td></tr>'
+            , '<tr><td>≥30</td><td>20</td></tr>'
+            , '</tbody>'
+            , '</table>'
+            , '<ul>'
+            , '<li>中间若有间隔，则连续天数重新计算</li>'
+            , '<li style="color: #FF5722;">不可利用程序自动签到，否则飞吻清零</li>'
+            , '</ul>'
+            , '</div>'].join('')
+        });
       },
 
       //TODO userId

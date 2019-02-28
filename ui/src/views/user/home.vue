@@ -132,7 +132,7 @@
       }
     },
     created() {
-      this.userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+      this.userInfo = this.$store.getters.user;
       this.getGrade();
       this.getPersonList();
       this.getPersonReplyList();

@@ -42,7 +42,8 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}飞吻</span>
-                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit"><a>编辑此贴</a></span>
+                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin"
+                      type="edit"><a>编辑此贴</a></span>
               </div>
             </div>
             <!-- 文章内容 -->
@@ -59,8 +60,9 @@
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
                   <a class="fly-avatar" href="">
-                    <img :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
-                         :alt="reply.author">
+                    <img
+                      :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
+                      :alt="reply.author">
                   </a>
                   <div class="fly-detail-user">
                     <a href="" class="fly-link">
@@ -96,7 +98,7 @@
                   <div class="jieda-admin">
                     <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
                   </div>
                 </div>
               </li>
@@ -215,14 +217,15 @@
     created() {
       this.postId = this.$route.query.postId;
       this.labelId = this.$route.query.labelId;
-      this.userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+      this.userInfo = this.$store.getters.user;
       this.getDetailById(this.postId);
       this.getWeekHot();
+      console.log(this.userInfo)
     },
     mounted() {
       console.log('replyid+++++' + this.replyId)
       let _this = this;
-      layui.use(['layedit', 'layer'], function(){
+      layui.use(['layedit', 'layer'], function () {
         _this.layedit = layui.layedit;
         _this.layer = layui.layer;
         _this.editIndex = _this.layedit.build('L_content', {
@@ -299,12 +302,12 @@
       },
       replyUp(replyId) {
         reply.replyUp(replyId).then(res => {
-          console.log(res.data)
+          console.log(res.data);
           this.getReplyList(this.postId);
         })
       },
       delReply(replyId) {
-        layer.confirm('真的删除行么', function(index){
+        layer.confirm('真的删除行么', function (index) {
           //   reply.delReply(replyId).then(res => {
           //   console.log(res.data)
           //   layer.close(index);
@@ -323,8 +326,8 @@
       },
       delReply(replyId) {
         this.layer.confirm('是否删除？', {
-          btn: ['重要','奇葩'] //按钮
-        }, function(){
+          btn: ['重要', '奇葩'] //按钮
+        }, function () {
           layer.msg('的确很重要', {icon: 1});
         })
       }

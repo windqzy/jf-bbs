@@ -8,7 +8,8 @@ const user = {
     signature: '',
     email: '',
     position: '',
-    mobile: ''
+    mobile: '',
+    id: ''
   },
   actions: {
     addUserInfo({commit}) {
@@ -29,6 +30,7 @@ const user = {
       state.email = data.email;
       state.position = data.position;
       state.mobile = data.mobile;
+      state.id = data.id;
     }
   }
 }

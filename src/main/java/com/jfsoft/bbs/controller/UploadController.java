@@ -38,7 +38,7 @@ public class UploadController {
         //文件名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
-
+        /*上传文件按照时间保存*/
         Date date = new Date();
         String dateStr = DateUtil.format(date, "yyyyMMdd");
 

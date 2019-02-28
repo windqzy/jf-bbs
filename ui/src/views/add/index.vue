@@ -77,7 +77,7 @@
                     <label class="layui-form-label">悬赏飞吻</label>
                     <div class="layui-input-inline">
                       <input type="number" name="experience" required lay-verify="required" autocomplete="off"
-                             :max="post.grade"
+                             :max="post.grade" v-model="post.grade"
                              class="layui-input">
                     </div>
                     <!--<div class="layui-input-inline" style="width: 190px;">-->
@@ -89,7 +89,7 @@
                     <!--<option value="80">80</option>-->
                     <!--</select>-->
                     <!--</div>-->
-                    <div class="layui-form-mid layui-word-aux" v-model="post.grade">当前飞吻数 {{currGrade}}</div>
+                    <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前飞吻数 {{currGrade}}</div>
                   </div>
                 </div>
                 <div class="layui-form-item">
@@ -119,6 +119,7 @@
   // import Tinymce from '@/components/Tinymce';
   import * as label from '@/api/label';
   import * as grade from '@/api/grade';
+  import * as post from '@/api/post';
 
   export default {
     name: "index",
@@ -170,7 +171,7 @@
       initLayUI() {
         let _this = this;
         layui.use(['layedit', 'layer', 'jquery'], function () {
-          let $ = layui.jquery
+          let $ = layui.jquery;
           _this.layer = layui.layer;
           _this.layedit = layui.layedit;
           _this.layedit.set({
@@ -320,8 +321,27 @@
       // 发布文章
       publish() {
         this.post.content = this.layedit.getContent(this.editIndex);
-        console.log(this.post)
-      }
+        let bbsPosts = {
+          labelId: this.post.labelId,
+          title: this.post.title,
+          rewardGrade: this.post.grade,
+          content: this.post.content
+        };
+        post.publish(bbsPosts).then(res => {
+          this.layer.msg('发布成功');
+          console.log(res.data);
+          this.updateGrade();
+        })
+      },
+      //修改积分
+      updateGrade() {
+        let newGrade = this.currGrade - this.post.grade;
+        console.log(newGrade);
+        grade.update(newGrade).then(res => {
+          console.log(res.data);
+          this.$router.push('/home/index');
+        });
+      },
     }
   }
 </script>

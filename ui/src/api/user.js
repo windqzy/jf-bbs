@@ -18,8 +18,18 @@ export function upDateUser(UserForm) {
 
 export function upLoadFile() {
   return request({
-    url: 'upload/uploadFile',
+    url: '/upload/file',
     method: 'POST'
   })
 }
 
+export function updateUserIcon(url) {
+  return request({
+    url: '/user/update/icon',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: url
+  })
+}

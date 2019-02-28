@@ -65,11 +65,18 @@ public class GradeController extends AbstractController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody BbsGradeEntity bbsGrade) {
-//        ValidatorUtils.validateEntity(bbsGrade);
-        bbsGradeService.updateAllColumnById(bbsGrade);//全部更新
+    public R update(@RequestBody Integer newGrade) {
+        //ValidatorUtils.validateEntity(bbsGrade);
+        Integer userId = getUserId();
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("user_id", userId);
+        BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
+        bbsGrade.setGrade(newGrade);
 
-        return R.ok();
+        //更新该用户的积分
+        bbsGradeService.updateById(bbsGrade);
+
+        return R.ok().put("data", bbsGrade);
     }
 
     /**

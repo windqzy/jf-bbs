@@ -8,6 +8,8 @@ import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -79,9 +81,24 @@ public class UserController extends AbstractController {
         bbsUser.setCity(userForm.getCity());
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
+
         bbsUserService.updateById(bbsUser);
         return R.ok().put("data", bbsUser);
     }
+
+    @RequestMapping("/update/icon")
+    public R upUserIcon(@RequestBody String url) {
+        Integer userId = getUserId();
+        BbsUserEntity bbsUser = bbsUserService.selectById(userId);
+        try {
+            bbsUser.setIcon(URLDecoder.decode(url, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        bbsUserService.updateById(bbsUser);
+        return R.ok().put("data", bbsUser);
+    }
+
 
     /**
      * 删除

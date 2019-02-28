@@ -70,9 +70,13 @@ public class ReplyController extends AbstractController {
     @PostMapping("/save")
     public R addReply(@RequestBody ReplyForm ReplyForm) {
         BbsReplyEntity bbsReply = new BbsReplyEntity();
+
         bbsReply.setPostsId(ReplyForm.getPostsId());
+
         bbsReply.setInitTime(new Date());
+
         bbsReply.setUserId(getUserId());
+
         bbsReply.setContent(ReplyForm.getContent());
         bbsReplyService.insert(bbsReply);
         return R.ok("评论成功");

@@ -66,7 +66,9 @@
               <i class="layui-icon">&#xe67c;</i>上传头像
             </button>
 
-            <img :src="imgUrl">
+            <img :src='imgUrl'/>
+            <!--<img-->
+            <!--:src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">-->
             <span class="loading"></span>
           </div>
         </div>
@@ -154,6 +156,7 @@
       });
     },
     methods: {
+      //获取用户信息
       getUser() {
         user.getUser().then(res => {
           console.log(res.data);
@@ -179,11 +182,21 @@
             'B-Token': window.localStorage['B-Token']
           }
         }; //添加请求头
-        axios.post(window.localStorage.baseUrl + '/upload/uFile', param, config)
+        axios.post(window.localStorage.baseUrl + '/upload/file', param, config)
           .then(response => {
             console.log(response);
-            this.imgUrl = response.data.data
+            this.imgUrl = response.data.data;
+            this.updateUserIcon();
           })
+      },
+      //修改用户头像
+      updateUserIcon() {
+        let url = encodeURIComponent(this.imgUrl);
+        console.log(url);
+        user.updateUserIcon(url).then(res => {
+          console.log(res.data);
+        })
+
       },
       upDateUser() {
         if (!!this.email && !!this.username && !!this.city) {

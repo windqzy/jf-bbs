@@ -6,6 +6,11 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  http:
+   encoding:
+     force: true
+     charset: utf-8
+     enabled: true
 
 # Tomcat
 server:
@@ -18,7 +23,7 @@ server:
 
 app:
   filePath: E://Test/
-  staticUrl: http://10.0.2.63:8848/static/
+  staticUrl: http://10.0.2.157:8848/static/
 #  servlet:
 #    context-path: /jf-bbs
 

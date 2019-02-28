@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function getList(obj) {
   return request({
     url: '/posts/list?currPage=' + obj.currPage + '&pageSize=' + obj.pageSize + '&sortType=' + obj.sortType + '&postType=' +
-      obj.postType + '&labelId=' + obj.labelId,
+    obj.postType + '&labelId=' + obj.labelId,
     method: 'GET'
   })
 }
@@ -35,10 +35,10 @@ export function getPersonList() {
 
 
 // 发布文章
-export function publish(post) {
+export function publish(bbsPosts) {
   return request({
-    url: '/posts/personList',
+    url: '/posts/save',
     method: 'POST',
-    data: post
+    data: bbsPosts
   })
 }

@@ -20,16 +20,16 @@
                   <div><a href="/case/2019/" target="_blank"> 年度案例 </a></div>
                 </div>
                 <!--<div class="layui-col-xs6">-->
-                  <!--<div><a href="http://fly.layui.com/jie/30227/" target="_blank"> 精贴集锦 </a></div>-->
+                <!--<div><a href="http://fly.layui.com/jie/30227/" target="_blank"> 精贴集锦 </a></div>-->
                 <!--</div>-->
                 <!--<div class="layui-col-xs6">-->
-                  <!--<div><a href="http://fly.layui.com/jie/4281/" target="_blank"> Git 仓库 </a></div>-->
+                <!--<div><a href="http://fly.layui.com/jie/4281/" target="_blank"> Git 仓库 </a></div>-->
                 <!--</div>-->
                 <!--<div class="layui-col-xs6">-->
-                  <!--<div><a href="/store/" target="_blank"> layui 模板 </a></div>-->
+                <!--<div><a href="/store/" target="_blank"> layui 模板 </a></div>-->
                 <!--</div>-->
                 <!--<div class="layui-col-xs6">-->
-                  <!--<div><a href="http://fly.layui.com/jie/13435/" target="_blank"> 关于飞吻 </a></div>-->
+                <!--<div><a href="http://fly.layui.com/jie/13435/" target="_blank"> 关于飞吻 </a></div>-->
                 <!--</div>-->
                 <a name="signin"> </a></div>
             </div>
@@ -305,13 +305,6 @@
       }
     },
     methods: {
-      //获取连续签到次数
-      // getCount() {
-      //   sign.getCount().then(res => {
-      //     console.log(res.data);
-      //     this.signCount = res.data.signCount;
-      //   })
-      // },
       //获取该用户今日签到与否
       getBool() {
         sign.getBool().then(res => {
@@ -430,7 +423,7 @@
           labelId: this.labelId,
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
-        }
+        };
         // console.log(obj)
         post.getList(obj).then(res => {
           this.hotList = res.data;

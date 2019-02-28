@@ -20,6 +20,7 @@ import java.util.*;
 @RequestMapping("/upload")
 public class UploadController {
 
+
     /**
      * 存储路径
      */
@@ -32,7 +33,7 @@ public class UploadController {
     @Value("${app.staticUrl}")
     private String staticUrl;
 
-    @PostMapping(value = "/uFile")
+    @PostMapping(value = "/file")
     public R uFile(MultipartFile file) {
 
         //文件名
@@ -47,8 +48,8 @@ public class UploadController {
 
         String url = "";
         url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
-        if(!StringUtils.isBlank(suffix)){
-            if (".jpg".equals(suffix) || ".png".equals(suffix) || ".gif".equals(suffix)){
+        if (!StringUtils.isBlank(suffix)) {
+            if (".jpg".equals(suffix) || ".png".equals(suffix) || ".gif".equals(suffix)) {
                 Map<String, Object> map = new HashMap<>();
                 if (!file.isEmpty()) {
                     File imgFile = new File(absPath);
@@ -62,7 +63,7 @@ public class UploadController {
                 } else {
                     return R.ok("文件上传失败");
                 }
-            }else {
+            } else {
                 return R.ok("上传文件需为图片格式");
             }
         }

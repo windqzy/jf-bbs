@@ -17,3 +17,19 @@ export function getGrade() {
     method: 'GET'
   })
 }
+
+/**
+ * 修改积分
+ */
+export function update(newGrade) {
+  return request({
+    url: '/grade/update',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    data: newGrade
+  })
+}
+
+

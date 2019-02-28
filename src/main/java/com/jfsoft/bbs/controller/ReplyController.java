@@ -2,8 +2,11 @@ package com.jfsoft.bbs.controller;
 
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.jfsoft.bbs.form.ReplyForm;
+import com.jfsoft.bbs.service.BbsGradeService;
+import com.jfsoft.bbs.service.BbsPostsService;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,11 @@ public class ReplyController extends AbstractController {
     @Autowired
     private BbsReplyService bbsReplyService;
 
+    @Autowired
+    private BbsPostsService bbsPostsService;
+
+    @Autowired
+    private BbsGradeService bbsGradeService;
     /**
      * 列表
      */
@@ -70,13 +78,9 @@ public class ReplyController extends AbstractController {
     @PostMapping("/save")
     public R addReply(@RequestBody ReplyForm ReplyForm) {
         BbsReplyEntity bbsReply = new BbsReplyEntity();
-
         bbsReply.setPostsId(ReplyForm.getPostsId());
-
         bbsReply.setInitTime(new Date());
-
         bbsReply.setUserId(getUserId());
-
         bbsReply.setContent(ReplyForm.getContent());
         bbsReplyService.insert(bbsReply);
         return R.ok("评论成功");
@@ -139,4 +143,19 @@ public class ReplyController extends AbstractController {
         return R.ok().put("data", list);
     }
 
+    /*采纳回复*/
+    @PostMapping("/save")
+    public R accept(@RequestBody ReplyForm ReplyForm) {
+        //Integer postsId = ReplyForm.getPostsId();
+        BbsReplyEntity bbsReply = bbsReplyService.getAccept(ReplyForm.getPostsId());
+        if (bbsReply == null) {
+            bbsReplyService.trueAccept(ReplyForm.getPostsId());
+            BbsPostsEntity rewardgrade = bbsPostsService.getRewardGrade(ReplyForm.getPostsId());
+
+            bbsGradeService.upGrade(getUserId(), ReplyForm.getPostsId(),rewardgrade);
+            return R.ok("采纳成功");
+        } else {
+            return R.error("该贴已经完成采纳");
+        }
+    }
 }

@@ -17,4 +17,9 @@
         WHERE user_id = #{userId}
     </update>
 
+    <update id="upGrade" parameterType="com.jfsoft.bbs.entity.BbsGradeEntity">
+        UPDATE bbs_grade
+        SET grade = #{grade}
+        WHERE user_id = #{userId}
+    </update>
 </mapper>

@@ -25,4 +25,8 @@ public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
     List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
 
+    BbsReplyEntity getAccept(Map<String,Object> params);
+
+    BbsReplyEntity trueAccept(Map<String,Object> params);
+
 }

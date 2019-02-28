@@ -22,5 +22,11 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
     List<BbsReplyEntity> getReplyByPostid(Integer postId, Integer userId);
 
     List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
+
+    BbsReplyEntity getAccept(Integer postsId);
+
+    BbsReplyEntity trueAccept(Integer postsId);
+
+
 }
 

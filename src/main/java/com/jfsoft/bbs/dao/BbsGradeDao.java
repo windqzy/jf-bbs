@@ -18,4 +18,6 @@ public interface BbsGradeDao extends BaseMapper<BbsGradeEntity> {
 
 	Integer updateGradeByUserId(BbsGradeEntity bbsGradeEntity);
 
+	BbsGradeEntity upGrade(Map<String, Object> params);
+
 }

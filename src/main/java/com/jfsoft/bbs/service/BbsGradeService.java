@@ -3,6 +3,7 @@ package com.jfsoft.bbs.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
+import com.jfsoft.bbs.entity.BbsPostsEntity;
 
 import java.util.Map;
 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface BbsGradeService extends IService<BbsGradeEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    BbsGradeEntity upGrade(Integer userId, Integer postsId, BbsPostsEntity rewardgrade);
 }
 

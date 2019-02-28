@@ -79,4 +79,11 @@
         LEFT JOIN bbs_user bu ON bp.user_id=bu.id
         WHERE bp.id = #{ID}
     </select>
+
+    <select id="getRewardGrade" parameterType="integer" resultMap="bbsPostsMap">
+        SELECT reward_grade
+        FROM bbs_posts
+        WHERE
+        id = #{postsId}
+    </select>
 </mapper>

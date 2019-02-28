@@ -60,4 +60,20 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     public List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param) {
         return bbsReplyDao.getPersonReplyList(param);
     }
+
+    @Override
+    public BbsReplyEntity getAccept(Integer postsId) {
+        Map<String,Object> params = new HashMap<>();
+        //params.put("userId",userId);
+        params.put("postsId",postsId);
+        return bbsReplyDao.getAccept(params);
+    }
+
+    @Override
+    public BbsReplyEntity trueAccept(Integer postsId) {
+        Map<String,Object> params = new HashMap<>();
+        //params.put("userId",userId);
+        params.put("postsId",postsId);
+        return bbsReplyDao.trueAccept(params);
+    }
 }

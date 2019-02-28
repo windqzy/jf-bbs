@@ -7,14 +7,19 @@ import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsGradeDao;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
+import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.service.BbsGradeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
 @Service("bbsGradeService")
 public class BbsGradeServiceImpl extends ServiceImpl<BbsGradeDao, BbsGradeEntity> implements BbsGradeService {
+    @Autowired
+    private  BbsGradeDao bbsGradeDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -26,4 +31,12 @@ public class BbsGradeServiceImpl extends ServiceImpl<BbsGradeDao, BbsGradeEntity
         return new PageUtils(page);
     }
 
+    @Override
+    public BbsGradeEntity upGrade(Integer userId, Integer postsId, BbsPostsEntity rewardgrade) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",userId);
+        params.put("postsId",postsId);
+        params.put("rewardgrade",rewardgrade);
+        return bbsGradeDao.upGrade(params);
+    }
 }

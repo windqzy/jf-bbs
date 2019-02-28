@@ -24,6 +24,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     BbsPostsEntity getPostByID(Integer ID);
 
+    BbsPostsEntity getRewardGrade(Integer postsId);
 
 }
 

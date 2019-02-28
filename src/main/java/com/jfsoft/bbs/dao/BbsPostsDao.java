@@ -22,4 +22,6 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 	List<BbsPostsEntity> getTopList(Map<String, Object> params);
 
 	BbsPostsEntity getPostByID(Integer ID);
+
+	BbsPostsEntity getRewardGrade(Integer postsId);
 }

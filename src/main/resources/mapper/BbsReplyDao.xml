@@ -54,4 +54,16 @@
         where br.user_id=#{user_id}
     </select>
 
+    <select id="getAccept" parameterType="map" resultMap="bbsReplyMap">
+        SELECT *
+        FROM bbs_reply
+        WHERE posts_id = #{postsId} AND accept = TRUE
+    </select>
+
+    <select id="trueAccept" parameterType="map" resultMap="bbsReplyMap">
+        UPDATE bbs_reply
+        SET
+        accept = !accept
+        WHERE posts_id = #{postsId}
+    </select>
 </mapper>

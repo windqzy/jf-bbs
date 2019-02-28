@@ -73,4 +73,8 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
         return bbsPostsDao.getPostByID(ID);
     }
 
+    @Override
+    public BbsPostsEntity getRewardGrade(Integer postsId) {
+        return bbsPostsDao.getRewardGrade(postsId);
+    }
 }

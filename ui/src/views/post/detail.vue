@@ -98,7 +98,7 @@
                   <div class="jieda-admin">
                     <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
+                    <span type="accept" v-if="userInfo.id == postId" @click="acceptReply(reply.id)">采纳</span>
                   </div>
                 </div>
               </li>
@@ -312,6 +312,15 @@
           //   console.log(res.data)
           //   layer.close(index);
           //   layer.msg('删除成功！');
+          // })
+        });
+      },
+      acceptReply(replyId) {
+        layer.confirm('确定采纳?', function (index) {
+          //   reply.delReply(replyId).then(res => {
+          //   console.log(res.data)
+          //   layer.close(index);
+          //   layer.msg('成功！');
           // })
         });
       },

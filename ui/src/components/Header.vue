@@ -2,9 +2,9 @@
   <div id="header">
     <div class="fly-header layui-bg-black">
       <div class="layui-container">
-        <a class="fly-logo" href="/">
+        <router-link class="fly-logo" to="/home/index">
           <img src="../../static/images/logo.png" alt="layui">
-        </a>
+        </router-link>
         <!--<ul class="layui-nav fly-nav layui-hide-xs">-->
         <!--<li class="layui-nav-item layui-this">-->
         <!--<a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>-->
@@ -37,7 +37,7 @@
           <!-- 登入后的状态 -->
           <li class="layui-nav-item">
             <a class="fly-nav-avatar" href="javascript:;">
-              <cite class="layui-hide-xs">{{userInfo.username}}</cite>
+              <cite class="layui-hide-xs">{{$store.getters.user.username}}</cite>
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
               <img
@@ -49,8 +49,8 @@
               </dd>
               <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
               <dd>
-                <router-link to="/user/index"><i class="layui-icon"
-                                                 style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
+                <router-link to="/user/index">
+                  <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                 </router-link>
               </dd>
               <hr style="margin: 5px 0;">
@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- 板块 -->
-    <div class="fly-panel fly-column" v-show="isAdd">
+    <div class="fly-panel fly-column" v-show="isChildMenu">
       <div class="layui-container">
         <ul class="layui-clear">
           <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'><a style="cursor: pointer" @click="getPost(0, -1)">首页</a></li>
@@ -107,8 +107,21 @@
       return {
         labelList: [],
         activeLabel: -1,
-        isAdd: true,
+        isChildMenu: true,
         userInfo: ''
+      }
+    },
+    watch: {
+      // 监听路由
+      '$route': {
+        handler(val) {
+          if (val.path.indexOf('/home/index') !== -1 || val.path.indexOf('/post/detail') !== -1) {
+            this.isChildMenu = true;
+          } else {
+            this.isChildMenu = false;
+          }
+        },
+        immediate: true // 深度监听
       }
     },
     created() {
@@ -161,7 +174,7 @@
         this.$router.push('/home/index?id=' + id);
       },
       toAdd() {
-        this.isAdd = false;
+        this.isChildMenu = false;
         this.$router.push('/add/index');
       },
       getUser() {
@@ -171,7 +184,9 @@
         })
       },
       logOut() {
+        let token = window.localStorage['B-Token'];
         window.localStorage.clear();
+        window.localStorage['B-Token'] = token;
         this.$router.push('/');
       }
     }

@@ -46,11 +46,11 @@ export default new Router({
         }
       ]
     },{
-      path: '/user/index',
+      path: '/user',
       component: Layer,
       children:[
         {
-          path:'/user/index',
+          path:'index',
           component: UserIndex
         }
       ]

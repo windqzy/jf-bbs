@@ -10,56 +10,56 @@
           <div class="layui-tab-item layui-show">
             <div class="layui-form layui-form-pane">
               <!--<form method="post">-->
-                <div class="layui-form-item">
-                  <label for="L_username" class="layui-form-label">昵称</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off"
-                           class="layui-input" v-model="username">
-                  </div>
+              <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">昵称</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off"
+                         class="layui-input" v-model="username">
                 </div>
-                <div class="layui-form-item">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off"
-                           class="layui-input" v-model="email">
-                  </div>
-                  <!--<div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>-->
+              </div>
+              <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off"
+                         class="layui-input" v-model="email">
                 </div>
-                <div class="layui-form-item">
-                  <label for="L_tel" class="layui-form-label">手机号</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_tel" name="mobile" required lay-verify="required" autocomplete="off"
-                           class="layui-input" v-model="mobile">
-                  </div>
-                  <!--<div class="layui-form-mid layui-word-aux">6到16个字符</div>-->
+                <!--<div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>-->
+              </div>
+              <div class="layui-form-item">
+                <label for="L_tel" class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_tel" name="mobile" required lay-verify="required" autocomplete="off"
+                         class="layui-input" v-model="mobile">
                 </div>
-                <!--<div class="layui-form-item">-->
-                  <!--<label for="L_repass" class="layui-form-label">确认密码</label>-->
-                  <!--<div class="layui-input-inline">-->
-                    <!--<input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input">-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="layui-form-item">-->
-                  <!--<label for="L_vercode" class="layui-form-label">人类验证</label>-->
-                  <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" id="L_vercode" name="vercode" required lay-verify="required"-->
-                           <!--placeholder="请回答后面的问题" autocomplete="off" class="layui-input">-->
-                  <!--</div>-->
-                  <!--<div class="layui-form-mid">-->
-                    <!--<span style="color: #c00;"></span>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <div class="layui-form-item">
-                  <button class="layui-btn" @click="upDateUser">立即注册</button>
-                </div>
-                <!--<div class="layui-form-item fly-form-app">-->
-                  <!--<span>或者直接使用社交账号快捷注册</span>-->
-                  <!--<a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq"-->
-                     <!--title="QQ登入"></a>-->
-                  <!--<a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo"-->
-                     <!--title="微博登入"></a>-->
-                <!--</div>-->
+                <!--<div class="layui-form-mid layui-word-aux">6到16个字符</div>-->
+              </div>
+              <!--<div class="layui-form-item">-->
+              <!--<label for="L_repass" class="layui-form-label">确认密码</label>-->
+              <!--<div class="layui-input-inline">-->
+              <!--<input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off"-->
+              <!--class="layui-input">-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div class="layui-form-item">-->
+              <!--<label for="L_vercode" class="layui-form-label">人类验证</label>-->
+              <!--<div class="layui-input-inline">-->
+              <!--<input type="text" id="L_vercode" name="vercode" required lay-verify="required"-->
+              <!--placeholder="请回答后面的问题" autocomplete="off" class="layui-input">-->
+              <!--</div>-->
+              <!--<div class="layui-form-mid">-->
+              <!--<span style="color: #c00;"></span>-->
+              <!--</div>-->
+              <!--</div>-->
+              <div class="layui-form-item">
+                <button class="layui-btn" @click="upDateUser">立即注册</button>
+              </div>
+              <!--<div class="layui-form-item fly-form-app">-->
+              <!--<span>或者直接使用社交账号快捷注册</span>-->
+              <!--<a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq"-->
+              <!--title="QQ登入"></a>-->
+              <!--<a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo"-->
+              <!--title="微博登入"></a>-->
+              <!--</div>-->
               <!--</form>-->
             </div>
           </div>
@@ -71,6 +71,7 @@
 
 <script>
   import * as user from "@/api/user"
+
   export default {
     name: "reg",
     data() {
@@ -81,6 +82,9 @@
       }
     },
     mounted() {
+      this.username = this.$store.getters.user.username;
+      this.mobile = this.$store.getters.user.mobile;
+      this.email = this.$store.getters.user.email;
     },
     methods: {
       upDateUser() {
@@ -90,12 +94,15 @@
           mobile: this.mobile
         };
         user.upDateUser(UserForm).then(res => {
-          res.data.email = this.email;
-          res.data.username = this.username;
-          res.data.mobile = this.mobile;
-
-          window.localStorage.setItem('userInfo', JSON.stringify(res.data));
-          this.$router.push('/home/index');
+          // res.data.email = this.email;
+          // res.data.username = this.username;
+          // res.data.mobile = this.mobile;
+          //
+          // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+          // this.$router.push('/home/index');
+          this.$store.dispatch('addUserInfo').then(() => {
+            this.$router.push('/home/index');
+          })
         })
       },
     }

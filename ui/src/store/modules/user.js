@@ -12,8 +12,11 @@ const user = {
   },
   actions: {
     addUserInfo({commit}) {
-      getUser().then(res => {
-        commit('USER_INFO', res.data);
+      return new Promise(resolve => {
+        getUser().then(res => {
+          commit('USER_INFO', res.data);
+          resolve(res.data)
+        })
       })
     }
   },

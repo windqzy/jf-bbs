@@ -61,7 +61,7 @@
         <div class="layui-form-item">
           <div class="avatar-add">
             <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
-            <input type="file"  id="file" name="myfile" style="display: none" ref="file" @change="finishFile"/>
+            <input type="file" id="file" name="myfile" style="display: none" ref="file" @change="finishFile"/>
             <button type="button" class="layui-btn upload-img" @click="UpladFile()">
               <i class="layui-icon">&#xe67c;</i>上传头像
             </button>
@@ -129,7 +129,7 @@
 
 <script>
   import * as user from '@/api/user'
-import axios from 'axios'
+  import axios from 'axios'
 
   export default {
     name: "base",
@@ -141,7 +141,7 @@ import axios from 'axios'
         city: '',
         signature: '',
         mobile: '',
-        imgUrl:''
+        imgUrl: ''
       }
     },
     created() {
@@ -164,26 +164,26 @@ import axios from 'axios'
           this.mobile = res.data.mobile;
         })
       },
-      UpladFile(){
-          this.$refs.file.click();
+      UpladFile() {
+        this.$refs.file.click();
       },
-      finishFile(e){
+      finishFile(e) {
 
-          let file = e.target.files[0];
-          let param = new FormData(); //创建form对象
-          param.append('file',file);//通过append向form对象添加数据
-          console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
-          let config = {
-            headers:{
-              'Content-Type':'multipart/form-data',
-              'B-Token': window.localStorage['B-Token']
-            }
-          }; //添加请求头
-          axios.post('http://10.0.2.63:8848/upload/uploadFile',param,config)
-            .then(response=>{
-              console.log(response);
-              this.imgUrl = response.data.data
-            })
+        let file = e.target.files[0];
+        let param = new FormData(); //创建form对象
+        param.append('file', file);//通过append向form对象添加数据
+        console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'B-Token': window.localStorage['B-Token']
+          }
+        }; //添加请求头
+        axios.post(window.localStorage.baseUrl + '/upload/uploadFile', param, config)
+          .then(response => {
+            console.log(response);
+            this.imgUrl = response.data.data
+          })
       },
       upDateUser() {
         if (!!this.email && !!this.username && !!this.city) {

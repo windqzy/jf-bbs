@@ -222,38 +222,38 @@
     mounted() {
       console.log('replyid+++++' + this.replyId)
       let _this = this;
-      // layui.use(['layedit', 'layer'], function(){
-      //   _this.layedit = layui.layedit;
-      //   _this.layer = layui.layer;
-      //   _this.editIndex = _this.layedit.build('L_content', {
-      //     height: 191,
-      //     tool: ['face', 'image', 'link', 'code'],
-      //   }); //建立编辑器
-      // });
-      layui.cache.page = 'jie';
-      layui.cache.user = {
-        username: '游客'
-        ,uid: -1
-        ,avatar: '../../res/images/avatar/00.jpg'
-        ,experience: 83
-        ,sex: '男'
-      };
-      layui.config({
-        version: "3.0.0"
-        ,base: '../../static/mods/'
-      }).extend({
-        fly: 'index'
-      }).use(['fly', 'face'], function(){
-        var $ = layui.$
-          ,fly = layui.fly;
-        //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-        /*
-        $('.detail-body').each(function(){
-          var othis = $(this), html = othis.html();
-          othis.html(fly.content(html));
-        });
-        */
+      layui.use(['layedit', 'layer'], function(){
+        _this.layedit = layui.layedit;
+        _this.layer = layui.layer;
+        _this.editIndex = _this.layedit.build('L_content', {
+          height: 191,
+          tool: ['face', 'image', 'link', 'code'],
+        }); //建立编辑器
       });
+      // layui.cache.page = 'jie';
+      // layui.cache.user = {
+      //   username: '游客'
+      //   ,uid: -1
+      //   ,avatar: '../../res/images/avatar/00.jpg'
+      //   ,experience: 83
+      //   ,sex: '男'
+      // };
+      // layui.config({
+      //   version: "3.0.0"
+      //   ,base: '../../static/mods/'
+      // }).extend({
+      //   fly: 'index'
+      // }).use(['fly', 'face'], function(){
+      //   var $ = layui.$
+      //     ,fly = layui.fly;
+      //   //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
+      //   /*
+      //   $('.detail-body').each(function(){
+      //     var othis = $(this), html = othis.html();
+      //     othis.html(fly.content(html));
+      //   });
+      //   */
+      // });
     },
     methods: {
       getDetailById(postId) {
@@ -294,6 +294,7 @@
           //TODO 提示回复成功
           this.getReplyList(this.postId);
           this.layedit.setContent(this.editIndex, '');
+          this.layer.msg('回复成功')
         })
       },
       replyUp(replyId) {

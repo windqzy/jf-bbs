@@ -73,4 +73,9 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
         return bbsPostsDao.getPostByID(params);
     }
 
+    @Override
+    public List<BbsPostsEntity> getPostByCollection(Integer userId) {
+        return bbsPostsDao.getPostByCollection(userId);
+    }
+
 }

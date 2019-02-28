@@ -288,9 +288,9 @@
     <!-- 签到榜 -->
     <div class="layui-tab layui-tab-brief" style="margin: 5px 0 0; display: none" id="signTop">
       <ul class="layui-tab-title">
-        <li class="layui-this">最新签到</li>
-        <li>今日最快</li>
-        <li>总签到榜</li>
+        <li class="layui-this" @click="getListSign(0)">最新签到</li>
+        <li @click="getListSign(1)">今日最快</li>
+        <li @click="getListSign(2)">总签到榜</li>
         <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
           <ul class="layui-tab-item layui-show">
             <li>
@@ -326,6 +326,7 @@
         topPostList: [],
         replyTopList: [],
         hotList: [],
+        noticeList: [],
         currPage: 1,
         pageSize: 10,
         sortType: 0,         // 排序类型：0 时间， 1 热度
@@ -515,6 +516,12 @@
       getCurrGrade() {
         grade.getCurr().then(res => {
           this.currGrade = res.data;
+        })
+      },
+      getListSign(listType) {
+        sign.listSign(listType).then(res => {
+          console.log(res.data)
+          this.noticeList = res.data;
         })
       }
     }

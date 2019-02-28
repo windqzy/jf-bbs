@@ -22,4 +22,6 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 	List<BbsPostsEntity> getTopList(Map<String, Object> params);
 
 	BbsPostsEntity getPostByID(Map<String, Object> params);
+
+	List<BbsPostsEntity> getPostByCollection(Integer userId);
 }

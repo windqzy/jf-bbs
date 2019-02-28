@@ -1,7 +1,9 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import sun.nio.cs.FastCharsetProvider;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -34,6 +36,28 @@ public class BbsSignEntity implements Serializable {
 	 * 签到人ID
 	 */
 	private Integer userId;
+
+	@TableField(exist = false)
+	private String username;
+
+	@TableField(exist = false)
+	private String icon;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	/**
 	 * 设置：

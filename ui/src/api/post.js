@@ -42,3 +42,11 @@ export function publish(bbsPosts) {
     data: bbsPosts
   })
 }
+
+// 查询个人收藏文章列表
+export function getCollecList() {
+  return request({
+    url: '/posts/collection',
+    method: 'GET'
+  })
+}

@@ -41,10 +41,14 @@ public class SignController extends AbstractController {
 	/**
 	 * 列表
 	 */
-	@RequestMapping("/list")
-	public R list(@RequestParam Map<String, Object> params) {
+	@RequestMapping("/list/{listType}") // listType  0表示最新签到,1表示今日签到最快,2表示连续签到天数
+	public R list(@PathVariable("listType") Integer listType) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", "1");
+		params.put("limit", "20");
+		params.put("sidx", "init_time");
+		params.put("order", "DESC");
 		PageUtils page = bbsSignService.queryPage(params);
-
 		return R.ok().put("data", page);
 	}
 
@@ -147,6 +151,7 @@ public class SignController extends AbstractController {
 		return R.ok("执行结束");
 	}
 
+
 	@RequestMapping("/bool")
 	public R isSign() {
 		Map<String, Object> map = new HashMap<>();
@@ -176,6 +181,8 @@ public class SignController extends AbstractController {
 
 		return R.ok().put("data", map);
 	}
+
+
 
 
 	/**

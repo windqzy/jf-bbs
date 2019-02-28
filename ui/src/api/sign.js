@@ -23,3 +23,11 @@ export function saveSign() {
     method: 'GET'
   })
 }
+
+//查询签到榜
+export function listSign(listType) {
+  return request({
+    url: '/sign/list/' + listType,
+    method: 'GET'
+  })
+}

@@ -62,8 +62,6 @@ public class PostsController extends AbstractController {
         EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("user_id", getUserId());
         List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
-
-
         return R.ok().put("data", list);
     }
 
@@ -121,6 +119,17 @@ public class PostsController extends AbstractController {
 //        bbsPostsService.updateAllColumnById(bbsPosts);//全部更新
 
         return R.ok();
+    }
+
+    /**
+     * 查询置顶
+     *
+     * @return
+     */
+    @RequestMapping("/collection")
+    public R collection() {
+        List<BbsPostsEntity> collectList = bbsPostsService.getPostByCollection(getUserId());
+        return R.ok().put("data", collectList);
     }
 
     /**

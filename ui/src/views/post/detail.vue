@@ -20,9 +20,9 @@
                 <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
                 <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
                 <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
-                <span v-if="postInfo.collectionId == null" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1" @click="collection(postInfo.id)">收藏</span>
-                <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;"
-                      @click="UnCollection(postInfo.id)">取消收藏</span>
+                <span v-if="postInfo.collectionStatus" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;"
+                      @click="collection(postInfo.id)">取消收藏</span>
+                <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1" @click="collection(postInfo.id)">收藏</span>
                  <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span>-->
               </div>
               <span class="fly-list-nums">
@@ -45,8 +45,7 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}飞吻</span>
-                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin"
-                      type="edit"><a>编辑此贴</a></span>
+                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit"><a>编辑此贴</a></span>
               </div>
             </div>
             <!-- 文章内容 -->
@@ -63,9 +62,8 @@
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
                   <a class="fly-avatar" href="">
-                    <img
-                      :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
-                      :alt="reply.author">
+                    <img :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
+                         :alt="reply.author">
                   </a>
                   <div class="fly-detail-user">
                     <a href="" class="fly-link">
@@ -99,7 +97,9 @@
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
+                    <a href="#comment">
+                      <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
+                    </a>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
                     <span type="accept" v-if="userInfo.id == postId">采纳</span>
                   </div>
@@ -224,7 +224,6 @@
       this.userInfo = this.$store.getters.user;
       this.getDetailById(this.postId);
       this.getWeekHot();
-      console.log(this.userInfo)
     },
     mounted() {
       console.log('replyid+++++' + this.replyId)
@@ -287,34 +286,48 @@
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
         }
-        // console.log(obj)
         post.getList(obj).then(res => {
           this.hotList = res.data;
         })
       },
       addReply() {
-        let bbsReply = {
-          postsId: this.postId,
-          content: this.layedit.getContent(this.editIndex),
+        if (this.replyId == '') {
+          let bbsReply = {
+            postsId: this.postId,
+            content: this.layedit.getContent(this.editIndex),
+          }
+          reply.addReply(bbsReply).then(res => {
+            //TODO 提示回复成功
+            this.getReplyList(this.postId);
+            this.layedit.setContent(this.editIndex, '');
+            this.layer.msg('回复成功')
+          })
+        } else {
+          let bbsReply = {
+            id: this.replyId,
+            content: this.layedit.getContent(this.editIndex),
+          }
+          reply.updateReply(bbsReply).then(res => {
+            //TODO 提示回复成功
+            this.getReplyList(this.postId);
+            this.layedit.setContent(this.editIndex, '');
+            this.replyId = '';
+            this.layer.msg('修改成功')
+          })
         }
-        reply.addReply(bbsReply).then(res => {
-          //TODO 提示回复成功
-          this.getReplyList(this.postId);
-          this.layedit.setContent(this.editIndex, '');
-          this.layer.msg('回复成功')
-        })
+
       },
       replyUp(replyId) {
         reply.replyUp(replyId).then(res => {
-          console.log(res.data);
+          console.log(res.data)
           this.getReplyList(this.postId);
         })
       },
       delReply(replyId) {
-        layer.confirm('真的删除行么', function (index) {
+        this.layer.confirm('真的删除行么', function(index){
           //   reply.delReply(replyId).then(res => {
           //   console.log(res.data)
-          //   layer.close(index);
+            this.layer.close(index);
           //   layer.msg('删除成功！');
           // })
         });
@@ -337,9 +350,9 @@
       },
       collection(postId) {
         collection.addCollection(postId).then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.getDetailById(this.postId);
-          this.layer.msg('收藏文章成功');
+          this.layer.msg(res.data);
         })
       }
     },

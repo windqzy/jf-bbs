@@ -13,7 +13,7 @@
             <router-link to="/case/index"><i class="iconfont icon-iconmingxinganli"></i>案例</router-link>
           </li>
           <!--<li class="layui-nav-item">-->
-            <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
+          <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
           <!--</li>-->
         </ul>
 
@@ -64,7 +64,9 @@
     <div class="fly-panel fly-column" v-show="isChildMenu">
       <div class="layui-container">
         <ul class="layui-clear">
-          <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'><a style="cursor: pointer" @click="getPost(0, -1)">首页</a></li>
+          <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'>
+            <a style="cursor: pointer" @click="getPost(0, -1)">首页</a>
+          </li>
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
             <a style="cursor: pointer" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
@@ -79,9 +81,12 @@
           <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
 
           <!-- 用户登入后显示 -->
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html">我发表的贴</a></li>
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a
-            href="user/index.html#collection">我收藏的贴</a></li>
+          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+            <router-link to="/set/index">我发表的贴</router-link>
+          </li>
+          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+            <router-link to="/set/index#collection">我收藏的贴</router-link>
+          </li>
         </ul>
 
         <div class="fly-column-right layui-hide-xs">
@@ -186,7 +191,7 @@
       logOut() {
         let token = window.localStorage['B-Token'];
         window.localStorage.clear();
-        window.localStorage['B-Token'] = token;
+        // window.localStorage['B-Token'] = token;
         this.$router.push('/');
       }
     }

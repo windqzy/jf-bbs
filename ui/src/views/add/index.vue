@@ -143,9 +143,6 @@
     created() {
       this.getCurrGrade();
     },
-    updated() {
-
-    },
     mounted() {
       this.initLayUI();
       this.getLabelList();

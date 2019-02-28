@@ -179,7 +179,7 @@
             'B-Token': window.localStorage['B-Token']
           }
         }; //添加请求头
-        axios.post(window.localStorage.baseUrl + '/upload/uploadFile', param, config)
+        axios.post(window.localStorage.baseUrl + '/upload/uFile', param, config)
           .then(response => {
             console.log(response);
             this.imgUrl = response.data.data

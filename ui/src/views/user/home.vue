@@ -22,7 +22,7 @@
       <p class="fly-home-info">
         <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">{{grade}} 飞吻</span>
         <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime}} 加入</span>
-        <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city}}</span>
+        <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city == null ? '地球' : userInfo.city}}</span>
       </p>
 
       <p class="fly-home-sign">{{ userInfo.signature}}</p>

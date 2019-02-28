@@ -9,7 +9,9 @@ const user = {
     email: '',
     position: '',
     mobile: '',
-    id: ''
+    id: '',
+    initTime: '',
+    city: ''
   },
   actions: {
     addUserInfo({commit}) {
@@ -31,6 +33,8 @@ const user = {
       state.position = data.position;
       state.mobile = data.mobile;
       state.id = data.id;
+      state.initTime = data.initTime;
+      state.city = data.city;
     }
   }
 }

@@ -34,6 +34,20 @@
                 <a name="signin"> </a></div>
             </div>
           </div>
+          <div class="fly-panel layui-hide-xs" v-if="labelId == 0">
+            <div class="layui-row fly-panel-main" style="padding: 15px;">
+              <div class="layui-carousel fly-topline" id="FLY_topline" lay-anim="fade"
+                   style="width: 100%; height: 141px;">
+                <div carousel-item="">
+                  <div class="layui-this">
+                    <a href="https://fly.layui.com/jump/yundashi/" target="_blank">
+                      <img src="http://cdn.layui.com/upload/2019_1/168_1546503131842_22821.jpg" alt="云大使" style="max-width: 100%;">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- 置顶区 -->
           <div class="fly-panel" v-if="labelId == 0">
             <div class="fly-panel-title fly-filter">
@@ -128,7 +142,7 @@
             </ul>
             <div style="text-align: center">
               <div class="laypage-main">
-                <a @click="nextPage" class="laypage-next">更多求解</a>
+                <a style="cursor: pointer" @click="nextPage" class="laypage-next">更多求解</a>
               </div>
             </div>
           </div>
@@ -167,7 +181,8 @@
               <i class="fly-mid"></i>
               <a style="cursor: pointer" @click="signDoc" class="fly-link" id="LAY_signinHelp">说明</a>
               <i class="fly-mid"></i>
-              <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>
+              <a style="cursor: pointer" class="fly-link" id="LAY_signinTop" @click="signTop">活跃榜<span
+                class="layui-badge-dot"></span></a>
               <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
             </div>
             <div class="fly-panel-main fly-signin-main">
@@ -234,6 +249,62 @@
         </div>
       </div>
     </div>
+
+    <!-- 签到规则 -->
+    <div class="layui-text" style="padding: 20px; display: none" id="signDoc">
+      <blockquote class="layui-elem-quote">“签到”可获得社区飞吻，规则如下</blockquote>
+      <table class="layui-table">
+        <thead>
+        <tr>
+          <th>连续签到天数</th>
+          <th>每天可获飞吻</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>＜5</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>≥5</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>≥15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>≥30</td>
+          <td>20</td>
+        </tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>中间若有间隔，则连续天数重新计算</li>
+        <li style="color: #FF5722;">不可利用程序自动签到，否则飞吻清零</li>
+      </ul>
+    </div>
+
+    <!-- 签到榜 -->
+    <div class="layui-tab layui-tab-brief" style="margin: 5px 0 0; display: none" id="signTop">
+      <ul class="layui-tab-title">
+        <li class="layui-this">最新签到</li>
+        <li>今日最快</li>
+        <li>总签到榜</li>
+        <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
+          <ul class="layui-tab-item layui-show">
+            <li>
+              <a href="" target="_blank">
+                <img src="">
+                <cite class="fly-link"></cite>
+              </a>
+            </li>
+          </ul>
+          <ul class="layui-tab-item">2</ul>
+          <ul class="layui-tab-item">3</ul>
+        </div>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -265,7 +336,8 @@
         signCount: 0, //连续签到次数
         isSign: false,
         currGrade: 0, //今天签到应得的分数
-        layer: null
+        layer: null,
+        $: null
       }
     },
     created() {
@@ -296,7 +368,7 @@
       let _this = this;
       layui.use(['layer'], function () {
         _this.layer = layui.layer;
-
+        _this.$ = layui.jquery
       });
     },
     watch: {
@@ -326,24 +398,17 @@
           , area: '300px'
           , shade: 0.8
           , shadeClose: true
-          , content: ['<div class="layui-text" style="padding: 20px;">'
-            , '<blockquote class="layui-elem-quote">“签到”可获得社区飞吻，规则如下</blockquote>'
-            , '<table class="layui-table">'
-            , '<thead>'
-            , '<tr><th>连续签到天数</th><th>每天可获飞吻</th></tr>'
-            , '</thead>'
-            , '<tbody>'
-            , '<tr><td>＜5</td><td>5</td></tr>'
-            , '<tr><td>≥5</td><td>10</td></tr>'
-            , '<tr><td>≥15</td><td>15</td></tr>'
-            , '<tr><td>≥30</td><td>20</td></tr>'
-            , '</tbody>'
-            , '</table>'
-            , '<ul>'
-            , '<li>中间若有间隔，则连续天数重新计算</li>'
-            , '<li style="color: #FF5722;">不可利用程序自动签到，否则飞吻清零</li>'
-            , '</ul>'
-            , '</div>'].join('')
+          , content: this.$('#signDoc')
+        });
+      },
+      signTop() {
+        this.layer.open({
+          type: 1
+          , title: '签到活跃榜 TOP-20'
+          , area: '300px'
+          , shade: 0.8
+          , shadeClose: true
+          , content: this.$('#signTop')
         });
       },
 

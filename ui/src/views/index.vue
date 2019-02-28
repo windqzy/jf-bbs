@@ -14,8 +14,9 @@
             <ul class="fly-list">
               <li v-for="top in topPostList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img :src="top.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : top.icon"
-                       :alt="top.author">
+                  <img
+                    :src="top.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : top.icon"
+                    :alt="top.author">
                 </a>
                 <h2>
                   <a class="layui-badge">{{top.labelName}}</a>
@@ -66,8 +67,9 @@
             <ul class="fly-list">
               <li v-for="post in postList">
                 <a href="user/home.html" class="fly-avatar">
-                  <img :src="post.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : post.icon"
-                       :alt="post.author">
+                  <img
+                    :src="post.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : post.icon"
+                    :alt="post.author">
                 </a>
                 <h2>
                   <a class="layui-badge">{{post.labelName}}</a>
@@ -157,7 +159,8 @@
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
               <dd v-for="replyTop in replyTopList">
                 <a href="user/home.html">
-                  <img :src="replyTop.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : replyTop.icon">
+                  <img
+                    :src="replyTop.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : replyTop.icon">
                   <cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
                 </a>
               </dd>
@@ -380,8 +383,9 @@
           endTime: ''
         };
         post.getList(obj).then(res => {
-          console.log(res.data)
-          this.postList.push(res.data);
+          res.data.map(item => {
+            this.postList.push(item);
+          })
         })
       },
       getCurrGrade() {

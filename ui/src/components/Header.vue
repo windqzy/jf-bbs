@@ -68,7 +68,7 @@
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
             <a style="cursor: pointer" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
-          <li v-for="(label, index) in labelList">
+          <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block">
             <a @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <!--<li><a >分享<span class="layui-badge-dot"></span></a></li>-->

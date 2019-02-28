@@ -2,16 +2,16 @@
 import router from './router';
 import store from './store';
 
-const whiteList = ['/user/reg', '/'];// 重定向白名单
+const whiteList = ['/'];// 重定向白名单
 console.log(window.localStorage['B-Token'])
 router.beforeEach((to, from, next) => {
   if (window.localStorage['B-Token']) {
     if (!store.getters.user.username) {
       store.dispatch('addUserInfo').then((res) => {
-        if (!store.getters.user.username) {
-          next('/user/reg');
-        } else {
+        if (to.path == '/user/reg') {
           next()
+        } else {
+          next('/user/reg')
         }
       })
     } else {
@@ -21,14 +21,16 @@ router.beforeEach((to, from, next) => {
     //  不存在用户姓名
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
+    } else {
+      next('/')
     }
-    next('/');
+
     // store.dispatch('addUserInfo').then(() => {
     //   console.log('刷新', store.getters.user.username)
     //   if (!store.getters.user.username) {
     //     next('/user/reg');
     //   } else {
-    //     next()
+    //      next();
     //   }
     // })
   }

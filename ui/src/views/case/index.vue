@@ -23,8 +23,8 @@
       </div>
       <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
-          <li class="layui-this"><a href="">按提交时间</a></li>
-          <li><a href="">按点赞排行</a></li>
+          <li class="layui-this"><a href="javascript:;">按提交时间</a></li>
+          <li><a href="javascript:;">按点赞排行</a></li>
         </ul>
       </div>
 

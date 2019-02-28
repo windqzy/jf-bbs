@@ -35,7 +35,8 @@
         <ul class="mine-view jie-row">
           <li>
             <a class="jie-title" href="../jie/detail.html" target="_blank">基于 layui 的极简社区页面模版</a>
-            <i>收藏于23小时前</i></li>
+            <i>收藏于23小时前</i>
+          </li>
         </ul>
         <div id="LAY_page1"></div>
       </div>
@@ -46,17 +47,24 @@
 <script>
   export default {
     name: "user",
+    data() {
+      return {
+        isCollection: false,// 收藏
+      }
+    },
     created() {
       //  验证是否展示收藏贴
       if (this.$route.hash == '#collection') {
         this.isCollection = true;
       }
     },
-    data() {
-      return {
-        isCollection: false,// 收藏
-      }
+    mounted() {
+
+    },
+    methods() {
+
     }
+
   }
 </script>
 

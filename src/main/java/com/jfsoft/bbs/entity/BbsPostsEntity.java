@@ -79,6 +79,17 @@ public class BbsPostsEntity implements Serializable {
 	@TableField(exist = false)
 	private String labelName;
 
+	@TableField(exist = false)
+	private Integer collectionId;
+
+	public Integer getCollectionId() {
+		return collectionId;
+	}
+
+	public void setCollectionId(Integer collectionId) {
+		this.collectionId = collectionId;
+	}
+
 	public Integer getRewardGrade() {
 		return rewardGrade;
 	}

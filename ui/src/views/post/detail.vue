@@ -16,11 +16,14 @@
               <span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>
 
               <div class="fly-admin-box" data-id="123">
-                <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
                 <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
-                <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
+                <span v-if="postInfo.collectionId == null" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1" @click="collection(postInfo.id)">收藏</span>
+                <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;"
+                      @click="UnCollection(postInfo.id)">取消收藏</span>
+                 <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span>-->
               </div>
               <span class="fly-list-nums">
                 <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
@@ -151,7 +154,7 @@
               <div class="layui-form-item">
                 <input type="hidden" name="jid" value="123"/>
                 <button class="layui-btn" lay-filter="*" @click="addReply()">提交回复</button>
-                <button v-if="replyId == null" class="layui-btn layui-btn-primary">取消</button>
+                <button v-if="replyId != ''" class="layui-btn layui-btn-primary">取消</button>
               </div>
             </div>
           </div>
@@ -193,6 +196,7 @@
   import * as post from '@/api/post';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
+  import * as collection from '@/api/collection';
 
   export default {
     name: "detail",
@@ -329,6 +333,13 @@
           btn: ['重要', '奇葩'] //按钮
         }, function () {
           layer.msg('的确很重要', {icon: 1});
+        })
+      },
+      collection(postId) {
+        collection.addCollection(postId).then(res => {
+          console.log(res.data)
+          this.getDetailById(this.postId);
+          this.layer.msg('收藏文章成功');
         })
       }
     },

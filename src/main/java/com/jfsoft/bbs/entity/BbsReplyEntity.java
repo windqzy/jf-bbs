@@ -56,7 +56,8 @@ public class BbsReplyEntity implements Serializable {
     /**
      * 点赞
      */
-    //private Boolean status;
+    @TableField(exist = false)
+    private Boolean status;
 
     @TableField(exist = false)
     private Integer replyCount;
@@ -77,13 +78,13 @@ public class BbsReplyEntity implements Serializable {
         this.postsName = postsName;
     }
 
-	/*public Boolean getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}*/
+	}
 
     public Integer getReplyCount() {
         return replyCount;

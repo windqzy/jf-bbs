@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author chenxc
@@ -86,7 +84,10 @@ public class PostsController extends AbstractController {
      */
     @RequestMapping("/detail/{id}")
     public R info(@PathVariable("id") Integer id) {
-        BbsPostsEntity bbsPosts = bbsPostsService.getPostByID(id);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("userId", getUserId());
+        BbsPostsEntity bbsPosts = bbsPostsService.getPostByID(params);
         return R.ok().put("data", bbsPosts);
     }
 

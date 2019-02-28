@@ -99,9 +99,8 @@ public class ReplyController extends AbstractController {
     @RequestMapping("/update")
     public R update(@RequestBody ReplyForm ReplyForm) {
         BbsReplyEntity bbsReply = new BbsReplyEntity();
-        bbsReply.setPostsId(ReplyForm.getPostsId());
+        bbsReply.setId(ReplyForm.getId());
         bbsReply.setInitTime(new Date());
-        bbsReply.setUserId(getUserId());
         bbsReply.setContent(ReplyForm.getContent());
         boolean b = bbsReplyService.updateById(bbsReply);
         return R.ok().put("data", b);

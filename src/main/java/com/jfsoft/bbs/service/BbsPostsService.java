@@ -22,7 +22,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     List<BbsPostsEntity> getTopList();
 
-    BbsPostsEntity getPostByID(Integer ID);
+    BbsPostsEntity getPostByID(Map<String, Object> params);
 
 
 }

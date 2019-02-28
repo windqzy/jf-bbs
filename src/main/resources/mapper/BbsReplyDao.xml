@@ -14,6 +14,7 @@
         <result property="author" column="author"/>
         <result property="accept" column="accept"/>
         <result property="icon" column="icon"/>
+        <result property="status" column="status"/>
         <result property="replyCount" column="reply_count"/>
         <result property="postsName" column="posts_name"/>
     </resultMap>

@@ -19,6 +19,7 @@
         <result property="icon" column="icon"/>
         <result property="labelName" column="label_name"/>
         <result property="rewardGrade" column="reward_grade"/>
+        <result property="collectionId" column="collection_id"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
@@ -74,9 +75,10 @@
     <select id="getPostByID" parameterType="integer" resultMap="bbsPostsMap">
         SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
         bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end,
-        bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
+        bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon, bc.id as collection_id
         FROM bbs_posts bp
-        LEFT JOIN bbs_user bu ON bp.user_id=bu.id
-        WHERE bp.id = #{ID}
+        LEFT JOIN bbs_user bu ON bp.user_id = bu.id
+        LEFT JOIN bbs_collection bc ON bc.post_id = bp.id AND bc.user_id = #{userId}
+        WHERE bp.id = #{id}
     </select>
 </mapper>

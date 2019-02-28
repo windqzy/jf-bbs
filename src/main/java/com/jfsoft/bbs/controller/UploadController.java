@@ -32,8 +32,8 @@ public class UploadController {
     @Value("${app.staticUrl}")
     private String staticUrl;
 
-    @PostMapping(value = "/uploadFile")
-    public R uploadFile(MultipartFile file) {
+    @PostMapping(value = "/uFile")
+    public R uFile(MultipartFile file) {
 
         //文件名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));

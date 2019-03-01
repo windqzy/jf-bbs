@@ -23,5 +23,7 @@ public interface BbsSignService extends IService<BbsSignEntity> {
     int insertSign(Integer userId);
 
     int updateSign(BbsSignEntity bbsSignEntity);
+
+    List<BbsSignEntity> getSignList(Map<String, Object> params);
 }
 

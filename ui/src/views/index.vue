@@ -291,19 +291,36 @@
         <li class="layui-this" @click="getListSign(0)">最新签到</li>
         <li @click="getListSign(1)">今日最快</li>
         <li @click="getListSign(2)">总签到榜</li>
-        <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
-          <ul class="layui-tab-item layui-show">
-            <li>
-              <a href="" target="_blank">
-                <img src="">
-                <cite class="fly-link"></cite>
-              </a>
-            </li>
-          </ul>
-          <ul class="layui-tab-item">2</ul>
-          <ul class="layui-tab-item">3</ul>
-        </div>
       </ul>
+      <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
+        <ul class="layui-tab-item layui-show">
+          <li v-for="sign in noticeList">
+            <a href="" target="_blank">
+              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <cite class="fly-link">{{sign.username}}</cite>
+            </a>
+            <span class="fly-grey">签到于 {{sign.initTime}}</span>
+          </li>
+        </ul>
+        <ul class="layui-tab-item">
+          <li v-for="sign in noticeList">
+            <a href="" target="_blank">
+              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <cite class="fly-link">{{sign.username}}</cite>
+            </a>
+            <span class="fly-grey">签到于 {{sign.initTime}}</span>
+          </li>
+        </ul>
+        <ul class="layui-tab-item">
+          <li v-for="sign in noticeList">
+            <a href="" target="_blank">
+              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <cite class="fly-link">{{sign.username}}</cite>
+            </a>
+            <span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -411,6 +428,7 @@
           , shadeClose: true
           , content: this.$('#signTop')
         });
+        this.getListSign(0);
       },
 
       //TODO userId

@@ -33,4 +33,29 @@
         WHERE user_id = #{userId}
     </update>
 
+    <select id="getSignList" parameterType="map" resultMap="bbsSignMap">
+        SELECT bs.*, bu.username as username, bu.icon as icon
+        FROM bbs_user bu
+        INNER JOIN bbs_sign bs ON bu.id = bs.user_id
+        WHERE 1=1
+        <if test="today != null and today != ''">
+            AND date(bs.init_time) = curdate()
+        </if>
+        <if test="listType != null and listType != ''">
+            ORDER BY
+            <choose>
+                <when test="listType == 1">
+                    bs.init_time ASC
+                </when>
+                <when test="listType == 2">
+                    bs.sign_count DESC
+                </when>
+                <otherwise>
+                    bs.init_time DESC
+                </otherwise>
+            </choose>
+        </if>
+        limit 0,20
+    </select>
+
 </mapper>

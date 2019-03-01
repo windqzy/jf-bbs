@@ -1,21 +1,23 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfsoft.bbs.common.utils.PageUtils;
+import com.jfsoft.bbs.common.utils.DateUtil;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.service.BbsGradeRuleService;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsSignService;
-import com.jfsoft.bbs.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 
 /**
@@ -44,12 +46,12 @@ public class SignController extends AbstractController {
 	@RequestMapping("/list/{listType}") // listType  0表示最新签到,1表示今日签到最快,2表示连续签到天数
 	public R list(@PathVariable("listType") Integer listType) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("page", "1");
-		params.put("limit", "20");
-		params.put("sidx", "init_time");
-		params.put("order", "DESC");
-		PageUtils page = bbsSignService.queryPage(params);
-		return R.ok().put("data", page);
+		if (listType != 2) {
+			params.put("today", "today");
+		}
+		params.put("listType", listType);
+		List<BbsSignEntity> signList = bbsSignService.getSignList(params);
+		return R.ok().put("data", signList);
 	}
 
 
@@ -115,7 +117,8 @@ public class SignController extends AbstractController {
 			// 最后签到时间
 			Date singTime = bbsSign.getInitTime();
 			// 获取当前天数差
-			int day = DateUtil.getIntervalDayTimes(singTime, initTime);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			long day = ChronoUnit.DAYS.between(LocalDate.parse(sdf.format(singTime)), LocalDate.parse(sdf.format(initTime)));
 			// 当前时间与最后签到时间作比较
 			if (day == 1) {
 				// 如果间隔一天，则是连续签到

@@ -36,6 +36,8 @@ public class UploadController {
     @PostMapping(value = "/file")
     public R uFile(MultipartFile file) {
 
+        Map<String, Object> result = new HashMap<>();
+
         //文件名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
@@ -59,7 +61,10 @@ public class UploadController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    return R.ok().put("data", url);
+
+                    result.put("src", url);
+                    result.put("title", "jfyt");
+                    return R.ok("上传成功").put("data", result);
                 } else {
                     return R.ok("文件上传失败");
                 }
@@ -68,5 +73,11 @@ public class UploadController {
             }
         }
         return R.error("格式不支持");
+    }
+
+    @RequestMapping("/del")
+    public R delFile(@RequestBody String imagePath) {
+        String relPath = filePath + imagePath.replace(imagePath, staticUrl);
+        return R.ok();
     }
 }

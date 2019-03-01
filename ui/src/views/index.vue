@@ -5,7 +5,7 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
           <!-- 标签区 -->
-          <div class="fly-panel" v-if="labelId != 0">
+          <div class="fly-panel" v-if="false">
             <div class="fly-panel-title fly-filter">
               <a>标签</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right"
@@ -129,7 +129,9 @@
                     -->
                   </a>
                   <span>{{post.initTime}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{post.rewardGrade}}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏金币" v-if="post.rewardGrade > 0">
+                    <i class="iconfont icon-kiss"></i> {{post.rewardGrade}}
+                  </span>
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
@@ -151,7 +153,7 @@
         <div class="layui-col-md4">
           <!-- 温馨通道 -->
           <div class="fly-panel" v-if="labelId == 0">
-            <h3 class="fly-panel-title">今日热点</h3>
+            <h3 class="fly-panel-title">公告</h3>
             <ul class="fly-panel-main fly-list-static">
               <li>
                 <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
@@ -226,11 +228,11 @@
           <!-- 广告区域 -->
           <div class="fly-panel">
             <div class="fly-panel-title">
-              这里可作为广告区域
+              广告区域
             </div>
             <div class="fly-panel-main">
               <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
+                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">火热招商中 QQ:997909544</a>
             </div>
           </div>
           <!-- 友情链接 -->

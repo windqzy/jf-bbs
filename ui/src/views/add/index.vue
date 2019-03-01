@@ -72,7 +72,7 @@
                                 class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                   </div>
                 </div>
-                <div class="layui-form-item" v-if="showGrade">
+                <div class="layui-form-item">
                   <div class="layui-inline">
                     <label class="layui-form-label">悬赏飞吻</label>
                     <div class="layui-input-inline">

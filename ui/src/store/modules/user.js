@@ -37,6 +37,7 @@ const user = {
       state.id = data.id;
       state.initTime = data.initTime;
       state.city = data.city;
+      state.isAdmin = data.admin;
     }
   }
 }

@@ -51,28 +51,25 @@ public class UploadController {
         String url = "";
         url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
         if (!StringUtils.isBlank(suffix)) {
-            if (".jpg".equals(suffix) || ".png".equals(suffix) || ".gif".equals(suffix)) {
-                Map<String, Object> map = new HashMap<>();
-                if (!file.isEmpty()) {
-                    File imgFile = new File(absPath);
-                    if (!imgFile.exists()) imgFile.mkdirs();
-                    try {
-                        file.transferTo(new File(absPath + "/" + fileName));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    result.put("src", url);
-                    result.put("title", "jfyt");
-                    return R.ok("上传成功").put("data", result);
-                } else {
-                    return R.ok("文件上传失败");
+            Map<String, Object> map = new HashMap<>();
+            if (!file.isEmpty()) {
+                File imgFile = new File(absPath);
+                if (!imgFile.exists()) imgFile.mkdirs();
+                try {
+                    file.transferTo(new File(absPath + "/" + fileName));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                result.put("src", url);
+                result.put("title", "jfyt");
+                return R.ok("上传成功").put("data", result);
             } else {
-                return R.ok("上传文件需为图片格式");
+                return R.ok("文件上传失败");
             }
+        } else {
+            return R.ok("上传文件格式错误");
         }
-        return R.error("格式不支持");
     }
 
     @RequestMapping("/del")

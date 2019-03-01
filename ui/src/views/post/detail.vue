@@ -17,16 +17,24 @@
 
               <div class="fly-admin-box" data-id="123">
                 <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
-                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
-                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0"
-                      style="background-color:#ccc;">取消置顶</span>
-                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
+                <span v-if="userInfo.isAdmin">
+                  <span v-if="postInfo.top" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
+                        rank="0">取消置顶</span>
+                  <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
+                        rank="1">置顶</span>
+                </span>
+                <span v-if="userInfo.isAdmin">
+                  <span v-if="postInfo.good" class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
+                        rank="0">取消加精</span>
+                  <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
+                        rank="1">加精</span>
+                </span>
                 <span v-if="postInfo.collectionStatus" class="layui-btn layui-btn-xs jie-admin" type="set"
                       field="status" rank="0" style="background-color:#ccc;"
                       @click="collection(postInfo.id)">取消收藏</span>
                 <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
                       @click="collection(postInfo.id)">收藏</span>
-                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span>-->
+
               </div>
               <span class="fly-list-nums">
                 <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
@@ -399,5 +407,7 @@
 </script>
 
 <style scoped>
-
+  video {
+    width: 100%;
+  }
 </style>

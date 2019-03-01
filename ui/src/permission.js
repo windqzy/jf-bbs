@@ -6,13 +6,10 @@ const whiteList = ['/'];// 重定向白名单
 console.log(window.localStorage['B-Token'])
 router.beforeEach((to, from, next) => {
   if (window.localStorage['B-Token']) {
+    console.log(store.getters.user.username)
     if (!store.getters.user.username) {
-      store.dispatch('addUserInfo').then((res) => {
-        if (to.path == '/user/reg') {
-          next()
-        } else {
-          next('/user/reg')
-        }
+      store.dispatch('addUserInfo').then(() => {
+        next()
       })
     } else {
       next()
@@ -24,15 +21,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/')
     }
-
-    // store.dispatch('addUserInfo').then(() => {
-    //   console.log('刷新', store.getters.user.username)
-    //   if (!store.getters.user.username) {
-    //     next('/user/reg');
-    //   } else {
-    //      next();
-    //   }
-    // })
   }
 });
 

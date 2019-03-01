@@ -131,7 +131,8 @@
     },
     created() {
       this.getAllLabel();
-      this.getUser();
+      this.userInfo = this.$store.getters.user;
+      // this.getUser();
     },
     mounted() {
       layui.use('element', function () {
@@ -193,6 +194,7 @@
         window.localStorage.clear();
         // window.localStorage['B-Token'] = token;
         this.$router.push('/');
+        window.location.reload();
       }
     }
   }

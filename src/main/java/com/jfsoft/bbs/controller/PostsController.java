@@ -2,12 +2,8 @@ package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
-import com.jfsoft.bbs.entity.BbsLabelEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
-import com.jfsoft.bbs.entity.BbsUserEntity;
-import com.jfsoft.bbs.service.BbsLabelService;
 import com.jfsoft.bbs.service.BbsPostsService;
-import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,13 +23,6 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsPostsService bbsPostsService;
-
-
-    @Autowired
-    private BbsUserService bbsUserService;
-
-    @Autowired
-    private BbsLabelService bbsLabelService;
 
     /**
      * 首页列表查询
@@ -97,14 +86,6 @@ public class PostsController extends AbstractController {
         Integer userId = getUserId();
         bbsPosts.setUserId(userId);
         bbsPosts.setInitTime(new Date());
-        //获取该用户信息
-        BbsUserEntity bbsUser = bbsUserService.selectById(userId);
-        bbsPosts.setAuthor(bbsUser.getUsername());
-        bbsPosts.setIcon(bbsUser.getIcon());
-        //获取板块信息
-        BbsLabelEntity bbsLabel = bbsLabelService.selectById(bbsPosts.getLabelId());
-        bbsPosts.setLabelName(bbsLabel.getName());
-
         bbsPostsService.insert(bbsPosts);
         return R.ok().put("data", bbsPosts);
     }
@@ -113,12 +94,11 @@ public class PostsController extends AbstractController {
      * 修改
      */
     @RequestMapping("/update")
-
     public R update(@RequestBody BbsPostsEntity bbsPosts) {
 //        ValidatorUtils.validateEntity(bbsPosts);
 //        bbsPostsService.updateAllColumnById(bbsPosts);//全部更新
-
-        return R.ok();
+        bbsPostsService.updateById(bbsPosts);
+        return R.ok().put("data",bbsPosts);
     }
 
     /**

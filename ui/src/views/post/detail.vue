@@ -12,22 +12,23 @@
               <span v-if="postInfo.end" class="layui-badge" style="background-color: #999;">未结</span>
               <span v-else class="layui-badge" style="background-color: #5FB878;">已结</span>
 
-              <span v-if="postInfo.top" class="layui-badge layui-bg-black">置顶</span>
-              <span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>
+              <!--<span v-if="postInfo.top" class="layui-badge layui-bg-black">置顶</span>-->
+              <!--<span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>-->
 
               <div class="fly-admin-box" data-id="123">
-                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-danger layui-btn-xs jie-admin" type="del"
+                      @click="delPostConfirm(postInfo.id)">删除</span>
                 <span v-if="userInfo.isAdmin">
                   <span v-if="postInfo.top" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
-                        rank="0">取消置顶</span>
+                        rank="0" @click="updatTop(postInfo.id)">取消置顶</span>
                   <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
-                        rank="1">置顶</span>
+                        rank="1" @click="updatTop(postInfo.id)">置顶</span>
                 </span>
                 <span v-if="userInfo.isAdmin">
                   <span v-if="postInfo.good" class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
-                        rank="0">取消加精</span>
+                        rank="0" @click="updatGood(postInfo.id)">取消加精</span>
                   <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
-                        rank="1">加精</span>
+                        rank="1" @click="updatGood(postInfo.id)">加精</span>
                 </span>
                 <span v-if="postInfo.collectionStatus" class="layui-btn layui-btn-xs jie-admin" type="set"
                       field="status" rank="0" style="background-color:#ccc;"
@@ -55,7 +56,7 @@
                 <span>{{postInfo.initTime}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}飞吻</span>
+                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
                 <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit">
                   <router-link :to="'/add/index?postId=' + postInfo.id">编辑此贴</router-link>
                 </span>
@@ -243,38 +244,21 @@
     mounted() {
       console.log('replyid+++++' + this.replyId)
       let _this = this;
-      layui.use(['layedit', 'layer'], function () {
+      layui.use(['layedit', 'layer', 'upload'], function () {
         _this.layedit = layui.layedit;
         _this.layer = layui.layer;
+        _this.layedit.set({
+          uploadImage: {
+            url: window.localStorage.baseUrl + '/upload/file',
+            type: 'post' //默认post
+          }
+        });
+
         _this.editIndex = _this.layedit.build('L_content', {
           height: 191,
           tool: ['face', 'image', 'link', 'code'],
         }); //建立编辑器
       });
-      // layui.cache.page = 'jie';
-      // layui.cache.user = {
-      //   username: '游客'
-      //   ,uid: -1
-      //   ,avatar: '../../res/images/avatar/00.jpg'
-      //   ,experience: 83
-      //   ,sex: '男'
-      // };
-      // layui.config({
-      //   version: "3.0.0"
-      //   ,base: '../../static/mods/'
-      // }).extend({
-      //   fly: 'index'
-      // }).use(['fly', 'face'], function(){
-      //   var $ = layui.$
-      //     ,fly = layui.fly;
-      //   //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-      //   /*
-      //   $('.detail-body').each(function(){
-      //     var othis = $(this), html = othis.html();
-      //     othis.html(fly.content(html));
-      //   });
-      //   */
-      // });
     },
     methods: {
       getDetailById(postId) {
@@ -340,15 +324,6 @@
           this.getReplyList(this.postId);
         })
       },
-      delReply(replyId) {
-        this.layer.confirm('真的删除行么', function (index) {
-          //   reply.delReply(replyId).then(res => {
-          //   console.log(res.data)
-          this.layer.close(index);
-          //   layer.msg('删除成功！');
-          // })
-        });
-      },
       updateReply(content, replyId) {
         this.replyId = replyId;
         console.log(content)
@@ -359,10 +334,14 @@
         this.replyId = '';
       },
       delReply(replyId) {
-        this.layer.confirm('是否删除？', {
-          btn: ['重要', '奇葩'] //按钮
+        let _this = this;
+        this.layer.confirm('是否删除该评论？', {
+          btn: ['是', '否'] //按钮
         }, function () {
-          layer.msg('的确很重要', {icon: 1});
+          reply.delReply(replyId).then(res => {
+            _this.getReplyList(_this.postId);
+            _this.layer.msg("删除成功");
+          })
         })
       },
       collection(postId) {
@@ -370,6 +349,32 @@
           // console.log(res.data)
           this.getDetailById(this.postId);
           this.layer.msg(res.data);
+        })
+      },
+      updatTop(id) {
+        post.updatTop(id).then(res => {
+          this.getDetailById(this.postId);
+          this.layer.msg(res.msg);
+        })
+      },
+      updatGood(id) {
+        post.updatGood(id).then(res => {
+          this.getDetailById(this.postId);
+          this.layer.msg(res.msg);
+        })
+      },
+      delPostConfirm(id) {
+        let _this = this;
+        this.layer.confirm('是否删除此贴？', {
+          btn: ['是', '否'] //按钮
+        }, function () {
+          _this.delPost(id);
+        })
+      },
+      delPost(id) {
+        post.del(id).then(res => {
+          this.$router.push('/home/index')
+          this.layer.msg(res.msg);
         })
       }
     },

@@ -1,21 +1,31 @@
 # 工程绝对路径(实现更新页面不用重启)
-project:
-#  base-dir: file:///E:/chenxc/code/jf-bbs
+#project:
+##  base-dir: file:///E:/chenxc/code/jf-bbs
+#spring:
+#  resources:
+#    cache:
+#      period: 0
+##    static-locations: ${project.base-dir}/src/main/resources/static/
+#  thymeleaf:
+##    prefix: ${project.base-dir}/src/main/resources/templates/
+##    cache: false
+app:
+  filePath: D:/JFAPP/JFBBS/file/
+  staticUrl: http://oa.bjjfsoft.com/bbs/static/
+  DD_APPID: dingoa7zyvotbxbeawdswt
+   DD_APPSECRET: IepKoUQ97fQtQS2DiGJz5-d5T0cPqv-I_SXbg3b0TswnK5YEQFTbzLAr-FQ4K6tw
+   DD_CORPID: ding3a0f8625b872e57235c2f4657eb6378f
+   DD_CORPSECRET: _yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d
+   DD_URL: http://10.0.2.72:8080/#/login
+
 spring:
-  resources:
-    cache:
-      period: 0
-#    static-locations: ${project.base-dir}/src/main/resources/static/
-  thymeleaf:
-#    prefix: ${project.base-dir}/src/main/resources/templates/
-#    cache: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     druid:
-      url: jdbc:mysql://140.143.153.135:3306/jf_bbs?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://www.chnlis.com:3366/jf_bbs?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
-      password: Cxc170016
+      password: 123456
       initial-size: 10
       max-active: 100
       min-idle: 10

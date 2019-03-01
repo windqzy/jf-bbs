@@ -1,14 +1,16 @@
 package com.jfsoft.bbs.controller;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.JWTUtils;
 import com.jfsoft.bbs.common.utils.R;
-import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.form.LoginForm;
 import com.jfsoft.bbs.service.BbsSignService;
 import com.jfsoft.bbs.service.BbsUserService;
+import com.jfsoft.bbs.service.DingDingInterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,9 @@ public class LoginController {
 
     @Autowired
     private BbsSignService bbsSignService;
+
+    @Autowired
+    private DingDingInterfaceService dingDingInterfaceService;
 
     @PostMapping("/login")
     public R login(@RequestBody LoginForm loginForm) {
@@ -51,6 +56,23 @@ public class LoginController {
         } else {
             token = JWTUtils.sign(String.valueOf(bbsUser.getId()), unionId);
             return R.ok().put("data", bbsUser).put("token", token);
+        }
+    }
+
+    @GetMapping("/getUserFromDingDing")
+    public R getUserFromDingDing(String tmpAuthCode) {
+        try {
+            String accessToken = dingDingInterfaceService.getAccessToken().getStr("access_token");
+            String companyToken = dingDingInterfaceService.getCompanyToken().getStr("access_token");
+            String unionId = dingDingInterfaceService.getUnionId(accessToken, tmpAuthCode).getStr("unionid");
+            String userId = dingDingInterfaceService.getUserId(companyToken, unionId).getStr("userid");
+            JSONObject user = dingDingInterfaceService.getUser(companyToken, userId);
+            JSONObject object = new JSONObject();
+            object.put("unionId", unionId);
+            object.put("user", user);
+            return R.ok().put("data", object);
+        } catch (Exception e) {
+            return R.error(e.getMessage());
         }
     }
 

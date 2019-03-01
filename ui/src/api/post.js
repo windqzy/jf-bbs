@@ -50,3 +50,27 @@ export function getCollecList() {
     method: 'GET'
   })
 }
+
+// 更新置顶
+export function updatTop(id) {
+  return request({
+    url: '/posts/top/' + id,
+    method: 'GET'
+  })
+}
+
+// 更新加精
+export function updatGood(id) {
+  return request({
+    url: '/posts/good/' + id,
+    method: 'GET'
+  })
+}
+
+// 删除文章
+export function del(id) {
+  return request({
+    url: '/posts/delete/' + id,
+    method: 'GET'
+  })
+}

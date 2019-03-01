@@ -21,6 +21,7 @@
         <result property="rewardGrade" column="reward_grade"/>
         <result property="collectionStatus" column="collection_status"/>
         <result property="collectionTime" column="collection_time"/>
+        <result property="isDel" column="is_del"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
@@ -46,6 +47,7 @@
         <if test="endTime != null and endTime != ''">
             AND bp.init_time &lt;= #{endTime}
         </if>
+        AND bp.is_del = false
         <if test="order != null and order != ''">
             ORDER BY
             <choose>

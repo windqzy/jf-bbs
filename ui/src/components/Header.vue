@@ -6,12 +6,12 @@
           <img src="../../static/images/logo.png" alt="layui">
         </router-link>
         <ul class="layui-nav fly-nav layui-hide-xs">
-          <li class="layui-nav-item layui-this">
-            <router-link to="/home/index"><i class="iconfont icon-jiaoliu"></i>交流</router-link>
-          </li>
-          <li class="layui-nav-item">
-            <router-link to="/case/index"><i class="iconfont icon-iconmingxinganli"></i>案例</router-link>
-          </li>
+          <!--<li class="layui-nav-item layui-this">-->
+          <!--<router-link to="/home/index"><i class="iconfont icon-jiaoliu"></i>交流</router-link>-->
+          <!--</li>-->
+          <!--<li class="layui-nav-item">-->
+          <!--<router-link to="/case/index"><i class="iconfont icon-iconmingxinganli"></i>案例</router-link>-->
+          <!--</li>-->
           <!--<li class="layui-nav-item">-->
           <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
           <!--</li>-->
@@ -44,7 +44,6 @@
               <img
                 :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
             </router-link>
-            <!--</a>-->
             <dl class="layui-nav-child">
               <dd>
                 <router-link to="/set/index#basic">

@@ -53,6 +53,7 @@
         left join bbs_posts bp
         on br.posts_id = bp.id
         where br.user_id = #{user_id}
+        and bp.is_del = false
     </select>
 
 </mapper>

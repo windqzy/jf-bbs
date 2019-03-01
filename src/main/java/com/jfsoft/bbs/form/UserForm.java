@@ -14,6 +14,16 @@ public class UserForm {
 
     private String mobile;
 
+    private int sex;
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     public String getMobile() {
         return mobile;
     }

@@ -2,14 +2,14 @@
   <div class="user_index">
     <div class="fly-home fly-panel" style="background-image: url();">
       <img
-        :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
+        :src="userInfo.icon == null ? '../../static/images/avatar/4.jpg' : userInfo.icon">
       <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
-      <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+      <!--<i class="iconfont icon-renzheng" title="Fly社区认证"></i>-->
       <h1>
         {{userInfo.username}}
-        <i class="iconfont icon-nan"></i>
-        <!-- <i class="iconfont icon-nv"></i>  -->
-        <i class="layui-badge fly-badge-vip">VIP3</i>
+        <i class="iconfont icon-nan" v-if="userInfo.sex == 1"></i>
+         <i class="iconfont icon-nv" v-if="userInfo.sex == 0"></i>
+        <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
         <!--
         <span style="color:#c00;">（管理员）</span>
         <span style="color:#5FB878;">（社区之光）</span>
@@ -20,7 +20,7 @@
       <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>
 
       <p class="fly-home-info">
-        <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">{{grade}} 飞吻</span>
+        <i class="layui-icon layui-icon-diamond" title="钻石"></i><span style="color: #FF7200;">{{grade}} 钻石</span>
         <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime}} 加入</span>
         <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city == null ? '地球' : userInfo.city}}</span>
       </p>
@@ -88,8 +88,8 @@
               <li v-for="reply in replyList">
                 <p>
                   <span>{{reply.initTime}}</span>
-                  <!-- 在<a href="" target="_blank">{{reply.postsName}}</a>中回答：-->
-                  <router-link class="jie-title" :to="'/post/detail?postId=' + reply.postsId">{{reply.postsName}}
+                  <!--<a href="" target="_blank">{{reply.postsName}}</a>-->
+                  在<router-link class="jie-title" :to="'/post/detail?postId=' + reply.postsId">{{reply.postsName}}中回答：
                   </router-link>
                 </p>
                 <div class="home-dacontent" v-html="reply.content">

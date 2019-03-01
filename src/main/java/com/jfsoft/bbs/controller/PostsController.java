@@ -58,7 +58,7 @@ public class PostsController extends AbstractController {
         } else {
             wrapper.eq("user_id", userId);
         }
-
+        wrapper.eq("is_del", false);
         List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
         return R.ok().put("data", list);
     }
@@ -115,7 +115,7 @@ public class PostsController extends AbstractController {
 //        ValidatorUtils.validateEntity(bbsPosts);
 //        bbsPostsService.updateAllColumnById(bbsPosts);//全部更新
         bbsPostsService.updateById(bbsPosts);
-        return R.ok().put("data",bbsPosts);
+        return R.ok().put("data", bbsPosts);
     }
 
     /**
@@ -132,11 +132,37 @@ public class PostsController extends AbstractController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        bbsPostsService.deleteBatchIds(Arrays.asList(ids));
-
-        return R.ok();
+    @RequestMapping("/delete/{id}")
+    public R delete(@PathVariable Integer id) {
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(id);
+        bbsPostsEntity.setDel(true);
+        bbsPostsService.updateById(bbsPostsEntity);
+        return R.ok("操作成功");
     }
 
+    @RequestMapping("/good/{id}")
+    public R good(@PathVariable Integer id) {
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(id);
+        Boolean flag = bbsPostsEntity.getGood();
+        if (flag) {
+            bbsPostsEntity.setGood(false);
+        } else {
+            bbsPostsEntity.setGood(true);
+        }
+        bbsPostsService.updateById(bbsPostsEntity);
+        return R.ok("操作成功");
+    }
+
+    @RequestMapping("/top/{id}")
+    public R top(@PathVariable Integer id) {
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(id);
+        Boolean flag = bbsPostsEntity.getTop();
+        if (flag) {
+            bbsPostsEntity.setTop(false);
+        } else {
+            bbsPostsEntity.setTop(true);
+        }
+        bbsPostsService.updateById(bbsPostsEntity);
+        return R.ok("操作成功");
+    }
 }

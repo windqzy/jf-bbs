@@ -85,6 +85,16 @@ public class BbsPostsEntity implements Serializable {
 	@TableField(exist = false)
 	private Date collectionTime;
 
+	private Boolean isDel;
+
+	public Boolean getDel() {
+		return isDel;
+	}
+
+	public void setDel(Boolean del) {
+		isDel = del;
+	}
+
 	public Date getCollectionTime() {
 		return collectionTime;
 	}

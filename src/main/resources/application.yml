@@ -1,16 +1,15 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   thymeleaf:
     cache: true
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-  http:
-   encoding:
-     force: true
-     charset: utf-8
-     enabled: true
+  servlet:
+    multipart:
+      max-file-size: 5000MB
+      max-request-size: 5000MB
 
 # Tomcat
 server:
@@ -20,10 +19,6 @@ server:
     min-spare-threads: 30
   port: 8848
   connection-timeout: 5000ms
-
-app:
-  filePath: E://Test/
-  staticUrl: http://10.0.2.157:8848/static/
 #  servlet:
 #    context-path: /jf-bbs
 

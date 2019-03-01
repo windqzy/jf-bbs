@@ -23,25 +23,25 @@
         <div class="layui-form-item">
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_username" name="username" class="layui-input" v-model="username">
+            <input type="text" id="L_username" required lay-verify="required" name="username" class="layui-input" v-model="username">
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
-              <input type="radio" name="sex" value="1" checked title="男">
-              <input type="radio" name="sex" value="0" title="女">
+              <input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">
+              <input type="radio" name="sex" v-model="selectSex" value="0" title="女">
             </div>
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_city" class="layui-form-label">城市</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_city" name="city" autocomplete="off" v-model="city" class="layui-input">
+            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_mobile" class="layui-form-label">电话号码</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_mobile" name="mobile" autocomplete="off" v-model="mobile" class="layui-input">
+            <input type="text" id="L_mobile" name="mobile" required lay-verify="required" autocomplete="off" v-model="mobile" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="layui-form-item">
-          <button class="layui-btn" @click="upDateUser">确认修改</button>
+          <button class="layui-btn" lay-filter="*" lay-submit @click="upDateUser">确认修改</button>
         </div>
         <!--</form>-->
       </div>
@@ -144,7 +144,8 @@
         signature: '',
         mobile: '',
         imgUrl: '',
-        userInfo: ''
+        userInfo: '',
+        selectSex: ''
       }
     },
     created() {
@@ -161,12 +162,29 @@
       //获取用户信息
       getUser() {
         user.getUser().then(res => {
+          let _this = this;
           console.log(res.data);
-          this.email = res.data.email;
-          this.username = res.data.username;
-          this.city = res.data.city;
-          this.signature = res.data.signature;
-          this.mobile = res.data.mobile;
+          _this.email = res.data.email;
+          _this.username = res.data.username;
+          _this.city = res.data.city;
+          _this.signature = res.data.signature;
+          _this.mobile = res.data.mobile;
+          _this.selectSex = res.data.sex;
+          _this.$nextTick(() => {
+            layui.use(['form', 'layer'], function () {
+              var form = layui.form;
+              var layer = layui.layer;
+              form.on('radio', function (data) {
+                // _this.selectSex = 0;
+                console.log(data.value)
+                _this.selectSex = data.value;
+                // if (data.elem[data.elem.selectedIndex].text == '提问') {
+                //   _this.showGrade = true;
+                // }
+              });
+              form.render();
+            });
+          });
         })
       },
       UpladFile() {
@@ -207,14 +225,16 @@
             username: this.username,
             city: this.city,
             signature: this.signature,
-            mobile: this.mobile
+            mobile: this.mobile,
+            sex: this.selectSex
           };
           user.upDateUser(UserForm).then(res => {
-            res.data.email = this.email;
-            res.data.username = this.username;
-            res.data.city = this.city;
-            res.data.signature = this.signature;
-            res.data.mobile = this.mobile;
+            this.email = res.data.email;
+            this.username = res.data.username;
+            this.city = res.data.city;
+            this.signature = res.data.signature;
+            this.mobile = res.data.mobile;
+            this.selectSex = res.data.sex;
             layer.msg('修改成功');
           })
         }

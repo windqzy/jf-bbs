@@ -5,7 +5,7 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
           <!-- 标签区 -->
-          <div class="fly-panel" v-if="labelId != 0">
+          <div class="fly-panel" v-if="false">
             <div class="fly-panel-title fly-filter">
               <a>标签</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right"
@@ -41,7 +41,7 @@
                 <div carousel-item="">
                   <div class="layui-this">
                     <a href="https://fly.layui.com/jump/yundashi/" target="_blank">
-                      <img src="http://cdn.layui.com/upload/2019_1/168_1546503131842_22821.jpg" alt="云大使"
+                      <img src="http://pic3.16pic.com/00/47/90/16pic_4790939_b.jpg" alt="云大使"
                            style="max-width: 100%;">
                     </a>
                   </div>
@@ -75,7 +75,7 @@
                     <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                   </a>
                   <span>{{top.initTime}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{top.rewardGrade}}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石"><i class="layui-icon layui-icon-diamond"></i> {{top.rewardGrade}}</span>
                   <span v-if="top.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i> {{top.replyCount}}
@@ -151,6 +151,26 @@
         <!-- 右侧卡片 -->
         <div class="layui-col-md4">
           <!-- 温馨通道 -->
+          <div class="fly-panel" v-if="labelId == 0" style="height: 171px;">
+            <h3 class="fly-panel-title">公告</h3>
+            <div class="layui-card-body">
+              热烈庆祝金风社区成立！！！
+            </div>
+            <!--<ul class="fly-panel-main fly-list-static">-->
+              <!--<li>-->
+                <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<a href="http://fly.layui.com/jie/5366/" target="_blank">-->
+                  <!--layui 常见问题的处理和实用干货集锦-->
+                <!--</a>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
+              <!--</li>-->
+
+            <!--</ul>-->
+          </div>
           <div class="fly-panel" v-if="labelId == 0">
             <h3 class="fly-panel-title">今日热点</h3>
             <ul class="fly-panel-main fly-list-static">
@@ -189,7 +209,7 @@
             <div class="fly-panel-main fly-signin-main">
               <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
               <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
-              <span>可获得<cite v-text="currGrade"></cite>飞吻</span>
+              <span>可获得<cite v-text="currGrade"></cite>钻石</span>
 
               <!-- 已签到状态 -->
               <!--
@@ -238,13 +258,13 @@
           <div class="fly-panel fly-link">
             <h3 class="fly-panel-title">友情链接</h3>
             <dl class="fly-panel-main">
-              <dd><a href="http://www.layui.com/" target="_blank">layui</a></dd>
-              <dd><a href="http://layim.layui.com/" target="_blank">WebIM</a></dd>
-              <dd><a href="http://layer.layui.com/" target="_blank">layer</a></dd>
-              <dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a></dd>
-              <dd><a
-                href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"
-                class="fly-link">申请友链</a></dd>
+              <dd><a href="http://www.bjjfyt.com/" target="_blank">金风易通</a></dd>
+              <!--<dd><a href="http://layim.layui.com/" target="_blank">WebIM</a></dd>-->
+              <!--<dd><a href="http://layer.layui.com/" target="_blank">layer</a></dd>-->
+              <!--<dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a></dd>-->
+              <!--<dd><a-->
+                <!--href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"-->
+                <!--class="fly-link">申请友链</a></dd>-->
             </dl>
           </div>
         </div>
@@ -253,12 +273,12 @@
 
     <!-- 签到规则 -->
     <div class="layui-text" style="padding: 20px; display: none" id="signDoc">
-      <blockquote class="layui-elem-quote">“签到”可获得社区飞吻，规则如下</blockquote>
+      <blockquote class="layui-elem-quote">“签到”可获得社区钻石，规则如下</blockquote>
       <table class="layui-table">
         <thead>
         <tr>
           <th>连续签到天数</th>
-          <th>每天可获飞吻</th>
+          <th>每天可获钻石</th>
         </tr>
         </thead>
         <tbody>
@@ -282,7 +302,7 @@
       </table>
       <ul>
         <li>中间若有间隔，则连续天数重新计算</li>
-        <li style="color: #FF5722;">不可利用程序自动签到，否则飞吻清零</li>
+        <li style="color: #FF5722;">不可利用程序自动签到，否则钻石清零</li>
       </ul>
     </div>
 
@@ -407,7 +427,7 @@
       saveSign() {
         sign.saveSign().then(res => {
           this.getBool();
-          this.layer.msg('签到成功，飞吻+' + this.grade);
+          this.layer.msg('签到成功，钻石+' + this.currGrade);
         })
       },
       signDoc() {
@@ -424,7 +444,7 @@
         this.layer.open({
           type: 1
           , title: '签到活跃榜 TOP-20'
-          , area: '300px'
+          , area: '310px'
           , shade: 0.8
           , shadeClose: true
           , content: this.$('#signTop')

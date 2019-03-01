@@ -74,7 +74,7 @@
                 </div>
                 <div class="layui-form-item">
                   <div class="layui-inline">
-                    <label class="layui-form-label">悬赏飞吻</label>
+                    <label class="layui-form-label">悬赏钻石</label>
                     <div class="layui-input-inline">
                       <input type="number" name="experience" required lay-verify="required" autocomplete="off"
                              :max="post.grade" v-model="post.grade"
@@ -89,7 +89,7 @@
                     <!--<option value="80">80</option>-->
                     <!--</select>-->
                     <!--</div>-->
-                    <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前飞吻数 {{currGrade}}</div>
+                    <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前钻石数 {{currGrade}}</div>
                   </div>
                 </div>
                 <!--<div class="layui-form-item">-->

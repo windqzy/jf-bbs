@@ -2,7 +2,7 @@
   <div class="container demo-1">
     <div class="content">
       <div id="large-header" class="large-header">
-        <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin">开发者登录</a>
+        <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin" v-if="false">开发者登录</a>
         <canvas id="demo-canvas"></canvas>
         <div class="logo_box">
           <h3>欢迎登录</h3>

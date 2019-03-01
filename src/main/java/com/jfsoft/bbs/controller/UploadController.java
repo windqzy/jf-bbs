@@ -63,7 +63,7 @@ public class UploadController {
                     }
 
                     result.put("src", url);
-                    result.put("title", "test");
+                    result.put("title", "jfyt");
                     return R.ok("上传成功").put("data", result);
                 } else {
                     return R.ok("文件上传失败");

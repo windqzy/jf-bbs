@@ -16,69 +16,71 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/home/index'
+    }, {
+      path: '/login',
       component: Login,
-    },
-    {
+    }, {
       path: '/home',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'index',
-          name:'Index',
+          path: 'index',
+          name: 'Index',
           component: Index
         }
       ]
-    },{
+    }, {
       path: '/post',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'detail',
+          path: 'detail',
           component: Detail
         }
       ]
-    },{
+    }, {
       path: '/add',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'index',
+          path: 'index',
           component: Add
         }
       ]
-    },{
+    }, {
       path: '/user',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'index',
+          path: 'index',
           component: UserIndex
         }
       ]
-    },{
+    }, {
       path: '/set',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'index',
+          path: 'index',
           component: setIndex
         }
       ]
-    },{
+    }, {
       path: '/user',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'reg',
+          path: 'reg',
           component: userReg
         }
       ]
-    },{
+    }, {
       path: '/case',
       component: Layer,
-      children:[
+      children: [
         {
-          path:'index',
+          path: 'index',
           component: Case
         }
       ]

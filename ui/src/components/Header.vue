@@ -190,10 +190,8 @@
         })
       },
       logOut() {
-        let token = window.localStorage['B-Token'];
         window.localStorage.clear();
-        // window.localStorage['B-Token'] = token;
-        this.$router.push('/');
+        this.$router.push('/login');
         window.location.reload();
       }
     }

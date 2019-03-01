@@ -2,7 +2,7 @@
 import router from './router';
 import store from './store';
 
-const whiteList = ['/'];// 重定向白名单
+const whiteList = ['/login'];// 重定向白名单
 console.log(window.localStorage['B-Token'])
 router.beforeEach((to, from, next) => {
   if (window.localStorage['B-Token']) {
@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {
-      next('/')
+      next('/login')
     }
   }
 });

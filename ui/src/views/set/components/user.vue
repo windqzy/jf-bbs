@@ -14,7 +14,7 @@
             <router-link :to="'/post/detail?postId=' + userPost.id + '&labelId=' + userPost.labelId">{{userPost.title}}
             </router-link>
             <i>{{userPost.initTime}}</i>
-            <a class="mine-edit" href="/jie/edit/8116">编辑</a>
+            <router-link :to="'/add/index?postId=' +userPost.id" class="mine-edit">编辑</router-link>
             <em>{{userPost.replyCount}}答</em>
             <!--<em>661阅/{{userPost.replyCount}}答</em>--> <!-- 暂不显示阅读数量 -->
           </li>

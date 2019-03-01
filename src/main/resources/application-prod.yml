@@ -13,10 +13,10 @@ app:
   filePath: D:/JFAPP/JFBBS/file/
   staticUrl: http://oa.bjjfsoft.com/bbs/static/
   DD_APPID: dingoa7zyvotbxbeawdswt
-   DD_APPSECRET: IepKoUQ97fQtQS2DiGJz5-d5T0cPqv-I_SXbg3b0TswnK5YEQFTbzLAr-FQ4K6tw
-   DD_CORPID: ding3a0f8625b872e57235c2f4657eb6378f
-   DD_CORPSECRET: _yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d
-   DD_URL: http://10.0.2.72:8080/#/login
+  DD_APPSECRET: IepKoUQ97fQtQS2DiGJz5-d5T0cPqv-I_SXbg3b0TswnK5YEQFTbzLAr-FQ4K6tw
+  DD_CORPID: ding3a0f8625b872e57235c2f4657eb6378f
+  DD_CORPSECRET: _yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d
+  DD_URL: http://10.0.2.72:8080/#/login
 
 spring:
   datasource:

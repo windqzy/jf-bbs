@@ -11,12 +11,14 @@ const user = {
     mobile: '',
     id: '',
     initTime: '',
-    city: ''
+    city: '',
+    isAdmin: ''
   },
   actions: {
     addUserInfo({commit}) {
       return new Promise(resolve => {
         getUser().then(res => {
+          console.log(res.data)
           commit('USER_INFO', res.data);
           resolve(res.data)
         })

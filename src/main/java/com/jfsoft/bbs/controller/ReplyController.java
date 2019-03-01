@@ -83,7 +83,8 @@ public class ReplyController extends AbstractController {
 		bbsReplyService.insert(bbsReply);
 		// 更新post表的评论数
 		BbsPostsEntity bbsPosts = bbsPostsService.selectById(ReplyForm.getPostsId());
-		bbsPosts.setReplyCount(bbsPosts.getReplyCount() + 1);
+		int count = bbsPosts.getReplyCount() + 1;
+		bbsPosts.setReplyCount(count);
 		bbsPostsService.updateById(bbsPosts);
 		return R.ok().put("data", "评论成功");
 	}

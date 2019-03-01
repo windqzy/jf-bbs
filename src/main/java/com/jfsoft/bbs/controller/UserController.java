@@ -81,7 +81,6 @@ public class UserController extends AbstractController {
         bbsUser.setCity(userForm.getCity());
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
-
         bbsUserService.updateById(bbsUser);
         return R.ok().put("data", bbsUser);
     }

@@ -6,7 +6,7 @@
         <div class="layui-form layui-form-pane">
           <div class="layui-tab layui-tab-brief" lay-filter="user">
             <ul class="layui-tab-title">
-              <li class="layui-this">发表新帖<!-- 编辑帖子 --></li>
+              <li class="layui-this">{{title}}<!-- 编辑帖子 --></li>
             </ul>
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
               <div class="layui-tab-item layui-show">
@@ -72,7 +72,7 @@
                                 class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                   </div>
                 </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" v-if="showGrade">
                   <div class="layui-inline">
                     <label class="layui-form-label">悬赏飞吻</label>
                     <div class="layui-input-inline">
@@ -92,16 +92,16 @@
                     <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前飞吻数 {{currGrade}}</div>
                   </div>
                 </div>
-                <div class="layui-form-item">
-                  <label for="L_vercode" class="layui-form-label">人类验证</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
-                           placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="layui-form-mid">
-                    <span style="color: #c00;">1+1=?</span>
-                  </div>
-                </div>
+                <!--<div class="layui-form-item">-->
+                <!--<label for="L_vercode" class="layui-form-label">人类验证</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="text" id="L_vercode" name="vercode" required lay-verify="required"-->
+                <!--placeholder="请回答后面的问题" autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+                <!--<div class="layui-form-mid">-->
+                <!--<span style="color: #c00;">1+1=?</span>-->
+                <!--</div>-->
+                <!--</div>-->
                 <div class="layui-form-item">
                   <button class="layui-btn" lay-filter="*" lay-submit @click="publish">立即发布</button>
                 </div>
@@ -138,11 +138,21 @@
           content: ''
         },
         currGrade: 0,
-        layer: null
+        layer: null,
+        postId: null,
+        title: '',
+        showGrade: false
       }
     },
     created() {
       this.getCurrGrade();
+      this.postId = this.$route.query.postId;
+      if (!this.postId) {
+        this.title = '发表新帖';
+      } else {
+        this.title = '编辑此贴';
+        this.getPostDetail();
+      }
     },
     mounted() {
       this.initLayUI();
@@ -159,6 +169,9 @@
               var form = layui.form;
               form.on('select', function (data) {
                 _this.selectLabel(data.value);
+                if (data.elem[data.elem.selectedIndex].text == '提问') {
+                  _this.showGrade = true;
+                }
               });
               form.render();
             })
@@ -177,7 +190,7 @@
           _this.layedit.set({
             //暴露layupload参数设置接口 --详细查看layupload参数说明
             uploadImage: {
-              url: 'your url',
+              url: window.localStorage.baseUrl + '/upload/file',
               accept: 'image',
               acceptMime: 'image/*',
               exts: 'jpg|png|gif|bmp|jpeg',
@@ -186,12 +199,19 @@
                 name: "测试参数",
                 age: 99
               }
+              ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                console.log(obj);
+                layer.load(); //上传loading
+              }
+              ,choose: function (obj) {
+                console.log(obj);
+              }
               , done: function (data) {
                 console.log(data);
               }
             },
             uploadVideo: {
-              url: 'your url',
+              url: window.localStorage.baseUrl + '/upload/file',
               accept: 'video',
               acceptMime: 'video/*',
               exts: 'mp4|flv|avi|rm|rmvb',
@@ -201,7 +221,7 @@
               }
             }
             , uploadFiles: {
-              url: 'your url',
+              url: window.localStorage.baseUrl + '/upload/file',
               accept: 'file',
               acceptMime: 'file/*',
               size: '20480',
@@ -216,7 +236,7 @@
             //视频： filepath --视频路径 imgpath --封面路径
             //附件： filepath --附件路径
             , calldel: {
-              url: 'your url',
+              url: window.localStorage.baseUrl + '/upload/del',
               done: function (data) {
                 console.log(data);
               }
@@ -322,6 +342,7 @@
       publish() {
         this.post.content = this.layedit.getContent(this.editIndex);
         let bbsPosts = {
+          id: this.postId,
           labelId: this.post.labelId,
           title: this.post.title,
           rewardGrade: this.post.grade,
@@ -342,6 +363,17 @@
           this.$router.push('/home/index');
         });
       },
+      // 查询文章详情
+      getPostDetail() {
+        post.getDetail(this.postId).then(res => {
+          console.log(res.data)
+          this.post.labelId = res.data.labelId;
+          this.post.title = res.data.title;
+          this.post.grade = res.data.rewardGrade;
+          // this.post.content = res.data.content;
+          this.layedit.setContent(this.editIndex, res.data.content);
+        })
+      }
     }
   }
 </script>

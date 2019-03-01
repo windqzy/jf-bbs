@@ -2,8 +2,12 @@ package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsLabelEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
+import com.jfsoft.bbs.entity.BbsUserEntity;
+import com.jfsoft.bbs.service.BbsLabelService;
 import com.jfsoft.bbs.service.BbsPostsService;
+import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,10 +87,16 @@ public class PostsController extends AbstractController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody BbsPostsEntity bbsPosts) {
+        Integer postId = bbsPosts.getId();
         Integer userId = getUserId();
-        bbsPosts.setUserId(userId);
         bbsPosts.setInitTime(new Date());
-        bbsPostsService.insert(bbsPosts);
+        if (postId == null) {
+            // 新增
+            bbsPosts.setUserId(userId);
+            bbsPostsService.insert(bbsPosts);
+        } else {
+            bbsPostsService.updateById(bbsPosts);
+        }
         return R.ok().put("data", bbsPosts);
     }
 

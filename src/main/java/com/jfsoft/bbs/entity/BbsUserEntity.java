@@ -1,6 +1,5 @@
 package com.jfsoft.bbs.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -67,6 +66,16 @@ public class BbsUserEntity implements Serializable {
 	private String unionId;
 
 	private String city;
+
+	private Boolean isAdmin;
+
+	public Boolean getAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		isAdmin = admin;
+	}
 
 	public String getCity() {
 		return city;

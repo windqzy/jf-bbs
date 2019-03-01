@@ -19,6 +19,7 @@
         <result property="mobile" column="mobile"/>
         <result property="unionId" column="union_id"/>
         <result property="city" column="city"/>
+        <result property="isAdmin" column="is_admin"/>
     </resultMap>
 
 

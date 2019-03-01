@@ -52,7 +52,7 @@
         from bbs_reply br
         left join bbs_posts bp
         on br.posts_id = bp.id
-        where br.user_id=#{user_id}
+        where br.user_id = #{user_id}
     </select>
 
 </mapper>

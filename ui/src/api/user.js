@@ -1,9 +1,21 @@
 import request from '@/utils/request'
-
+//获取自己用户的
 export function getUser() {
   return request({
     url: '/user/info',
     method: 'POST',
+  })
+}
+
+//获取传入ID的用户的
+export function getOther(userId) {
+  return request({
+    url: '/user/infoByUserId',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: userId
   })
 }
 
@@ -33,3 +45,5 @@ export function updateUserIcon(url) {
     data: url
   })
 }
+
+

@@ -5,7 +5,7 @@
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
           <!-- 标签区 -->
-          <div class="fly-panel" v-if="false">
+          <div class="fly-panel" v-if="labelId != 0">
             <div class="fly-panel-title fly-filter">
               <a>标签</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right"
@@ -41,7 +41,8 @@
                 <div carousel-item="">
                   <div class="layui-this">
                     <a href="https://fly.layui.com/jump/yundashi/" target="_blank">
-                      <img src="http://cdn.layui.com/upload/2019_1/168_1546503131842_22821.jpg" alt="云大使" style="max-width: 100%;">
+                      <img src="http://cdn.layui.com/upload/2019_1/168_1546503131842_22821.jpg" alt="云大使"
+                           style="max-width: 100%;">
                     </a>
                   </div>
                 </div>
@@ -57,11 +58,11 @@
             </div>
             <ul class="fly-list">
               <li v-for="top in topPostList">
-                <a href="user/home.html" class="fly-avatar">
+                <router-link :to="'/user/index?userId='+ top.userId" class="fly-avatar">
                   <img
                     :src="top.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : top.icon"
                     :alt="top.author">
-                </a>
+                </router-link>
                 <h2>
                   <a class="layui-badge">{{top.labelName}}</a>
                   <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}
@@ -110,28 +111,26 @@
             <!-- LIST -->
             <ul class="fly-list">
               <li v-for="post in postList">
-                <a href="user/home.html" class="fly-avatar">
+                <router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">
                   <img
                     :src="post.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : post.icon"
                     :alt="post.author">
-                </a>
+                </router-link>
                 <h2>
                   <a class="layui-badge">{{post.labelName}}</a>
                   <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}
                   </router-link>
                 </h2>
                 <div class="fly-list-info">
-                  <a href="user/home.html" link>
+                  <router-link :to="'/user/index?userId='+ post.userId">
                     <cite>{{post.author}}</cite>
                     <!--
                     <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                     <i class="layui-badge fly-badge-vip">VIP3</i>
                     -->
-                  </a>
+                  </router-link>
                   <span>{{post.initTime}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏金币" v-if="post.rewardGrade > 0">
-                    <i class="iconfont icon-kiss"></i> {{post.rewardGrade}}
-                  </span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{post.rewardGrade}}</span>
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
@@ -153,7 +152,7 @@
         <div class="layui-col-md4">
           <!-- 温馨通道 -->
           <div class="fly-panel" v-if="labelId == 0">
-            <h3 class="fly-panel-title">公告</h3>
+            <h3 class="fly-panel-title">今日热点</h3>
             <ul class="fly-panel-main fly-list-static">
               <li>
                 <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
@@ -205,11 +204,11 @@
             <dl>
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
               <dd v-for="replyTop in replyTopList">
-                <a href="user/home.html">
+                <router-link :to="'/user/index?userId='+replyTop.userId">
                   <img
                     :src="replyTop.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : replyTop.icon">
                   <cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
-                </a>
+                </router-link>
               </dd>
             </dl>
           </div>
@@ -228,11 +227,11 @@
           <!-- 广告区域 -->
           <div class="fly-panel">
             <div class="fly-panel-title">
-              广告区域
+              这里可作为广告区域
             </div>
             <div class="fly-panel-main">
               <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">火热招商中 QQ:997909544</a>
+                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
             </div>
           </div>
           <!-- 友情链接 -->

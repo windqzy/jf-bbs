@@ -36,13 +36,15 @@
           <!--</li>-->
           <!-- 登入后的状态 -->
           <li class="layui-nav-item">
-            <a class="fly-nav-avatar" href="javascript:;">
+            <!--<a class="fly-nav-avatar" href="javascript:;">-->
+            <router-link :to="'/user/index?userId='+$store.getters.user.id" class="fly-nav-avatar">
               <cite class="layui-hide-xs">{{$store.getters.user.username}}</cite>
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
               <img
                 :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
-            </a>
+            </router-link>
+            <!--</a>-->
             <dl class="layui-nav-child">
               <dd>
                 <router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link>

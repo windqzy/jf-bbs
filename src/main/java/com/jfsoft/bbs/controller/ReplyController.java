@@ -136,12 +136,16 @@ public class ReplyController extends AbstractController {
 	 * 获取个人文章的所有回复
 	 */
 	@RequestMapping("/personReply")
-	public R getPersonReply() {
+	public R getPersonReply(Integer userId) {
 
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("user_id", getUserId());
+		if (userId == null) {
+			param.put("user_id", getUserId());
+		} else {
+			param.put("user_id", userId);
+		}
+
 		List<BbsReplyEntity> list = bbsReplyService.getPersonReplyList(param);
-		System.out.println(list.get(0));
 		return R.ok().put("data", list);
 	}
 

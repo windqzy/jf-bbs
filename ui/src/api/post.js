@@ -26,9 +26,9 @@ export function getDetail(postId) {
 }
 
 // 查询个人发布文章列表
-export function getPersonList() {
+export function getPersonList(id) {
   return request({
-    url: '/posts/personList',
+    url: '/posts/personList?userId=' + id,
     method: 'GET'
   })
 }

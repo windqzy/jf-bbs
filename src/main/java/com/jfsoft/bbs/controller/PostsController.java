@@ -51,12 +51,19 @@ public class PostsController extends AbstractController {
      * * @return
      */
     @RequestMapping("/personList")
-    public R getPersonList() {
+    public R getPersonList(Integer userId) {
         EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
-        wrapper.eq("user_id", getUserId());
+        if (userId == null) {
+            wrapper.eq("user_id", getUserId());
+        } else {
+            wrapper.eq("user_id", userId);
+        }
+
         List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
         return R.ok().put("data", list);
     }
+
+
 
     /**
      * 查询置顶

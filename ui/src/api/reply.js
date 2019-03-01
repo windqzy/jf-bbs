@@ -52,9 +52,9 @@ export function delReply(replyId) {
 
 
 // 个人文章回复列表
-export function getPersonReplyList(postId) {
+export function getPersonReplyList(userId) {
   return request({
-    url: '/reply/personReply',
+    url: '/reply/personReply?userId=' + userId,
     method: 'GET'
   })
 }

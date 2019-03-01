@@ -37,13 +37,13 @@ public class UserController extends AbstractController {
 
 
     /**
-     * 信息
+     * 获取传入的用户信息
      */
-    @RequestMapping("/info/{id}")
-    public R getInfoById(@PathVariable("id") Integer id) {
-        BbsUserEntity bbsUser = bbsUserService.selectById(id);
+    @RequestMapping("/infoByUserId")
+    public R getInfoById(@RequestBody Integer userId) {
+        BbsUserEntity bbsUser = bbsUserService.selectById(userId);
 
-        return R.ok().put("bbsUser", bbsUser);
+        return R.ok().put("data", bbsUser);
     }
 
     /**

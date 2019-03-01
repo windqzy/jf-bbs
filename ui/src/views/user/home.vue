@@ -121,6 +121,8 @@
 
   import * as reply from '@/api/reply'
 
+  import * as user from '@/api/user'
+
   export default {
     name: "home",
     data() {
@@ -128,36 +130,64 @@
         userInfo: '',
         grade: 0,
         postList: [],
-        replyList: []
+        replyList: [],
+        userId: ''
       }
     },
     created() {
       this.userInfo = this.$store.getters.user;
+      this.userId = this.$route.query.userId;
+      if (!this.userId) {
+        this.userId = this.userInfo.id;
+      } else {
+        this.getOther();
+      }
       this.getGrade();
       this.getPersonList();
       this.getPersonReplyList();
     },
     methods: {
+      //获取用户信息
+      getUser() {
+        user.getUser().then(res => {
+          console.log(res.data);
+        })
+      },
+      //获取他人主页用户信息
+      getOther() {
+        user.getOther(this.userId).then(res => {
+          console.log(res.data);
+          this.userInfo = res.data;
+        })
+      },
+      //获取积分
       getGrade() {
-        grade.getGrade().then(res => {
+        let id = this.userId == undefined ? null : this.userId;
+        grade.getGrade(id).then(res => {
           console.log(res.data);
           this.grade = res.data.grade;
         })
       },
 
+      //获取用户发帖信息
       getPersonList() {
-        post.getPersonList().then(res => {
+        let id = this.userId == undefined ? null : this.userId;
+        console.log(id)
+        post.getPersonList(id).then(res => {
           console.log(res.data);
           this.postList = res.data;
         })
       },
 
+      //获取用户回复列表
       getPersonReplyList() {
-        reply.getPersonReplyList().then(res => {
-          console.log(res.data);
+        let id = this.userId == undefined ? null : this.userId;
+        reply.getPersonReplyList(id).then(res => {
           this.replyList = res.data;
         })
       }
+
+
     }
 
   }

@@ -42,16 +42,16 @@
               </span>
             </div>
             <div class="detail-about">
-              <a class="fly-avatar" href="../user/home.html">
+              <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">
                 <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
                      alt="postInfo.author">
-              </a>
+              </router-link>
               <div class="fly-detail-user">
-                <a href="../user/home.html" class="fly-link">
+                <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">
                   <cite>{{postInfo.author}}</cite>
                   <!--<i class="iconfont icon-renzheng" title="认证信息"></i>-->
                   <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                </a>
+                </router-link>
                 <span>{{postInfo.initTime}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
@@ -74,17 +74,17 @@
               <li data-id="111" class="jieda-daan" v-for="reply in replyList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <a class="fly-avatar" href="">
+                  <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-avatar">
                     <img
                       :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
                       :alt="reply.author">
-                  </a>
+                  </router-link>
                   <div class="fly-detail-user">
-                    <a href="" class="fly-link">
+                    <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-link">
                       <cite>{{reply.author}}</cite>
                       <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                       <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                    </a>
+                    </router-link>
                     <span v-if="reply.userId === postInfo.userId">(楼主)</span>
                     <!--
                     <span style="color:#5FB878">(管理员)</span>

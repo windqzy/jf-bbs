@@ -143,10 +143,12 @@
         city: '',
         signature: '',
         mobile: '',
-        imgUrl: ''
+        imgUrl: '',
+        userInfo: ''
       }
     },
     created() {
+      this.userInfo = this.$store.getters.user;
       this.getUser();
     },
     mounted() {

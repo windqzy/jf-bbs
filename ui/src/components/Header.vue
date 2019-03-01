@@ -47,9 +47,15 @@
             <!--</a>-->
             <dl class="layui-nav-child">
               <dd>
-                <router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link>
+                <router-link to="/set/index#basic">
+                  <i class="layui-icon">&#xe620;</i>基本设置
+                </router-link>
               </dd>
-              <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+              <dd>
+                <router-link to="/set/index#message">
+                  <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息
+                </router-link>
+              </dd>
               <dd>
                 <router-link to="/user/index">
                   <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页

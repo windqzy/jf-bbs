@@ -15,8 +15,6 @@
     </div>
     <div class="site-mobile-shade"></div>
 
-
-
     <div class="fly-panel fly-panel-user" pad20>
       <basic v-if="activeIndex == 2"></basic>
       <user v-else-if="activeIndex==1"></user>
@@ -29,35 +27,51 @@
   import user from './components/user'
   import basic from './components/basic'
   import message from './components/message'
+
   export default {
     name: "index",
-    components:{
-      user,basic,message
+    components: {
+      user, basic, message
+    },
+    watch: {
+      '$route.hash': {
+        handler(val) {
+          switch (val) {
+            case '#message' :
+              this.activeIndex = 3;
+              break;
+            case '#basic' :
+              this.activeIndex = 2;
+              break;
+          }
+        },
+        immediate: true
+      }
     },
     data() {
       return {
         activeIndex: 1,
-        menuList:[
+        menuList: [
           {
-            icon:'&#xe609;',
-            name:'我的主页'
-          },{
-            icon:'&#xe612;',
-            name:'用户中心'
-          },{
-            icon:'&#xe620;',
-            name:'基本设置'
-          },{
-            icon:'&#xe611;',
-            name:'我的消息'
+            icon: '&#xe609;',
+            name: '我的主页'
+          }, {
+            icon: '&#xe612;',
+            name: '用户中心'
+          }, {
+            icon: '&#xe620;',
+            name: '基本设置'
+          }, {
+            icon: '&#xe611;',
+            name: '我的消息'
           },
         ]
       }
     },
-    methods:{
+    methods: {
       routerlink(index) {
         this.activeIndex = index;
-        if(index == 0) {
+        if (index == 0) {
           this.$router.push('/user/index');
         }
       }

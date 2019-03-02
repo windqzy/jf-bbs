@@ -150,6 +150,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- dingding -->
+        <!--<dependency>-->
+            <!--　　<groupId>com.taobao.top</groupId>-->
+            <!--　　<artifactId>htmlunit</artifactId>-->
+            <!--　　<version>2.21-OSGi</version>-->
+            <!--　　<scope>system</scope>-->
+            <!--　　<systemPath>${project.basedir}/libs/taobao-sdk-java-auto_1479188381469-20190227.jar</systemPath>-->
+        <!--</dependency>-->
 
     </dependencies>
 

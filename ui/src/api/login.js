@@ -3,13 +3,22 @@ import axios from 'axios'
 
 // 查询Label列表
 
+// export function getAccessToken() {
+//   return axios({
+//     url: '/api/sns/gettoken?appid=' + window.localStorage.DD_APPID + '&appsecret=' +
+//     window.localStorage.DD_APPSECRET,
+//     method: 'GET',
+//   })
+// }
+
 export function getAccessToken() {
-  return axios({
-    url: '/api/sns/gettoken?appid=' + window.localStorage.DD_APPID + '&appsecret=' +
-    window.localStorage.DD_APPSECRET,
+  return request({
+    url: '/login/getUserFromDingDing',
     method: 'GET',
   })
 }
+
+
 
 export function getCompanyToken() {
   return axios({

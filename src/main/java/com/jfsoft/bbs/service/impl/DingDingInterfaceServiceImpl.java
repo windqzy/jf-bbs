@@ -3,9 +3,13 @@ package com.jfsoft.bbs.service.impl;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.jfsoft.bbs.service.DingDingInterfaceService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -57,9 +61,11 @@ public class DingDingInterfaceServiceImpl implements DingDingInterfaceService {
 
     @Override
     public JSONObject getUnionId(String accessToken, String tmpAuthCode) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("tmp_auth_code", tmpAuthCode);
         JSONObject object;
         String jsonStr = HttpUtil.post(DD_URL + "/sns/get_persistent_code?access_token=" + accessToken
-                , "{\"tmp_auth_code\": " + tmpAuthCode + "}");
+                , JSON.toJSONString(params));
         try {
             object = JSONUtil.parseObj(jsonStr);
         } catch (Exception e) {

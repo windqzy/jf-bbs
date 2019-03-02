@@ -44,8 +44,8 @@
             </div>
             <div class="detail-about">
               <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">
-                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                     alt="postInfo.author">
+                <img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"
+                     :alt="postInfo.author">
               </router-link>
               <div class="fly-detail-user">
                 <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">
@@ -77,7 +77,7 @@
                 <div class="detail-about detail-about-reply">
                   <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-avatar">
                     <img
-                      :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
+                      :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
                   </router-link>
                   <div class="fly-detail-user">
@@ -197,10 +197,10 @@
             </div>
           </div>
 
-          <div class="fly-panel" style="padding: 20px 0; text-align: center;">
-            <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
-            <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
-          </div>
+          <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
+            <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
+            <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -232,6 +232,7 @@
         layedit: null,
         layer: null,
         userInfo: null,
+        defaultAvatar: require('../../../static/images/avatar/4.jpg')
       }
     },
     created() {
@@ -414,5 +415,11 @@
 <style scoped>
   video {
     width: 100%;
+  }
+  .fly-list-one dd span {
+    float: right;
+  }
+  .icon-pinglun1 {
+    right: 5px;
   }
 </style>

@@ -41,7 +41,7 @@
                 <div carousel-item="">
                   <div class="layui-this">
                     <a href="https://fly.layui.com/jump/yundashi/" target="_blank">
-                      <img src="http://pic3.16pic.com/00/47/90/16pic_4790939_b.jpg" alt="云大使"
+                      <img src="../../static/images/index.png" alt="首页"
                            style="max-width: 100%;">
                     </a>
                   </div>
@@ -59,8 +59,7 @@
             <ul class="fly-list">
               <li v-for="top in topPostList">
                 <router-link :to="'/user/index?userId='+ top.userId" class="fly-avatar">
-                  <img
-                    :src="top.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : top.icon"
+                  <img :src="top.icon == null ? defaultAvatar : top.icon"
                     :alt="top.author">
                 </router-link>
                 <h2>
@@ -108,13 +107,16 @@
                 <a style="cursor: pointer" :class="{'layui-this': sortTypeActive == 1}" @click="setSortType(1)">按热议</a>
               </span>
             </div>
+            <!-- 无数据时 -->
+            <div v-if="postList.length == 0" class="fly-none">
+              就等你发帖的呢
+              <router-link to="/add/index">👉点我发帖</router-link>
+            </div>
             <!-- LIST -->
             <ul class="fly-list">
               <li v-for="post in postList">
                 <router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">
-                  <img
-                    :src="post.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : post.icon"
-                    :alt="post.author">
+                  <img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
                 </router-link>
                 <h2>
                   <a class="layui-badge">{{post.labelName}}</a>
@@ -129,8 +131,8 @@
                     <i class="layui-badge fly-badge-vip">VIP3</i>
                     -->
                   </router-link>
-                  <span>{{post.initTime}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{post.rewardGrade}}</span>
+                  <span>{{post.initTime | getDate}}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石"><i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
@@ -141,7 +143,7 @@
                 </div>
               </li>
             </ul>
-            <div style="text-align: center">
+            <div style="text-align: center" v-if="postList.length > 0">
               <div class="laypage-main">
                 <a style="cursor: pointer" @click="nextPage" class="laypage-next">更多求解</a>
               </div>
@@ -154,44 +156,34 @@
           <div class="fly-panel" v-if="labelId == 0" style="height: 171px;">
             <h3 class="fly-panel-title">公告</h3>
             <div class="layui-card-body">
-              热烈庆祝金风社区成立！！！
+              热烈庆祝金风社区成立！！！<br>
+              特别感谢胡俊杰、闵江沛、秦至颖、江茂华等童鞋为金风社区做出的巨大贡献！！！
+              <img src="../../static/layui/images/face/63.gif" />
+              <img src="../../static/layui/images/face/63.gif" />
+              <img src="../../static/layui/images/face/63.gif" />
+              <img src="../../static/layui/images/face/63.gif" />
             </div>
             <!--<ul class="fly-panel-main fly-list-static">-->
-              <!--<li>-->
-                <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a href="http://fly.layui.com/jie/5366/" target="_blank">-->
-                  <!--layui 常见问题的处理和实用干货集锦-->
-                <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
-              <!--</li>-->
+            <!--<li>-->
+            <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="http://fly.layui.com/jie/5366/" target="_blank">-->
+            <!--layui 常见问题的处理和实用干货集锦-->
+            <!--</a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>-->
+            <!--</li>-->
 
             <!--</ul>-->
           </div>
           <div class="fly-panel" v-if="labelId == 0">
             <h3 class="fly-panel-title">今日热点</h3>
             <ul class="fly-panel-main fly-list-static">
-              <li>
-                <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-              </li>
-              <li>
-                <a href="http://fly.layui.com/jie/5366/" target="_blank">
-                  layui 常见问题的处理和实用干货集锦
-                </a>
-              </li>
-              <li>
-                <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-              </li>
-              <li>
-                <a href="http://fly.layui.com/jie/5366/" target="_blank">
-                  layui 常见问题的处理和实用干货集锦
-                </a>
-              </li>
-              <li>
-                <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
+              <li v-for="item in todayHotList">
+                <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>-->
+                <router-link :to="'/post/detail?postId=' + item.id + '&labelId=' + item.labelId">{{item.title}}</router-link>
               </li>
             </ul>
           </div>
@@ -225,8 +217,7 @@
               <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
               <dd v-for="replyTop in replyTopList">
                 <router-link :to="'/user/index?userId='+replyTop.userId">
-                  <img
-                    :src="replyTop.icon == null? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : replyTop.icon">
+                  <img :src="replyTop.icon == null? defaultAvatar : replyTop.icon">
                   <cite>{{replyTop.author}}</cite><i>{{replyTop.replyCount}}<span>次回答</span></i>
                 </router-link>
               </dd>
@@ -247,11 +238,11 @@
           <!-- 广告区域 -->
           <div class="fly-panel">
             <div class="fly-panel-title">
-              这里可作为广告区域
+              广告区域
             </div>
             <div class="fly-panel-main">
               <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
+                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">火热招商中 QQ:997909544</a>
             </div>
           </div>
           <!-- 友情链接 -->
@@ -263,8 +254,8 @@
               <!--<dd><a href="http://layer.layui.com/" target="_blank">layer</a></dd>-->
               <!--<dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a></dd>-->
               <!--<dd><a-->
-                <!--href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"-->
-                <!--class="fly-link">申请友链</a></dd>-->
+              <!--href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"-->
+              <!--class="fly-link">申请友链</a></dd>-->
             </dl>
           </div>
         </div>
@@ -317,25 +308,25 @@
         <ul class="layui-tab-item layui-show">
           <li v-for="sign in noticeList">
             <a href="" target="_blank">
-              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
             </a>
-            <span class="fly-grey">签到于 {{sign.initTime}}</span>
+            <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
           </li>
         </ul>
         <ul class="layui-tab-item">
           <li v-for="sign in noticeList">
             <a href="" target="_blank">
-              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
             </a>
-            <span class="fly-grey">签到于 {{sign.initTime}}</span>
+            <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
           </li>
         </ul>
         <ul class="layui-tab-item">
           <li v-for="sign in noticeList">
             <a href="" target="_blank">
-              <img :src="sign.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : sign.icon">
+              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
             </a>
             <span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>
@@ -376,7 +367,9 @@
         isSign: false,
         currGrade: 0, //今天签到应得的分数
         layer: null,
-        $: null
+        $: null,
+        todayHotList: [],
+        defaultAvatar: require('../../static/images/avatar/4.jpg')
       }
     },
     created() {
@@ -402,6 +395,7 @@
       // this.getCount();
       this.getBool();
       this.getCurrGrade();
+      this.getTodayHot();
     },
     mounted() {
       let _this = this;
@@ -444,7 +438,7 @@
         this.layer.open({
           type: 1
           , title: '签到活跃榜 TOP-20'
-          , area: '310px'
+          , area: '300px'
           , shade: 0.8
           , shadeClose: true
           , content: this.$('#signTop')
@@ -517,6 +511,25 @@
           this.replyTopList = res.data;
         })
       },
+
+      // 查询今日热榜
+      getTodayHot() {
+        console.log(this.labelId)
+        let obj = {
+          currPage: 1,
+          pageSize: 10,
+          sortType: 0,
+          postType: 0,
+          labelId: this.labelId,
+          beginTime: time.formatDate(new Date()),
+          endTime: time.formatDate(new Date()),
+        };
+        // console.log(obj)
+        post.getList(obj).then(res => {
+          console.log(res.data)
+          this.todayHotList = res.data;
+        })
+      },
       // 获取本周热议
       getWeekHot() {
         console.log(this.labelId)
@@ -563,9 +576,64 @@
           this.noticeList = res.data;
         })
       }
+    },
+    filters: {
+      getDate(dateTimeStamp) {
+
+        var minute = 1000 * 60;
+        var hour = minute * 60;
+        var day = hour * 24;
+        var halfamonth = day * 15;
+        var month = day * 30;
+
+        if (dateTimeStamp == undefined) {
+          return false;
+        } else {
+          dateTimeStamp = dateTimeStamp.replace(/\-/g, "/");
+
+          var sTime = new Date(dateTimeStamp).getTime();//把时间pretime的值转为时间戳
+
+          var now = new Date().getTime();//获取当前时间的时间戳
+
+          var diffValue = now - sTime;
+
+          if (diffValue < 0) {
+            console.log("结束日期不能小于开始日期！");
+          }
+
+          var monthC = diffValue / month;
+          var weekC = diffValue / (7 * day);
+          var dayC = diffValue / day;
+          var hourC = diffValue / hour;
+          var minC = diffValue / minute;
+
+          if (monthC >= 1) {
+            return parseInt(monthC) + "个月前";
+          } else if (weekC >= 1) {
+            return parseInt(weekC) + "周前";
+          } else if (dayC >= 1) {
+            return parseInt(dayC) + "天前";
+          } else if (hourC >= 1) {
+            return parseInt(hourC) + "个小时前";
+          } else if (minC >= 1) {
+            return parseInt(minC) + "分钟前"
+          } else {
+            return "刚刚";
+          }
+        }
+      },
+      formatDate(date) {
+        var da = new Date(date);
+        return da.getHours() + ':' + da.getMinutes() + ':' + da.getSeconds();
+      }
     }
   }
 </script>
 <style scoped>
-
+  .fly-list-one dd span {
+    float: right;
+  }
+  .icon-pinglun1 {
+    right: 5px;
+  }
 </style>

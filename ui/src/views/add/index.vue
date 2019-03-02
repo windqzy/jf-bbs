@@ -141,12 +141,15 @@
         layer: null,
         postId: null,
         title: '',
-        showGrade: false
+        showGrade: false,
+        userInfo: ''
       }
     },
     created() {
-      this.getCurrGrade();
+      this.userInfo = this.$store.getters.user;
       this.postId = this.$route.query.postId;
+      this.getCurrGrade();
+
       if (!this.postId) {
         this.title = '发表新帖';
       } else {
@@ -292,7 +295,7 @@
             //插入自定义链接
             , customlink: {
               title: '插入layui官网'
-              , href: 'https://www.layui.com'
+              , href: 'https://www.bjjfsoft.com'
               , onmouseup: ''
             }
             , facePath: 'http://knifez.gitee.io/kz.layedit/Content/Layui-KnifeZ/'
@@ -334,25 +337,29 @@
       },
       // 查询当前分数
       getCurrGrade() {
-        grade.getGrade().then(res => {
+        grade.getGrade(this.userInfo.id).then(res => {
           this.currGrade = res.data.grade;
         })
       },
       // 发布文章
       publish() {
-        this.post.content = this.layedit.getContent(this.editIndex);
-        let bbsPosts = {
-          id: this.postId,
-          labelId: this.post.labelId,
-          title: this.post.title,
-          rewardGrade: this.post.grade,
-          content: this.post.content
-        };
-        post.publish(bbsPosts).then(res => {
-          this.layer.msg('发布成功');
-          console.log(res.data);
-          this.updateGrade();
-        })
+        if (this.post.grade > this.currGrade) {
+          this.layer.msg('钻石不够你咋发布？!');
+        } else {
+          this.post.content = this.layedit.getContent(this.editIndex);
+          let bbsPosts = {
+            id: this.postId,
+            labelId: this.post.labelId,
+            title: this.post.title,
+            rewardGrade: this.post.grade,
+            content: this.post.content
+          };
+          post.publish(bbsPosts).then(res => {
+            this.layer.msg('发布成功');
+            console.log(res.data);
+            this.updateGrade();
+          })
+        }
       },
       //修改积分
       updateGrade() {

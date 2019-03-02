@@ -42,7 +42,7 @@
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
               <img
-                :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
+                :src="userInfo.icon == null ? defaultAvatar : userInfo.icon">
             </router-link>
             <dl class="layui-nav-child">
               <dd>
@@ -120,7 +120,8 @@
         labelList: [],
         activeLabel: -1,
         isChildMenu: true,
-        userInfo: ''
+        userInfo: '',
+        defaultAvatar: require('../../static/images/avatar/4.jpg')
       }
     },
     watch: {

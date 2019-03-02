@@ -143,7 +143,7 @@
         city: '',
         signature: '',
         mobile: '',
-        imgUrl: '',
+        imgUrl: require('../../../../static/images/avatar/4.jpg'),
         userInfo: '',
         selectSex: ''
       }
@@ -205,7 +205,7 @@
         axios.post(window.localStorage.baseUrl + '/upload/file', param, config)
           .then(response => {
             console.log(response);
-            this.imgUrl = response.data.data;
+            this.imgUrl = response.data.data.src;
             this.updateUserIcon();
           })
       },

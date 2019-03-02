@@ -14,6 +14,7 @@
 </template>
 <script>
   import * as login from '@/api/login'
+  import * as user from '@/api/user'
 
   let width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
   export default {
@@ -25,14 +26,29 @@
         accessToken: '',
         companyToken: '',
         unionId: '',
+        token: ''
       }
     },
     created() {
-      if (this.$route.query.code) {
-        this.redirectCode = this.$route.query.code;
-        this.redirectState = this.$route.query.state;
-        this.getAccessToken();
-        this.getCompanyToken();
+      if (this.$route.query.token) {
+        console.log("aaaa")
+        // this.redirectCode = this.$route.query.code;
+        // this.redirectState = this.$route.query.state;
+        // this.getAccessToken();
+        // // this.getCompanyToken();
+        this.token = this.$route.query.token;
+        window.localStorage['B-Token'] = this.token;
+        user.getUser().then(res => {
+          console.log(res.data)
+          this.$store.dispatch('addUserInfo').then(() => {
+            if (!res.data.username) {
+              this.$router.push('/user/reg');
+            } else {
+              window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+              this.$router.push('/home/index');
+            }
+          });
+        })
       }
     },
     mounted() {
@@ -131,74 +147,77 @@
         this.$router.push('/home/index');
       },
       getAccessToken() {
+        // login.getAccessToken().then(res => {
+        //   console.log('accessToken：' + res.data.access_token)
+        //   // console.log(res.data)
+        //   this.accessToken = res.data.access_token;
+        //   this.getUnionId();
+        // })
         login.getAccessToken().then(res => {
-          console.log('accessToken：' + res.data.access_token)
-          // console.log(res.data)
-          this.accessToken = res.data.access_token;
-          this.getUnionId();
+          console.log(res.data)
         })
       },
-      getCompanyToken() {
-        login.getCompanyToken().then(res => {
-          console.log('companyToken:' + res.data.access_token)
-          this.companyToken = res.data.access_token;
-        })
-      },
-      getUnionId() {
-        let json = {
-          "tmp_auth_code": this.redirectCode
-        }
-        login.getUnionId(this.accessToken, json).then(res => {
-          console.log(res.data);
-          this.unionId = res.data.unionid;
-          if (!!this.unionId) {
-            this.getUserId();
-          }
-        })
-      },
-      getUserId() {
-        login.getUserId(this.companyToken, this.unionId).then(res => {
-          console.log('getUserId:' + res.data);
-          if (res.data.errcode == 60121) {
-            // 非法用户
-          } else {
-            this.userId = res.data.userid;
-            this.getUser();
-          }
-        })
-      },
-      getUser() {
-        login.getUser(this.companyToken, this.userId).then(res => {
-          this.user = res.data;
-          console.log(this.user);
-          if (!!this.user) {
-            this.login();
-          }
-        })
-      },
-      login() {
-        let loginForm = {
-          unionId: this.unionId,
-          name: this.user.name,
-          mobile: this.user.mobile,
-          position: this.user.position
-        };
-
-        login.addUser(loginForm).then(res => {
-          console.log(res.data);
-          let token = res.token;
-          window.localStorage['B-Token'] = token;
-          this.$store.dispatch('addUserInfo').then(() => {
-            if (!res.data.username) {
-              this.$router.push('/user/reg');
-            } else {
-              window.localStorage.setItem('userInfo', JSON.stringify(res.data));
-              this.$router.push('/home/index');
-            }
-          });
-
-        })
-      },
+      // getCompanyToken() {
+      //   login.getCompanyToken().then(res => {
+      //     console.log('companyToken:' + res.data.access_token)
+      //     this.companyToken = res.data.access_token;
+      //   })
+      // },
+      // getUnionId() {
+      //   let json = {
+      //     "tmp_auth_code": this.redirectCode
+      //   }
+      //   login.getUnionId(this.accessToken, json).then(res => {
+      //     console.log(res.data);
+      //     this.unionId = res.data.unionid;
+      //     if (!!this.unionId) {
+      //       this.getUserId();
+      //     }
+      //   })
+      // },
+      // getUserId() {
+      //   login.getUserId(this.companyToken, this.unionId).then(res => {
+      //     console.log('getUserId:' + res.data);
+      //     if (res.data.errcode == 60121) {
+      //       // 非法用户
+      //     } else {
+      //       this.userId = res.data.userid;
+      //       this.getUser();
+      //     }
+      //   })
+      // },
+      // getUser() {
+      //   login.getUser(this.companyToken, this.userId).then(res => {
+      //     this.user = res.data;
+      //     console.log(this.user);
+      //     if (!!this.user) {
+      //       this.login();
+      //     }
+      //   })
+      // },
+      // login() {
+      //   let loginForm = {
+      //     unionId: this.unionId,
+      //     name: this.user.name,
+      //     mobile: this.user.mobile,
+      //     position: this.user.position
+      //   };
+      //
+      //   login.addUser(loginForm).then(res => {
+      //     console.log(res.data);
+      //     let token = res.token;
+      //     window.localStorage['B-Token'] = token;
+      //     this.$store.dispatch('addUserInfo').then(() => {
+      //       if (!res.data.username) {
+      //         this.$router.push('/user/reg');
+      //       } else {
+      //         window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+      //         this.$router.push('/home/index');
+      //       }
+      //     });
+      //
+      //   })
+      // },
       initHeader() {
         width = window.innerWidth;
         height = window.innerHeight;

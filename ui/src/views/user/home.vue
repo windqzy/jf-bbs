@@ -2,7 +2,7 @@
   <div class="user_index">
     <div class="fly-home fly-panel" style="background-image: url();">
       <img
-        :src="userInfo.icon == null ? '../../static/images/avatar/4.jpg' : userInfo.icon">
+        :src="userInfo.icon == null ? defaultAvatar : userInfo.icon">
       <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
       <!--<i class="iconfont icon-renzheng" title="Fly社区认证"></i>-->
       <h1>
@@ -131,7 +131,8 @@
         grade: 0,
         postList: [],
         replyList: [],
-        userId: ''
+        userId: '',
+        defaultAvatar: require('../../../static/images/avatar/4.jpg')
       }
     },
     created() {

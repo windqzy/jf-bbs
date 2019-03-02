@@ -170,6 +170,8 @@
             let _this = this;
             layui.use(['layer', 'form'], function () {
               var form = layui.form;
+              // _this.post.labelId = _this.labelList[0].id;
+              console.log(_this.labelList[0].id)
               form.on('select', function (data) {
                 _this.selectLabel(data.value);
                 if (data.elem[data.elem.selectedIndex].text == '提问') {
@@ -202,11 +204,11 @@
                 name: "测试参数",
                 age: 99
               }
-              ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+              , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
                 console.log(obj);
                 layer.load(); //上传loading
               }
-              ,choose: function (obj) {
+              , choose: function (obj) {
                 console.log(obj);
               }
               , done: function (data) {
@@ -343,34 +345,45 @@
       },
       // 发布文章
       publish() {
-        layui.use(['form', 'layer'], function(){
-          var form = layui.form;
-          var layer = layui.layer;
-
-          //监听提交
-          form.on('submit(addForm)', function(data){
-            layer.msg(JSON.stringify(data.field));
-            return false;
-          });
-        });
-
-        if (this.post.grade > this.currGrade) {
-          this.layer.msg('钻石不够你咋发布？!');
-        } else {
-          this.post.content = this.layedit.getContent(this.editIndex);
-          let bbsPosts = {
-            id: this.postId,
-            labelId: this.post.labelId,
-            title: this.post.title,
-            rewardGrade: this.post.grade,
-            content: this.post.content
-          };
-          post.publish(bbsPosts).then(res => {
-            this.layer.msg('发布成功');
-            console.log(res.data);
-            this.updateGrade();
+        let _this = this;
+        layui.use(['layer', 'form', 'jquery'], function () {
+          let form = layui.form;
+          let $ = layui.jquery;
+          form.verify({
+            required: function (value, item) {
+              var msg = "必填项不能为空";
+              value = $.trim(value);
+              var isEmpty = !value || value.length < 1;
+              // 当前验证元素是select且为空时,将页面定位至layui渲染的select处，或自定义想定位的位置
+              if (item.tagName == 'SELECT' && isEmpty) {
+                $("html").animate({
+                  scrollTop: $(item).siblings(".layui-form-select").offset().top - 74
+                }, 50);
+              }
+              if (isEmpty) {
+                return msg;
+              } else {
+                if (_this.post.grade > _this.currGrade) {
+                  _this.layer.msg('钻石不够你咋发布？!');
+                } else {
+                  _this.post.content = _this.layedit.getContent(_this.editIndex);
+                  let bbsPosts = {
+                    id: _this.postId,
+                    labelId: _this.post.labelId,
+                    title: _this.post.title,
+                    rewardGrade: _this.post.grade,
+                    content: _this.post.content
+                  };
+                  post.publish(bbsPosts).then(res => {
+                    _this.layer.msg('发布成功');
+                    console.log(res.data);
+                    _this.updateGrade();
+                  })
+                }
+              }
+            }
           })
-        }
+        })
       },
       //修改积分
       updateGrade() {

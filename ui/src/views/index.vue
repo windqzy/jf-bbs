@@ -60,7 +60,7 @@
               <li v-for="top in topPostList">
                 <router-link :to="'/user/index?userId='+ top.userId" class="fly-avatar">
                   <img :src="top.icon == null ? defaultAvatar : top.icon"
-                    :alt="top.author">
+                       :alt="top.author">
                 </router-link>
                 <h2>
                   <a class="layui-badge">{{top.labelName}}</a>
@@ -158,10 +158,10 @@
             <div class="layui-card-body">
               热烈庆祝金风社区成立！！！<br>
               特别感谢胡俊杰、闵江沛、秦至颖、江茂华等童鞋为金风社区做出的巨大贡献！！！
-              <img src="../../static/layui/images/face/63.gif" />
-              <img src="../../static/layui/images/face/63.gif" />
-              <img src="../../static/layui/images/face/63.gif" />
-              <img src="../../static/layui/images/face/63.gif" />
+              <img src="../../static/layui/images/face/63.gif"/>
+              <img src="../../static/layui/images/face/63.gif"/>
+              <img src="../../static/layui/images/face/63.gif"/>
+              <img src="../../static/layui/images/face/63.gif"/>
             </div>
             <!--<ul class="fly-panel-main fly-list-static">-->
             <!--<li>-->
@@ -183,7 +183,8 @@
             <ul class="fly-panel-main fly-list-static">
               <li v-for="item in todayHotList">
                 <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>-->
-                <router-link :to="'/post/detail?postId=' + item.id + '&labelId=' + item.labelId">{{item.title}}</router-link>
+                <router-link :to="'/post/detail?postId=' + item.id + '&labelId=' + item.labelId">{{item.title}}
+                </router-link>
               </li>
             </ul>
           </div>
@@ -307,22 +308,20 @@
       <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
         <ul class="layui-tab-item layui-show">
           <li v-for="sign in noticeList">
-            <router-link :to="'/user/index?userId='+ sign.userId">
-                <img :src="sign.icon == null ? defaultAvatar : sign.icon">
-            </router-link>
-            <router-link :to="'/user/index?userId='+ sign.userId">
+            <a style="cursor: pointer" @click="toUserHome(sign.userId)">
+              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
-            </router-link>
+            </a>
             <!--<a href="" target="_blank">-->
-              <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
-              <!--<cite class="fly-link">{{sign.username}}</cite>-->
+            <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
+            <!--<cite class="fly-link">{{sign.username}}</cite>-->
             <!--</a>-->
             <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
           </li>
         </ul>
         <ul class="layui-tab-item">
           <li v-for="sign in noticeList">
-            <a href="" target="_blank">
+            <a style="cursor: pointer" @click="toUserHome(sign.userId)">
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
             </a>
@@ -331,7 +330,7 @@
         </ul>
         <ul class="layui-tab-item">
           <li v-for="sign in noticeList">
-            <a href="" target="_blank">
+            <a style="cursor: pointer" @click="toUserHome(sign.userId)">
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link">{{sign.username}}</cite>
             </a>
@@ -416,6 +415,10 @@
       }
     },
     methods: {
+      toUserHome(userId) {
+        this.layer.closeAll();
+        this.$router.push('/user/index?userId=' + userId);
+      },
       //获取该用户今日签到与否
       getBool() {
         sign.getBool().then(res => {
@@ -638,6 +641,7 @@
   .fly-list-one dd span {
     float: right;
   }
+
   .icon-pinglun1 {
     right: 5px;
   }

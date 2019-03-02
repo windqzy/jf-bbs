@@ -212,10 +212,14 @@
       //修改用户头像
       updateUserIcon() {
         let url = encodeURIComponent(this.imgUrl);
-        console.log(url);
-        user.updateUserIcon(url).then(res => {
-          console.log(res.data);
-        })
+        // console.log(decodeURIComponent(url));
+        this.$store.state.user.icon = decodeURIComponent(url);
+        // user.updateUserIcon(url).then(res => {
+        //   console.log(res.data);
+        //     this.$store.dispatch('addUserInfo').then(() => {
+        //
+        //     })
+        // })
 
       },
       upDateUser() {

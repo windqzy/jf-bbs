@@ -44,10 +44,13 @@
         <if test="listType != null and listType != ''">
             ORDER BY
             <choose>
-                <when test="listType == 1">
+                <when test="listType == 2">
                     bs.init_time ASC
                 </when>
-                <when test="listType == 2">
+                <when test="listType == 1">
+                    bs.init_time DESC
+                </when>
+                <when test="listType == 3">
                     bs.sign_count DESC
                 </when>
                 <otherwise>

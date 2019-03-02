@@ -43,10 +43,10 @@ public class SignController extends AbstractController {
 	/**
 	 * 列表
 	 */
-	@RequestMapping("/list/{listType}") // listType  0表示最新签到,1表示今日签到最快,2表示连续签到天数
+	@RequestMapping("/list/{listType}") // listType  1表示最新签到,2表示今日签到最快,3表示连续签到天数
 	public R list(@PathVariable("listType") Integer listType) {
 		Map<String, Object> params = new HashMap<>();
-		if (listType != 2) {
+		if (listType != 3) {
 			params.put("today", "today");
 		}
 		params.put("listType", listType);
@@ -93,6 +93,10 @@ public class SignController extends AbstractController {
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
 		wrapper.eq("user_id", userId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
+		// 检查是否有该用户的积分记录
+		EntityWrapper<BbsGradeEntity> wrapperGrade = new EntityWrapper<>();
+		wrapperGrade.eq("user_id", userId);
+		BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapperGrade);
 		// 向签到表中存储的数据
 		BbsSignEntity newBbsSign = new BbsSignEntity();
 
@@ -105,12 +109,19 @@ public class SignController extends AbstractController {
 			newBbsSign.setInitTime(initTime);
 			newBbsSign.setUserId(userId);
 			newBbsSign.setSignCount(1);
-			// grade表为空，新增一条记录
 			BbsGradeEntity gradeEntity = new BbsGradeEntity();
-			gradeEntity.setInitTime(initTime);
-			gradeEntity.setGrade(bbsGradeRuleService.getGradeByRule(1));
-			gradeEntity.setUserId(userId);
-			bbsGradeService.insert(gradeEntity);
+			if (bbsGrade == null) {
+				// grade表为空，新增一条记录
+				gradeEntity.setInitTime(initTime);
+				gradeEntity.setGrade(bbsGradeRuleService.getGradeByRule(1));
+				gradeEntity.setUserId(userId);
+				bbsGradeService.insert(gradeEntity);
+			} else {
+				// grade表不为空，首次签到+5分
+				gradeEntity.setInitTime(initTime);
+				gradeEntity.setGrade(bbsGrade.getGrade() + bbsGradeRuleService.getGradeByRule(1));
+				bbsGradeService.update(gradeEntity, wrapperGrade);
+			}
 			// 新增签到记录
 			bbsSignService.insert(newBbsSign);
 		} else {

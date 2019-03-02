@@ -301,6 +301,7 @@
             //TODO 提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
+            this.getWeekHot();
             this.layedit.setContent(this.editIndex, '');
             this.layer.msg('回复成功')
           })
@@ -313,6 +314,7 @@
             //TODO 提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
+            this.getWeekHot();
             this.layedit.setContent(this.editIndex, '');
             this.replyId = '';
             this.layer.msg('修改成功')
@@ -341,6 +343,8 @@
         }, function () {
           reply.delReply(replyId).then(res => {
             _this.getReplyList(_this.postId);
+            _this.getDetailById(_this.postId);
+            _this.getWeekHot();
             _this.layer.msg("删除成功");
           })
         })

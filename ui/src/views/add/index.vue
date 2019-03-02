@@ -15,7 +15,7 @@
                   <div class="layui-col-md3">
                     <label class="layui-form-label">所在专栏</label>
                     <div class="layui-input-block">
-                      <select lay-verify="required" name="class" lay-filter="column" v-model="post.labelId"
+                      <select lay-verify="required" name="class" v-model="post.labelId"
                               @change="selectLabel">
                         <option v-for="label in labelList" :value="label.id">{{label.name}}</option>
                         <!--<option value="0">提问</option>-->

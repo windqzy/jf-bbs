@@ -10,6 +10,7 @@ import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.channels.SelectableChannel;
 import java.util.*;
 
 
@@ -127,7 +128,14 @@ public class ReplyController extends AbstractController {
 	 */
 	@RequestMapping("/delete/{id}")
 	public R delete(@PathVariable("id") Integer id) {
+		// 根据评论ID找到帖子ID，然后帖子评论数-1
+		BbsReplyEntity replyEntity = bbsReplyService.selectById(id);
+		BbsPostsEntity postsEntity = bbsPostsService.selectById(replyEntity.getPostsId());
+		BbsPostsEntity newPost = new BbsPostsEntity();
+		newPost.setId(postsEntity.getId());
+		newPost.setReplyCount(postsEntity.getReplyCount() - 1);
 		Boolean flag = bbsReplyService.deleteById(id);
+		bbsPostsService.updateById(newPost);
 		return R.ok().put("data", flag);
 	}
 

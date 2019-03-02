@@ -300,17 +300,23 @@
     <!-- 签到榜 -->
     <div class="layui-tab layui-tab-brief" style="margin: 5px 0 0; display: none" id="signTop">
       <ul class="layui-tab-title">
-        <li class="layui-this" @click="getListSign(0)">最新签到</li>
-        <li @click="getListSign(1)">今日最快</li>
-        <li @click="getListSign(2)">总签到榜</li>
+        <li class="layui-this" @click="getListSign(1)">最新签到</li>
+        <li @click="getListSign(2)">今日最快</li>
+        <li @click="getListSign(3)">总签到榜</li>
       </ul>
       <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
         <ul class="layui-tab-item layui-show">
           <li v-for="sign in noticeList">
-            <a href="" target="_blank">
-              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
+            <router-link :to="'/user/index?userId='+ sign.userId">
+                <img :src="sign.icon == null ? defaultAvatar : sign.icon">
+            </router-link>
+            <router-link :to="'/user/index?userId='+ sign.userId">
               <cite class="fly-link">{{sign.username}}</cite>
-            </a>
+            </router-link>
+            <!--<a href="" target="_blank">-->
+              <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
+              <!--<cite class="fly-link">{{sign.username}}</cite>-->
+            <!--</a>-->
             <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
           </li>
         </ul>
@@ -443,7 +449,7 @@
           , shadeClose: true
           , content: this.$('#signTop')
         });
-        this.getListSign(0);
+        this.getListSign(1);
       },
 
       //TODO userId
@@ -572,7 +578,6 @@
       },
       getListSign(listType) {
         sign.listSign(listType).then(res => {
-          console.log(res.data)
           this.noticeList = res.data;
         })
       }

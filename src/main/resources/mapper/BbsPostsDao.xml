@@ -90,4 +90,6 @@
         FROM bbs_collection bc LEFT JOIN bbs_posts bp ON bc.post_id = bp.id
         WHERE bc.user_id = #{userId} ORDER BY bc.init_time DESC
     </select>
+
+
 </mapper>

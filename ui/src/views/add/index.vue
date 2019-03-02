@@ -103,7 +103,7 @@
                 <!--</div>-->
                 <!--</div>-->
                 <div class="layui-form-item">
-                  <button class="layui-btn" lay-filter="*" lay-submit @click="publish">立即发布</button>
+                  <button class="layui-btn" lay-filter="addForm" lay-submit @click="publish">立即发布</button>
                 </div>
               </div>
             </div>
@@ -343,6 +343,16 @@
       },
       // 发布文章
       publish() {
+        layui.use('form', function(){
+          var form = layui.form;
+
+          //监听提交
+          form.on('submit(addForm)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+          });
+        });
+
         if (this.post.grade > this.currGrade) {
           this.layer.msg('钻石不够你咋发布？!');
         } else {

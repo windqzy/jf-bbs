@@ -53,7 +53,7 @@
                   <!--<i class="iconfont icon-renzheng" title="认证信息"></i>-->
                   <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                 </router-link>
-                <span>{{postInfo.initTime}}</span>
+                <span>{{postInfo.initTime | dateStr}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
@@ -94,7 +94,7 @@
                     -->
                   </div>
                   <div class="detail-hits">
-                    <span>{{reply.initTime}}</span>
+                    <span>{{reply.initTime | dateStr}}</span>
                   </div>
                   <i v-if="reply.accept" class="iconfont icon-caina" title="最佳答案"></i>
                 </div>
@@ -192,8 +192,7 @@
               广告区域
             </div>
             <div class="fly-panel-main">
-              <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">火热招商中 QQ:997909544</a>
+              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>
             </div>
           </div>
 
@@ -381,37 +380,56 @@
           this.$router.push('/home/index')
           this.layer.msg(res.msg);
         })
+      },
+      getAD() {
+        this.layer.msg('多攒的钻石，就可以买广告位了');
       }
     },
     filters: {
-      dateStr(date) {
-        //获取js 时间戳
-        var time = new Date().getTime();
-        //去掉 js 时间戳后三位，与php 时间戳保持一致
-        time = parseInt((time - date * 1000) / 1000);
+      dateStr(dateTimeStamp) {
 
-        //存储转换值
-        var s;
-        if (time < 60 * 10) {//十分钟内
-          return '刚刚';
-        } else if ((time < 60 * 60) && (time >= 60 * 10)) {
-          //超过十分钟少于1小时
-          s = Math.floor(time / 60);
-          return s + "分钟前";
-        } else if ((time < 60 * 60 * 24) && (time >= 60 * 60)) {
-          //超过1小时少于24小时
-          s = Math.floor(time / 60 / 60);
-          return s + "小时前";
-        } else if ((time < 60 * 60 * 24 * 3) && (time >= 60 * 60 * 24)) {
-          //超过1天少于3天内
-          s = Math.floor(time / 60 / 60 / 24);
-          return s + "天前";
+        var minute = 1000 * 60;
+        var hour = minute * 60;
+        var day = hour * 24;
+        var halfamonth = day * 15;
+        var month = day * 30;
+
+        if (dateTimeStamp == undefined) {
+          return false;
         } else {
-          //超过3天
-          var date = new Date(parseInt(date) * 1000);
-          return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+          dateTimeStamp = dateTimeStamp.replace(/\-/g, "/");
+
+          var sTime = new Date(dateTimeStamp).getTime();//把时间pretime的值转为时间戳
+
+          var now = new Date().getTime();//获取当前时间的时间戳
+
+          var diffValue = now - sTime;
+
+          if (diffValue < 0) {
+            console.log("结束日期不能小于开始日期！");
+          }
+
+          var monthC = diffValue / month;
+          var weekC = diffValue / (7 * day);
+          var dayC = diffValue / day;
+          var hourC = diffValue / hour;
+          var minC = diffValue / minute;
+
+          if (monthC >= 1) {
+            return parseInt(monthC) + "个月前";
+          } else if (weekC >= 1) {
+            return parseInt(weekC) + "周前";
+          } else if (dayC >= 1) {
+            return parseInt(dayC) + "天前";
+          } else if (hourC >= 1) {
+            return parseInt(hourC) + "个小时前";
+          } else if (minC >= 1) {
+            return parseInt(minC) + "分钟前"
+          } else {
+            return "刚刚";
+          }
         }
-      }
+      },
     }
   };
 </script>

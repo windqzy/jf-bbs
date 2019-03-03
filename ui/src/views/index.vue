@@ -40,7 +40,7 @@
                    style="width: 100%; height: 141px;">
                 <div carousel-item="">
                   <div class="layui-this">
-                    <a href="https://fly.layui.com/jump/yundashi/" target="_blank">
+                    <a href="javascript;" target="_blank">
                       <img src="../../static/images/index.png" alt="首页"
                            style="max-width: 100%;">
                     </a>
@@ -73,7 +73,7 @@
                     <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                     <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                   </a>
-                  <span>{{top.initTime}}</span>
+                  <span>{{top.initTime | getDate}}</span>
                   <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石"><i class="layui-icon layui-icon-diamond"></i> {{top.rewardGrade}}</span>
                   <span v-if="top.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
@@ -242,15 +242,14 @@
               广告区域
             </div>
             <div class="fly-panel-main">
-              <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">火热招商中 QQ:997909544</a>
+              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>
             </div>
           </div>
           <!-- 友情链接 -->
           <div class="fly-panel fly-link">
             <h3 class="fly-panel-title">友情链接</h3>
             <dl class="fly-panel-main">
-              <dd><a href="http://www.bjjfyt.com/" target="_blank">金风易通</a></dd>
+              <dd><a href="www.bjjfsoft.com" target="_blank">金风易通</a></dd>
               <!--<dd><a href="http://layim.layui.com/" target="_blank">WebIM</a></dd>-->
               <!--<dd><a href="http://layer.layui.com/" target="_blank">layer</a></dd>-->
               <!--<dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a></dd>-->
@@ -583,6 +582,9 @@
         sign.listSign(listType).then(res => {
           this.noticeList = res.data;
         })
+      },
+      getAD() {
+        this.layer.msg('多攒的钻石，就可以买广告位了');
       }
     },
     filters: {

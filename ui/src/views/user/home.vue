@@ -17,7 +17,7 @@
         -->
       </h1>
 
-      <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>
+      <!--<p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>-->
 
       <p class="fly-home-info">
         <i class="layui-icon layui-icon-diamond" title="钻石"></i><span style="color: #FF7200;">{{grade}} 钻石</span>

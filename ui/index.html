@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./static/css/global.css">
   <script src="./static/layui/layui.js"></script>
   <script src="//g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
+  <script src="https://g.alicdn.com/dingding/dingtalk-pc-api/2.7.0/index.js"></script>
   <script type="text/javascript" src="./static/js/TweenLite.min.js"></script>
   <script type="text/javascript" src="./static/js/EasePack.min.js"></script>
   <script type="text/javascript" src="./static/js/rAF.js"></script>
@@ -19,12 +20,19 @@
 <script>
   // window.localStorage.baseUrl = 'http://localhost:8848';
   window.localStorage.baseUrl = 'http://oa.bjjfsoft.com:8848';
-  //接口的access token
-  window.localStorage.DD_APPID = 'dingoaq60e6ocm91lbudx2';
-  window.localStorage.DD_APPSECRET = 'htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu';
+  //接口的access token - dev
+  // window.localStorage.DD_APPID = 'dingoaq60e6ocm91lbudx2';
+  // window.localStorage.DD_APPSECRET = 'htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu';
+
+  //接口的access token - prod
+  window.localStorage.DD_APPID = 'dingoangktumznbkybyc4t';
+  window.localStorage.DD_APPSECRET = 'LVALNHr7AJNb2bkugnOsnfMlwG2VW6l_ElV3vKNnctU94-xdIRzxeesw7bF_SeuD';
+
+
   //回调的页面地址
   window.localStorage.DD_REDIRECT = 'http://oa.bjjfsoft.com:8848/login/ding';
   // window.localStorage.DD_REDIRECT = 'http://localhost:8848/login/ding';
+
   //企业门户的access token
   window.localStorage.DD_CORPID = 'ding3a0f8625b872e57235c2f4657eb6378f';
   window.localStorage.DD_CORPSECRET = '_yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d';

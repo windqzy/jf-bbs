@@ -214,12 +214,9 @@
         let url = encodeURIComponent(this.imgUrl);
         // console.log(decodeURIComponent(url));
         this.$store.state.user.icon = decodeURIComponent(url);
-        // user.updateUserIcon(url).then(res => {
-        //   console.log(res.data);
-        //     this.$store.dispatch('addUserInfo').then(() => {
-        //
-        //     })
-        // })
+        user.updateUserIcon(url).then(res => {
+          layer.msg('修改成功');
+        })
 
       },
       upDateUser() {

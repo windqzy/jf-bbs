@@ -18,6 +18,15 @@ export function getAccessToken() {
   })
 }
 
+export function freeLogin() {
+  return request({
+    url: 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?' +
+      'appid=' + window.localStorage.DD_APPID + '&response_type=code&scope=snsapi_auth&state=STATE&redirect_uri='
+      + encodeURIComponent(window.localStorage.DD_REDIRECT),
+    method: 'GET',
+  })
+}
+
 
 
 export function getCompanyToken() {

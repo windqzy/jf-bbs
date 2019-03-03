@@ -13,8 +13,8 @@ app:
   filePath: D://JFAPP/JFBBS/file/
   staticUrl: http://oa.bjjfsoft.com:8848/static/
   webUrl: http://oa.bjjfsoft.com/bbs/#/login
-  DD_APPID: dingoaq60e6ocm91lbudx2
-  DD_APPSECRET: htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu
+  DD_APPID: dingoangktumznbkybyc4t
+  DD_APPSECRET: LVALNHr7AJNb2bkugnOsnfMlwG2VW6l_ElV3vKNnctU94-xdIRzxeesw7bF_SeuD
   DD_CORPID: ding3a0f8625b872e57235c2f4657eb6378f
   DD_CORPSECRET: _yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d
   DD_URL: https://oapi.dingtalk.com

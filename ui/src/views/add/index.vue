@@ -132,7 +132,7 @@
         layedit: null,
         labelList: [],
         post: {
-          labelId: 0,
+          labelId: '',
           title: '',
           grade: 0,
           content: ''
@@ -142,7 +142,8 @@
         postId: null,
         title: '',
         showGrade: false,
-        userInfo: ''
+        userInfo: '',
+        required: false
       }
     },
     created() {
@@ -171,7 +172,7 @@
             layui.use(['layer', 'form'], function () {
               var form = layui.form;
               // _this.post.labelId = _this.labelList[0].id;
-              console.log(_this.labelList[0].id)
+              // console.log(_this.labelList[0].id)
               form.on('select', function (data) {
                 _this.selectLabel(data.value);
                 if (data.elem[data.elem.selectedIndex].text == '提问') {
@@ -343,8 +344,7 @@
           this.currGrade = res.data.grade;
         })
       },
-      // 发布文章
-      publish() {
+      verifyForm() {
         let _this = this;
         layui.use(['layer', 'form', 'jquery'], function () {
           let form = layui.form;
@@ -363,27 +363,37 @@
               if (isEmpty) {
                 return msg;
               } else {
-                if (_this.post.grade > _this.currGrade) {
-                  _this.layer.msg('钻石不够你咋发布？!');
-                } else {
-                  _this.post.content = _this.layedit.getContent(_this.editIndex);
-                  let bbsPosts = {
-                    id: _this.postId,
-                    labelId: _this.post.labelId,
-                    title: _this.post.title,
-                    rewardGrade: _this.post.grade,
-                    content: _this.post.content
-                  };
-                  post.publish(bbsPosts).then(res => {
-                    _this.layer.msg('发布成功');
-                    console.log(res.data);
-                    _this.updateGrade();
-                  })
+                _this.required = true;
+                if (this.required) {
+                  _this.publish();
                 }
               }
             }
           })
         })
+      },
+      // 发布文章
+      publish() {
+        if (this.post.grade > this.currGrade) {
+          this.layer.msg('钻石不够你咋发布？!');
+        } else if (this.post.labelId == '') {
+          this.layer.msg('请选择所属专栏');
+        }
+        else {
+          this.post.content = this.layedit.getContent(this.editIndex);
+          let bbsPosts = {
+            id: this.postId,
+            labelId: this.post.labelId,
+            title: this.post.title,
+            rewardGrade: this.post.grade,
+            content: this.post.content
+          };
+          post.publish(bbsPosts).then(res => {
+            this.layer.msg('发布成功');
+            console.log(res.data);
+            this.updateGrade();
+          })
+        }
       },
       //修改积分
       updateGrade() {

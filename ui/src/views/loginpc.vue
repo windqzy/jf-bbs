@@ -26,12 +26,13 @@
         accessToken: '',
         companyToken: '',
         unionId: '',
-        token: ''
+        token: '',
+        freeCode: ''
       }
     },
     created() {
       if (this.$route.query.token) {
-        console.log("aaaa")
+        // console.log("aaaa")
         // this.redirectCode = this.$route.query.code;
         // this.redirectState = this.$route.query.state;
         // this.getAccessToken();
@@ -55,86 +56,32 @@
       this.initHeader();
       this.initAnimation();
       this.addListeners();
-      // 钉钉登录开始
-      !function (window, document) {
-        function d(a) {
-          var e, c = document.createElement("iframe"),
-            d = a.qrcodeUrl;
-          d += a.style ? "&style=" + a.style : "",
-            d += a.href ? "&href=" + a.href : "",
-            c.src = d,
-            c.frameBorder = "0",
-            c.allowTransparency = "true",
-            c.scrolling = "no",
-            c.width = "330px",
-            c.height = "400px",
-            e = document.getElementById(a.id),
-            e.innerHTML = "",
-            e.appendChild(c)
-        }
-
-        window.DDLogin = d
-      }(window, document);
-
-      var hanndleMessage = function (event) {
-        var data = event.data;
-        var origin = event.origin;
-        if (origin == "https://login.dingtalk.com" || origin == "https://pre-login.dingtalk.com") {
-          window.location.href = getUrlParam("goto", qrcodeUrl) + "&loginTmpCode=" + data;
-        }
-      };
-      if (typeof window.addEventListener != 'undefined') {
-        window.addEventListener('message', hanndleMessage, false);
-      } else if (typeof window.attachEvent != 'undefined') {
-        //for ie
-        window.attachEvent('onmessage', hanndleMessage);
+      console.log(DingTalkPC.ua.isWeb) //引入钉钉桌面端JSAPI后可直接获取
+      this.dingLogin();
+      // if (DingTalkPC.ua.isInDingTalk) {
+      //   this.dingLogin();
+      // } else {
+      //   this.freeLogin()
+      // }
+      /*
+      {
+          isDesktop: true, //是否在桌面端
+          isInDingTalk: true, //页面是否在钉钉网页端，windows端，mac端 的工作模块容器内显示
+          isWeb: false, //是否是网页端
+          isWin: true, //是否是windows客户端
+          isMac: true, //是否是mac客户端
+          hostVersion : '3.1.0' //当前客户端版本
+          language : 'zh_CN' //当前客户端的语言设置，当前值可能是："zh_CN","zh_TW","en_US"（注意：需具备jsapi 2.6.0版本以上，客户端版本3.3.0以上才能检测出到此字段， 当客户端版本低于3.3.0，而jsAPI使用了2.6.0,则此字段值为 “*” ）
       }
+      */
 
-      var goto = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + window.localStorage.DD_APPID +
-        "&response_type=code&scope=snsapi_login&state=STATE" +
-        "&redirect_uri=" + encodeURIComponent(window.localStorage.DD_REDIRECT);
-      var qrcodeUrl = "https://login.dingtalk.com/login/qrcode.htm?goto=" + encodeURIComponent(goto);
-      var obj = DDLogin({
-        id: "login_container",
-        qrcodeUrl: qrcodeUrl,
-        style: "",
-        href: "",
-        width: "300px",
-        height: "300px",
-
-      });
-
-      function getUrlParam(name, url) {
-        // 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
-        if (url.indexOf("?") == -1 || url.indexOf(name + '=') == -1) {
-          return '';
-        }
-        // 获取链接中参数部分
-        var queryString = url.substring(url.indexOf("?") + 1);
-        if (queryString.indexOf('#') > -1) {
-          queryString = queryString.substring(0, queryString.indexOf('#'));
-        }
-        ;
-        // 分离参数对 ?key=value&key2=value2
-        var parameters = queryString.split("&");
-        var pos, paraName, paraValue;
-        for (var i = 0; i < parameters.length; i++) {
-          // 获取等号位置
-          pos = parameters[i].indexOf('=');
-          if (pos == -1) {
-            continue;
-          }
-          // 获取name 和 value
-          paraName = parameters[i].substring(0, pos);
-          paraValue = parameters[i].substring(pos + 1);
-          // 如果查询的name等于当前name，就返回当前值，同时，将链接中的+号还原成空格
-          if (paraName == name) {
-            return decodeURIComponent(paraValue.replace("+", " "));
-          }
-        }
-        return '';
-      };
-      // 钉钉登录结束
+      // if (dd.ios || dd.android) {
+      //   console.log("钉钉客户端")
+      //   this.freeLogin()
+      // } else {
+      //   console.log("不是钉钉客户端")
+      //   this.dingLogin();
+      // }
     },
     methods: {
       testLogin() {
@@ -155,6 +102,11 @@
         // })
         login.getAccessToken().then(res => {
           console.log(res.data)
+        })
+      },
+      freeLogin() {
+        login.freeLogin().then(res => {
+          console.log(res)
         })
       },
       // getCompanyToken() {
@@ -218,6 +170,88 @@
       //
       //   })
       // },
+      dingLogin() {
+        // 钉钉登录开始
+        !function (window, document) {
+          function d(a) {
+            var e, c = document.createElement("iframe"),
+              d = a.qrcodeUrl;
+            d += a.style ? "&style=" + a.style : "",
+              d += a.href ? "&href=" + a.href : "",
+              c.src = d,
+              c.frameBorder = "0",
+              c.allowTransparency = "true",
+              c.scrolling = "no",
+              c.width = "330px",
+              c.height = "400px",
+              e = document.getElementById(a.id),
+              e.innerHTML = "",
+              e.appendChild(c)
+          }
+
+          window.DDLogin = d
+        }(window, document);
+
+        var hanndleMessage = function (event) {
+          var data = event.data;
+          var origin = event.origin;
+          if (origin == "https://login.dingtalk.com" || origin == "https://pre-login.dingtalk.com") {
+            window.location.href = getUrlParam("goto", qrcodeUrl) + "&loginTmpCode=" + data;
+          }
+        };
+        if (typeof window.addEventListener != 'undefined') {
+          window.addEventListener('message', hanndleMessage, false);
+        } else if (typeof window.attachEvent != 'undefined') {
+          //for ie
+          window.attachEvent('onmessage', hanndleMessage);
+        }
+
+        var goto = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + window.localStorage.DD_APPID +
+          "&response_type=code&scope=snsapi_login&state=STATE" +
+          "&redirect_uri=" + encodeURIComponent(window.localStorage.DD_REDIRECT);
+        var qrcodeUrl = "https://login.dingtalk.com/login/qrcode.htm?goto=" + encodeURIComponent(goto);
+        var obj = DDLogin({
+          id: "login_container",
+          qrcodeUrl: qrcodeUrl,
+          style: "",
+          href: "",
+          width: "300px",
+          height: "300px",
+
+        });
+
+        function getUrlParam(name, url) {
+          // 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
+          if (url.indexOf("?") == -1 || url.indexOf(name + '=') == -1) {
+            return '';
+          }
+          // 获取链接中参数部分
+          var queryString = url.substring(url.indexOf("?") + 1);
+          if (queryString.indexOf('#') > -1) {
+            queryString = queryString.substring(0, queryString.indexOf('#'));
+          }
+          ;
+          // 分离参数对 ?key=value&key2=value2
+          var parameters = queryString.split("&");
+          var pos, paraName, paraValue;
+          for (var i = 0; i < parameters.length; i++) {
+            // 获取等号位置
+            pos = parameters[i].indexOf('=');
+            if (pos == -1) {
+              continue;
+            }
+            // 获取name 和 value
+            paraName = parameters[i].substring(0, pos);
+            paraValue = parameters[i].substring(pos + 1);
+            // 如果查询的name等于当前name，就返回当前值，同时，将链接中的+号还原成空格
+            if (paraName == name) {
+              return decodeURIComponent(paraValue.replace("+", " "));
+            }
+          }
+          return '';
+        };
+        // 钉钉登录结束
+      },
       initHeader() {
         width = window.innerWidth;
         height = window.innerHeight;

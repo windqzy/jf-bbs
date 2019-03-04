@@ -85,35 +85,44 @@
         username: '',
         mobile: '',
         email: '',
-        selectSex: 1
+        selectSex: '1'
       }
     },
     mounted() {
       this.username = this.$store.getters.user.username;
       this.mobile = this.$store.getters.user.mobile;
       this.email = this.$store.getters.user.email;
+      // layui.use(['form', 'layer'], function () {
+      //   var form = layui.form;
+      // })
+      let _this = this;
       layui.use(['form', 'layer'], function () {
         var form = layui.form;
+        var layer = layui.layer;
+        form.on('radio', function (data) {
+          _this.selectSex = data.value;
+        });
+        form.render();
       })
     },
     methods: {
       upDateUser() {
-        let _this = this;
-        _this.$nextTick(() => {
-          layui.use(['form', 'layer'], function () {
-            var form = layui.form;
-            var layer = layui.layer;
-            form.on('radio', function (data) {
-              // _this.selectSex = 0;
-              console.log(data.value)
-              _this.selectSex = data.value;
-              // if (data.elem[data.elem.selectedIndex].text == '提问') {
-              //   _this.showGrade = true;
-              // }
-            });
-            form.render();
-          });
-        });
+        // let _this = this;
+        // _this.$nextTick(() => {
+        // layui.use(['form', 'layer'], function () {
+        //   var form = layui.form;
+        //   var layer = layui.layer;
+        //   form.on('radio', function (data) {
+        //     // _this.selectSex = 0;
+        //     console.log(data.value)
+        //     _this.selectSex = data.value;
+        //     // if (data.elem[data.elem.selectedIndex].text == '提问') {
+        //     //   _this.showGrade = true;
+        //     // }
+        //   });
+        //   form.render();
+        // });
+        // });
         let UserForm = {
           username: this.username,
           email: this.email,

@@ -63,7 +63,7 @@
       <div class="layui-form layui-form-pane layui-tab-item">
         <div class="layui-form-item">
           <div class="avatar-add">
-            <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
+            <p>建议尺寸168*168，支持jpg、png、gif</p>
             <input type="file" id="file" name="myfile" style="display: none" ref="file" @change="finishFile"/>
             <button type="button" class="layui-btn upload-img" @click="UpladFile()">
               <i class="layui-icon">&#xe67c;</i>上传头像
@@ -214,16 +214,13 @@
           }
         }; //添加请求头
         axios.post(window.localStorage.baseUrl + '/upload/file', param, config)
-          .then(response => {
-            console.log(response);
-            this.imgUrl = response.data.data.src;
-            this.updateUserIcon();
+          .then(res => {
+            this.updateUserIcon(res.data.data.src);
           })
       },
       //修改用户头像
-      updateUserIcon() {
-        let url = encodeURIComponent(this.imgUrl);
-        // console.log(decodeURIComponent(url));
+      updateUserIcon(imgUrl) {
+        let url = encodeURIComponent(imgUrl);
         this.$store.state.user.icon = decodeURIComponent(url);
         user.updateUserIcon(url).then(res => {
           layer.msg('修改成功');

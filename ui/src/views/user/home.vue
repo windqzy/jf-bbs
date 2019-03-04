@@ -1,6 +1,6 @@
 <template>
   <div class="user_index">
-    <div class="fly-home fly-panel" style="background-image: url();">
+    <div class="fly-home fly-panel">
       <img
         :src="userInfo.icon == null ? defaultAvatar : userInfo.icon">
       <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
@@ -8,7 +8,7 @@
       <h1>
         {{userInfo.username}}
         <i class="iconfont icon-nan" v-if="userInfo.sex == 1"></i>
-         <i class="iconfont icon-nv" v-if="userInfo.sex == 0"></i>
+        <i class="iconfont icon-nv" v-if="userInfo.sex == 0"></i>
         <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
         <!--
         <span style="color:#c00;">（管理员）</span>
@@ -21,7 +21,7 @@
 
       <p class="fly-home-info">
         <i class="layui-icon layui-icon-diamond" title="钻石"></i><span style="color: #FF7200;">{{grade}} 钻石</span>
-        <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime}} 加入</span>
+        <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime | filterDate}} 加入</span>
         <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city == null ? '地球' : userInfo.city}}</span>
       </p>
 
@@ -89,7 +89,8 @@
                 <p>
                   <span>{{reply.initTime}}</span>
                   <!--<a href="" target="_blank">{{reply.postsName}}</a>-->
-                  在<router-link class="jie-title" :to="'/post/detail?postId=' + reply.postsId">{{reply.postsName}}中回答：
+                  在
+                  <router-link class="jie-title" :to="'/post/detail?postId=' + reply.postsId">{{reply.postsName}}中回答：
                   </router-link>
                 </p>
                 <div class="home-dacontent" v-html="reply.content">
@@ -187,10 +188,12 @@
           this.replyList = res.data;
         })
       }
-
-
+    },
+    filters: {
+      filterDate(data) {
+        return data.substr(0, 10);
+      }
     }
-
   }
 </script>
 

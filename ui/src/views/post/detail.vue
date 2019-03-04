@@ -38,7 +38,9 @@
 
               </div>
               <span class="fly-list-nums">
-                <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
+                <a @click="$el.querySelector('#comment').scrollIntoView()" style="cursor: pointer">
+                  <i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}
+                </a>
                 <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
               </span>
             </div>
@@ -75,13 +77,13 @@
               <li data-id="111" class="jieda-daan" v-for="reply in replyList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-avatar">
+                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
                     <img
                       :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
                   </router-link>
                   <div class="fly-detail-user">
-                    <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-link">
+                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
                       <cite>{{reply.author}}</cite>
                       <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                       <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
@@ -107,12 +109,12 @@
                     <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
                     <em>{{reply.up}}</em>
                   </span>
-                  <span type="reply">
+                  <span type="reply" @click="childReply(reply)">
                   <i class="iconfont icon-svgmoban53"></i>
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <a href="#comment">
+                    <a href="javascript:;">
                       <span type="edit" v-if="userInfo.id == reply.userId"
                             @click="updateReply(reply.content, reply.id)">编辑</span>
                     </a>
@@ -121,6 +123,15 @@
                   </div>
                 </div>
               </li>
+              <!-- TODO：回复框 -->
+              <!--<div class="reply" v-show="activeReplyed == index">-->
+              <!--<input type="text" class="layui-input" :placeholder="'回复' + reply.author + '...'" id="replybtn">-->
+              <!--<div class="reply-btn">-->
+              <!--<button class="layui-btn layui-btn-sm">表情</button>-->
+              <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
+              <!--</div>-->
+              <!--</div>-->
+
               <!--<li data-id="111">-->
               <!--<a name="item-1111111111"></a>-->
               <!--<div class="detail-about detail-about-reply">-->
@@ -161,10 +172,11 @@
 
             <div class="layui-form layui-form-pane">
               <div class="layui-form-item layui-form-text">
-                <a name="comment"></a>
+                <a name="comment" id="comment"></a>
                 <div class="layui-input-block">
                     <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"
-                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content"></textarea>
+                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content">
+                    </textarea>
                 </div>
               </div>
               <div class="layui-form-item">
@@ -197,8 +209,8 @@
           </div>
 
           <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
-            <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
-            <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+          <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
+          <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
           <!--</div>-->
         </div>
       </div>
@@ -231,7 +243,8 @@
         layedit: null,
         layer: null,
         userInfo: null,
-        defaultAvatar: require('../../../static/images/avatar/4.jpg')
+        defaultAvatar: require('../../../static/images/avatar/4.jpg'),
+        // activeReplyed: '-1',
       }
     },
     created() {
@@ -328,8 +341,8 @@
       },
       updateReply(content, replyId) {
         this.replyId = replyId;
-        console.log(content)
         this.layedit.setContent(this.editIndex, content);
+        this.$el.querySelector('#comment').scrollIntoView();
       },
       cancel() {
         this.layedit.setContent(this.editIndex, '');
@@ -383,38 +396,36 @@
       },
       getAD() {
         this.layer.msg('多攒的钻石，就可以买广告位了');
+      },
+      //  评论回复
+      childReply(e) {
+        this.$el.querySelector('#comment').scrollIntoView();
+        let user = '<a href="#/user/index?userId=' + e.userId + '" class="fly-link">@' + e.author + '&nbsp;</a>';
+        this.layedit.setContent(this.editIndex, user);
       }
     },
     filters: {
       dateStr(dateTimeStamp) {
-
         var minute = 1000 * 60;
         var hour = minute * 60;
         var day = hour * 24;
         var halfamonth = day * 15;
         var month = day * 30;
-
         if (dateTimeStamp == undefined) {
           return false;
         } else {
           dateTimeStamp = dateTimeStamp.replace(/\-/g, "/");
-
           var sTime = new Date(dateTimeStamp).getTime();//把时间pretime的值转为时间戳
-
           var now = new Date().getTime();//获取当前时间的时间戳
-
           var diffValue = now - sTime;
-
           if (diffValue < 0) {
             console.log("结束日期不能小于开始日期！");
           }
-
           var monthC = diffValue / month;
           var weekC = diffValue / (7 * day);
           var dayC = diffValue / day;
           var hourC = diffValue / hour;
           var minC = diffValue / minute;
-
           if (monthC >= 1) {
             return parseInt(monthC) + "个月前";
           } else if (weekC >= 1) {
@@ -434,14 +445,27 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   video {
     width: 100%;
   }
+
   .fly-list-one dd span {
     float: right;
   }
+
   .icon-pinglun1 {
     right: 5px;
+  }
+
+  .reply {
+    padding: 8px;
+    margin-top: 8px;
+    background-color: #eee;
+    .reply-btn {
+      text-align: right;
+      margin-top: 8px;
+    }
+
   }
 </style>

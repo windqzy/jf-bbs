@@ -13,17 +13,17 @@
         <div class="layui-form-item">
           <label for="L_email" class="layui-form-label">邮箱</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" v-model="email"
+            <input type="text" id="L_email" name="email" required autocomplete="off" v-model="email"
                    class="layui-input">
           </div>
-          <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="activate.html"
+          <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="javascript:;"
                                                                              style="font-size: 12px; color: #4f99cf;">重新验证邮箱</a>。
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_username" required lay-verify="required" name="username" class="layui-input"
+            <input type="text" id="L_username" required name="username" autocomplete="off" class="layui-input"
                    v-model="username">
           </div>
           <div class="layui-inline">
@@ -36,14 +36,14 @@
         <div class="layui-form-item">
           <label for="L_city" class="layui-form-label">城市</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city"
+            <input type="text" id="L_city" name="city" required autocomplete="off" v-model="city"
                    class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_mobile" class="layui-form-label">电话号码</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_mobile" name="mobile" required lay-verify="required" autocomplete="off"
+            <input type="text" id="L_mobile" name="mobile" required autocomplete="off"
                    v-model="mobile" class="layui-input">
           </div>
         </div>
@@ -228,25 +228,35 @@
 
       },
       upDateUser() {
-        if (!!this.email && !!this.username && !!this.city) {
-          let UserForm = {
-            email: this.email,
-            username: this.username,
-            city: this.city,
-            signature: this.signature,
-            mobile: this.mobile,
-            sex: this.selectSex
-          };
-          user.upDateUser(UserForm).then(res => {
-            this.email = res.data.email;
-            this.username = res.data.username;
-            this.city = res.data.city;
-            this.signature = res.data.signature;
-            this.mobile = res.data.mobile;
-            this.selectSex = res.data.sex;
-            layer.msg('修改成功');
-          })
+        let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if (!emailReg.test(this.email)) {
+          return layer.msg('邮箱格式不正确', {icon: 5});
         }
+        if (!this.username) {
+          return layer.msg('昵称不能为空', {icon: 5});
+        }
+        if (!this.city) {
+          return layer.msg('城市不能为空', {icon: 5});
+        }
+
+        let UserForm = {
+          email: this.email,
+          username: this.username,
+          city: this.city,
+          signature: this.signature,
+          mobile: this.mobile,
+          sex: this.selectSex
+        };
+        user.upDateUser(UserForm).then(res => {
+          this.email = res.data.email;
+          this.username = res.data.username;
+          this.city = res.data.city;
+          this.signature = res.data.signature;
+          this.mobile = res.data.mobile;
+          this.selectSex = res.data.sex;
+          layer.msg('修改成功');
+          this.$store.dispatch('addUserInfo');// 回填基本信息
+        })
       }
     }
   }

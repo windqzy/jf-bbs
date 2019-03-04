@@ -85,7 +85,7 @@
         username: '',
         mobile: '',
         email: '',
-        selectSex: '1'
+        selectSex: '1',
       }
     },
     mounted() {
@@ -123,6 +123,13 @@
         //   form.render();
         // });
         // });
+        let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if (!this.username) {
+          return layer.msg('昵称不能为空', {icon: 5});
+        }
+        if (!emailReg.test(this.email)) {
+          return layer.msg('邮箱格式不正确', {icon: 5});
+        }
         let UserForm = {
           username: this.username,
           email: this.email,
@@ -130,17 +137,16 @@
           sex: this.selectSex
         };
         user.upDateUser(UserForm).then(res => {
-
           // res.data.email = this.email;
           // res.data.username = this.username;
           // res.data.mobile = this.mobile;
-          //
           // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
           // this.$router.push('/home/index');
           this.$store.dispatch('addUserInfo').then(() => {
             this.$router.push('/home/index');
           })
         })
+
       },
     }
   }

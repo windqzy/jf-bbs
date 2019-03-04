@@ -60,4 +60,10 @@ export function getPersonReplyList(userId) {
 }
 
 
-
+//采纳回复
+export  function acceptReply(replyId) {
+  return request({
+    url: '/reply/acceptReply/' + replyId,
+    method: 'GET',
+  })
+}

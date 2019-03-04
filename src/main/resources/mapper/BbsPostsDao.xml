@@ -31,6 +31,7 @@
         FROM bbs_posts bp
         LEFT JOIN bbs_user bu ON bp.user_id = bu.id
         LEFT JOIN bbs_label bl ON bl.id = bp.label_id
+        LEFT JOIN bbs_reply br ON bp.id = br.posts_id
         WHERE 1 = 1
         <if test="good != null and good != ''">
             AND bp.good = true
@@ -48,8 +49,9 @@
             AND bp.init_time &lt;= #{endTime}
         </if>
         AND bp.is_del = false
+        ORDER BY br.init_time DESC
         <if test="order != null and order != ''">
-            ORDER BY
+            ,
             <choose>
                 <when test="order == 'init_time'">
                     bp.init_time DESC

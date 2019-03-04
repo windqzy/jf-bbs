@@ -637,8 +637,11 @@
         }
       },
       formatDate(date) {
-        var da = new Date(date);
-        return da.getHours() + ':' + da.getMinutes() + ':' + da.getSeconds();
+        const da = new Date(date);
+        let hours = da.getHours() < 10 ? '0' + da.getHours() : da.getHours();
+        let min = da.getMinutes() < 10 ? '0' + da.getMinutes() : da.getMinutes();
+        let sec = da.getSeconds() < 10 ? '0' + da.getSeconds() : da.getSeconds();
+        return hours + ':' + min + ':' + sec;
       }
     }
   }

@@ -5,6 +5,10 @@ import store from './store';
 const whiteList = ['/login'];// 重定向白名单
 console.log(window.localStorage['B-Token'])
 router.beforeEach((to, from, next) => {
+  // 路由切换定位顶部
+  document.body.scrollTop = 0; // chrome
+  document.documentElement.scrollTop = 0;// firefox
+  window.pageYOffset = 0;// safari
   if (window.localStorage['B-Token']) {
     console.log(store.getters.user.username)
     if (!store.getters.user.username) {

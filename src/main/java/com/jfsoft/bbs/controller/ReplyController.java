@@ -151,11 +151,10 @@ public class ReplyController extends AbstractController {
         if (bbsReply == null) {
             bbsReplyService.trueAccept(ReplyForm.getPostsId());
             BbsPostsEntity rewardgrade = bbsPostsService.getRewardGrade(ReplyForm.getPostsId());
-
             bbsGradeService.upGrade(getUserId(), ReplyForm.getPostsId(),rewardgrade);
             return R.ok("采纳成功");
         } else {
-            return R.error("该贴已经完成采纳");
+            return R.error("抱歉,该贴已经完成采纳");
         }
     }
 }

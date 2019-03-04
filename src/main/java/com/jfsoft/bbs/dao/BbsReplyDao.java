@@ -3,6 +3,7 @@ package com.jfsoft.bbs.dao;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,13 @@ public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
     List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
 
-    BbsReplyEntity getAccept(Map<String,Object> params);
+    Integer getAccept(@Param("id") Integer id);
 
-    BbsReplyEntity trueAccept(Map<String,Object> params);
+    Integer trueAccept(@Param("id") Integer id);
 
+    Integer getRewardGrade(@Param("id") Integer id);
+
+    Integer upGrade(Map<String, Object> params);
+
+    Integer upEnd(@Param("id")Integer id);
 }

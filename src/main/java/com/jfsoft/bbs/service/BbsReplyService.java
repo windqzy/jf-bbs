@@ -23,10 +23,14 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
 
     List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);
 
-    BbsReplyEntity getAccept(Integer postsId);
+    Integer getAccept(Integer id);
 
-    BbsReplyEntity trueAccept(Integer postsId);
+    Integer trueAccept(Integer id);
 
+    Integer getRewardGrade(Integer id);
 
+    Integer upGrade(Integer userId, Integer rewardgrade);
+
+    Integer upEnd(Integer id);
 }
 

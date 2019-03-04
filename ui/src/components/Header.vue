@@ -2,12 +2,12 @@
   <div id="header">
     <div class="fly-header layui-bg-black">
       <div class="layui-container">
-        <router-link class="fly-logo" to="/home/index?id=0">
+        <router-link class="fly-logo" to="/home/index">
           <img src="../../static/images/logo.png" alt="layui">
         </router-link>
         <ul class="layui-nav fly-nav layui-hide-xs">
           <li class="layui-nav-item layui-this">
-            <router-link to="/home/index?id=0"><i class="iconfont icon-jiaoliu"></i>交流</router-link>
+            <router-link to="/home/index"><i class="iconfont icon-jiaoliu"></i>交流</router-link>
           </li>
           <li class="layui-nav-item">
           <a style="cursor: pointer" onclick="layer.msg('开发中...')"><i class="iconfont icon-iconmingxinganli"></i>读书</a>

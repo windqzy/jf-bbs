@@ -56,16 +56,36 @@
         and bp.is_del = false
     </select>
 
-    <select id="getAccept" parameterType="map" resultMap="bbsReplyMap">
-        SELECT *
+    <select id="getAccept" parameterType="integer" resultType="integer">
+        SELECT count(id)
         FROM bbs_reply
-        WHERE posts_id = #{postsId} AND accept = TRUE
+        WHERE posts_id = (select posts_id from bbs_reply where id = #{id}) AND accept = TRUE
     </select>
 
-    <select id="trueAccept" parameterType="map" resultMap="bbsReplyMap">
+    <update id="trueAccept" parameterType="integer" >
         UPDATE bbs_reply
         SET
-        accept = !accept
-        WHERE posts_id = #{postsId}
+        accept = true
+        WHERE id = #{id}
+    </update>
+
+    <select id="getRewardGrade" parameterType="integer" resultType="integer" >
+        SELECT reward_grade
+        FROM bbs_posts
+        WHERE
+        id = (select posts_id from bbs_reply where id = #{id})
     </select>
+
+    <update id="upGrade" parameterType="map">
+        UPDATE bbs_grade
+        SET grade = #{rewardgrade}+grade
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="upEnd" parameterType="integer">
+        UPDATE bbs_posts
+        SET end = true
+        WHERE id = (select posts_id from bbs_reply where id = #{id})
+
+    </update>
 </mapper>

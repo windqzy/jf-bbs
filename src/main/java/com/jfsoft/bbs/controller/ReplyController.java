@@ -157,4 +157,23 @@ public class ReplyController extends AbstractController {
 		return R.ok().put("data", list);
 	}
 
+    /*采纳回复*/
+    @GetMapping("/acceptReply/{id}")
+    public R accept(@PathVariable("id") Integer id) {
+        /*看是否存在已采纳的回复*/
+        Integer bbsReply = bbsReplyService.getAccept(id);
+        if (bbsReply == 0) {
+            /*将该回复修改为已采纳状态*/
+            bbsReplyService.trueAccept(id);
+            /*获取该贴悬赏的飞吻数*/
+            Integer rewardGrade = bbsReplyService.getRewardGrade(id);
+            /*将飞吻加到被采纳的回复者账号上*/
+            bbsReplyService.upGrade(getUserId(), rewardGrade);
+            /*完结该贴，不予新采纳*/
+            bbsReplyService.upEnd(id);
+            return R.ok("采纳成功");
+        } else {
+            return R.error("抱歉,该贴已经完成采纳");
+        }
+    }
 }

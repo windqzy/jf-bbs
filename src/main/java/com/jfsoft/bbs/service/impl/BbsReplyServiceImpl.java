@@ -62,18 +62,30 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     }
 
     @Override
-    public BbsReplyEntity getAccept(Integer postsId) {
-        Map<String,Object> params = new HashMap<>();
-        //params.put("userId",userId);
-        params.put("postsId",postsId);
-        return bbsReplyDao.getAccept(params);
+    public Integer getAccept(Integer id) {
+        return bbsReplyDao.getAccept(id);
     }
 
     @Override
-    public BbsReplyEntity trueAccept(Integer postsId) {
-        Map<String,Object> params = new HashMap<>();
-        //params.put("userId",userId);
-        params.put("postsId",postsId);
-        return bbsReplyDao.trueAccept(params);
+    public Integer trueAccept(Integer id) {
+        return bbsReplyDao.trueAccept(id);
+    }
+
+    @Override
+    public Integer getRewardGrade(Integer id) {
+        return bbsReplyDao.getRewardGrade(id);
+    }
+
+    @Override
+    public Integer upGrade(Integer userId, Integer rewardgrade) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("rewardgrade", rewardgrade);
+        return bbsReplyDao.upGrade(params);
+    }
+
+    @Override
+    public Integer upEnd(Integer id){
+        return bbsReplyDao.upEnd(id);
     }
 }

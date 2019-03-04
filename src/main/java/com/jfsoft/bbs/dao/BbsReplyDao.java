@@ -22,6 +22,8 @@ public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
     List<BbsReplyEntity> getReplyByPostId(Map<String, Object> params);
 
+    List<BbsReplyEntity> getHotReplyByPostid(Map<String, Object> params);
+
     Integer updateUpById(Map<String, Object> params);
 
     List<BbsReplyEntity> getPersonReplyList(Map<String, Object> param);

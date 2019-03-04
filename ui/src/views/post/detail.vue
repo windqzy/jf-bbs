@@ -346,14 +346,10 @@
         reply.getList(postId).then(res => {
           console.log(res.data)
           this.replyList = res.data;
-          //  TODO：热门回帖假数据
-          let hotArr = [];
-          res.data.forEach((item, index) => {
-            if (index < 3) {
-              hotArr.push(item);
-            }
-          })
-          this.replyHotList = hotArr;
+        })
+        reply.getHotList(postId).then(res => {
+          console.log(res.data)
+          this.replyHotList = res.data;
         })
       },
       getWeekHot() {

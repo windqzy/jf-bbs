@@ -43,6 +43,14 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     }
 
     @Override
+    public List<BbsReplyEntity> getHotReplyByPostid(Integer postId, Integer userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("postId", postId);
+        params.put("userId", userId);
+        return bbsReplyDao.getHotReplyByPostid(params);
+    }
+
+    @Override
     public List<BbsReplyEntity> getTop(String beginTime, String endTime) {
         Map<String, Object> params = new HashMap<>();
         params.put("startPage", 1);

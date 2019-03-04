@@ -61,7 +61,7 @@ public class ReplyController extends AbstractController {
 	}
 
 	/**
-	 * 根据postId获取回复
+	 * 根据postId获取最新回复
 	 */
 	@RequestMapping("/list/{postId}")
 	public R postInfo(@PathVariable("postId") Integer postId) {
@@ -69,6 +69,14 @@ public class ReplyController extends AbstractController {
 		return R.ok().put("data", replyList);
 	}
 
+	/**
+	 * 根据postId获取热门回复
+	 */
+	@RequestMapping("/hotList/{postId}")
+	public R hotList(@PathVariable("postId") Integer postId) {
+		List<BbsReplyEntity> replyList = bbsReplyService.getHotReplyByPostid(postId, getUserId());
+		return R.ok().put("data", replyList);
+	}
 
 	/**
 	 * 回帖

@@ -1,9 +1,17 @@
 import request from '@/utils/request'
 
-// 查询文章回复列表
+// 查询文章最新回复列表
 export function getList(postId) {
   return request({
     url: '/reply/list/' + postId,
+    method: 'GET'
+  })
+}
+
+// 查询文章热门回复列表
+export function getHotList(postId) {
+  return request({
+    url: '/reply/hotList/' + postId,
     method: 'GET'
   })
 }

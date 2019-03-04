@@ -65,7 +65,7 @@
               </div>
             </div>
             <!-- 文章内容 -->
-            <div class="detail-body photos" v-html="postInfo.content"></div>
+            <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
           </div>
           <!-- TODO:热门回帖(暂采用回帖前三作为假数据) -->
           <div class="fly-panel detail-box" id="flyReply" v-if="replyList.length != 0">
@@ -268,7 +268,6 @@
 </template>
 
 <script>
-  /*import Header from '@/components/Header';*/
   import * as post from '@/api/post';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
@@ -276,9 +275,6 @@
 
   export default {
     name: "detail",
-    /*  components: {
-        'v-header': Header
-      },*/
     data() {
       return {
         postId: '',
@@ -306,40 +302,54 @@
     },
     mounted() {
       console.log('replyid+++++' + this.replyId)
-      let _this = this;
-      layui.use(['layedit', 'layer', 'upload'], function () {
-        _this.layedit = layui.layedit;
-        _this.layer = layui.layer;
-        _this.layedit.set({
-          uploadImage: {
-            url: window.localStorage.baseUrl + '/upload/file',
-            type: 'post' //默认post
-          }
-        });
-
-        _this.editIndex = _this.layedit.build('L_content', {
-          height: 191,
-          tool: ['face', 'image', 'link', 'code'],
-        }); //建立编辑器
-      });
+      this.layui();
+    },
+    beforeDestroy() {
+      this.layer.closeAll();
     },
     methods: {
+      layui() {
+        let _this = this;
+        layui.use(['layedit', 'layer', 'upload'], function () {
+          _this.layedit = layui.layedit;
+          _this.layer = layui.layer;
+          _this.layedit.set({
+            uploadImage: {
+              url: window.localStorage.baseUrl + '/upload/file',
+              type: 'post' //默认post
+            }
+          });
+
+          _this.editIndex = _this.layedit.build('L_content', {
+            height: 191,
+            tool: ['face', 'image', 'link', 'code'],
+          }); //建立编辑器
+
+          _this.layer.photos({
+            photos: '#detail-body',
+            anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+          });
+        });
+      },
       getDetailById(postId) {
         this.postId = postId;
         post.getDetail(postId).then(res => {
           console.log(res.data);
           this.postInfo = res.data;
           this.getReplyList(postId);
+          this.$nextTick(() => {
+            this.layui();
+          })
         })
       },
       getReplyList(postId) {
         reply.getList(postId).then(res => {
           console.log(res.data)
           this.replyList = res.data;
-        //  TODO：热门回帖假数据
+          //  TODO：热门回帖假数据
           let hotArr = [];
-          res.data.forEach((item,index) => {
-            if(index < 3) {
+          res.data.forEach((item, index) => {
+            if (index < 3) {
               hotArr.push(item);
             }
           })
@@ -516,14 +526,20 @@
     right: 5px;
   }
 
-  .reply {
-    padding: 8px;
-    margin-top: 8px;
-    background-color: #eee;
-    .reply-btn {
-      text-align: right;
-      margin-top: 8px;
+  .detail-body {
+    img {
+      cursor: zoom-in;
     }
-
   }
+
+  /*评论回复*/
+  /*.reply {*/
+  /*padding: 8px;*/
+  /*margin-top: 8px;*/
+  /*background-color: #eee;*/
+  /*.reply-btn {*/
+  /*text-align: right;*/
+  /*margin-top: 8px;*/
+  /*}*/
+  /*}*/
 </style>

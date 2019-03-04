@@ -67,11 +67,60 @@
             <!-- 文章内容 -->
             <div class="detail-body photos" v-html="postInfo.content"></div>
           </div>
-
-          <!-- 回帖 -->
-          <div class="fly-panel detail-box" id="flyReply">
+          <!-- TODO:热门回帖(暂采用回帖前三作为假数据) -->
+          <div class="fly-panel detail-box" id="flyReply" v-if="replyList.length != 0">
             <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
-              <legend>回帖</legend>
+              <legend>热门回复</legend>
+            </fieldset>
+            <ul class="jieda" id="jieda">
+              <li data-id="111" class="jieda-daan" v-for="reply in replyHotList">
+                <a name="item-1111111111"></a>
+                <div class="detail-about detail-about-reply">
+                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
+                    <img
+                      :src="reply.icon == null ? defaultAvatar : reply.icon"
+                      :alt="reply.author">
+                  </router-link>
+                  <div class="fly-detail-user">
+                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
+                      <cite>{{reply.author}}</cite>
+                    </router-link>
+                    <span v-if="reply.userId === postInfo.userId">(楼主)</span>
+                  </div>
+                  <div class="detail-hits">
+                    <span>{{reply.initTime | dateStr}}</span>
+                  </div>
+                  <i v-if="reply.accept" class="iconfont icon-caina" title="最佳答案"></i>
+                </div>
+                <!-- 回复内容 -->
+                <div class="detail-body jieda-body photos" v-html="reply.content">
+
+                </div>
+                <div class="jieda-reply">
+                  <span :class="{ zanok : reply.status}" class="jieda-zan" type="zan">
+                    <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
+                    <em>{{reply.up}}</em>
+                  </span>
+                  <span type="reply" @click="childReply(reply)">
+                  <i class="iconfont icon-svgmoban53"></i>
+                    回复
+                  </span>
+                  <div class="jieda-admin">
+                    <a href="javascript:;">
+                      <span type="edit" v-if="userInfo.id == reply.userId"
+                            @click="updateReply(reply.content, reply.id)">编辑</span>
+                    </a>
+                    <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
+                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- 回帖 -->
+          <div class="fly-panel detail-box" id="flyReply1">
+            <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+              <legend>最新回复</legend>
             </fieldset>
             <ul class="jieda" id="jieda">
               <li data-id="111" class="jieda-daan" v-for="reply in replyList">
@@ -237,6 +286,7 @@
         replyId: '',
         postInfo: '',
         content: '',
+        replyHotList: [],// 热门回帖
         replyList: [],
         hotList: [],
         editIndex: '',
@@ -286,6 +336,14 @@
         reply.getList(postId).then(res => {
           console.log(res.data)
           this.replyList = res.data;
+        //  TODO：热门回帖假数据
+          let hotArr = [];
+          res.data.forEach((item,index) => {
+            if(index < 3) {
+              hotArr.push(item);
+            }
+          })
+          this.replyHotList = hotArr;
         })
       },
       getWeekHot() {
@@ -310,7 +368,7 @@
             content: this.layedit.getContent(this.editIndex),
           }
           reply.addReply(bbsReply).then(res => {
-            //TODO 提示回复成功
+            //  提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
             this.getWeekHot();

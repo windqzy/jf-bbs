@@ -41,8 +41,7 @@
               <cite class="layui-hide-xs">{{$store.getters.user.username}}</cite>
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
-              <img
-                :src="userInfo.icon == null ? defaultAvatar : userInfo.icon">
+              <img :src="defaultAvatar">
             </router-link>
             <dl class="layui-nav-child">
               <dd>
@@ -56,7 +55,7 @@
                 </router-link>
               </dd>
               <dd>
-                <router-link to="/user/index">
+                <router-link :to="'/user/index?userId=' + $store.getters.user.id">
                   <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                 </router-link>
               </dd>
@@ -121,7 +120,16 @@
         activeLabel: -1,
         isChildMenu: true,
         userInfo: '',
-        defaultAvatar: require('../../static/images/avatar/4.jpg')
+        // defaultAvatar: require('../../static/images/avatar/4.jpg')
+      }
+    },
+    computed: {
+      defaultAvatar() {
+        if (!this.$store.getters.user.icon) {
+          return require('../../static/images/avatar/4.jpg')
+        } else {
+          return this.$store.getters.user.icon
+        }
       }
     },
     watch: {

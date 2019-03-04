@@ -23,7 +23,8 @@
         <div class="layui-form-item">
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_username" required lay-verify="required" name="username" class="layui-input" v-model="username">
+            <input type="text" id="L_username" required lay-verify="required" name="username" class="layui-input"
+                   v-model="username">
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
@@ -35,13 +36,15 @@
         <div class="layui-form-item">
           <label for="L_city" class="layui-form-label">城市</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city" class="layui-input">
+            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city"
+                   class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_mobile" class="layui-form-label">电话号码</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_mobile" name="mobile" required lay-verify="required" autocomplete="off" v-model="mobile" class="layui-input">
+            <input type="text" id="L_mobile" name="mobile" required lay-verify="required" autocomplete="off"
+                   v-model="mobile" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -143,9 +146,17 @@
         city: '',
         signature: '',
         mobile: '',
-        imgUrl: require('../../../../static/images/avatar/4.jpg'),
         userInfo: '',
         selectSex: ''
+      }
+    },
+    computed: {
+      imgUrl() {
+        if (!this.$store.getters.user.icon) {
+          return require('../../../../static/images/avatar/4.jpg');
+        } else {
+          return this.$store.getters.user.icon
+        }
       }
     },
     created() {

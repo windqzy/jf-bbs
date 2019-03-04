@@ -40,7 +40,7 @@
                    style="width: 100%; height: 141px;">
                 <div carousel-item="">
                   <div class="layui-this">
-                    <a href="javascript;" target="_blank">
+                    <a href="javascript:;" target="_blank">
                       <img src="../../static/images/index.png" alt="首页"
                            style="max-width: 100%;">
                     </a>
@@ -132,7 +132,8 @@
                     -->
                   </router-link>
                   <span>{{post.initTime | getDate}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石"><i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="post.rewardGrade != 0">
+                    <i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
@@ -157,7 +158,7 @@
             <h3 class="fly-panel-title">公告</h3>
             <div class="layui-card-body">
               热烈庆祝金风社区成立！！！<br>
-              特别感谢胡俊杰、闵江沛、秦至颖、江茂华等童鞋为金风社区做出的巨大贡献！！！
+              特别感谢胡俊杰、闵江沛、秦志颖、江茂华等童鞋为金风社区做出的巨大贡献！！！
               <img src="../../static/layui/images/face/63.gif"/>
               <img src="../../static/layui/images/face/63.gif"/>
               <img src="../../static/layui/images/face/63.gif"/>

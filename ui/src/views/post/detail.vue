@@ -68,11 +68,11 @@
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
           </div>
           <!-- TODO:热门回帖(暂采用回帖前三作为假数据) -->
-          <div class="fly-panel detail-box" id="flyReply" v-if="replyList.length != 0">
+          <div class="fly-panel detail-box" id="flyReply" v-if="replyHotList.length != 0">
             <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
               <legend>热门回复</legend>
             </fieldset>
-            <ul class="jieda" id="jieda">
+            <!--<ul class="jieda" id="jieda">
               <li data-id="111" class="jieda-daan" v-for="reply in replyHotList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
@@ -86,6 +86,57 @@
                       <cite>{{reply.author}}</cite>
                     </router-link>
                     <span v-if="reply.userId === postInfo.userId">(楼主)</span>
+                  </div>
+                  <div class="detail-hits">
+                    <span>{{reply.initTime | dateStr}}</span>
+                  </div>
+                  <i v-if="reply.accept" class="iconfont icon-caina" title="最佳答案"></i>
+                </div>
+                &lt;!&ndash; 回复内容 &ndash;&gt;
+                <div class="detail-body jieda-body photos" v-html="reply.content">
+
+                </div>
+                <div class="jieda-reply">
+                  <span :class="{ zanok : reply.status}" class="jieda-zan" type="zan">
+                    <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
+                    <em>{{reply.up}}</em>
+                  </span>
+                  <span type="reply" @click="childReply(reply)">
+                  <i class="iconfont icon-svgmoban53"></i>
+                    回复
+                  </span>
+                  <div class="jieda-admin">
+                    <a href="javascript:;">
+                      <span type="edit" v-if="userInfo.id == reply.userId"
+                            @click="updateReply(reply.content, reply.id)">编辑</span>
+                    </a>
+                    <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
+                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end" @click="acceptReply(reply.id)">采纳</span>
+                  </div>
+                </div>
+              </li>
+            </ul>-->
+            <ul class="jieda" id="jieda">
+              <li data-id="111" class="jieda-daan" v-for="reply in replyHotList">
+                <a name="item-1111111111"></a>
+                <div class="detail-about detail-about-reply">
+                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
+                    <img
+                      :src="reply.icon == null ? defaultAvatar : reply.icon"
+                      :alt="reply.author">
+                  </router-link>
+                  <div class="fly-detail-user">
+                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
+                      <cite>{{reply.author}}</cite>
+                      <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
+                      <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
+                    </router-link>
+                    <span v-if="reply.userId === postInfo.userId">(楼主)</span>
+                    <!--
+                    <span style="color:#5FB878">(管理员)</span>
+                    <span style="color:#FF9E3F">（社区之光）</span>
+                    <span style="color:#999">（该号已被封）</span>
+                    -->
                   </div>
                   <div class="detail-hits">
                     <span>{{reply.initTime | dateStr}}</span>
@@ -168,7 +219,7 @@
                             @click="updateReply(reply.content, reply.id)">编辑</span>
                     </a>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
+                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end" @click="acceptReply(reply.id)">采纳</span>
                   </div>
                 </div>
               </li>

@@ -57,7 +57,7 @@
               <!--</div>-->
               <!--</div>-->
               <div class="layui-form-item">
-                <button class="layui-btn" @click="upDateUser">立即注册</button>
+                <button class="layui-btn" lay-filter="*" lay-submit @click="upDateUser">立即注册</button>
               </div>
               <!--<div class="layui-form-item fly-form-app">-->
               <!--<span>或者直接使用社交账号快捷注册</span>-->
@@ -125,7 +125,7 @@
         // });
         let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         if (!this.username) {
-          return layer.msg('昵称不能为空', {icon: 5});
+          return false;
         }
         if (!emailReg.test(this.email)) {
           return layer.msg('邮箱格式不正确', {icon: 5});

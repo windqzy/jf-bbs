@@ -13,7 +13,7 @@
         <div class="layui-form-item">
           <label for="L_email" class="layui-form-label">邮箱</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_email" name="email" required autocomplete="off" v-model="email"
+            <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" v-model="email"
                    class="layui-input">
           </div>
           <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="javascript:;"
@@ -23,7 +23,8 @@
         <div class="layui-form-item">
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_username" required name="username" autocomplete="off" class="layui-input"
+            <input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"
+                   class="layui-input"
                    v-model="username">
           </div>
           <div class="layui-inline">
@@ -36,7 +37,7 @@
         <div class="layui-form-item">
           <label for="L_city" class="layui-form-label">城市</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_city" name="city" required autocomplete="off" v-model="city"
+            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city"
                    class="layui-input">
           </div>
         </div>
@@ -232,11 +233,8 @@
         if (!emailReg.test(this.email)) {
           return layer.msg('邮箱格式不正确', {icon: 5});
         }
-        if (!this.username) {
-          return layer.msg('昵称不能为空', {icon: 5});
-        }
-        if (!this.city) {
-          return layer.msg('城市不能为空', {icon: 5});
+        if (!this.username || !this.city) {
+          return false;
         }
 
         let UserForm = {

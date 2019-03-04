@@ -74,7 +74,10 @@
                     <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
                   </a>
                   <span>{{top.initTime | getDate}}</span>
-                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石"><i class="layui-icon layui-icon-diamond"></i> {{top.rewardGrade}}</span>
+                  <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="top.rewardGrade != 0">
+                    <i class="layui-icon layui-icon-diamond"></i>
+                    {{top.rewardGrade}}
+                  </span>
                   <span v-if="top.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i> {{top.replyCount}}
@@ -488,7 +491,6 @@
           endTime: ''
         };
         post.getList(obj).then(res => {
-          console.log(res.data)
           this.postList = res.data;
         })
       },
@@ -506,6 +508,7 @@
         this.getPostList();
       },
       setPostType(type) {
+        this.currPage = 1;
         this.postTypeActive = type;
         this.postType = type;
         this.getPostList();

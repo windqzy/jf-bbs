@@ -1,21 +1,23 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfsoft.bbs.common.utils.PageUtils;
+import com.jfsoft.bbs.common.utils.DateUtil;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.service.BbsGradeRuleService;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsSignService;
-import com.jfsoft.bbs.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 
 /**
@@ -41,11 +43,15 @@ public class SignController extends AbstractController {
 	/**
 	 * 列表
 	 */
-	@RequestMapping("/list")
-	public R list(@RequestParam Map<String, Object> params) {
-		PageUtils page = bbsSignService.queryPage(params);
-
-		return R.ok().put("data", page);
+	@RequestMapping("/list/{listType}") // listType  1表示最新签到,2表示今日签到最快,3表示连续签到天数
+	public R list(@PathVariable("listType") Integer listType) {
+		Map<String, Object> params = new HashMap<>();
+		if (listType != 3) {
+			params.put("today", "today");
+		}
+		params.put("listType", listType);
+		List<BbsSignEntity> signList = bbsSignService.getSignList(params);
+		return R.ok().put("data", signList);
 	}
 
 
@@ -87,6 +93,10 @@ public class SignController extends AbstractController {
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
 		wrapper.eq("user_id", userId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
+		// 检查是否有该用户的积分记录
+		EntityWrapper<BbsGradeEntity> wrapperGrade = new EntityWrapper<>();
+		wrapperGrade.eq("user_id", userId);
+		BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapperGrade);
 		// 向签到表中存储的数据
 		BbsSignEntity newBbsSign = new BbsSignEntity();
 
@@ -99,19 +109,27 @@ public class SignController extends AbstractController {
 			newBbsSign.setInitTime(initTime);
 			newBbsSign.setUserId(userId);
 			newBbsSign.setSignCount(1);
-			// grade表为空，新增一条记录
 			BbsGradeEntity gradeEntity = new BbsGradeEntity();
-			gradeEntity.setInitTime(initTime);
-			gradeEntity.setGrade(bbsGradeRuleService.getGradeByRule(1));
-			gradeEntity.setUserId(userId);
-			bbsGradeService.insert(gradeEntity);
+			if (bbsGrade == null) {
+				// grade表为空，新增一条记录
+				gradeEntity.setInitTime(initTime);
+				gradeEntity.setGrade(bbsGradeRuleService.getGradeByRule(1));
+				gradeEntity.setUserId(userId);
+				bbsGradeService.insert(gradeEntity);
+			} else {
+				// grade表不为空，首次签到+5分
+				gradeEntity.setInitTime(initTime);
+				gradeEntity.setGrade(bbsGrade.getGrade() + bbsGradeRuleService.getGradeByRule(1));
+				bbsGradeService.update(gradeEntity, wrapperGrade);
+			}
 			// 新增签到记录
 			bbsSignService.insert(newBbsSign);
 		} else {
 			// 最后签到时间
 			Date singTime = bbsSign.getInitTime();
 			// 获取当前天数差
-			int day = DateUtil.getIntervalDayTimes(singTime, initTime);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			long day = ChronoUnit.DAYS.between(LocalDate.parse(sdf.format(singTime)), LocalDate.parse(sdf.format(initTime)));
 			// 当前时间与最后签到时间作比较
 			if (day == 1) {
 				// 如果间隔一天，则是连续签到
@@ -147,6 +165,7 @@ public class SignController extends AbstractController {
 		return R.ok("执行结束");
 	}
 
+
 	@RequestMapping("/bool")
 	public R isSign() {
 		Map<String, Object> map = new HashMap<>();
@@ -176,6 +195,8 @@ public class SignController extends AbstractController {
 
 		return R.ok().put("data", map);
 	}
+
+
 
 
 	/**

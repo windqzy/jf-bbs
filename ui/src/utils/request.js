@@ -5,6 +5,7 @@ const service = axios.create({
   timeout: 15000 // 请求超时时间
 })
 
+axios.defaults.withCredentials = true;
 // request拦截器
 service.interceptors.request.use(config => {
   if (window.localStorage['B-Token']) {

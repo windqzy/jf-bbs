@@ -2,6 +2,7 @@ package com.jfsoft.bbs.controller;
 
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.form.UserForm;
 import com.jfsoft.bbs.service.BbsUserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -37,13 +39,13 @@ public class UserController extends AbstractController {
 
 
     /**
-     * 信息
+     * 获取传入的用户信息
      */
-    @RequestMapping("/info/{id}")
-    public R getInfoById(@PathVariable("id") Integer id) {
-        BbsUserEntity bbsUser = bbsUserService.selectById(id);
+    @RequestMapping("/infoByUserId")
+    public R getInfoById(@RequestBody Integer userId) {
+        BbsUserEntity bbsUser = bbsUserService.selectById(userId);
 
-        return R.ok().put("bbsUser", bbsUser);
+        return R.ok().put("data", bbsUser);
     }
 
     /**
@@ -81,8 +83,14 @@ public class UserController extends AbstractController {
         bbsUser.setCity(userForm.getCity());
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
-
+        bbsUser.setSex(userForm.getSex());
         bbsUserService.updateById(bbsUser);
+
+        // 每个人初始化100积分
+        BbsGradeEntity gradeEntity = new BbsGradeEntity();
+        gradeEntity.setGrade(100);
+        gradeEntity.setInitTime(new Date());
+        gradeEntity.setUserId(userId);
         return R.ok().put("data", bbsUser);
     }
 

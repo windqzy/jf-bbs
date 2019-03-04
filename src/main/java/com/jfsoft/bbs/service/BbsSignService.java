@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsSignEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,5 +23,7 @@ public interface BbsSignService extends IService<BbsSignEntity> {
     int insertSign(Integer userId);
 
     int updateSign(BbsSignEntity bbsSignEntity);
+
+    List<BbsSignEntity> getSignList(Map<String, Object> params);
 }
 

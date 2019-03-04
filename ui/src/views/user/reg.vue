@@ -16,6 +16,12 @@
                   <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off"
                          class="layui-input" v-model="username">
                 </div>
+                <div class="layui-inline">
+                  <div class="layui-input-inline">
+                    <input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">
+                    <input type="radio" name="sex" v-model="selectSex" value="0" title="女">
+                  </div>
+                </div>
               </div>
               <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">邮箱</label>
@@ -78,22 +84,44 @@
       return {
         username: '',
         mobile: '',
-        email: ''
+        email: '',
+        selectSex: 1
       }
     },
     mounted() {
       this.username = this.$store.getters.user.username;
       this.mobile = this.$store.getters.user.mobile;
       this.email = this.$store.getters.user.email;
+      layui.use(['form', 'layer'], function () {
+        var form = layui.form;
+      })
     },
     methods: {
       upDateUser() {
+        let _this = this;
+        _this.$nextTick(() => {
+          layui.use(['form', 'layer'], function () {
+            var form = layui.form;
+            var layer = layui.layer;
+            form.on('radio', function (data) {
+              // _this.selectSex = 0;
+              console.log(data.value)
+              _this.selectSex = data.value;
+              // if (data.elem[data.elem.selectedIndex].text == '提问') {
+              //   _this.showGrade = true;
+              // }
+            });
+            form.render();
+          });
+        });
         let UserForm = {
           username: this.username,
           email: this.email,
-          mobile: this.mobile
+          mobile: this.mobile,
+          sex: this.selectSex
         };
         user.upDateUser(UserForm).then(res => {
+
           // res.data.email = this.email;
           // res.data.username = this.username;
           // res.data.mobile = this.mobile;

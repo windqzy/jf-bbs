@@ -6,12 +6,12 @@
           <img src="../../static/images/logo.png" alt="layui">
         </router-link>
         <ul class="layui-nav fly-nav layui-hide-xs">
-          <li class="layui-nav-item layui-this">
-            <router-link to="/home/index"><i class="iconfont icon-jiaoliu"></i>交流</router-link>
-          </li>
-          <li class="layui-nav-item">
-            <router-link to="/case/index"><i class="iconfont icon-iconmingxinganli"></i>案例</router-link>
-          </li>
+          <!--<li class="layui-nav-item layui-this">-->
+          <!--<router-link to="/home/index"><i class="iconfont icon-jiaoliu"></i>交流</router-link>-->
+          <!--</li>-->
+          <!--<li class="layui-nav-item">-->
+          <!--<router-link to="/case/index"><i class="iconfont icon-iconmingxinganli"></i>案例</router-link>-->
+          <!--</li>-->
           <!--<li class="layui-nav-item">-->
           <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
           <!--</li>-->
@@ -36,18 +36,25 @@
           <!--</li>-->
           <!-- 登入后的状态 -->
           <li class="layui-nav-item">
-            <a class="fly-nav-avatar" href="javascript:;">
+            <!--<a class="fly-nav-avatar" href="javascript:;">-->
+            <router-link :to="'/user/index?userId='+$store.getters.user.id" class="fly-nav-avatar">
               <cite class="layui-hide-xs">{{$store.getters.user.username}}</cite>
               <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
               <!--<i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
               <img
-                :src="userInfo.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : userInfo.icon">
-            </a>
+                :src="userInfo.icon == null ? defaultAvatar : userInfo.icon">
+            </router-link>
             <dl class="layui-nav-child">
               <dd>
-                <router-link to="/set/index"><i class="layui-icon">&#xe620;</i>基本设置</router-link>
+                <router-link to="/set/index#basic">
+                  <i class="layui-icon">&#xe620;</i>基本设置
+                </router-link>
               </dd>
-              <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+              <dd>
+                <router-link to="/set/index#message">
+                  <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息
+                </router-link>
+              </dd>
               <dd>
                 <router-link to="/user/index">
                   <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
@@ -113,7 +120,8 @@
         labelList: [],
         activeLabel: -1,
         isChildMenu: true,
-        userInfo: ''
+        userInfo: '',
+        defaultAvatar: require('../../static/images/avatar/4.jpg')
       }
     },
     watch: {
@@ -131,7 +139,8 @@
     },
     created() {
       this.getAllLabel();
-      this.getUser();
+      this.userInfo = this.$store.getters.user;
+      // this.getUser();
     },
     mounted() {
       layui.use('element', function () {
@@ -189,10 +198,9 @@
         })
       },
       logOut() {
-        let token = window.localStorage['B-Token'];
         window.localStorage.clear();
-        // window.localStorage['B-Token'] = token;
-        this.$router.push('/');
+        this.$router.push('/login');
+        window.location.reload();
       }
     }
   }

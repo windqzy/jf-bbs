@@ -12,15 +12,30 @@
               <span v-if="postInfo.end" class="layui-badge" style="background-color: #999;">未结</span>
               <span v-else class="layui-badge" style="background-color: #5FB878;">已结</span>
 
-              <span v-if="postInfo.top" class="layui-badge layui-bg-black">置顶</span>
-              <span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>
+              <!--<span v-if="postInfo.top" class="layui-badge layui-bg-black">置顶</span>-->
+              <!--<span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>-->
 
               <div class="fly-admin-box" data-id="123">
-                <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
-                <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
-                <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-danger layui-btn-xs jie-admin" type="del"
+                      @click="delPostConfirm(postInfo.id)">删除</span>
+                <span v-if="userInfo.isAdmin">
+                  <span v-if="postInfo.top" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
+                        rank="0" @click="updatTop(postInfo.id)">取消置顶</span>
+                  <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
+                        rank="1" @click="updatTop(postInfo.id)">置顶</span>
+                </span>
+                <span v-if="userInfo.isAdmin">
+                  <span v-if="postInfo.good" class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
+                        rank="0" @click="updatGood(postInfo.id)">取消加精</span>
+                  <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
+                        rank="1" @click="updatGood(postInfo.id)">加精</span>
+                </span>
+                <span v-if="postInfo.collectionStatus" class="layui-btn layui-btn-xs jie-admin" type="set"
+                      field="status" rank="0" style="background-color:#ccc;"
+                      @click="collection(postInfo.id)">取消收藏</span>
+                <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
+                      @click="collection(postInfo.id)">收藏</span>
+
               </div>
               <span class="fly-list-nums">
                 <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
@@ -28,22 +43,23 @@
               </span>
             </div>
             <div class="detail-about">
-              <a class="fly-avatar" href="../user/home.html">
-                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                     alt="postInfo.author">
-              </a>
+              <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">
+                <img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"
+                     :alt="postInfo.author">
+              </router-link>
               <div class="fly-detail-user">
-                <a href="../user/home.html" class="fly-link">
+                <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">
                   <cite>{{postInfo.author}}</cite>
                   <!--<i class="iconfont icon-renzheng" title="认证信息"></i>-->
                   <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                </a>
-                <span>{{postInfo.initTime}}</span>
+                </router-link>
+                <span>{{postInfo.initTime | dateStr}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}飞吻</span>
-                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin"
-                      type="edit"><a>编辑此贴</a></span>
+                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
+                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit">
+                  <router-link :to="'/add/index?postId=' + postInfo.id">编辑此贴</router-link>
+                </span>
               </div>
             </div>
             <!-- 文章内容 -->
@@ -59,17 +75,17 @@
               <li data-id="111" class="jieda-daan" v-for="reply in replyList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <a class="fly-avatar" href="">
+                  <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-avatar">
                     <img
-                      :src="reply.icon == null ? 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg' : reply.icon"
+                      :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
-                  </a>
+                  </router-link>
                   <div class="fly-detail-user">
-                    <a href="" class="fly-link">
+                    <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-link">
                       <cite>{{reply.author}}</cite>
                       <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                       <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                    </a>
+                    </router-link>
                     <span v-if="reply.userId === postInfo.userId">(楼主)</span>
                     <!--
                     <span style="color:#5FB878">(管理员)</span>
@@ -78,7 +94,7 @@
                     -->
                   </div>
                   <div class="detail-hits">
-                    <span>{{reply.initTime}}</span>
+                    <span>{{reply.initTime | dateStr}}</span>
                   </div>
                   <i v-if="reply.accept" class="iconfont icon-caina" title="最佳答案"></i>
                 </div>
@@ -96,9 +112,12 @@
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <span type="edit" v-if="userInfo.id == reply.userId" @click="updateReply(reply.content, reply.id)">编辑</span>
+                    <a href="#comment">
+                      <span type="edit" v-if="userInfo.id == reply.userId"
+                            @click="updateReply(reply.content, reply.id)">编辑</span>
+                    </a>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <span type="accept" v-if="userInfo.id == postId" @click="acceptReply(reply.id)">采纳</span>
+                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
                   </div>
                 </div>
               </li>
@@ -151,7 +170,7 @@
               <div class="layui-form-item">
                 <input type="hidden" name="jid" value="123"/>
                 <button class="layui-btn" lay-filter="*" @click="addReply()">提交回复</button>
-                <button v-if="replyId == null" class="layui-btn layui-btn-primary">取消</button>
+                <button v-if="replyId != ''" class="layui-btn layui-btn-primary">取消</button>
               </div>
             </div>
           </div>
@@ -170,18 +189,17 @@
 
           <div class="fly-panel">
             <div class="fly-panel-title">
-              这里可作为广告区域
+              广告区域
             </div>
             <div class="fly-panel-main">
-              <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu"
-                 time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
+              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>
             </div>
           </div>
 
-          <div class="fly-panel" style="padding: 20px 0; text-align: center;">
-            <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
-            <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
-          </div>
+          <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
+            <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
+            <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -193,6 +211,7 @@
   import * as post from '@/api/post';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
+  import * as collection from '@/api/collection';
 
   export default {
     name: "detail",
@@ -211,7 +230,8 @@
         editIndex: '',
         layedit: null,
         layer: null,
-        userInfo: null
+        userInfo: null,
+        defaultAvatar: require('../../../static/images/avatar/4.jpg')
       }
     },
     created() {
@@ -220,48 +240,31 @@
       this.userInfo = this.$store.getters.user;
       this.getDetailById(this.postId);
       this.getWeekHot();
-      console.log(this.userInfo)
     },
     mounted() {
       console.log('replyid+++++' + this.replyId)
       let _this = this;
-      layui.use(['layedit', 'layer'], function () {
+      layui.use(['layedit', 'layer', 'upload'], function () {
         _this.layedit = layui.layedit;
         _this.layer = layui.layer;
+        _this.layedit.set({
+          uploadImage: {
+            url: window.localStorage.baseUrl + '/upload/file',
+            type: 'post' //默认post
+          }
+        });
+
         _this.editIndex = _this.layedit.build('L_content', {
           height: 191,
           tool: ['face', 'image', 'link', 'code'],
         }); //建立编辑器
       });
-      // layui.cache.page = 'jie';
-      // layui.cache.user = {
-      //   username: '游客'
-      //   ,uid: -1
-      //   ,avatar: '../../res/images/avatar/00.jpg'
-      //   ,experience: 83
-      //   ,sex: '男'
-      // };
-      // layui.config({
-      //   version: "3.0.0"
-      //   ,base: '../../static/mods/'
-      // }).extend({
-      //   fly: 'index'
-      // }).use(['fly', 'face'], function(){
-      //   var $ = layui.$
-      //     ,fly = layui.fly;
-      //   //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-      //   /*
-      //   $('.detail-body').each(function(){
-      //     var othis = $(this), html = othis.html();
-      //     othis.html(fly.content(html));
-      //   });
-      //   */
-      // });
     },
     methods: {
       getDetailById(postId) {
         this.postId = postId;
         post.getDetail(postId).then(res => {
+          console.log(res.data);
           this.postInfo = res.data;
           this.getReplyList(postId);
         })
@@ -283,46 +286,45 @@
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
         }
-        // console.log(obj)
         post.getList(obj).then(res => {
           this.hotList = res.data;
         })
       },
       addReply() {
-        let bbsReply = {
-          postsId: this.postId,
-          content: this.layedit.getContent(this.editIndex),
+        if (this.replyId == '') {
+          let bbsReply = {
+            postsId: this.postId,
+            content: this.layedit.getContent(this.editIndex),
+          }
+          reply.addReply(bbsReply).then(res => {
+            //TODO 提示回复成功
+            this.getReplyList(this.postId);
+            this.getDetailById(this.postId);
+            this.getWeekHot();
+            this.layedit.setContent(this.editIndex, '');
+            this.layer.msg('回复成功')
+          })
+        } else {
+          let bbsReply = {
+            id: this.replyId,
+            content: this.layedit.getContent(this.editIndex),
+          }
+          reply.updateReply(bbsReply).then(res => {
+            //TODO 提示回复成功
+            this.getReplyList(this.postId);
+            this.getDetailById(this.postId);
+            this.getWeekHot();
+            this.layedit.setContent(this.editIndex, '');
+            this.replyId = '';
+            this.layer.msg('修改成功')
+          })
         }
-        reply.addReply(bbsReply).then(res => {
-          //TODO 提示回复成功
-          this.getReplyList(this.postId);
-          this.layedit.setContent(this.editIndex, '');
-          this.layer.msg('回复成功')
-        })
       },
       replyUp(replyId) {
         reply.replyUp(replyId).then(res => {
-          console.log(res.data);
+          console.log(res.data)
           this.getReplyList(this.postId);
         })
-      },
-      delReply(replyId) {
-        layer.confirm('真的删除行么', function (index) {
-          //   reply.delReply(replyId).then(res => {
-          //   console.log(res.data)
-          //   layer.close(index);
-          //   layer.msg('删除成功！');
-          // })
-        });
-      },
-      acceptReply(replyId) {
-        layer.confirm('确定采纳?', function (index) {
-          //   reply.delReply(replyId).then(res => {
-          //   console.log(res.data)
-          //   layer.close(index);
-          //   layer.msg('成功！');
-          // })
-        });
       },
       updateReply(content, replyId) {
         this.replyId = replyId;
@@ -334,46 +336,112 @@
         this.replyId = '';
       },
       delReply(replyId) {
-        this.layer.confirm('是否删除？', {
-          btn: ['重要', '奇葩'] //按钮
+        let _this = this;
+        this.layer.confirm('是否删除该评论？', {
+          btn: ['是', '否'] //按钮
         }, function () {
-          layer.msg('的确很重要', {icon: 1});
+          reply.delReply(replyId).then(res => {
+            _this.getReplyList(_this.postId);
+            _this.getDetailById(_this.postId);
+            _this.getWeekHot();
+            _this.layer.msg("删除成功");
+          })
         })
+      },
+      collection(postId) {
+        collection.addCollection(postId).then(res => {
+          // console.log(res.data)
+          this.getDetailById(this.postId);
+          this.layer.msg(res.data);
+        })
+      },
+      updatTop(id) {
+        post.updatTop(id).then(res => {
+          this.getDetailById(this.postId);
+          this.layer.msg(res.msg);
+        })
+      },
+      updatGood(id) {
+        post.updatGood(id).then(res => {
+          this.getDetailById(this.postId);
+          this.layer.msg(res.msg);
+        })
+      },
+      delPostConfirm(id) {
+        let _this = this;
+        this.layer.confirm('是否删除此贴？', {
+          btn: ['是', '否'] //按钮
+        }, function () {
+          _this.delPost(id);
+        })
+      },
+      delPost(id) {
+        post.del(id).then(res => {
+          this.$router.push('/home/index')
+          this.layer.msg(res.msg);
+        })
+      },
+      getAD() {
+        this.layer.msg('多攒的钻石，就可以买广告位了');
       }
     },
     filters: {
-      dateStr(date) {
-        //获取js 时间戳
-        var time = new Date().getTime();
-        //去掉 js 时间戳后三位，与php 时间戳保持一致
-        time = parseInt((time - date * 1000) / 1000);
+      dateStr(dateTimeStamp) {
 
-        //存储转换值
-        var s;
-        if (time < 60 * 10) {//十分钟内
-          return '刚刚';
-        } else if ((time < 60 * 60) && (time >= 60 * 10)) {
-          //超过十分钟少于1小时
-          s = Math.floor(time / 60);
-          return s + "分钟前";
-        } else if ((time < 60 * 60 * 24) && (time >= 60 * 60)) {
-          //超过1小时少于24小时
-          s = Math.floor(time / 60 / 60);
-          return s + "小时前";
-        } else if ((time < 60 * 60 * 24 * 3) && (time >= 60 * 60 * 24)) {
-          //超过1天少于3天内
-          s = Math.floor(time / 60 / 60 / 24);
-          return s + "天前";
+        var minute = 1000 * 60;
+        var hour = minute * 60;
+        var day = hour * 24;
+        var halfamonth = day * 15;
+        var month = day * 30;
+
+        if (dateTimeStamp == undefined) {
+          return false;
         } else {
-          //超过3天
-          var date = new Date(parseInt(date) * 1000);
-          return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+          dateTimeStamp = dateTimeStamp.replace(/\-/g, "/");
+
+          var sTime = new Date(dateTimeStamp).getTime();//把时间pretime的值转为时间戳
+
+          var now = new Date().getTime();//获取当前时间的时间戳
+
+          var diffValue = now - sTime;
+
+          if (diffValue < 0) {
+            console.log("结束日期不能小于开始日期！");
+          }
+
+          var monthC = diffValue / month;
+          var weekC = diffValue / (7 * day);
+          var dayC = diffValue / day;
+          var hourC = diffValue / hour;
+          var minC = diffValue / minute;
+
+          if (monthC >= 1) {
+            return parseInt(monthC) + "个月前";
+          } else if (weekC >= 1) {
+            return parseInt(weekC) + "周前";
+          } else if (dayC >= 1) {
+            return parseInt(dayC) + "天前";
+          } else if (hourC >= 1) {
+            return parseInt(hourC) + "个小时前";
+          } else if (minC >= 1) {
+            return parseInt(minC) + "分钟前"
+          } else {
+            return "刚刚";
+          }
         }
-      }
+      },
     }
   };
 </script>
 
 <style scoped>
-
+  video {
+    width: 100%;
+  }
+  .fly-list-one dd span {
+    float: right;
+  }
+  .icon-pinglun1 {
+    right: 5px;
+  }
 </style>

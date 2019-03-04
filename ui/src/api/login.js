@@ -3,13 +3,31 @@ import axios from 'axios'
 
 // 查询Label列表
 
+// export function getAccessToken() {
+//   return axios({
+//     url: '/api/sns/gettoken?appid=' + window.localStorage.DD_APPID + '&appsecret=' +
+//     window.localStorage.DD_APPSECRET,
+//     method: 'GET',
+//   })
+// }
+
 export function getAccessToken() {
-  return axios({
-    url: '/api/sns/gettoken?appid=' + window.localStorage.DD_APPID + '&appsecret=' +
-    window.localStorage.DD_APPSECRET,
+  return request({
+    url: '/login/getUserFromDingDing',
     method: 'GET',
   })
 }
+
+export function freeLogin() {
+  return request({
+    url: 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?' +
+      'appid=' + window.localStorage.DD_APPID + '&response_type=code&scope=snsapi_auth&state=STATE&redirect_uri='
+      + encodeURIComponent(window.localStorage.DD_REDIRECT),
+    method: 'GET',
+  })
+}
+
+
 
 export function getCompanyToken() {
   return axios({

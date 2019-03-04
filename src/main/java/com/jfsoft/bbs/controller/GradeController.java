@@ -43,13 +43,16 @@ public class GradeController extends AbstractController {
      * 信息
      */
     @RequestMapping("/info")
-    public R info() {
+    public R info(Integer userId) {
         EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
-        wrapper.eq("user_id", getUserId());
+        if (userId == null) {
+            wrapper.eq("user_id", getUserId());
+        } else {
+            wrapper.eq("user_id", userId);
+        }
         BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
         return R.ok().put("data", bbsGrade);
     }
-
 
     /**
      * 保存

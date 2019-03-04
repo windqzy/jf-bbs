@@ -2,7 +2,7 @@
   <div class="container demo-1">
     <div class="content">
       <div id="large-header" class="large-header">
-        <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin">开发者登录</a>
+        <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin" v-if="false">开发者登录</a>
         <canvas id="demo-canvas"></canvas>
         <div class="logo_box">
           <h3>欢迎登录</h3>
@@ -14,6 +14,7 @@
 </template>
 <script>
   import * as login from '@/api/login'
+  import * as user from '@/api/user'
 
   let width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
   export default {
@@ -25,100 +26,62 @@
         accessToken: '',
         companyToken: '',
         unionId: '',
+        token: '',
+        freeCode: ''
       }
     },
     created() {
-      if (this.$route.query.code) {
-        this.redirectCode = this.$route.query.code;
-        this.redirectState = this.$route.query.state;
-        this.getAccessToken();
-        this.getCompanyToken();
+      if (this.$route.query.token) {
+        // console.log("aaaa")
+        // this.redirectCode = this.$route.query.code;
+        // this.redirectState = this.$route.query.state;
+        // this.getAccessToken();
+        // // this.getCompanyToken();
+        this.token = this.$route.query.token;
+        window.localStorage['B-Token'] = this.token;
+        user.getUser().then(res => {
+          console.log(res.data)
+          this.$store.dispatch('addUserInfo').then(() => {
+            if (!res.data.username) {
+              this.$router.push('/user/reg');
+            } else {
+              window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+              this.$router.push('/home/index');
+            }
+          });
+        })
       }
     },
     mounted() {
       this.initHeader();
       this.initAnimation();
       this.addListeners();
-      // 钉钉登录开始
-      !function (window, document) {
-        function d(a) {
-          var e, c = document.createElement("iframe"),
-            d = a.qrcodeUrl;
-          d += a.style ? "&style=" + a.style : "",
-            d += a.href ? "&href=" + a.href : "",
-            c.src = d,
-            c.frameBorder = "0",
-            c.allowTransparency = "true",
-            c.scrolling = "no",
-            c.width = "330px",
-            c.height = "400px",
-            e = document.getElementById(a.id),
-            e.innerHTML = "",
-            e.appendChild(c)
-        }
-
-        window.DDLogin = d
-      }(window, document);
-
-      var hanndleMessage = function (event) {
-        var data = event.data;
-        var origin = event.origin;
-        if (origin == "https://login.dingtalk.com" || origin == "https://pre-login.dingtalk.com") {
-          window.location.href = getUrlParam("goto", qrcodeUrl) + "&loginTmpCode=" + data;
-        }
-      };
-      if (typeof window.addEventListener != 'undefined') {
-        window.addEventListener('message', hanndleMessage, false);
-      } else if (typeof window.attachEvent != 'undefined') {
-        //for ie
-        window.attachEvent('onmessage', hanndleMessage);
+      console.log(DingTalkPC.ua.isWeb) //引入钉钉桌面端JSAPI后可直接获取
+      this.dingLogin();
+      // if (DingTalkPC.ua.isInDingTalk) {
+      //   this.dingLogin();
+      // } else {
+      //   this.freeLogin()
+      // }
+      /*
+      {
+          isDesktop: true, //是否在桌面端
+          isInDingTalk: true, //页面是否在钉钉网页端，windows端，mac端 的工作模块容器内显示
+          isWeb: false, //是否是网页端
+          isWin: true, //是否是windows客户端
+          isMac: true, //是否是mac客户端
+          hostVersion : '3.1.0' //当前客户端版本
+          language : 'zh_CN' //当前客户端的语言设置，当前值可能是："zh_CN","zh_TW","en_US"（注意：需具备jsapi 2.6.0版本以上，客户端版本3.3.0以上才能检测出到此字段， 当客户端版本低于3.3.0，而jsAPI使用了2.6.0,则此字段值为 “*” ）
       }
+      */
 
-      var goto = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + window.localStorage.DD_APPID +
-        "&response_type=code&scope=snsapi_login&state=STATE" +
-        "&redirect_uri=" + encodeURIComponent('http://10.0.2.63:8080/#/');
-      var qrcodeUrl = "https://login.dingtalk.com/login/qrcode.htm?goto=" + encodeURIComponent(goto);
-      var obj = DDLogin({
-        id: "login_container",
-        qrcodeUrl: qrcodeUrl,
-        style: "",
-        href: "",
-        width: "300px",
-        height: "300px",
-
-      });
-
-      function getUrlParam(name, url) {
-        // 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
-        if (url.indexOf("?") == -1 || url.indexOf(name + '=') == -1) {
-          return '';
-        }
-        // 获取链接中参数部分
-        var queryString = url.substring(url.indexOf("?") + 1);
-        if (queryString.indexOf('#') > -1) {
-          queryString = queryString.substring(0, queryString.indexOf('#'));
-        }
-        ;
-        // 分离参数对 ?key=value&key2=value2
-        var parameters = queryString.split("&");
-        var pos, paraName, paraValue;
-        for (var i = 0; i < parameters.length; i++) {
-          // 获取等号位置
-          pos = parameters[i].indexOf('=');
-          if (pos == -1) {
-            continue;
-          }
-          // 获取name 和 value
-          paraName = parameters[i].substring(0, pos);
-          paraValue = parameters[i].substring(pos + 1);
-          // 如果查询的name等于当前name，就返回当前值，同时，将链接中的+号还原成空格
-          if (paraName == name) {
-            return decodeURIComponent(paraValue.replace("+", " "));
-          }
-        }
-        return '';
-      };
-      // 钉钉登录结束
+      // if (dd.ios || dd.android) {
+      //   console.log("钉钉客户端")
+      //   this.freeLogin()
+      // } else {
+      //   console.log("不是钉钉客户端")
+      //   this.dingLogin();
+      // }
     },
     methods: {
       testLogin() {
@@ -131,72 +94,163 @@
         this.$router.push('/home/index');
       },
       getAccessToken() {
+        // login.getAccessToken().then(res => {
+        //   console.log('accessToken：' + res.data.access_token)
+        //   // console.log(res.data)
+        //   this.accessToken = res.data.access_token;
+        //   this.getUnionId();
+        // })
         login.getAccessToken().then(res => {
-          console.log('accessToken：' + res.data.access_token)
-          // console.log(res.data)
-          this.accessToken = res.data.access_token;
-          this.getUnionId();
+          console.log(res.data)
         })
       },
-      getCompanyToken() {
-        login.getCompanyToken().then(res => {
-          console.log('companyToken:' + res.data.access_token)
-          this.companyToken = res.data.access_token;
+      freeLogin() {
+        login.freeLogin().then(res => {
+          console.log(res)
         })
       },
-      getUnionId() {
-        let json = {
-          "tmp_auth_code": this.redirectCode
-        }
-        login.getUnionId(this.accessToken, json).then(res => {
-          console.log(res.data);
-          this.unionId = res.data.unionid;
-          if (!!this.unionId) {
-            this.getUserId();
+      // getCompanyToken() {
+      //   login.getCompanyToken().then(res => {
+      //     console.log('companyToken:' + res.data.access_token)
+      //     this.companyToken = res.data.access_token;
+      //   })
+      // },
+      // getUnionId() {
+      //   let json = {
+      //     "tmp_auth_code": this.redirectCode
+      //   }
+      //   login.getUnionId(this.accessToken, json).then(res => {
+      //     console.log(res.data);
+      //     this.unionId = res.data.unionid;
+      //     if (!!this.unionId) {
+      //       this.getUserId();
+      //     }
+      //   })
+      // },
+      // getUserId() {
+      //   login.getUserId(this.companyToken, this.unionId).then(res => {
+      //     console.log('getUserId:' + res.data);
+      //     if (res.data.errcode == 60121) {
+      //       // 非法用户
+      //     } else {
+      //       this.userId = res.data.userid;
+      //       this.getUser();
+      //     }
+      //   })
+      // },
+      // getUser() {
+      //   login.getUser(this.companyToken, this.userId).then(res => {
+      //     this.user = res.data;
+      //     console.log(this.user);
+      //     if (!!this.user) {
+      //       this.login();
+      //     }
+      //   })
+      // },
+      // login() {
+      //   let loginForm = {
+      //     unionId: this.unionId,
+      //     name: this.user.name,
+      //     mobile: this.user.mobile,
+      //     position: this.user.position
+      //   };
+      //
+      //   login.addUser(loginForm).then(res => {
+      //     console.log(res.data);
+      //     let token = res.token;
+      //     window.localStorage['B-Token'] = token;
+      //     this.$store.dispatch('addUserInfo').then(() => {
+      //       if (!res.data.username) {
+      //         this.$router.push('/user/reg');
+      //       } else {
+      //         window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+      //         this.$router.push('/home/index');
+      //       }
+      //     });
+      //
+      //   })
+      // },
+      dingLogin() {
+        // 钉钉登录开始
+        !function (window, document) {
+          function d(a) {
+            var e, c = document.createElement("iframe"),
+              d = a.qrcodeUrl;
+            d += a.style ? "&style=" + a.style : "",
+              d += a.href ? "&href=" + a.href : "",
+              c.src = d,
+              c.frameBorder = "0",
+              c.allowTransparency = "true",
+              c.scrolling = "no",
+              c.width = "330px",
+              c.height = "400px",
+              e = document.getElementById(a.id),
+              e.innerHTML = "",
+              e.appendChild(c)
           }
-        })
-      },
-      getUserId() {
-        login.getUserId(this.companyToken, this.unionId).then(res => {
-          console.log('getUserId:' + res.data);
-          if (res.data.errcode == 60121) {
-            // 非法用户
-          } else {
-            this.userId = res.data.userid;
-            this.getUser();
-          }
-        })
-      },
-      getUser() {
-        login.getUser(this.companyToken, this.userId).then(res => {
-          this.user = res.data;
-          console.log(this.user);
-          if (!!this.user) {
-            this.login();
-          }
-        })
-      },
-      login() {
-        let loginForm = {
-          unionId: this.unionId,
-          name: this.user.name,
-          mobile: this.user.mobile,
-          position: this.user.position
-        };
 
-        login.addUser(loginForm).then(res => {
-          console.log('bbb');
-          console.log(res.data);
-          let token = res.token;
-          window.localStorage['B-Token'] = token;
-          this.$store.dispatch('addUserInfo');
-          if (!res.data.username) {
-            this.$router.push('/user/reg');
-          } else {
-            window.localStorage.setItem('userInfo', JSON.stringify(res.data));
-            this.$router.push('/home/index');
+          window.DDLogin = d
+        }(window, document);
+
+        var hanndleMessage = function (event) {
+          var data = event.data;
+          var origin = event.origin;
+          if (origin == "https://login.dingtalk.com" || origin == "https://pre-login.dingtalk.com") {
+            window.location.href = getUrlParam("goto", qrcodeUrl) + "&loginTmpCode=" + data;
           }
-        })
+        };
+        if (typeof window.addEventListener != 'undefined') {
+          window.addEventListener('message', hanndleMessage, false);
+        } else if (typeof window.attachEvent != 'undefined') {
+          //for ie
+          window.attachEvent('onmessage', hanndleMessage);
+        }
+
+        var goto = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + window.localStorage.DD_APPID +
+          "&response_type=code&scope=snsapi_login&state=STATE" +
+          "&redirect_uri=" + encodeURIComponent(window.localStorage.DD_REDIRECT);
+        var qrcodeUrl = "https://login.dingtalk.com/login/qrcode.htm?goto=" + encodeURIComponent(goto);
+        var obj = DDLogin({
+          id: "login_container",
+          qrcodeUrl: qrcodeUrl,
+          style: "",
+          href: "",
+          width: "300px",
+          height: "300px",
+
+        });
+
+        function getUrlParam(name, url) {
+          // 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
+          if (url.indexOf("?") == -1 || url.indexOf(name + '=') == -1) {
+            return '';
+          }
+          // 获取链接中参数部分
+          var queryString = url.substring(url.indexOf("?") + 1);
+          if (queryString.indexOf('#') > -1) {
+            queryString = queryString.substring(0, queryString.indexOf('#'));
+          }
+          ;
+          // 分离参数对 ?key=value&key2=value2
+          var parameters = queryString.split("&");
+          var pos, paraName, paraValue;
+          for (var i = 0; i < parameters.length; i++) {
+            // 获取等号位置
+            pos = parameters[i].indexOf('=');
+            if (pos == -1) {
+              continue;
+            }
+            // 获取name 和 value
+            paraName = parameters[i].substring(0, pos);
+            paraValue = parameters[i].substring(pos + 1);
+            // 如果查询的name等于当前name，就返回当前值，同时，将链接中的+号还原成空格
+            if (paraName == name) {
+              return decodeURIComponent(paraValue.replace("+", " "));
+            }
+          }
+          return '';
+        };
+        // 钉钉登录结束
       },
       initHeader() {
         width = window.innerWidth;

@@ -11,9 +11,9 @@ export function getCurr() {
 /**
  * 获取当前积分
  */
-export function getGrade() {
+export function getGrade(id) {
   return request({
-    url: '/grade/info',
+    url: '/grade/info?userId=' + id,
     method: 'GET'
   })
 }

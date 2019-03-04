@@ -36,6 +36,8 @@ public class UploadController {
     @PostMapping(value = "/file")
     public R uFile(MultipartFile file) {
 
+        Map<String, Object> result = new HashMap<>();
+
         //文件名
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
@@ -49,24 +51,30 @@ public class UploadController {
         String url = "";
         url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
         if (!StringUtils.isBlank(suffix)) {
-            if (".jpg".equals(suffix) || ".png".equals(suffix) || ".gif".equals(suffix)) {
-                Map<String, Object> map = new HashMap<>();
-                if (!file.isEmpty()) {
-                    File imgFile = new File(absPath);
-                    if (!imgFile.exists()) imgFile.mkdirs();
-                    try {
-                        file.transferTo(new File(absPath + "/" + fileName));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return R.ok().put("data", url);
-                } else {
-                    return R.ok("文件上传失败");
+            Map<String, Object> map = new HashMap<>();
+            if (!file.isEmpty()) {
+                File imgFile = new File(absPath);
+                if (!imgFile.exists()) imgFile.mkdirs();
+                try {
+                    file.transferTo(new File(absPath + "/" + fileName));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                result.put("src", url);
+                result.put("title", "jfyt");
+                return R.ok("上传成功").put("data", result);
             } else {
-                return R.ok("上传文件需为图片格式");
+                return R.ok("文件上传失败");
             }
+        } else {
+            return R.ok("上传文件格式错误");
         }
-        return R.error("格式不支持");
+    }
+
+    @RequestMapping("/del")
+    public R delFile(@RequestBody String imagePath) {
+        String relPath = filePath + imagePath.replace(imagePath, staticUrl);
+        return R.ok();
     }
 }

@@ -11,6 +11,7 @@ import com.jfsoft.bbs.service.BbsSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -45,6 +46,11 @@ public class BbsSignServiceImpl extends ServiceImpl<BbsSignDao, BbsSignEntity> i
         //TODO 用户签到后，需要更新签到状态和积分
 
         return bbsSignDao.updateSign(bbsSignEntity);
+    }
+
+    @Override
+    public List<BbsSignEntity> getSignList(Map<String, Object> params) {
+        return bbsSignDao.getSignList(params);
     }
 
 }

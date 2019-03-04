@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>ui</title>
+  <title>金风社区</title>
   <link rel="stylesheet" href="./static/layui/css/layui.css">
   <link rel="stylesheet" href="./static/css/global.css">
   <script src="./static/layui/layui.js"></script>
   <script src="//g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
-
+  <script src="https://g.alicdn.com/dingding/dingtalk-pc-api/2.7.0/index.js"></script>
   <script type="text/javascript" src="./static/js/TweenLite.min.js"></script>
   <script type="text/javascript" src="./static/js/EasePack.min.js"></script>
   <script type="text/javascript" src="./static/js/rAF.js"></script>
@@ -18,41 +18,24 @@
 <div id="app"></div>
 <!-- built files will be auto injected -->
 <script>
-  window.localStorage.baseUrl = 'http://10.0.2.63:8848';
-  //接口的access token
-  window.localStorage.DD_APPID = 'dingoa7zyvotbxbeawdswt';
-  window.localStorage.DD_APPSECRET = 'IepKoUQ97fQtQS2DiGJz5-d5T0cPqv-I_SXbg3b0TswnK5YEQFTbzLAr-FQ4K6tw';
+  // window.localStorage.baseUrl = 'http://localhost:8848';
+  window.localStorage.baseUrl = 'http://oa.bjjfsoft.com:8848';
+  //接口的access token - dev
+  // window.localStorage.DD_APPID = 'dingoaq60e6ocm91lbudx2';
+  // window.localStorage.DD_APPSECRET = 'htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu';
+
+  //接口的access token - prod
+  window.localStorage.DD_APPID = 'dingoangktumznbkybyc4t';
+  window.localStorage.DD_APPSECRET = 'LVALNHr7AJNb2bkugnOsnfMlwG2VW6l_ElV3vKNnctU94-xdIRzxeesw7bF_SeuD';
+
+
   //回调的页面地址
-  window.localStorage.DD_REDIRECT = 'http://10.0.2.63:8080/#/';
+  window.localStorage.DD_REDIRECT = 'http://oa.bjjfsoft.com:8848/login/ding';
+  // window.localStorage.DD_REDIRECT = 'http://localhost:8848/login/ding';
+
   //企业门户的access token
   window.localStorage.DD_CORPID = 'ding3a0f8625b872e57235c2f4657eb6378f';
   window.localStorage.DD_CORPSECRET = '_yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d';
-
-  // layui
-  // layui.cache.page = '';
-  // layui.cache.user = {
-  //   username: '游客'
-  //   , uid: -1
-  //   , avatar: '../res/images/avatar/00.jpg'
-  //   , experience: 83
-  //   , sex: '男'
-  // };
-  // layui.config({
-  //   version: "3.0.0"
-  //   , base: 'static/mods/' //这里实际使用时，建议改成绝对路径
-  // }).extend({
-  //   fly: 'index'
-  // }).use(['fly', 'face'], function () {
-  //   var $ = layui.$
-  //     , fly = layui.fly;
-  //   //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-  //   /*
-  //   $('.detail-body').each(function(){
-  //     var othis = $(this), html = othis.html();
-  //     othis.html(fly.content(html));
-  //   });
-  //   */
-  // });
 </script>
 
 

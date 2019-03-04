@@ -19,6 +19,9 @@
         <result property="icon" column="icon"/>
         <result property="labelName" column="label_name"/>
         <result property="rewardGrade" column="reward_grade"/>
+        <result property="collectionStatus" column="collection_status"/>
+        <result property="collectionTime" column="collection_time"/>
+        <result property="isDel" column="is_del"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
@@ -44,6 +47,7 @@
         <if test="endTime != null and endTime != ''">
             AND bp.init_time &lt;= #{endTime}
         </if>
+        AND bp.is_del = false
         <if test="order != null and order != ''">
             ORDER BY
             <choose>
@@ -74,16 +78,18 @@
     <select id="getPostByID" parameterType="integer" resultMap="bbsPostsMap">
         SELECT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
         bp.label_id as label_id, bp.reply_count as reply_count, bp.title as title, bp.top as top, bp.end as end,
-        bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
+        bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon, IFNULL(bc.status, FALSE) as collection_status
         FROM bbs_posts bp
-        LEFT JOIN bbs_user bu ON bp.user_id=bu.id
-        WHERE bp.id = #{ID}
+        LEFT JOIN bbs_user bu ON bp.user_id = bu.id
+        LEFT JOIN bbs_collection bc ON bc.post_id = bp.id AND bc.user_id = #{userId}
+        WHERE bp.id = #{id}
     </select>
 
-    <select id="getRewardGrade" parameterType="integer" resultMap="bbsPostsMap">
-        SELECT reward_grade
-        FROM bbs_posts
-        WHERE
-        id = #{postsId}
+    <select id="getPostByCollection" parameterType="integer" resultMap="bbsPostsMap">
+        SELECT bp.*, bc.init_time as collection_time
+        FROM bbs_collection bc LEFT JOIN bbs_posts bp ON bc.post_id = bp.id
+        WHERE bc.user_id = #{userId} ORDER BY bc.init_time DESC
     </select>
+
+
 </mapper>

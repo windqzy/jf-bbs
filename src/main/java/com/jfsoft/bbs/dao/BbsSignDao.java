@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfsoft.bbs.entity.BbsSignEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 签到表
  * 
@@ -19,5 +22,7 @@ public interface BbsSignDao extends BaseMapper<BbsSignEntity> {
     int insertSign(Integer userId);
 
     int updateSign(BbsSignEntity bbsSignEntity);
+
+    List<BbsSignEntity> getSignList(Map<String, Object> params);
 
 }

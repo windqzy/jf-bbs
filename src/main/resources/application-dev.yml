@@ -1,14 +1,25 @@
 # 工程绝对路径(实现更新页面不用重启)
-project:
-  base-dir: file:///E:/Code/bbs/jf-bbs
+#project:
+#  base-dir: file:///D:/WorkSpace/idea-workspace/jf-bbs
+#spring:
+#  resources:
+#    cache:
+#      period: 0
+#    static-locations: ${project.base-dir}/src/main/resources/static/
+#  thymeleaf:
+#    prefix: ${project.base-dir}/src/main/resources/templates/
+#    cache: false
+app:
+  filePath: D://JFAPP/JFBBS/file/
+  staticUrl: http://oa.bjjfsoft.com:8848/static/
+  webUrl: http://localhost:8080/#/login
+  DD_APPID: dingoaq60e6ocm91lbudx2
+  DD_APPSECRET: htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu
+  DD_CORPID: ding3a0f8625b872e57235c2f4657eb6378f
+  DD_CORPSECRET: _yEgPkLe9kLZArUORVEeWwDcQ1guSwzcJoRIGeJrd-mbjVncMzunO2Q33xqRM76d
+  DD_URL: https://oapi.dingtalk.com
+
 spring:
-  resources:
-    cache:
-      period: 0
-    static-locations: ${project.base-dir}/src/main/resources/static/
-  thymeleaf:
-    prefix: ${project.base-dir}/src/main/resources/templates/
-    cache: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver

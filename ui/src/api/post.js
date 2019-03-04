@@ -26,9 +26,9 @@ export function getDetail(postId) {
 }
 
 // 查询个人发布文章列表
-export function getPersonList() {
+export function getPersonList(id) {
   return request({
-    url: '/posts/personList',
+    url: '/posts/personList?userId=' + id,
     method: 'GET'
   })
 }
@@ -40,5 +40,37 @@ export function publish(bbsPosts) {
     url: '/posts/save',
     method: 'POST',
     data: bbsPosts
+  })
+}
+
+// 查询个人收藏文章列表
+export function getCollecList() {
+  return request({
+    url: '/posts/collection',
+    method: 'GET'
+  })
+}
+
+// 更新置顶
+export function updatTop(id) {
+  return request({
+    url: '/posts/top/' + id,
+    method: 'GET'
+  })
+}
+
+// 更新加精
+export function updatGood(id) {
+  return request({
+    url: '/posts/good/' + id,
+    method: 'GET'
+  })
+}
+
+// 删除文章
+export function del(id) {
+  return request({
+    url: '/posts/delete/' + id,
+    method: 'GET'
   })
 }

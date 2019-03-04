@@ -9,12 +9,16 @@ const user = {
     email: '',
     position: '',
     mobile: '',
-    id: ''
+    id: '',
+    initTime: '',
+    city: '',
+    isAdmin: ''
   },
   actions: {
     addUserInfo({commit}) {
       return new Promise(resolve => {
         getUser().then(res => {
+          console.log(res.data)
           commit('USER_INFO', res.data);
           resolve(res.data)
         })
@@ -31,6 +35,9 @@ const user = {
       state.position = data.position;
       state.mobile = data.mobile;
       state.id = data.id;
+      state.initTime = data.initTime;
+      state.city = data.city;
+      state.isAdmin = data.admin;
     }
   }
 }

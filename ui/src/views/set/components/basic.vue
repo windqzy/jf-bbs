@@ -16,14 +16,16 @@
             <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" v-model="email"
                    class="layui-input">
           </div>
-          <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="activate.html"
+          <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="javascript:;"
                                                                              style="font-size: 12px; color: #4f99cf;">重新验证邮箱</a>。
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_username" required lay-verify="required" name="username" class="layui-input" v-model="username">
+            <input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"
+                   class="layui-input"
+                   v-model="username">
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
@@ -35,13 +37,15 @@
         <div class="layui-form-item">
           <label for="L_city" class="layui-form-label">城市</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city" class="layui-input">
+            <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city"
+                   class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label for="L_mobile" class="layui-form-label">电话号码</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_mobile" name="mobile" required lay-verify="required" autocomplete="off" v-model="mobile" class="layui-input">
+            <input type="text" id="L_mobile" name="mobile" required autocomplete="off"
+                   v-model="mobile" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -60,7 +64,7 @@
       <div class="layui-form layui-form-pane layui-tab-item">
         <div class="layui-form-item">
           <div class="avatar-add">
-            <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
+            <p>建议尺寸168*168，支持jpg、png、gif</p>
             <input type="file" id="file" name="myfile" style="display: none" ref="file" @change="finishFile"/>
             <button type="button" class="layui-btn upload-img" @click="UpladFile()">
               <i class="layui-icon">&#xe67c;</i>上传头像
@@ -143,9 +147,17 @@
         city: '',
         signature: '',
         mobile: '',
-        imgUrl: require('../../../../static/images/avatar/4.jpg'),
         userInfo: '',
         selectSex: ''
+      }
+    },
+    computed: {
+      imgUrl() {
+        if (!this.$store.getters.user.icon) {
+          return require('../../../../static/images/avatar/4.jpg');
+        } else {
+          return this.$store.getters.user.icon
+        }
       }
     },
     created() {
@@ -203,16 +215,13 @@
           }
         }; //添加请求头
         axios.post(window.localStorage.baseUrl + '/upload/file', param, config)
-          .then(response => {
-            console.log(response);
-            this.imgUrl = response.data.data.src;
-            this.updateUserIcon();
+          .then(res => {
+            this.updateUserIcon(res.data.data.src);
           })
       },
       //修改用户头像
-      updateUserIcon() {
-        let url = encodeURIComponent(this.imgUrl);
-        // console.log(decodeURIComponent(url));
+      updateUserIcon(imgUrl) {
+        let url = encodeURIComponent(imgUrl);
         this.$store.state.user.icon = decodeURIComponent(url);
         user.updateUserIcon(url).then(res => {
           layer.msg('修改成功');
@@ -220,25 +229,32 @@
 
       },
       upDateUser() {
-        if (!!this.email && !!this.username && !!this.city) {
-          let UserForm = {
-            email: this.email,
-            username: this.username,
-            city: this.city,
-            signature: this.signature,
-            mobile: this.mobile,
-            sex: this.selectSex
-          };
-          user.upDateUser(UserForm).then(res => {
-            this.email = res.data.email;
-            this.username = res.data.username;
-            this.city = res.data.city;
-            this.signature = res.data.signature;
-            this.mobile = res.data.mobile;
-            this.selectSex = res.data.sex;
-            layer.msg('修改成功');
-          })
+        let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        if (!emailReg.test(this.email)) {
+          return layer.msg('邮箱格式不正确', {icon: 5});
         }
+        if (!this.username || !this.city) {
+          return false;
+        }
+
+        let UserForm = {
+          email: this.email,
+          username: this.username,
+          city: this.city,
+          signature: this.signature,
+          mobile: this.mobile,
+          sex: this.selectSex
+        };
+        user.upDateUser(UserForm).then(res => {
+          this.email = res.data.email;
+          this.username = res.data.username;
+          this.city = res.data.city;
+          this.signature = res.data.signature;
+          this.mobile = res.data.mobile;
+          this.selectSex = res.data.sex;
+          layer.msg('修改成功');
+          this.$store.dispatch('addUserInfo');// 回填基本信息
+        })
       }
     }
   }

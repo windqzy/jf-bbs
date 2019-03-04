@@ -38,7 +38,9 @@
 
               </div>
               <span class="fly-list-nums">
-                <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}</a>
+                <a @click="$el.querySelector('#comment').scrollIntoView()" style="cursor: pointer">
+                  <i class="iconfont" title="回答">&#xe60c;</i> {{postInfo.replyCount}}
+                </a>
                 <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
               </span>
             </div>
@@ -63,25 +65,74 @@
               </div>
             </div>
             <!-- 文章内容 -->
-            <div class="detail-body photos" v-html="postInfo.content"></div>
+            <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
           </div>
-
-          <!-- 回帖 -->
-          <div class="fly-panel detail-box" id="flyReply">
+          <!-- TODO:热门回帖(暂采用回帖前三作为假数据) -->
+          <div class="fly-panel detail-box" id="flyReply" v-if="replyList.length != 0">
             <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
-              <legend>回帖</legend>
+              <legend>热门回复</legend>
             </fieldset>
             <ul class="jieda" id="jieda">
-              <li data-id="111" class="jieda-daan" v-for="reply in replyList">
+              <li data-id="111" class="jieda-daan" v-for="reply in replyHotList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-avatar">
+                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
                     <img
                       :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
                   </router-link>
                   <div class="fly-detail-user">
-                    <router-link :to="'/user/index?userId='+ reply.userId"  class="fly-link">
+                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
+                      <cite>{{reply.author}}</cite>
+                    </router-link>
+                    <span v-if="reply.userId === postInfo.userId">(楼主)</span>
+                  </div>
+                  <div class="detail-hits">
+                    <span>{{reply.initTime | dateStr}}</span>
+                  </div>
+                  <i v-if="reply.accept" class="iconfont icon-caina" title="最佳答案"></i>
+                </div>
+                <!-- 回复内容 -->
+                <div class="detail-body jieda-body photos" v-html="reply.content">
+
+                </div>
+                <div class="jieda-reply">
+                  <span :class="{ zanok : reply.status}" class="jieda-zan" type="zan">
+                    <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
+                    <em>{{reply.up}}</em>
+                  </span>
+                  <span type="reply" @click="childReply(reply)">
+                  <i class="iconfont icon-svgmoban53"></i>
+                    回复
+                  </span>
+                  <div class="jieda-admin">
+                    <a href="javascript:;">
+                      <span type="edit" v-if="userInfo.id == reply.userId"
+                            @click="updateReply(reply.content, reply.id)">编辑</span>
+                    </a>
+                    <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
+                    <span type="accept" v-if="userInfo.id == postId">采纳</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- 回帖 -->
+          <div class="fly-panel detail-box" id="flyReply1">
+            <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+              <legend>最新回复</legend>
+            </fieldset>
+            <ul class="jieda" id="jieda">
+              <li data-id="111" class="jieda-daan" v-for="reply in replyList">
+                <a name="item-1111111111"></a>
+                <div class="detail-about detail-about-reply">
+                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
+                    <img
+                      :src="reply.icon == null ? defaultAvatar : reply.icon"
+                      :alt="reply.author">
+                  </router-link>
+                  <div class="fly-detail-user">
+                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
                       <cite>{{reply.author}}</cite>
                       <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
                       <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
@@ -107,12 +158,12 @@
                     <i @click="replyUp(reply.id)" class="iconfont icon-zan"></i>
                     <em>{{reply.up}}</em>
                   </span>
-                  <span type="reply">
+                  <span type="reply" @click="childReply(reply)">
                   <i class="iconfont icon-svgmoban53"></i>
                     回复
                   </span>
                   <div class="jieda-admin">
-                    <a href="#comment">
+                    <a href="javascript:;">
                       <span type="edit" v-if="userInfo.id == reply.userId"
                             @click="updateReply(reply.content, reply.id)">编辑</span>
                     </a>
@@ -121,6 +172,15 @@
                   </div>
                 </div>
               </li>
+              <!-- TODO：回复框 -->
+              <!--<div class="reply" v-show="activeReplyed == index">-->
+              <!--<input type="text" class="layui-input" :placeholder="'回复' + reply.author + '...'" id="replybtn">-->
+              <!--<div class="reply-btn">-->
+              <!--<button class="layui-btn layui-btn-sm">表情</button>-->
+              <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
+              <!--</div>-->
+              <!--</div>-->
+
               <!--<li data-id="111">-->
               <!--<a name="item-1111111111"></a>-->
               <!--<div class="detail-about detail-about-reply">-->
@@ -161,10 +221,11 @@
 
             <div class="layui-form layui-form-pane">
               <div class="layui-form-item layui-form-text">
-                <a name="comment"></a>
+                <a name="comment" id="comment"></a>
                 <div class="layui-input-block">
                     <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"
-                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content"></textarea>
+                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content">
+                    </textarea>
                 </div>
               </div>
               <div class="layui-form-item">
@@ -197,8 +258,8 @@
           </div>
 
           <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
-            <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
-            <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+          <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
+          <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
           <!--</div>-->
         </div>
       </div>
@@ -207,7 +268,6 @@
 </template>
 
 <script>
-  /*import Header from '@/components/Header';*/
   import * as post from '@/api/post';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
@@ -215,9 +275,6 @@
 
   export default {
     name: "detail",
-    /*  components: {
-        'v-header': Header
-      },*/
     data() {
       return {
         postId: '',
@@ -225,13 +282,15 @@
         replyId: '',
         postInfo: '',
         content: '',
+        replyHotList: [],// 热门回帖
         replyList: [],
         hotList: [],
         editIndex: '',
         layedit: null,
         layer: null,
         userInfo: null,
-        defaultAvatar: require('../../../static/images/avatar/4.jpg')
+        defaultAvatar: require('../../../static/images/avatar/4.jpg'),
+        // activeReplyed: '-1',
       }
     },
     created() {
@@ -243,36 +302,58 @@
     },
     mounted() {
       console.log('replyid+++++' + this.replyId)
-      let _this = this;
-      layui.use(['layedit', 'layer', 'upload'], function () {
-        _this.layedit = layui.layedit;
-        _this.layer = layui.layer;
-        _this.layedit.set({
-          uploadImage: {
-            url: window.localStorage.baseUrl + '/upload/file',
-            type: 'post' //默认post
-          }
-        });
-
-        _this.editIndex = _this.layedit.build('L_content', {
-          height: 191,
-          tool: ['face', 'image', 'link', 'code'],
-        }); //建立编辑器
-      });
+      this.layui();
+    },
+    beforeDestroy() {
+      this.layer.closeAll();
     },
     methods: {
+      layui() {
+        let _this = this;
+        layui.use(['layedit', 'layer', 'upload'], function () {
+          _this.layedit = layui.layedit;
+          _this.layer = layui.layer;
+          _this.layedit.set({
+            uploadImage: {
+              url: window.localStorage.baseUrl + '/upload/file',
+              type: 'post' //默认post
+            }
+          });
+
+          _this.editIndex = _this.layedit.build('L_content', {
+            height: 191,
+            tool: ['face', 'image', 'link', 'code'],
+          }); //建立编辑器
+
+          _this.layer.photos({
+            photos: '#detail-body',
+            anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+          });
+        });
+      },
       getDetailById(postId) {
         this.postId = postId;
         post.getDetail(postId).then(res => {
           console.log(res.data);
           this.postInfo = res.data;
           this.getReplyList(postId);
+          this.$nextTick(() => {
+            this.layui();
+          })
         })
       },
       getReplyList(postId) {
         reply.getList(postId).then(res => {
           console.log(res.data)
           this.replyList = res.data;
+          //  TODO：热门回帖假数据
+          let hotArr = [];
+          res.data.forEach((item, index) => {
+            if (index < 3) {
+              hotArr.push(item);
+            }
+          })
+          this.replyHotList = hotArr;
         })
       },
       getWeekHot() {
@@ -297,7 +378,7 @@
             content: this.layedit.getContent(this.editIndex),
           }
           reply.addReply(bbsReply).then(res => {
-            //TODO 提示回复成功
+            //  提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
             this.getWeekHot();
@@ -328,8 +409,8 @@
       },
       updateReply(content, replyId) {
         this.replyId = replyId;
-        console.log(content)
         this.layedit.setContent(this.editIndex, content);
+        this.$el.querySelector('#comment').scrollIntoView();
       },
       cancel() {
         this.layedit.setContent(this.editIndex, '');
@@ -383,38 +464,36 @@
       },
       getAD() {
         this.layer.msg('多攒的钻石，就可以买广告位了');
+      },
+      //  评论回复
+      childReply(e) {
+        this.$el.querySelector('#comment').scrollIntoView();
+        let user = '<a href="#/user/index?userId=' + e.userId + '" class="fly-link">@' + e.author + '&nbsp;</a>';
+        this.layedit.setContent(this.editIndex, user);
       }
     },
     filters: {
       dateStr(dateTimeStamp) {
-
         var minute = 1000 * 60;
         var hour = minute * 60;
         var day = hour * 24;
         var halfamonth = day * 15;
         var month = day * 30;
-
         if (dateTimeStamp == undefined) {
           return false;
         } else {
           dateTimeStamp = dateTimeStamp.replace(/\-/g, "/");
-
           var sTime = new Date(dateTimeStamp).getTime();//把时间pretime的值转为时间戳
-
           var now = new Date().getTime();//获取当前时间的时间戳
-
           var diffValue = now - sTime;
-
           if (diffValue < 0) {
             console.log("结束日期不能小于开始日期！");
           }
-
           var monthC = diffValue / month;
           var weekC = diffValue / (7 * day);
           var dayC = diffValue / day;
           var hourC = diffValue / hour;
           var minC = diffValue / minute;
-
           if (monthC >= 1) {
             return parseInt(monthC) + "个月前";
           } else if (weekC >= 1) {
@@ -434,14 +513,33 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   video {
     width: 100%;
   }
+
   .fly-list-one dd span {
     float: right;
   }
+
   .icon-pinglun1 {
     right: 5px;
   }
+
+  .detail-body {
+    img {
+      cursor: zoom-in;
+    }
+  }
+
+  /*评论回复*/
+  /*.reply {*/
+  /*padding: 8px;*/
+  /*margin-top: 8px;*/
+  /*background-color: #eee;*/
+  /*.reply-btn {*/
+  /*text-align: right;*/
+  /*margin-top: 8px;*/
+  /*}*/
+  /*}*/
 </style>

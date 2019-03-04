@@ -2,6 +2,7 @@ import {getUser} from '@/api/user'
 
 const user = {
   state: {
+    icon:'',
     username: '',
     name: '',
     sex: '',
@@ -28,6 +29,7 @@ const user = {
   mutations: {
     USER_INFO: (state, data) => {
       state.username = data.username;
+      state.icon = data.icon;
       state.name = data.name;
       state.sex = data.sex;
       state.signature = data.signature;

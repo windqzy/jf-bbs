@@ -86,8 +86,8 @@
         })
       },
       getUserPostList() {
-        post.getPersonList().then(res => {
-          console.log(res.data);
+        let id = this.$store.getters.user.id;
+        post.getPersonList(id).then(res => {
           this.userPostList = res.data;
         })
       }

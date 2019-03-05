@@ -10,7 +10,6 @@ import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.channels.SelectableChannel;
 import java.util.*;
 
 
@@ -22,85 +21,85 @@ import java.util.*;
 @RestController
 @RequestMapping("/reply")
 public class ReplyController extends AbstractController {
-	@Autowired
-	private BbsReplyService bbsReplyService;
+    @Autowired
+    private BbsReplyService bbsReplyService;
 
-	@Autowired
-	private BbsPostsService bbsPostsService;
+    @Autowired
+    private BbsPostsService bbsPostsService;
 
-	/**
-	 * 列表
-	 */
-	@RequestMapping("/list")
-	public R list(@RequestParam Map<String, Object> params) {
-		PageUtils page = bbsReplyService.queryPage(params);
-		return R.ok().put("page", page);
-	}
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    public R list(@RequestParam Map<String, Object> params) {
+        PageUtils page = bbsReplyService.queryPage(params);
+        return R.ok().put("page", page);
+    }
 
 
-	/**
-	 * 获取回复周榜
-	 *
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	@RequestMapping("/top")
-	public R top(String beginTime, String endTime) {
-		List<BbsReplyEntity> topList = bbsReplyService.getTop(beginTime, endTime);
-		return R.ok().put("data", topList);
-	}
+    /**
+     * 获取回复周榜
+     *
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping("/top")
+    public R top(String beginTime, String endTime) {
+        List<BbsReplyEntity> topList = bbsReplyService.getTop(beginTime, endTime);
+        return R.ok().put("data", topList);
+    }
 
-	/**
-	 * 信息
-	 */
-	@RequestMapping("/info/{id}")
-	public R info(@PathVariable("id") Integer id) {
-		BbsReplyEntity bbsReply = bbsReplyService.selectById(id);
-		return R.ok().put("data", bbsReply);
-	}
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{id}")
+    public R info(@PathVariable("id") Integer id) {
+        BbsReplyEntity bbsReply = bbsReplyService.selectById(id);
+        return R.ok().put("data", bbsReply);
+    }
 
-	/**
-	 * 根据postId获取最新回复
-	 */
-	@RequestMapping("/list/{postId}")
-	public R postInfo(@PathVariable("postId") Integer postId) {
-		List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId, getUserId());
-		return R.ok().put("data", replyList);
-	}
+    /**
+     * 根据postId获取最新回复
+     */
+    @RequestMapping("/list/{postId}")
+    public R postInfo(@PathVariable("postId") Integer postId) {
+        List<BbsReplyEntity> replyList = bbsReplyService.getReplyByPostid(postId, getUserId());
+        return R.ok().put("data", replyList);
+    }
 
-	/**
-	 * 根据postId获取热门回复
-	 */
-	@RequestMapping("/hotList/{postId}")
-	public R hotList(@PathVariable("postId") Integer postId) {
-		List<BbsReplyEntity> replyList = bbsReplyService.getHotReplyByPostid(postId, getUserId());
-		return R.ok().put("data", replyList);
-	}
+    /**
+     * 根据postId获取热门回复
+     */
+    @RequestMapping("/hotList/{postId}")
+    public R hotList(@PathVariable("postId") Integer postId) {
+        List<BbsReplyEntity> replyList = bbsReplyService.getHotReplyByPostid(postId, getUserId());
+        return R.ok().put("data", replyList);
+    }
 
-	/**
-	 * 回帖
-	 */
-	@PostMapping("/save")
-	public R addReply(@RequestBody ReplyForm ReplyForm) {
-		BbsReplyEntity bbsReply = new BbsReplyEntity();
-		bbsReply.setPostsId(ReplyForm.getPostsId());
-		bbsReply.setInitTime(new Date());
-		bbsReply.setUserId(getUserId());
-		bbsReply.setContent(ReplyForm.getContent());
-		// 增加一条评论
-		bbsReplyService.insert(bbsReply);
-		// 更新post表的评论数
-		BbsPostsEntity bbsPosts = bbsPostsService.selectById(ReplyForm.getPostsId());
-		int count = bbsPosts.getReplyCount() + 1;
-		bbsPosts.setReplyCount(count);
-		bbsPostsService.updateById(bbsPosts);
-		return R.ok().put("data", "评论成功");
-	}
+    /**
+     * 回帖
+     */
+    @PostMapping("/save")
+    public R addReply(@RequestBody ReplyForm ReplyForm) {
+        BbsReplyEntity bbsReply = new BbsReplyEntity();
+        bbsReply.setPostsId(ReplyForm.getPostsId());
+        bbsReply.setInitTime(new Date());
+        bbsReply.setUserId(getUserId());
+        bbsReply.setContent(ReplyForm.getContent());
+        // 增加一条评论
+        bbsReplyService.insert(bbsReply);
+        // 更新post表的评论数
+        BbsPostsEntity bbsPosts = bbsPostsService.selectById(ReplyForm.getPostsId());
+        int count = bbsPosts.getReplyCount() + 1;
+        bbsPosts.setReplyCount(count);
+        bbsPostsService.updateById(bbsPosts);
+        return R.ok().put("data", "评论成功");
+    }
 
-	/**
-	 * 修改
-	 */
+    /**
+     * 修改
+     */
 //    @RequestMapping("/update")
 //    public R update(@RequestBody BbsReplyEntity bbsReply) {
 ////        ValidatorUtils.validateEntity(bbsReply);
@@ -109,65 +108,65 @@ public class ReplyController extends AbstractController {
 //        return R.ok();
 //    }
 
-	/**
-	 * 修改
-	 */
-	@RequestMapping("/update")
-	public R update(@RequestBody ReplyForm ReplyForm) {
-		BbsReplyEntity bbsReply = new BbsReplyEntity();
-		bbsReply.setId(ReplyForm.getId());
-		bbsReply.setInitTime(new Date());
-		bbsReply.setContent(ReplyForm.getContent());
-		boolean b = bbsReplyService.updateById(bbsReply);
-		return R.ok().put("data", b);
-	}
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    public R update(@RequestBody ReplyForm ReplyForm) {
+        BbsReplyEntity bbsReply = new BbsReplyEntity();
+        bbsReply.setId(ReplyForm.getId());
+        bbsReply.setInitTime(new Date());
+        bbsReply.setContent(ReplyForm.getContent());
+        boolean b = bbsReplyService.updateById(bbsReply);
+        return R.ok().put("data", b);
+    }
 
-	/**
-	 * 删除
-	 */
-	@RequestMapping("/delete")
-	public R delete(@RequestBody Integer[] ids) {
-		bbsReplyService.deleteBatchIds(Arrays.asList(ids));
-		return R.ok();
-	}
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    public R delete(@RequestBody Integer[] ids) {
+        bbsReplyService.deleteBatchIds(Arrays.asList(ids));
+        return R.ok();
+    }
 
-	/**
-	 * 根据评论id删除
-	 */
-	@RequestMapping("/delete/{id}")
-	public R delete(@PathVariable("id") Integer id) {
-		// 根据评论ID找到帖子ID，然后帖子评论数-1
-		BbsReplyEntity replyEntity = bbsReplyService.selectById(id);
-		BbsPostsEntity postsEntity = bbsPostsService.selectById(replyEntity.getPostsId());
-		BbsPostsEntity newPost = new BbsPostsEntity();
-		newPost.setId(postsEntity.getId());
-		newPost.setReplyCount(postsEntity.getReplyCount() - 1);
-		Boolean flag = bbsReplyService.deleteById(id);
-		bbsPostsService.updateById(newPost);
-		return R.ok().put("data", flag);
-	}
+    /**
+     * 根据评论id删除
+     */
+    @RequestMapping("/delete/{id}")
+    public R delete(@PathVariable("id") Integer id) {
+        // 根据评论ID找到帖子ID，然后帖子评论数-1
+        BbsReplyEntity replyEntity = bbsReplyService.selectById(id);
+        BbsPostsEntity postsEntity = bbsPostsService.selectById(replyEntity.getPostsId());
+        BbsPostsEntity newPost = new BbsPostsEntity();
+        newPost.setId(postsEntity.getId());
+        newPost.setReplyCount(postsEntity.getReplyCount() - 1);
+        Boolean flag = bbsReplyService.deleteById(id);
+        bbsPostsService.updateById(newPost);
+        return R.ok().put("data", flag);
+    }
 
 
-	/**
-	 * 获取个人文章的所有回复
-	 */
-	@RequestMapping("/personReply")
-	public R getPersonReply(Integer userId) {
+    /**
+     * 获取个人文章的所有回复
+     */
+    @RequestMapping("/personReply")
+    public R getPersonReply(Integer userId) {
 
-		Map<String, Object> param = new HashMap<String, Object>();
-		if (userId == null) {
-			param.put("user_id", getUserId());
-		} else {
-			param.put("user_id", userId);
-		}
+        Map<String, Object> param = new HashMap<String, Object>();
+        if (userId == null) {
+            param.put("user_id", getUserId());
+        } else {
+            param.put("user_id", userId);
+        }
 
-		List<BbsReplyEntity> list = bbsReplyService.getPersonReplyList(param);
-		return R.ok().put("data", list);
-	}
+        List<BbsReplyEntity> list = bbsReplyService.getPersonReplyList(param);
+        return R.ok().put("data", list);
+    }
 
     /*采纳回复*/
-    @GetMapping("/acceptReply/{id}")
-    public R accept(@PathVariable("id") Integer id) {
+    @GetMapping("/acceptReply")
+    public R accept(Integer id, Integer userId) {
         /*看是否存在已采纳的回复*/
         Integer bbsReply = bbsReplyService.getAccept(id);
         if (bbsReply == 0) {
@@ -176,7 +175,7 @@ public class ReplyController extends AbstractController {
             /*获取该贴悬赏的飞吻数*/
             Integer rewardGrade = bbsReplyService.getRewardGrade(id);
             /*将飞吻加到被采纳的回复者账号上*/
-            bbsReplyService.upGrade(getUserId(), rewardGrade);
+            bbsReplyService.upGrade(userId, rewardGrade);
             /*完结该贴，不予新采纳*/
             bbsReplyService.upEnd(id);
             return R.ok("采纳成功");

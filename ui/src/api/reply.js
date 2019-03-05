@@ -69,9 +69,9 @@ export function getPersonReplyList(userId) {
 
 
 //采纳回复
-export  function acceptReply(replyId) {
+export  function acceptReply(replyId,userId) {
   return request({
-    url: '/reply/acceptReply/' + replyId,
+    url: '/reply/acceptReply?id=' + replyId + '&userId=' + userId,
     method: 'GET',
   })
 }

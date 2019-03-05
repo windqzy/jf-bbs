@@ -138,7 +138,7 @@ public class SignController extends AbstractController {
 				// 更新新的签到
 				bbsSignService.updateById(bbsSign);
 				// 查找签到天数应有的分数
-				int grade = bbsGradeRuleService.getGradeByRule(bbsSign.getSignCount() + 1);
+				int grade = bbsGradeRuleService.getGradeByRule(bbsSign.getSignCount());
 				// 更新用户的分数
 				int currGrade = bbsGradeEntity.getGrade() + grade;
 				bbsGradeEntity.setGrade(currGrade);

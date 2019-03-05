@@ -54,7 +54,7 @@
             ORDER BY
             <choose>
                 <when test="order == 'init_time'">
-                    replytime DESC
+                    replytime DESC, bp.init_time DESC
                 </when>
                 <when test="order == 'reply_count'">
                     bp.reply_count DESC

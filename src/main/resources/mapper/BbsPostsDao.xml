@@ -50,7 +50,7 @@
             AND bp.init_time &lt;= #{endTime}
         </if>
         AND bp.is_del = false
-        ORDER BY replytime DESC
+        ORDER BY replytime
         <if test="order != null and order != ''">
             ,
             <choose>

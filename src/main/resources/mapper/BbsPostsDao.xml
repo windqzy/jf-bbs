@@ -37,7 +37,7 @@
         <if test="good != null and good != ''">
             AND bp.good = true
         </if>
-        <if test="end != null and end != ''">
+        <if test="end != null">
             AND bp.end = #{end}
         </if>
         <if test="labelId != null and labelId != ''">

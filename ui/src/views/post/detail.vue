@@ -9,7 +9,7 @@
             <div class="fly-detail-info">
               <!-- <span class="layui-badge">审核中</span> -->
               <!--<span class="layui-badge layui-bg-green fly-detail-column">动态</span>-->
-              <span v-if="postInfo.end" class="layui-badge" style="background-color: #999;">未结</span>
+              <span v-if="!postInfo.end" class="layui-badge" style="background-color: #999;">未结</span>
               <span v-else class="layui-badge" style="background-color: #5FB878;">已结</span>
 
               <!--<span v-if="postInfo.top" class="layui-badge layui-bg-black">置顶</span>-->
@@ -282,7 +282,7 @@
               <div class="layui-form-item">
                 <input type="hidden" name="jid" value="123"/>
                 <button class="layui-btn" lay-filter="*" @click="addReply()">提交回复</button>
-                <button v-if="replyId != ''" class="layui-btn layui-btn-primary">取消</button>
+                <button v-if="replyId != ''" class="layui-btn layui-btn-primary" @click="cancel()">取消</button>
               </div>
             </div>
           </div>

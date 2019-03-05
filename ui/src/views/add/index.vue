@@ -221,7 +221,7 @@
               accept: 'video',
               acceptMime: 'video/*',
               exts: 'mp4|flv|avi|rm|rmvb',
-              size: 1024 * 10 * 2,
+              size: 1024 * 10 * 200,
               done: function (data) {
                 console.log(data);
               }

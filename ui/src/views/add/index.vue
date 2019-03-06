@@ -68,7 +68,7 @@
                 </div>
                 <div class="layui-form-item layui-form-text">
                   <div class="layui-input-block">
-                      <textarea id="L_content" name="content" required lay-verify="required" placeholder="详细描述"
+                      <textarea id="L_content" name="content" required placeholder="详细描述"
                                 class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                   </div>
                 </div>
@@ -378,8 +378,10 @@
           this.layer.msg('钻石不够你咋发布？!');
         } else if (this.post.labelId == '') {
           this.layer.msg('请选择所属专栏');
-        }
-        else {
+        } else {
+          if (!this.post.title || !this.post.labelId) {
+            return false;
+          }
           this.post.content = this.layedit.getContent(this.editIndex);
           let bbsPosts = {
             id: this.postId,

@@ -415,7 +415,6 @@
           this.post.grade = res.data.rewardGrade;
           // this.post.content = res.data.content;
           this.layedit.setContent(this.editIndex, res.data.content);
-
           // 假增加当前积分
           this.currGrade = this.currGrade + this.post.grade;
         })

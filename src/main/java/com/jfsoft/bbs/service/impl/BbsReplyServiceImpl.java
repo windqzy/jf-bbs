@@ -53,8 +53,8 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     @Override
     public List<BbsReplyEntity> getTop(String beginTime, String endTime) {
         Map<String, Object> params = new HashMap<>();
-        params.put("startPage", 1);
-        params.put("endPage", 10);
+        params.put("startPage", 0);
+        params.put("endPage", 16);
         if (StringUtils.isNotBlank(beginTime)) {
             params.put("beginTime", beginTime + BaseContants.BEGIN_TIME_EXT);
         }

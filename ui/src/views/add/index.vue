@@ -165,7 +165,7 @@
     methods: {
       getLabelList() {
         label.getList().then(res => {
-          console.log(this.label);
+          // console.log(this.label);
           this.labelList = res.data.list;
           this.$nextTick(() => {
             let _this = this;
@@ -210,10 +210,10 @@
                 layer.load(); //上传loading
               }
               , choose: function (obj) {
-                console.log(obj);
+                // console.log(obj);
               }
               , done: function (data) {
-                console.log(data);
+                // console.log(data);
               }
             },
             uploadVideo: {
@@ -223,7 +223,7 @@
               exts: 'mp4|flv|avi|rm|rmvb',
               size: 1024 * 10 * 200,
               done: function (data) {
-                console.log(data);
+                // console.log(data);
               }
             }
             , uploadFiles: {
@@ -233,7 +233,7 @@
               size: '20480',
               autoInsert: true, //自动插入编辑器设置
               done: function (data) {
-                console.log(data);
+                // console.log(data);
               }
             }
             //右键删除图片/视频时的回调参数，post到后台删除服务器文件等操作，
@@ -244,7 +244,7 @@
             , calldel: {
               url: window.localStorage.baseUrl + '/upload/del',
               done: function (data) {
-                console.log(data);
+                // console.log(data);
               }
             }
             , rightBtn: {
@@ -392,7 +392,7 @@
           };
           post.publish(bbsPosts).then(res => {
             this.layer.msg('发布成功');
-            console.log(res.data);
+            // console.log(res.data);
             this.updateGrade();
           })
         }
@@ -400,7 +400,7 @@
       //修改积分
       updateGrade() {
         let newGrade = this.currGrade - this.post.grade;
-        console.log(newGrade);
+        // console.log(newGrade);
         grade.update(newGrade).then(res => {
           console.log(res.data);
           this.$router.push('/home/index');
@@ -409,12 +409,15 @@
       // 查询文章详情
       getPostDetail() {
         post.getDetail(this.postId).then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.post.labelId = res.data.labelId;
           this.post.title = res.data.title;
           this.post.grade = res.data.rewardGrade;
           // this.post.content = res.data.content;
           this.layedit.setContent(this.editIndex, res.data.content);
+
+          // 假增加当前积分
+          this.currGrade = this.currGrade + this.post.grade;
         })
       }
     }

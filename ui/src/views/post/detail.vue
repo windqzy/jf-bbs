@@ -59,7 +59,7 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
-                <span v-if="userInfo.id == postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="edit">
+                <span v-if="userInfo.id == postInfo.userId && !postInfo.end" class="layui-btn layui-btn-xs jie-admin" type="edit">
                   <router-link :to="'/add/index?postId=' + postInfo.id">编辑此贴</router-link>
                 </span>
               </div>

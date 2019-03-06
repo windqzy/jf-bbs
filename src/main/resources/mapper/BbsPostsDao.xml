@@ -28,7 +28,7 @@
         SELECT DISTINCT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
         bp.label_id as label_id, bl.name as label_name, bp.reply_count as reply_count, bp.title as title, bp.top as top,
         bp.end as end, bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon
-        , (select init_time from bbs_reply where posts_id=bp.id order by init_time desc limit 1) as replytime
+        , IFNULL((select init_time from bbs_reply where posts_id=bp.id order by init_time desc limit 1), bp.init_time) as replytime
         FROM bbs_posts bp
         LEFT JOIN bbs_user bu ON bp.user_id = bu.id
         LEFT JOIN bbs_label bl ON bl.id = bp.label_id
@@ -54,10 +54,10 @@
             ORDER BY
             <choose>
                 <when test="order == 'init_time'">
-                    replytime DESC, bp.init_time DESC
+                    replytime DESC
                 </when>
                 <when test="order == 'reply_count'">
-                    bp.reply_count DESC
+                    bp.reply_count DESC, replytime DESC
                 </when>
             </choose>
         </if>

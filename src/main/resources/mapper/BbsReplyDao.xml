@@ -42,6 +42,7 @@
         AND br.init_time &gt;= #{beginTime}
         AND br.init_time &lt; #{endTime}
         GROUP BY br.user_id ORDER BY reply_count DESC
+        LIMIT #{startPage}, #{endPage}
     </select>
     <update id="updateUpById" parameterType="map">
         UPDATE bbs_reply

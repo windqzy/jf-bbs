@@ -134,7 +134,7 @@
                     <i class="layui-badge fly-badge-vip">VIP3</i>
                     -->
                   </router-link>
-                  <span>{{post.initTime | getDate}}</span>
+                  <span>{{post.replytime | getDate}}</span>
                   <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="post.rewardGrade != 0">
                     <i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
@@ -253,7 +253,7 @@
           <div class="fly-panel fly-link">
             <h3 class="fly-panel-title">友情链接</h3>
             <dl class="fly-panel-main">
-              <dd><a href="www.bjjfsoft.com" target="_blank">金风易通</a></dd>
+              <dd><a href="http://www.bjjfsoft.com/" target="_blank">金风易通</a></dd>
               <!--<dd><a href="http://layim.layui.com/" target="_blank">WebIM</a></dd>-->
               <!--<dd><a href="http://layer.layui.com/" target="_blank">layer</a></dd>-->
               <!--<dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a></dd>-->

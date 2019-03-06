@@ -85,6 +85,17 @@ public class BbsPostsEntity implements Serializable {
 	@TableField(exist = false)
 	private Date collectionTime;
 
+	@TableField(exist = false)
+	private Date replytime;
+
+	public Date getReplytime() {
+		return replytime;
+	}
+
+	public void setReplytime(Date replytime) {
+		this.replytime = replytime;
+	}
+
 	private Boolean isDel;
 
 	public Boolean getDel() {

@@ -230,7 +230,7 @@
               url: window.localStorage.baseUrl + '/upload/file',
               accept: 'file',
               acceptMime: 'file/*',
-              size: '20480',
+              size: 1024 * 10 * 200,
               autoInsert: true, //自动插入编辑器设置
               done: function (data) {
                 // console.log(data);

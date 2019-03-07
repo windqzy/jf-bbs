@@ -313,7 +313,7 @@
           <li v-for="sign in noticeList">
             <a style="cursor: pointer" @click="toUserHome(sign.userId)">
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
-              <cite class="fly-link">{{sign.username}}</cite>
+              <cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>
             </a>
             <!--<a href="" target="_blank">-->
             <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
@@ -593,7 +593,6 @@
     },
     filters: {
       getDate(dateTimeStamp) {
-
         var minute = 1000 * 60;
         var hour = minute * 60;
         var day = hour * 24;
@@ -642,6 +641,13 @@
         let min = da.getMinutes() < 10 ? '0' + da.getMinutes() : da.getMinutes();
         let sec = da.getSeconds() < 10 ? '0' + da.getSeconds() : da.getSeconds();
         return hours + ':' + min + ':' + sec;
+      },
+      subString(str, n) {
+        if (!str) {
+          return '';
+        }
+        let sign = str.length > n ? '...' : '';
+        return str.substring(0, n) + sign;
       }
     }
   }

@@ -67,7 +67,7 @@
             <!-- 文章内容 -->
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
           </div>
-          <!-- TODO:热门回帖(暂采用回帖前三作为假数据) -->
+          <!-- 热门回帖 -->
           <div class="fly-panel detail-box" id="flyReply" v-if="replyHotList.length != 0">
             <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
               <legend>热门回复</legend>
@@ -438,7 +438,7 @@
             content: this.layedit.getContent(this.editIndex),
           }
           reply.updateReply(bbsReply).then(res => {
-            //TODO 提示回复成功
+            // 提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
             this.getWeekHot();

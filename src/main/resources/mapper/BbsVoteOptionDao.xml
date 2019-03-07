@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jfsoft.bbs.dao.BbsVoteOptionDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jfsoft.bbs.entity.BbsVoteOptionEntity" id="bbsVoteOptionMap">
+        <result property="id" column="id"/>
+        <result property="initTime" column="init_time"/>
+        <result property="voteId" column="vote_id"/>
+        <result property="content" column="content"/>
+        <result property="optionCount" column="option_count"/>
+    </resultMap>
+
+    <select id="getVoteOptionByPostId" parameterType="integer" resultMap="bbsVoteOptionMap">
+        SELECT bvo.*, ! isnull(ifnull(bvr.user_id, null)) as sel
+        FROM bbs_vote_option bvo INNER JOIN bbs_vote bv ON bvo.vote_id = bv.id
+        LEFT JOIN bbs_vote_record bvr ON bvr.option_id = bvo.id AND bvr.user_id = #{userId}
+        WHERE bv.post_id = #{postId} ORDER BY bvo.id
+    </select>
+</mapper>

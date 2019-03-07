@@ -24,7 +24,7 @@
           <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
             <input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"
-                   class="layui-input"
+                   class="layui-input" maxLength="20"
                    v-model="username">
           </div>
           <div class="layui-inline">

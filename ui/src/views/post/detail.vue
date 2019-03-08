@@ -59,13 +59,24 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
-                <span v-if="userInfo.id == postInfo.userId && !postInfo.end" class="layui-btn layui-btn-xs jie-admin" type="edit">
+                <span v-if="userInfo.id == postInfo.userId && !postInfo.end" class="layui-btn layui-btn-xs jie-admin"
+                      type="edit">
                   <router-link :to="'/add/index?postId=' + postInfo.id">编辑此贴</router-link>
                 </span>
               </div>
             </div>
             <!-- 文章内容 -->
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
+            <!-- 投票 -->
+            <div class="vote-box">
+              <el-checkbox-group v-model="voteArr" @change="changeVote" :min="voteMin" :max="voteMax">
+                <div v-for="item in voteList" style="margin: 10px 0;">
+                  <el-checkbox :label="item.id">{{item.name}}</el-checkbox>
+                  <el-progress :percentage="parseInt(item.num / item.total * 100)"></el-progress>
+                </div>
+              </el-checkbox-group>
+              <button class="layui-btn" @click="vote">投票</button>
+            </div>
           </div>
           <!-- 热门回帖 -->
           <div class="fly-panel detail-box" id="flyReply" v-if="replyHotList.length != 0">
@@ -162,7 +173,8 @@
                             @click="updateReply(reply.content, reply.id)">编辑</span>
                     </a>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end" @click="acceptReply(reply.id)">采纳</span>
+                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end"
+                          @click="acceptReply(reply.id)">采纳</span>
                   </div>
                 </div>
               </li>
@@ -219,7 +231,8 @@
                             @click="updateReply(reply.content, reply.id)">编辑</span>
                     </a>
                     <span type="del" v-if="userInfo.id == reply.userId" @click="delReply(reply.id)">删除</span>
-                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end" @click="acceptReply(reply.id,reply.userId)">采纳</span>
+                    <span type="accept" v-if="userInfo.id == postInfo.userId" v-show="!postInfo.end"
+                          @click="acceptReply(reply.id,reply.userId)">采纳</span>
                   </div>
                 </div>
               </li>
@@ -339,9 +352,28 @@
         editIndex: '',
         layedit: null,
         layer: null,
+        form: null,
         userInfo: null,
         defaultAvatar: require('../../../static/images/avatar/4.jpg'),
         // activeReplyed: '-1',
+        voteArr: [],
+        voteMin: 1,
+        voteMax: 2,
+        voteList: [ // TODO:ceshi
+          {
+            id:1,
+            name: '测试测试测试测试测试测试1',
+            num: 12,
+            total: 24,
+            bg: '#f00'
+          }, {
+            id:2,
+            name: '测试测试测试测试测试测试2',
+            num: 4,
+            total: 24,
+            bg: '#0f0'
+          }
+        ]
       }
     },
     created() {
@@ -361,9 +393,10 @@
     methods: {
       layui() {
         let _this = this;
-        layui.use(['layedit', 'layer', 'upload'], function () {
+        layui.use(['layedit', 'layer', 'upload', 'form'], function () {
           _this.layedit = layui.layedit;
           _this.layer = layui.layer;
+          _this.form = layui.form;
           _this.layedit.set({
             uploadImage: {
               url: window.localStorage.baseUrl + '/upload/file',
@@ -476,12 +509,12 @@
           })
         })
       },
-      acceptReply(replyId,userId) {
+      acceptReply(replyId, userId) {
         let _this = this;
         this.layer.confirm('是否采纳该评论？', {
           btn: ['是', '否'] //按钮
         }, function () {
-          reply.acceptReply(replyId,userId).then(res => {
+          reply.acceptReply(replyId, userId).then(res => {
             _this.getReplyList(_this.postId);
             _this.getDetailById(_this.postId);
             _this.getWeekHot();
@@ -530,6 +563,13 @@
         this.$el.querySelector('#comment').scrollIntoView();
         let user = '<a href="#/user/index?userId=' + e.userId + '" class="fly-link">@' + e.author + '&nbsp;</a>';
         this.layedit.setContent(this.editIndex, user);
+      },
+      // TODO:投票
+      changeVote(val) {
+        console.log(val);
+      },
+      vote() {
+        console.log()
       }
     },
     filters: {
@@ -592,14 +632,20 @@
     }
   }
 
-  /*评论回复*/
-  /*.reply {*/
-  /*padding: 8px;*/
-  /*margin-top: 8px;*/
-  /*background-color: #eee;*/
-  /*.reply-btn {*/
-  /*text-align: right;*/
-  /*margin-top: 8px;*/
-  /*}*/
-  /*}*/
+  /* 投票 */
+  .vote-box {
+    li {
+      position: relative;
+      margin-top: 4px;
+      .progress {
+        height: 20px;
+        margin: 4px 0 10px;
+        background-color: #fff;
+        div {
+          height: 100%;
+          background-color: #2baee9;
+        }
+      }
+    }
+  }
 </style>

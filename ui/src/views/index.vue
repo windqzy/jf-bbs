@@ -368,7 +368,7 @@
           <li v-for="sign in noticeList">
             <a style="cursor: pointer" @click="toUserHome(sign.userId)">
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
-              <cite class="fly-link">{{sign.username}}</cite>
+              <cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>
             </a>
             <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
           </li>
@@ -377,7 +377,7 @@
           <li v-for="sign in noticeList">
             <a style="cursor: pointer" @click="toUserHome(sign.userId)">
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
-              <cite class="fly-link">{{sign.username}}</cite>
+              <cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>
             </a>
             <span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>
           </li>

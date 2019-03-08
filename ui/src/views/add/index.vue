@@ -75,46 +75,46 @@
                 </div>
                 <!-- 分类 -->
                 <div class="layui-row layui-form-item">
-                  <div class="layui-col-md12">
+                  <div class="layui-col-md12 label-width">
                     <label class="layui-form-label" style="border: none; background-color: white">分类</label>
                     <div class="layui-input-block">
                       <button class="layui-btn layui-btn-sm" :class="{'layui-btn-primary': activeBtn !== index}"
                               v-for="(label,index) in labelList"
-                              style="top: 5px;position: relative;" @click="changeBtn(index, label.id)">{{label.name}}
+                              style="top: 5px;position: relative;" @click="changeBtn(index, label)">{{label.name}}
                       </button>
                     </div>
                   </div>
                 </div>
                 <!-- 标签 -->
-                <div class="layui-row layui-form-item">
-                  <div class="layui-col-md12">
-                    <label class="layui-form-label" style="border: none; background-color: white">标签</label>
-                    <div class="layui-input-block">
-                      <input type="text" id="L_tag" name="title" required lay-verify="required" autocomplete="off"
-                             class="layui-input">
-                    </div>
-                  </div>
-                </div>
-                <!--<div class="layui-form-item">-->
-                <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">悬赏钻石</label>-->
-                <!--<div class="layui-input-inline">-->
-                <!--<input type="number" name="experience" required lay-verify="required" autocomplete="off"-->
-                <!--:max="post.grade" v-model="post.grade"-->
+                <!--<div class="layui-row layui-form-item">-->
+                <!--<div class="layui-col-md12">-->
+                <!--<label class="layui-form-label" style="border: none; background-color: white">标签</label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<input type="text" id="L_tag" name="title" required lay-verify="required" autocomplete="off"-->
                 <!--class="layui-input">-->
                 <!--</div>-->
-                <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 190px;">&ndash;&gt;-->
-                <!--&lt;!&ndash;<select name="experience">&ndash;&gt;-->
-                <!--&lt;!&ndash;<option value="20">20</option>&ndash;&gt;-->
-                <!--&lt;!&ndash;<option value="30">30</option>&ndash;&gt;-->
-                <!--&lt;!&ndash;<option value="50">50</option>&ndash;&gt;-->
-                <!--&lt;!&ndash;<option value="60">60</option>&ndash;&gt;-->
-                <!--&lt;!&ndash;<option value="80">80</option>&ndash;&gt;-->
-                <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--<div class="layui-form-mid layui-word-aux" v-model="currGrade">当前钻石数 {{currGrade}}</div>-->
                 <!--</div>-->
                 <!--</div>-->
+                <div class="layui-form-item" v-if="isGrade">
+                  <div class="layui-inline label-width">
+                    <label class="layui-form-label" style="border: none; background-color: white">悬赏</label>
+                    <div class="layui-input-inline">
+                      <input type="number" name="experience" required lay-verify="required" autocomplete="off"
+                             :max="post.grade" v-model="post.grade"
+                             class="layui-input">
+                    </div>
+                    <!--<div class="layui-input-inline" style="width: 190px;">-->
+                    <!--<select name="experience">-->
+                    <!--<option value="20">20</option>-->
+                    <!--<option value="30">30</option>-->
+                    <!--<option value="50">50</option>-->
+                    <!--<option value="60">60</option>-->
+                    <!--<option value="80">80</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前钻石数 {{currGrade}}</div>
+                  </div>
+                </div>
                 <!--<div class="layui-form-item">-->
                 <!--<label for="L_vercode" class="layui-form-label">人类验证</label>-->
                 <!--<div class="layui-input-inline">-->
@@ -125,15 +125,44 @@
                 <!--<span style="color: #c00;">1+1=?</span>-->
                 <!--</div>-->
                 <!--</div>-->
-                <div class="layui-form-item">
-                  <button class="layui-btn" lay-filter="addForm" lay-submit @click="publish">立即发布</button>
+                <!-- 投票 -->
+                <div class="layui-row" v-show="isVote">
+                  <div class="layui-col-md12 label-width layui-form-item">
+                    <label class="layui-form-label" style="border: none; background-color: white">选项</label>
+                    <div class="layui-input-block">
+                      <div v-for="(item,index) in inputCount" class="vote">
+                        <input type="text" class="layui-input" v-model="inputCount[index]">
+                        <i class="layui-icon layui-icon-close" @click="inputCount.splice(index,1)"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-col-md11 label-width layui-form-item">
+                    <label class="layui-form-label" style="border: none; background-color: white">结束时间</label>
+                    <div class="layui-input-inline">
+                      <input type="text" class="layui-input" id="endTime">
+                    </div>
+                    <input type="number" name="" placeholder="至少选择几项" lay-skin="primary"
+                           class="layui-input layui-input-inline" v-model="optionMin">
+                    <input type="number" name="" placeholder="至多选择几项" lay-skin="primary"
+                           class="layui-input layui-input-inline" v-model="optionMax">
+                    <input type="checkbox" name="" title="投票前可见" class="layui-input layui-input-inline"
+                           lay-skin="primary" v-model="isVisible">
+                  </div>
+                  <div class="layui-col-md1" style="padding-left: 0px;">
+                    <button class="layui-btn" @click="inputCount.push('')">新增选项</button>
+                  </div>
                 </div>
+              </div>
+
+              <div class="layui-form-item">
+                <button class="layui-btn" lay-filter="addForm" lay-submit @click="publish">立即发布</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
   </div>
 </template>
@@ -153,6 +182,7 @@
       return {
         editIndex: null,
         layedit: null,
+        laydate: null,
         labelList: [],
         post: {
           labelId: '',
@@ -167,7 +197,14 @@
         showGrade: false,
         userInfo: '',
         required: false,
-        activeBtn: 0
+        activeBtn: 0,
+        isGrade: false,
+        isVote: false, // 投票
+        inputCount: [''],
+        optionMin: '',
+        optionMax: '',
+        endTime: '',
+        isVisible: true,
       }
     },
     created() {
@@ -181,6 +218,7 @@
         this.title = '编辑此贴';
         this.getPostDetail();
       }
+
     },
     mounted() {
       this.initLayUI();
@@ -206,6 +244,12 @@
           //     form.render();
           //   })
           // })
+          this.$nextTick(() => {
+            if (this.labelList[this.activeBtn].name === '提问') {
+              this.isGrade = true;
+            }
+          })
+
         })
       },
       selectLabel(labelId) {
@@ -213,10 +257,11 @@
       },
       initLayUI() {
         let _this = this;
-        layui.use(['layedit', 'layer', 'jquery'], function () {
+        layui.use(['layedit', 'layer', 'jquery', 'laydate'], function () {
           let $ = layui.jquery;
           _this.layer = layui.layer;
           _this.layedit = layui.layedit;
+          _this.laydate = layui.laydate;
           _this.layedit.set({
             //暴露layupload参数设置接口 --详细查看layupload参数说明
             uploadImage: {
@@ -345,6 +390,13 @@
             , height: '400px'
           });
           _this.editIndex = _this.layedit.build('L_content');
+          _this.laydate.render({
+            elem: '#endTime', //指定元素
+            type: 'datetime',
+            done: function (value, date) { //监听日期被切换
+              _this.endTime = value;
+            }
+          });
           //设置编辑器内容
           //layedit.setContent(ieditor, "<h1>hello layedit</h1><p>对layui.layedit的拓展，基于layui v2.4.3.增加了HTML源码模式、插入table、批量上传图片、图片插入、超链接插入功能优化、视频插入功能、全屏功能、段落、字体颜色、背景色设置、锚点设置等功能。</p><br><br><div>by KnifeZ </div>", false);
           // $("#openlayer").click(function () {
@@ -443,20 +495,46 @@
           this.currGrade = this.currGrade + this.post.grade;
         })
       },
-      changeBtn(index, labelId) {
+      changeBtn(index, label) {
         this.activeBtn = index;
-        this.post.labelId = labelId;
-      }
+        this.post.labelId = label.id;
+        this.isGrade = label.name === '提问' ? true : false;
+        this.isVote = label.name === '投票' ? true : false;
+      },
+      // test() {
+      //   console.log(this.inputCount, this.optionMin, this.optionMax, this.isVisible, this.endTime);
+      // }
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .layui-layedit-tool .layui-colorpicker-xs {
     border: 0;
   }
 
   .layui-layedit-tool .layui-colorpicker-trigger-span i {
     display: none !important;
+  }
+
+  .vote {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    .layui-icon {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .label-width {
+    .layui-form-label {
+      width: 80px;
+      padding: 8px 0;
+      text-align: left;
+    }
+    .layui-input-block {
+      margin-left: 80px;
+    }
   }
 </style>

@@ -459,12 +459,14 @@
             return false;
           }
           this.post.content = this.layedit.getContent(this.editIndex);
+
           let bbsPosts = {
             id: this.postId,
             labelId: this.post.labelId,
             title: this.post.title,
             rewardGrade: this.post.grade,
-            content: this.post.content
+            content: this.post.content,
+            vote: this.post.isVote
           };
           post.publish(bbsPosts).then(res => {
             this.layer.msg('发布成功');
@@ -521,6 +523,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 8px;
+
     .layui-icon {
       margin-left: 10px;
       cursor: pointer;
@@ -533,6 +536,7 @@
       padding: 8px 0;
       text-align: left;
     }
+
     .layui-input-block {
       margin-left: 80px;
     }

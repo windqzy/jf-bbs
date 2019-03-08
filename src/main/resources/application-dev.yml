@@ -11,7 +11,7 @@
 #    cache: false
 app:
   filePath: D://JFAPP/JFBBS/file/
-  staticUrl: http://oa.bjjfsoft.com:8848/static/
+  staticUrl: http://localhost:8848/static/
   webUrl: http://localhost:8080/#/login
   DD_APPID: dingoaq60e6ocm91lbudx2
   DD_APPSECRET: htpUywMLbA6pdDuQ73JYhpWoz1GdR-Nu-z4WWtHZWi3WUA5KMeN0JS-UyMkCgqiu

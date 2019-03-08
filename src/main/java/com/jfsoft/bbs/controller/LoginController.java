@@ -199,9 +199,10 @@ public class LoginController {
             BbsUserEntity bbsUserEntity = new BbsUserEntity();
             bbsUserEntity.setInitTime(new Date());
             bbsUserEntity.setUnionId(unionId);
-            bbsUserEntity.setName(name);
-            bbsUserEntity.setMobile(mobile);
-            bbsUserEntity.setPosition(position);
+            // 实现完全匿名
+//            bbsUserEntity.setName(name);
+//            bbsUserEntity.setMobile(mobile);
+//            bbsUserEntity.setPosition(position);
             bbsUserService.insert(bbsUserEntity);
             int id = bbsUserEntity.getId();
             BbsGradeEntity gradeEntity = new BbsGradeEntity();

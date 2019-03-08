@@ -55,7 +55,6 @@ public class VoteController extends AbstractController {
         wrapper.eq("post_id", postId);
         // 根据postId得到投票信息
         BbsVoteEntity bbsVote = bbsVoteService.selectOne(wrapper);
-
         return R.ok().put("bbsVote", bbsVote);
     }
 
@@ -76,7 +75,6 @@ public class VoteController extends AbstractController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsVoteEntity bbsVoteEntity){
         bbsVoteService.insert(bbsVoteEntity);
-
         return R.ok();
     }
 

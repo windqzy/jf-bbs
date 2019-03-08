@@ -31,14 +31,14 @@
                 </div>
                 <!--<div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>-->
               </div>
-              <div class="layui-form-item">
-                <label for="L_tel" class="layui-form-label">手机号</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_tel" name="mobile" required lay-verify="required" autocomplete="off"
-                         class="layui-input" v-model="mobile">
-                </div>
-                <!--<div class="layui-form-mid layui-word-aux">6到16个字符</div>-->
-              </div>
+              <!--<div class="layui-form-item">-->
+                <!--<label for="L_tel" class="layui-form-label">手机号</label>-->
+                <!--<div class="layui-input-inline">-->
+                  <!--<input type="text" id="L_tel" name="mobile" required lay-verify="required" autocomplete="off"-->
+                         <!--class="layui-input" v-model="mobile">-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="layui-form-mid layui-word-aux">6到16个字符</div>&ndash;&gt;-->
+              <!--</div>-->
               <!--<div class="layui-form-item">-->
               <!--<label for="L_repass" class="layui-form-label">确认密码</label>-->
               <!--<div class="layui-input-inline">-->

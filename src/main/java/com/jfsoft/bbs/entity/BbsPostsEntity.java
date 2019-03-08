@@ -88,6 +88,16 @@ public class BbsPostsEntity implements Serializable {
 	@TableField(exist = false)
 	private Date replytime;
 
+	private Boolean isVote;
+
+	public Boolean getVote() {
+		return isVote;
+	}
+
+	public void setVote(Boolean vote) {
+		isVote = vote;
+	}
+
 	public Date getReplytime() {
 		return replytime;
 	}

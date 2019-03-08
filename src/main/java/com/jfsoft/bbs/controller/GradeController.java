@@ -24,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/grade")
 public class GradeController extends AbstractController {
+
     @Autowired
     private BbsGradeService bbsGradeService;
 
@@ -34,7 +35,6 @@ public class GradeController extends AbstractController {
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = bbsGradeService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -60,7 +60,6 @@ public class GradeController extends AbstractController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsGradeEntity bbsGrade) {
         bbsGradeService.insert(bbsGrade);
-
         return R.ok();
     }
 
@@ -88,8 +87,6 @@ public class GradeController extends AbstractController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Integer[] ids) {
         bbsGradeService.deleteBatchIds(Arrays.asList(ids));
-
         return R.ok();
     }
-
 }

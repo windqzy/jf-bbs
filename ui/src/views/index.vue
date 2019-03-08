@@ -35,22 +35,64 @@
             </div>
           </div>
           <div class="fly-panel layui-hide-xs" v-if="labelId == 0">
-            <div class="layui-row fly-panel-main" style="padding: 15px;">
-              <div class="layui-carousel fly-topline" id="FLY_topline" lay-anim="fade"
-                   style="width: 100%; height: 141px;">
-                <div carousel-item="">
-                  <div class="layui-this">
-                    <a href="javascript:;" target="_blank">
-                      <img src="../../static/images/index.png" alt="首页"
-                           style="max-width: 100%;">
-                    </a>
+            <div style="padding: 0; height: 50px">
+              <!--<div class="layui-container">-->
+                <!--<ul class="layui-clear">-->
+                  <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
+                  <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+                    <!--<router-link to="/set/index">我发表的贴</router-link>-->
+                  <!--</li>-->
+                  <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+                    <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
+                  <!--</li>-->
+                <!--</ul>-->
+
+                <!--<div class="fly-column-right layui-hide-xs">-->
+                  <!--<span class="fly-search"><i class="layui-icon"></i></span>-->
+                  <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+                <!--</div>-->
+                <!--<div class="layui-hide-sm layui-show-xs-block"-->
+                     <!--style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
+                  <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+                <!--</div>-->
+              <!--</div>-->
+                <div class="layui-row">
+                  <div class="layui-col-md9">
+                    <div class="layui-row">
+                      <div class="layui-col-md1">
+                        <img :src="defaultAvatar" style="height: 50px">
+                      </div>
+
+                      <div class="layui-col-md11 fly-column">
+                        <ul class="layui-clear layui-row">
+                          <li class="layui-hide-xs" >
+                            <a style="cursor: pointer; padding: 0 0 0 20px;" @click="selectPostType">
+                              <i class="layui-icon layui-icon-edit" style="font-size: 20px; top: 2px; position: relative;"></i>
+                              写文章
+                            </a>
+                          </li>
+                          <!--<li class="layui-hide-xs">-->
+                            <!--<a style="cursor: pointer; padding: 0 0 0 20px">-->
+                              <!--<i class="layui-icon layui-icon-link" style="font-size: 12px;"></i>-->
+                              <!--分享链接-->
+                            <!--</a>-->
+                          <!--</li>-->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-col-md3 fly-column" style="display: flex;justify-content: space-around;">
+                    <!--<a style="cursor: pointer"></a>-->
+                    <!--<a style="cursor: pointer">收藏</a>-->
+                    <router-link to="/set/index#collection">我的收藏</router-link>
+                    <router-link to="/set/index">我的帖子</router-link>
+                    <!--<a style="cursor: pointer">我的收藏</a>-->
                   </div>
                 </div>
-              </div>
             </div>
           </div>
           <!-- 置顶区 -->
-          <div class="fly-panel" v-if="labelId == 0">
+          <div class="fly-panel" v-if="false">
             <div class="fly-panel-title fly-filter">
               <a>置顶</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
@@ -156,8 +198,31 @@
         </div>
         <!-- 右侧卡片 -->
         <div class="layui-col-md4">
+          <!-- 签到 -->
+          <div class="fly-panel fly-signin" v-if="labelId == 0">
+            <div class="fly-panel-title">
+              签到
+              <i class="fly-mid"></i>
+              <a style="cursor: pointer" @click="signDoc" class="fly-link" id="LAY_signinHelp">说明</a>
+              <i class="fly-mid"></i>
+              <a style="cursor: pointer" class="fly-link" id="LAY_signinTop" @click="signTop">活跃榜<span
+                class="layui-badge-dot"></span></a>
+              <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
+            </div>
+            <div class="fly-panel-main fly-signin-main">
+              <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
+              <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
+              <span>可获得<cite v-text="currGrade"></cite>钻石</span>
+
+              <!-- 已签到状态 -->
+              <!--
+              <button class="layui-btn layui-btn-disabled">今日已签到</button>
+              <span>获得了<cite>20</cite>飞吻</span>
+              -->
+            </div>
+          </div>
           <!-- 温馨通道 -->
-          <div class="fly-panel" v-if="labelId == 0" style="height: 171px;">
+          <div class="fly-panel" v-if="false" style="height: 171px;">
             <h3 class="fly-panel-title">公告</h3>
             <div class="layui-card-body">
               热烈庆祝金风社区成立！！！<br>
@@ -191,29 +256,6 @@
                 </router-link>
               </li>
             </ul>
-          </div>
-          <!-- 签到 -->
-          <div class="fly-panel fly-signin" v-if="labelId == 0">
-            <div class="fly-panel-title">
-              签到
-              <i class="fly-mid"></i>
-              <a style="cursor: pointer" @click="signDoc" class="fly-link" id="LAY_signinHelp">说明</a>
-              <i class="fly-mid"></i>
-              <a style="cursor: pointer" class="fly-link" id="LAY_signinTop" @click="signTop">活跃榜<span
-                class="layui-badge-dot"></span></a>
-              <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
-            </div>
-            <div class="fly-panel-main fly-signin-main">
-              <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
-              <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
-              <span>可获得<cite v-text="currGrade"></cite>钻石</span>
-
-              <!-- 已签到状态 -->
-              <!--
-              <button class="layui-btn layui-btn-disabled">今日已签到</button>
-              <span>获得了<cite>20</cite>飞吻</span>
-              -->
-            </div>
           </div>
           <!-- 回帖周榜 -->
           <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank" v-if="labelId == 0">
@@ -342,6 +384,12 @@
         </ul>
       </div>
     </div>
+    <!-- 文章类型 -->
+    <div id="postType">
+      <div class="fly-panel" v-for="(label, index) in labelList" style="width: 60px; height: 40px">
+        <div class="fly-panel-main">{{label.name}}</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -351,6 +399,7 @@
   import * as time from '@/utils/time';
   import * as sign from '@/api/sign';
   import * as grade from '@/api/grade';
+  import * as label from '@/api/label';
 
   export default {
     name: "index",
@@ -377,7 +426,8 @@
         layer: null,
         $: null,
         todayHotList: [],
-        defaultAvatar: require('../../static/images/avatar/4.jpg')
+        defaultAvatar: require('../../static/images/avatar/4.jpg'),
+        labelList: []
       }
     },
     created() {
@@ -589,7 +639,26 @@
       },
       getAD() {
         this.layer.msg('多攒的钻石，就可以买广告位了');
-      }
+      },
+      selectPostType() {
+        this.$router.push('/add/index');
+        // this.getAllLabel();
+        // this.layer.open({
+        //   type: 1
+        //   , title: '请选择文章类型'
+        //   , area: ['600px', '400px']
+        //   , shade: 0.8
+        //   , shadeClose: true
+        //   , content: this.$('#postType')
+        // });
+      },
+      // 查询所有 Label
+      getAllLabel() {
+        label.getList().then(res => {
+          console.log(res.data)
+          this.labelList = res.data.list;
+        })
+      },
     },
     filters: {
       getDate(dateTimeStamp) {

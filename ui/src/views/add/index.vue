@@ -10,61 +10,62 @@
             </ul>
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
               <div class="layui-tab-item layui-show">
-
                 <div class="layui-row layui-col-space15 layui-form-item">
-                  <div class="layui-col-md3">
-                    <label class="layui-form-label">所在专栏</label>
-                    <div class="layui-input-block">
-                      <select lay-verify="required" name="class" v-model="post.labelId"
-                              @change="selectLabel">
-                        <option v-for="label in labelList" :value="label.id">{{label.name}}</option>
-                        <!--<option value="0">提问</option>-->
-                        <!--<option value="99">分享</option>-->
-                        <!--<option value="100">讨论</option>-->
-                        <!--<option value="101">建议</option>-->
-                        <!--<option value="168">公告</option>-->
-                        <!--<option value="169">动态</option>-->
-                      </select>
-                    </div>
-                  </div>
-                  <div class="layui-col-md9">
-                    <label for="L_title" class="layui-form-label">标题</label>
-                    <div class="layui-input-block">
-                      <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off"
-                             v-model="post.title"
-                             class="layui-input">
-                      <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
-                    </div>
+                  <!--<div class="layui-col-md3">-->
+                  <!--<label class="layui-form-label">所在专栏</label>-->
+                  <!--<div class="layui-input-block">-->
+                  <!--<select lay-verify="required" name="class" v-model="post.labelId"-->
+                  <!--@change="selectLabel">-->
+                  <!--<option v-for="label in labelList" :value="label.id">{{label.name}}</option>-->
+                  <!--&lt;!&ndash;<option value="0">提问</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="99">分享</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="100">讨论</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="101">建议</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="168">公告</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="169">动态</option>&ndash;&gt;-->
+                  <!--</select>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                  <div class="layui-col-md12">
+                    <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off"
+                           v-model="post.title"
+                           placeholder="标题"
+                           class="layui-input">
+                    <!--<label class="layui-form-label">标题</label>-->
+                    <!--<div class="layui-input-block">-->
+
+                    <!--&lt;!&ndash; <input type="hidden" name="id" value="{{d.edit.id}}"> &ndash;&gt;-->
+                    <!--</div>-->
                   </div>
                 </div>
                 <div class="layui-row layui-col-space15 layui-form-item layui-hide" id="LAY_quiz">
-                  <div class="layui-col-md3">
-                    <label class="layui-form-label">所属产品</label>
-                    <div class="layui-input-block">
-                      <select name="project">
-                        <option></option>
-                        <option value="layui">layui</option>
-                        <option value="独立版layer">独立版layer</option>
-                        <option value="独立版layDate">独立版layDate</option>
-                        <option value="LayIM">LayIM</option>
-                        <option value="Fly社区模板">Fly社区模板</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="layui-col-md3">
-                    <label class="layui-form-label" for="L_version">版本号</label>
-                    <div class="layui-input-block">
-                      <input type="text" id="L_version" value="" name="version" autocomplete="off"
-                             class="layui-input">
-                    </div>
-                  </div>
-                  <div class="layui-col-md6">
-                    <label class="layui-form-label" for="L_browser">浏览器</label>
-                    <div class="layui-input-block">
-                      <input type="text" id="L_browser" value="" name="browser" placeholder="浏览器名称及版本，如：IE 11"
-                             autocomplete="off" class="layui-input">
-                    </div>
-                  </div>
+                  <!--<div class="layui-col-md3">-->
+                  <!--<label class="layui-form-label">所属产品</label>-->
+                  <!--<div class="layui-input-block">-->
+                  <!--<select name="project">-->
+                  <!--<option></option>-->
+                  <!--<option value="layui">layui</option>-->
+                  <!--<option value="独立版layer">独立版layer</option>-->
+                  <!--<option value="独立版layDate">独立版layDate</option>-->
+                  <!--<option value="LayIM">LayIM</option>-->
+                  <!--<option value="Fly社区模板">Fly社区模板</option>-->
+                  <!--</select>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="layui-col-md3">-->
+                  <!--<label class="layui-form-label" for="L_version">版本号</label>-->
+                  <!--<div class="layui-input-block">-->
+                  <!--<input type="text" id="L_version" value="" name="version" autocomplete="off"-->
+                  <!--class="layui-input">-->
+                  <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="layui-col-md6">-->
+                  <!--<label class="layui-form-label" for="L_browser">浏览器</label>-->
+                  <!--<div class="layui-input-block">-->
+                  <!--<input type="text" id="L_browser" value="" name="browser" placeholder="浏览器名称及版本，如：IE 11"-->
+                  <!--autocomplete="off" class="layui-input">-->
+                  <!--</div>-->
+                  <!--</div>-->
                 </div>
                 <div class="layui-form-item layui-form-text">
                   <div class="layui-input-block">
@@ -72,26 +73,48 @@
                                 class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                   </div>
                 </div>
-                <div class="layui-form-item">
-                  <div class="layui-inline">
-                    <label class="layui-form-label">悬赏钻石</label>
-                    <div class="layui-input-inline">
-                      <input type="number" name="experience" required lay-verify="required" autocomplete="off"
-                             :max="post.grade" v-model="post.grade"
-                             class="layui-input">
+                <!-- 分类 -->
+                <div class="layui-row layui-form-item">
+                  <div class="layui-col-md12">
+                    <label class="layui-form-label" style="border: none; background-color: white">分类</label>
+                    <div class="layui-input-block">
+                      <button class="layui-btn layui-btn-sm" :class="{'layui-btn-primary': activeBtn !== index}"
+                              v-for="(label,index) in labelList"
+                              style="top: 5px;position: relative;" @click="changeBtn(index, label.id)">{{label.name}}
+                      </button>
                     </div>
-                    <!--<div class="layui-input-inline" style="width: 190px;">-->
-                    <!--<select name="experience">-->
-                    <!--<option value="20">20</option>-->
-                    <!--<option value="30">30</option>-->
-                    <!--<option value="50">50</option>-->
-                    <!--<option value="60">60</option>-->
-                    <!--<option value="80">80</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <div class="layui-form-mid layui-word-aux" v-model="currGrade">当前钻石数 {{currGrade}}</div>
                   </div>
                 </div>
+                <!-- 标签 -->
+                <div class="layui-row layui-form-item">
+                  <div class="layui-col-md12">
+                    <label class="layui-form-label" style="border: none; background-color: white">标签</label>
+                    <div class="layui-input-block">
+                      <input type="text" id="L_tag" name="title" required lay-verify="required" autocomplete="off"
+                             class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <!--<div class="layui-form-item">-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">悬赏钻石</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="number" name="experience" required lay-verify="required" autocomplete="off"-->
+                <!--:max="post.grade" v-model="post.grade"-->
+                <!--class="layui-input">-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 190px;">&ndash;&gt;-->
+                <!--&lt;!&ndash;<select name="experience">&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="20">20</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="30">30</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="50">50</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="60">60</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="80">80</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<div class="layui-form-mid layui-word-aux" v-model="currGrade">当前钻石数 {{currGrade}}</div>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--<div class="layui-form-item">-->
                 <!--<label for="L_vercode" class="layui-form-label">人类验证</label>-->
                 <!--<div class="layui-input-inline">-->
@@ -143,7 +166,8 @@
         title: '',
         showGrade: false,
         userInfo: '',
-        required: false
+        required: false,
+        activeBtn: 0
       }
     },
     created() {
@@ -167,21 +191,21 @@
         label.getList().then(res => {
           // console.log(this.label);
           this.labelList = res.data.list;
-          this.$nextTick(() => {
-            let _this = this;
-            layui.use(['layer', 'form'], function () {
-              var form = layui.form;
-              // _this.post.labelId = _this.labelList[0].id;
-              // console.log(_this.labelList[0].id)
-              form.on('select', function (data) {
-                _this.selectLabel(data.value);
-                if (data.elem[data.elem.selectedIndex].text == '提问') {
-                  _this.showGrade = true;
-                }
-              });
-              form.render();
-            })
-          })
+          // this.$nextTick(() => {
+          //   let _this = this;
+          //   layui.use(['layer', 'form'], function () {
+          //     var form = layui.form;
+          //     // _this.post.labelId = _this.labelList[0].id;
+          //     // console.log(_this.labelList[0].id)
+          //     form.on('select', function (data) {
+          //       _this.selectLabel(data.value);
+          //       if (data.elem[data.elem.selectedIndex].text == '提问') {
+          //         _this.showGrade = true;
+          //       }
+          //     });
+          //     form.render();
+          //   })
+          // })
         })
       },
       selectLabel(labelId) {
@@ -318,7 +342,7 @@
               , 'table', 'customlink'
               , 'fullScreen', 'preview'
             ]
-            , height: '500px'
+            , height: '400px'
           });
           _this.editIndex = _this.layedit.build('L_content');
           //设置编辑器内容
@@ -418,6 +442,10 @@
           // 假增加当前积分
           this.currGrade = this.currGrade + this.post.grade;
         })
+      },
+      changeBtn(index, labelId) {
+        this.activeBtn = index;
+        this.post.labelId = labelId;
       }
     }
   }

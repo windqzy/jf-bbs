@@ -7,11 +7,16 @@
         </router-link>
         <ul class="layui-nav fly-nav layui-hide-xs">
           <li class="layui-nav-item layui-this">
-            <router-link to="/home/index?id=0"><i class="iconfont icon-jiaoliu"></i>交流</router-link>
+            <router-link to="/home/index?id=0">首页</router-link>
           </li>
           <li class="layui-nav-item">
             <a style="cursor: pointer" onclick="layer.msg('开发中...')">
-              <i class="iconfont icon-iconmingxinganli"></i>读书
+              动态
+            </a>
+          </li>
+          <li class="layui-nav-item">
+            <a style="cursor: pointer" onclick="layer.msg('开发中...')">
+              读书
             </a>
           </li>
           <!--<li class="layui-nav-item">-->
@@ -73,10 +78,10 @@
       <div class="layui-container">
         <ul class="layui-clear">
           <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'>
-            <a style="cursor: pointer" @click="getPost(0, -1)">首页</a>
+            <a style="cursor: pointer; padding: 0 30px 0 2px;" @click="getPost(0, -1)">推荐</a>
           </li>
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
-            <a style="cursor: pointer" @click="getPost(label.id, index)">{{label.name}}</a>
+            <a style="cursor: pointer; padding: 0 30px 0 2px;" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block">
             <a @click="getPost(label.id, index)">{{label.name}}</a>
@@ -86,25 +91,25 @@
           <!--<li><a href="jie/index.html">建议</a></li>-->
           <!--<li><a href="jie/index.html">公告</a></li>-->
           <!--<li><a href="jie/index.html">动态</a></li>-->
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>-->
 
-          <!-- 用户登入后显示 -->
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-            <router-link to="/set/index">我发表的贴</router-link>
-          </li>
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-            <router-link to="/set/index#collection">我收藏的贴</router-link>
-          </li>
+          <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+            <!--<router-link to="/set/index">我发表的贴</router-link>-->
+          <!--</li>-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+            <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
+          <!--</li>-->
         </ul>
 
-        <div class="fly-column-right layui-hide-xs">
-          <span class="fly-search"><i class="layui-icon"></i></span>
-          <a @click="toAdd" class="layui-btn">发表新帖</a>
-        </div>
-        <div class="layui-hide-sm layui-show-xs-block"
-             style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
-          <a @click="toAdd" class="layui-btn">发表新帖</a>
-        </div>
+        <!--<div class="fly-column-right layui-hide-xs">-->
+          <!--<span class="fly-search"><i class="layui-icon"></i></span>-->
+          <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+        <!--</div>-->
+        <!--<div class="layui-hide-sm layui-show-xs-block"-->
+             <!--style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
+          <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+        <!--</div>-->
       </div>
     </div>
   </div>

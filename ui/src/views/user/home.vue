@@ -37,7 +37,7 @@
     <div class="layui-container">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md6 fly-home-jie">
-          <div class="fly-panel">
+          <div class="fly-panel" v-if="userInfo.enable == 1 || loginUserId == userInfo.id">
             <h3 class="fly-panel-title">{{userInfo.username}} 最近发布的文章</h3>
             <ul class="jie-row">
               <li v-for="post in postList">
@@ -82,7 +82,7 @@
         </div>
 
         <div class="layui-col-md6 fly-home-da">
-          <div class="fly-panel">
+          <div class="fly-panel" v-if="userInfo.enable == 1 || loginUserId == userInfo.id">
             <h3 class="fly-panel-title">{{userInfo.username}} 最近的回答</h3>
             <ul class="home-jieda">
               <li v-for="reply in replyList">
@@ -133,11 +133,13 @@
         postList: [],
         replyList: [],
         userId: '',
-        defaultAvatar: require('../../../static/images/avatar/4.jpg')
+        defaultAvatar: require('../../../static/images/avatar/4.jpg'),
+        loginUserId: ''
       }
     },
     created() {
       this.userInfo = this.$store.getters.user;
+      this.loginUserId = this.userInfo.id;
       this.userId = this.$route.query.userId;
       if (!this.userId) {
         this.userId = this.userInfo.id;

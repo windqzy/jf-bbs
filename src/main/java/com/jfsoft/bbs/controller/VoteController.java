@@ -14,11 +14,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsVoteEntity;
+import com.jfsoft.bbs.entity.BbsVoteOptionEntity;
+import com.jfsoft.bbs.service.BbsVoteOptionService;
 import com.jfsoft.bbs.service.BbsVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +38,9 @@ public class VoteController extends AbstractController {
 
     @Autowired
     private BbsVoteService bbsVoteService;
+
+    @Autowired
+    private BbsVoteOptionService bbsVoteOptionService;
 
     /**
      * 列表
@@ -55,7 +61,13 @@ public class VoteController extends AbstractController {
         wrapper.eq("post_id", postId);
         // 根据postId得到投票信息
         BbsVoteEntity bbsVote = bbsVoteService.selectOne(wrapper);
-        return R.ok().put("bbsVote", bbsVote);
+        if (bbsVote != null) {
+            EntityWrapper<BbsVoteOptionEntity> optionWrapper = new EntityWrapper<>();
+            optionWrapper.eq("vote_id", bbsVote.getId());
+            List<BbsVoteOptionEntity> optionList = bbsVoteOptionService.selectList(optionWrapper);
+            bbsVote.setOptionList(optionList);
+        }
+        return R.ok().put("data", bbsVote);
     }
 
 

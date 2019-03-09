@@ -10,11 +10,13 @@
  */
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -50,6 +52,17 @@ public class BbsVoteEntity implements Serializable {
     private Integer maxSel;
 
     private Integer minSel;
+
+    @TableField(exist = false)
+    private List<BbsVoteOptionEntity> optionList;
+
+    public List<BbsVoteOptionEntity> getOptionList() {
+        return optionList;
+    }
+
+    public void setOptionList(List<BbsVoteOptionEntity> optionList) {
+        this.optionList = optionList;
+    }
 
     public Integer getId() {
         return id;

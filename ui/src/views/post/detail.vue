@@ -68,11 +68,11 @@
             <!-- 文章内容 -->
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
             <!-- 投票 -->
-            <div class="vote-box">
-              <el-checkbox-group v-model="voteArr" @change="changeVote" :min="voteMin" :max="voteMax">
-                <div v-for="item in voteList" style="margin: 10px 0;">
-                  <el-checkbox :label="item.id">{{item.name}}</el-checkbox>
-                  <el-progress :percentage="parseInt(item.num / item.total * 100)"></el-progress>
+            <div class="vote-box" v-if="this.postInfo.vote">
+              <el-checkbox-group v-model="voteArr" @change="changeVote" :min="voteInfo.minSel" :max="voteInfo.maxSel">
+                <div v-for="item in voteInfo.optionList" style="margin: 10px 0;">
+                  <el-checkbox :label="item.id">{{item.content}}</el-checkbox>
+                  <!--<el-progress :percentage="parseInt(item.num / item.total * 100)"></el-progress>-->
                 </div>
               </el-checkbox-group>
               <button class="layui-btn" @click="vote">投票</button>
@@ -333,6 +333,7 @@
 
 <script>
   import * as post from '@/api/post';
+  import * as vote from '@/api/vote';
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
   import * as collection from '@/api/collection';
@@ -359,21 +360,7 @@
         voteArr: [],
         voteMin: 1,
         voteMax: 2,
-        voteList: [ // TODO:ceshi
-          {
-            id:1,
-            name: '测试测试测试测试测试测试1',
-            num: 12,
-            total: 24,
-            bg: '#f00'
-          }, {
-            id:2,
-            name: '测试测试测试测试测试测试2',
-            num: 4,
-            total: 24,
-            bg: '#0f0'
-          }
-        ]
+        voteInfo: ''
       }
     },
     created() {
@@ -418,12 +405,18 @@
       getDetailById(postId) {
         this.postId = postId;
         post.getDetail(postId).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.postInfo = res.data;
           this.getReplyList(postId);
           this.$nextTick(() => {
             this.layui();
-          })
+          });
+          // 判断是否为投票贴
+          if (this.postInfo.vote) {
+            vote.getList(this.postInfo.id).then(res => {
+              this.voteInfo = res.data;
+            })
+          }
         })
       },
       getReplyList(postId) {

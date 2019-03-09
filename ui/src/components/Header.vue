@@ -78,10 +78,10 @@
       <div class="layui-container">
         <ul class="layui-clear">
           <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'>
-            <a style="cursor: pointer; padding: 0 30px 0 2px;" @click="getPost(0, -1)">推荐</a>
+            <a style="cursor: pointer; padding: 0px 26px 0px 4px" @click="getPost(0, -1)">推荐</a>
           </li>
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
-            <a style="cursor: pointer; padding: 0 30px 0 2px;" @click="getPost(label.id, index)">{{label.name}}</a>
+            <a style="cursor: pointer; padding: 0px 26px 0px 4px" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block">
             <a @click="getPost(label.id, index)">{{label.name}}</a>

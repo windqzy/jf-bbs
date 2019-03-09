@@ -9,4 +9,6 @@ import java.util.Map;
 public interface BbsVoteRecordService extends IService<BbsVoteRecordEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    BbsVoteRecordEntity getRecord(Map<String, Object> params);
 }

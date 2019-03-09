@@ -51,7 +51,7 @@ public class VoteOptionController extends AbstractController {
      * 列表
      */
     @RequestMapping("/{postId}")
-    public R getOption(@PathVariable("postId") Integer postId){
+    public R getOptions(@PathVariable("postId") Integer postId){
         Map<String, Object> param = new HashMap<>();
         param.put("userId", getUserId());
         param.put("postId", postId);

@@ -18,6 +18,7 @@ import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsVoteRecordDao;
 import com.jfsoft.bbs.entity.BbsVoteRecordEntity;
 import com.jfsoft.bbs.service.BbsVoteRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,6 +34,8 @@ import java.util.Map;
 @Service("bbsVoteRecordService")
 public class BbsVoteRecordServiceImpl extends ServiceImpl<BbsVoteRecordDao, BbsVoteRecordEntity> implements BbsVoteRecordService {
 
+    @Autowired
+    BbsVoteRecordDao bbsVoteRecordDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -41,5 +44,10 @@ public class BbsVoteRecordServiceImpl extends ServiceImpl<BbsVoteRecordDao, BbsV
                 new EntityWrapper<BbsVoteRecordEntity>()
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public BbsVoteRecordEntity getRecord(Map<String, Object> params) {
+        return bbsVoteRecordDao.getRecord(params);
     }
 }

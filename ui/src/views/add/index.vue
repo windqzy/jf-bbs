@@ -139,7 +139,7 @@
                   <div class="layui-col-md11 label-width layui-form-item">
                     <label class="layui-form-label" style="border: none; background-color: white">结束时间</label>
                     <div class="layui-input-inline">
-                      <input type="text" class="layui-input" id="endTime">
+                      <input type="text" class="layui-input" id="endTime" v-model="endTime">
                     </div>
                     <input type="number" name="" placeholder="至少选择几项" lay-skin="primary"
                            class="layui-input layui-input-inline" v-model="optionMin">
@@ -164,7 +164,6 @@
     </div>
   </div>
 
-  </div>
 </template>
 
 <script>
@@ -172,6 +171,7 @@
   import * as label from '@/api/label';
   import * as grade from '@/api/grade';
   import * as post from '@/api/post';
+  import * as vote from '@/api/vote';
 
   export default {
     name: "index",
@@ -466,13 +466,37 @@
             title: this.post.title,
             rewardGrade: this.post.grade,
             content: this.post.content,
-            vote: this.post.isVote
+            isVote: this.post.isVote
           };
           post.publish(bbsPosts).then(res => {
-            this.layer.msg('发布成功');
             // console.log(res.data);
+            this.postId = res.data.id;
             this.updateGrade();
+
+            if (this.isVote) {
+              let bbsVote = {
+                postId: this.postId,
+                voteVisible: this.isVisible,
+                voteStatus: true,
+                endTime: this.endTime,
+                maxSel: this.optionMax,
+                minSel: this.optionMin,
+                optionList: []
+              };
+              this.inputCount.forEach(item => {
+                let voteOption = {
+                  content: item
+                }
+                bbsVote.optionList.push(voteOption);
+              });
+              console.log("bbsVoteopl1" + bbsVote.optionList)
+              vote.addVote(bbsVote).then(res => {
+                console.log("bbsVote2" + res.data)
+              })
+            }
+            this.layer.msg('发布成功');
           })
+
         }
       },
       //修改积分

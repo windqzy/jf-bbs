@@ -11,5 +11,12 @@
         <result property="userId" column="user_id"/>
     </resultMap>
 
+    <select id="getRecord" parameterType="map" resultMap="bbsVoteRecordMap">
+        SELECT bvr.*
+        FROM bbs_posts bp INNER JOIN bbs_vote bv ON bp.id = bv.post_id
+        LEFT JOIN bbs_vote_option bvo ON bv.id = bvo.vote_id
+        LEFT JOIN bbs_vote_record bvr ON bvr.option_id = bvo.id
+        WHERE bvr.user_id = #{userId} AND bp.id = #{postId}
+    </select>
 
 </mapper>

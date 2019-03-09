@@ -68,14 +68,17 @@
             <!-- 文章内容 -->
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
             <!-- 投票 -->
-            <div class="vote-box" v-if="this.postInfo.vote">
-              <el-checkbox-group v-model="voteArr" @change="changeVote" :min="voteInfo.minSel" :max="voteInfo.maxSel">
+            <div class="vote-box" v-if="postInfo.vote">
+              <el-checkbox-group v-model="voteArr" @change="changeVote" :max="voteInfo.maxSel">
                 <div v-for="item in voteInfo.optionList" style="margin: 10px 0;">
-                  <el-checkbox :label="item.id">{{item.content}}</el-checkbox>
-                  <!--<el-progress :percentage="parseInt(item.num / item.total * 100)"></el-progress>-->
+                  <el-checkbox :label="item.id" v-bind:checked="item.sel">
+                    {{item.content}}
+                  </el-checkbox>
+                  <el-progress v-if="! isVote" :percentage="parseInt(item.num / item.total * 100)"></el-progress>
                 </div>
               </el-checkbox-group>
-              <button class="layui-btn" @click="vote">投票</button>
+              <!-- TODO 根据用户是否对帖子投票判断是否显示 -->
+              <button v-if="! isVote" class="layui-btn" @click="vote">投票</button>
             </div>
           </div>
           <!-- 热门回帖 -->
@@ -360,7 +363,8 @@
         voteArr: [],
         voteMin: 1,
         voteMax: 2,
-        voteInfo: ''
+        voteInfo: '',
+        isVote: '',
       }
     },
     created() {
@@ -369,9 +373,9 @@
       this.userInfo = this.$store.getters.user;
       this.getDetailById(this.postId);
       this.getWeekHot();
+      this.isVoted();
     },
     mounted() {
-      console.log('replyid+++++' + this.replyId)
       this.layui();
     },
     beforeDestroy() {
@@ -405,7 +409,6 @@
       getDetailById(postId) {
         this.postId = postId;
         post.getDetail(postId).then(res => {
-          // console.log(res.data);
           this.postInfo = res.data;
           this.getReplyList(postId);
           this.$nextTick(() => {
@@ -421,11 +424,9 @@
       },
       getReplyList(postId) {
         reply.getList(postId).then(res => {
-          console.log(res.data)
           this.replyList = res.data;
         })
         reply.getHotList(postId).then(res => {
-          console.log(res.data)
           this.replyHotList = res.data;
         })
       },
@@ -559,10 +560,25 @@
       },
       // TODO:投票
       changeVote(val) {
-        console.log(val);
+        // console.log("changeVote" + val);
       },
       vote() {
-        console.log()
+        if (this.voteArr.length < this.voteInfo.minSel) {
+          this.layer.msg("您至少选择" + voteInfo.minSel + "个选项！！！");
+        } else {
+          console.log("voteArr  " + this.voteArr)
+          vote.userVote(this.voteArr).then(res => {
+            this.layer.msg(res.data);
+
+            this.isVoted();
+          })
+        }
+
+      },
+      isVoted() {
+        vote.isVoted(this.postId).then(res => {
+          this.isVote = res.data;
+        })
       }
     },
     filters: {

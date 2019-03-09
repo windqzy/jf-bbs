@@ -8,6 +8,8 @@ import java.util.Date;
 
 @TableName("bbs_tab")
 public class BbsTagEntity implements Serializable {
+	//
+
 	private static final long serialVersionUID = 1L;
 
 	@TableId

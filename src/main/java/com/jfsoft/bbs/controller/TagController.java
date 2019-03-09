@@ -19,7 +19,7 @@ public class TagController {
 	private BbsTagService bbsTagService;
 
 	/**
-	 * 列表
+	 * 列表z
 	 */
 	@RequestMapping("/list")
 	public R list(@RequestParam Map<String, Object> params){

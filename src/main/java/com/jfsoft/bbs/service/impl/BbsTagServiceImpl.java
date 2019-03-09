@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service("bbsTabService")
 public class BbsTagServiceImpl extends ServiceImpl<BbsTagDao, BbsTagEntity> implements BbsTagService {
+
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		Page<BbsTagEntity> page = this.selectPage(

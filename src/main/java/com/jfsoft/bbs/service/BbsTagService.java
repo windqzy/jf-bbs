@@ -9,4 +9,5 @@ import java.util.Map;
 public interface BbsTagService extends IService<BbsTagEntity> {
 
 	PageUtils queryPage(Map<String, Object> params);
+
 }

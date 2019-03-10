@@ -98,14 +98,15 @@
               模块
             </div>
             <div class="layui-card-body">
-              <div class="layuiadmin-card-link">
-                <a href="javascript:;" @click="tagIdChanged('')">全部</a>
-                <a href="javascript:;" v-for="tag in tagList" @click="tagIdChanged(tag.id)">{{tag.name}}</a>
+              <div class="layuiadmin-card-link fly-filter">
+                <a href="javascript:;" :class='{"layui-this":activeTag == -1}' @click="tagIdChanged('', '-1')">全部</a>
+                <a href="javascript:;" v-for="(tag, index) in tagList" @click="tagIdChanged(tag.id, index)"
+                   :class='{"layui-this":activeTag==index}'>{{tag.name}}</a>
               </div>
             </div>
           </div>
           <!-- 置顶区 -->
-          <div class="fly-panel" v-if="false">
+          <div class="fly-panel" v-if="labelId == 0">
             <div class="fly-panel-title fly-filter">
               <a>置顶</a>
               <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
@@ -444,6 +445,7 @@
         defaultAvatar: require('../../static/images/avatar/4.jpg'),
         labelList: [],
         tagList: [],
+        activeTag: -1,
       }
     },
     created() {
@@ -481,6 +483,7 @@
     watch: {
       '$route.query.id'(val) {
         this.changeLabel(val);
+        this.activeTag = '-1';
         this.getTagByLabelId();
       }
     },
@@ -680,7 +683,8 @@
           this.tagList = res.data;
         })
       },
-      tagIdChanged(tagId) {
+      tagIdChanged(tagId, index) {
+        this.activeTag = index;
         this.tagId = tagId;
         console.log("tagId  " + this.tagId);
         this.getPostList();
@@ -756,7 +760,8 @@
   .icon-pinglun1 {
     right: 5px;
   }
-  .layuiadmin-card-link a{
+
+  .layuiadmin-card-link a {
     margin-right: 20px;
   }
 

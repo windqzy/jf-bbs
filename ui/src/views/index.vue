@@ -560,7 +560,7 @@
           beginTime: '',
           endTime: ''
         };
-        console.log("obj.tagId" + obj.tagId);
+        // console.log("obj.tagId" + obj.tagId);
         post.getList(obj).then(res => {
           this.postList = res.data;
         })
@@ -568,7 +568,7 @@
       // 查询置顶文章
       getTopPostList() {
         post.getTop().then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.topPostList = res.data;
         })
       },
@@ -597,7 +597,7 @@
 
       // 查询今日热榜
       getTodayHot() {
-        console.log(this.labelId)
+        // console.log(this.labelId)
         let obj = {
           currPage: 1,
           pageSize: 10,
@@ -615,7 +615,7 @@
       },
       // 获取本周热议
       getWeekHot() {
-        console.log(this.labelId)
+        // console.log(this.labelId)
         let obj = {
           currPage: 1,
           pageSize: 10,

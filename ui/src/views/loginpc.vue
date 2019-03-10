@@ -40,7 +40,7 @@
         this.token = this.$route.query.token;
         window.localStorage['B-Token'] = this.token;
         user.getUser().then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.$store.dispatch('addUserInfo').then(() => {
             if (!res.data.username) {
               this.$router.push('/user/reg');
@@ -56,7 +56,7 @@
       this.initHeader();
       this.initAnimation();
       this.addListeners();
-      console.log(DingTalkPC.ua.isWeb) //引入钉钉桌面端JSAPI后可直接获取
+      // console.log(DingTalkPC.ua.isWeb) //引入钉钉桌面端JSAPI后可直接获取
       this.dingLogin();
       // if (DingTalkPC.ua.isInDingTalk) {
       //   this.dingLogin();
@@ -101,12 +101,12 @@
         //   this.getUnionId();
         // })
         login.getAccessToken().then(res => {
-          console.log(res.data)
+          // console.log(res.data)
         })
       },
       freeLogin() {
         login.freeLogin().then(res => {
-          console.log(res)
+          // console.log(res)
         })
       },
       // getCompanyToken() {
@@ -258,7 +258,7 @@
         target = {x: width / 2, y: height / 2};
 
         largeHeader = document.getElementById('large-header');
-        console.log(largeHeader)
+        // console.log(largeHeader)
         largeHeader.style.height = height + 'px';
 
         canvas = document.getElementById('demo-canvas');

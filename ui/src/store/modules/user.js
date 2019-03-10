@@ -20,7 +20,7 @@ const user = {
     addUserInfo({commit}) {
       return new Promise(resolve => {
         getUser().then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           commit('USER_INFO', res.data);
           resolve(res.data)
         })

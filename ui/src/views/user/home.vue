@@ -154,13 +154,13 @@
       //获取用户信息
       getUser() {
         user.getUser().then(res => {
-          console.log(res.data);
+          // console.log(res.data);
         })
       },
       //获取他人主页用户信息
       getOther() {
         user.getOther(this.userId).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.userInfo = res.data;
         })
       },
@@ -168,7 +168,7 @@
       getGrade() {
         let id = this.userId == undefined ? null : this.userId;
         grade.getGrade(id).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.grade = res.data.grade;
         })
       },
@@ -176,9 +176,9 @@
       //获取用户发帖信息
       getPersonList() {
         let id = this.userId == undefined ? null : this.userId;
-        console.log(id)
+        // console.log(id)
         post.getPersonList(id).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.postList = res.data;
         })
       },

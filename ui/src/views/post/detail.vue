@@ -74,7 +74,11 @@
                   <el-checkbox :label="item.id" v-bind:checked="item.sel">
                     {{item.content}}
                   </el-checkbox>
-                  <!--<el-progress v-if="isVote" :percentage="parseInt(item.count / item.total * 100)"></el-progress>-->
+                  <div style="display: flex; align-items: center;">
+                    <el-progress v-if="isVote || voteInfo.voteVisible" :percentage="item.optionCount" :show-text="false"
+                                 stroke-width="12"></el-progress>
+                    <el-tag size="mini" style="margin-left: 10px">{{item.optionCount}}已投票</el-tag>
+                  </div>
                 </div>
               </el-checkbox-group>
               <!-- TODO 根据用户是否对帖子投票判断是否显示 -->
@@ -356,6 +360,7 @@
         hotList: [],
         editIndex: '',
         layedit: null,
+        layelement: null,
         layer: null,
         form: null,
         userInfo: null,
@@ -385,10 +390,11 @@
     methods: {
       layui() {
         let _this = this;
-        layui.use(['layedit', 'layer', 'upload', 'form'], function () {
+        layui.use(['layedit', 'layer', 'upload', 'form', 'element'], function () {
           _this.layedit = layui.layedit;
           _this.layer = layui.layer;
           _this.form = layui.form;
+          _this.layelement = layui.element;
           _this.layedit.set({
             uploadImage: {
               url: window.localStorage.baseUrl + '/upload/file',
@@ -432,7 +438,7 @@
         })
       },
       getWeekHot() {
-        console.log(this.labelId)
+        // console.log(this.labelId)
         let obj = {
           currPage: 1,
           pageSize: 10,
@@ -478,7 +484,7 @@
       },
       replyUp(replyId) {
         reply.replyUp(replyId).then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.getReplyList(this.postId);
         })
       },
@@ -567,7 +573,7 @@
         if (this.voteArr.length < this.voteInfo.minSel) {
           this.layer.msg("您至少选择" + this.voteInfo.minSel + "个选项！！！");
         } else {
-          console.log("voteArr  " + this.voteArr)
+          // console.log("voteArr  " + this.voteArr)
           vote.userVote(this.voteArr).then(res => {
             this.layer.msg(res.data);
             this.isVoted();
@@ -641,15 +647,21 @@
     }
   }
 
+  /deep/ .el-progress {
+    width: 50%;
+  }
+
   /* 投票 */
   .vote-box {
     li {
       position: relative;
       margin-top: 4px;
+
       .progress {
         height: 20px;
         margin: 4px 0 10px;
         background-color: #fff;
+
         div {
           height: 100%;
           background-color: #2baee9;

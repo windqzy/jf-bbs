@@ -269,7 +269,7 @@
         })
       },
       selectTag(tag) {
-        console.log(tag)
+        // console.log(tag)
         // this.post.tagId = tagId;
       },
       initLayUI() {
@@ -292,7 +292,7 @@
                 age: 99
               }
               , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
-                console.log(obj);
+                // console.log(obj);
                 layer.load(); //上传loading
               }
               , choose: function (obj) {
@@ -481,9 +481,9 @@
                 }
                 bbsVote.optionList.push(voteOption);
               });
-              console.log("bbsVoteopl1" + bbsVote.optionList)
+              // console.log("bbsVoteopl1" + bbsVote.optionList)
               vote.addVote(bbsVote).then(res => {
-                console.log("bbsVote2" + res.data)
+                // console.log("bbsVote2" + res.data)
               })
             }
             this.layer.msg('发布成功');
@@ -496,13 +496,14 @@
         let newGrade = this.currGrade - this.post.grade;
         // console.log(newGrade);
         grade.update(newGrade).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.$router.push('/home/index');
         });
       },
       getTagListByLabelId(labelId) {
         tag.getList(labelId).then(res => {
-          this.tagList = res.data
+          this.post.tagId = '';
+          this.tagList = res.data;
           if (this.tagList.length == 1) {
             this.post.tagId = res.data[0].id;
           }
@@ -593,6 +594,7 @@
     border-radius: 0px !important;
     height: 38px !important;
   }
+
   .el-select {
     width: 100%;
   }

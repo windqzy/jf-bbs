@@ -119,7 +119,7 @@
                        :alt="top.author">
                 </router-link>
                 <h2>
-                  <a class="layui-badge">{{top.labelName}}</a>
+                  <a v-if="top.tagName != null" class="layui-badge">{{top.tagName}}</a>
                   <router-link :to="'/post/detail?postId=' + top.id + '&labelId=' + top.labelId">{{top.title}}
                   </router-link>
                 </h2>
@@ -433,7 +433,7 @@
         sortType: 0,         // 排序类型：0 时间， 1 热度
         postType: 0,         // 文章类型：0 所有， 1 未结， 2 已结， 3 精华
         labelId: '',
-        tagId: '',
+        tagId: 0,
         sortTypeActive: 0,
         postTypeActive: 0,
         signCount: 0, //连续签到次数
@@ -604,6 +604,7 @@
           sortType: 0,
           postType: 0,
           labelId: this.labelId,
+          tagId: 0,
           beginTime: time.formatDate(new Date()),
           endTime: time.formatDate(new Date()),
         };
@@ -621,6 +622,7 @@
           sortType: 0,
           postType: 0,
           labelId: this.labelId,
+          tagId: 0,
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
         };
@@ -686,7 +688,6 @@
       tagIdChanged(tagId, index) {
         this.activeTag = index;
         this.tagId = tagId;
-        console.log("tagId  " + this.tagId);
         this.getPostList();
         this.tagId = 0
       }

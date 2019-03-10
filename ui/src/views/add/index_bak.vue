@@ -33,34 +33,18 @@
                            class="layui-input">
                   </div>
                   <div class="layui-col-md3">
-                    <!--<select lay-verify="required" name="label" lay-filter="label" v-model="post.labelId"-->
-                    <!--@change="selectLabel">-->
-                    <!--<option value="">选择板块</option>-->
-                    <!--<option v-for="label in labelList" :value="label.id">{{label.name}}</option>-->
-                    <!--</select>-->
-                    <el-select v-model="post.labelId" placeholder="选择板块" @change="selectLabel">
-                      <el-option
-                        v-for="item in labelList"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
+                    <select lay-verify="required" name="label" lay-filter="label" v-model="post.labelId"
+                            @change="selectLabel">
+                      <option value="">选择板块</option>
+                      <option v-for="label in labelList" :value="label.id">{{label.name}}</option>
+                    </select>
                   </div>
                   <div class="layui-col-md3">
-                    <!--<select lay-verify="required" name="tag" lay-filter="tag" v-model="post.tagId"-->
-                    <!--@change="selectTag">-->
-                    <!--<option value="">选择模块</option>-->
-                    <!--<option v-for="tag in tagList" :value="tag.id">{{tag.name}}</option>-->
-                    <!--</select>-->
-                    <el-select v-model="post.tagId" placeholder="选择模块" @change="selectTag">
-                      <el-option
-                        v-for="item in tagList"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
+                    <select lay-verify="required" name="tag" lay-filter="tag" v-model="post.tagId"
+                            @change="selectTag">
+                      <option value="">选择模块</option>
+                      <option v-for="tag in tagList" :value="tag.id">{{tag.name}}</option>
+                    </select>
                   </div>
                 </div>
                 <div class="layui-row layui-col-space15 layui-form-item layui-hide" id="LAY_quiz">
@@ -260,20 +244,88 @@
     methods: {
       getLabelList() {
         label.getList().then(res => {
+          let _this = this;
+          // console.log(this.label);
           this.labelList = res.data.list;
+          this.$nextTick(() => {
+            layui.use('form', function () {
+              _this.layform = layui.form;
+              _this.layform.on('select(label)', function (data) {
+                if (!!data.value) {
+                  // 是否为提问
+                  // if (data.elem[data.elem.selectedIndex].text === '提问') {
+                  //   _this.isGrade = true;
+                  // }
+                  // 是否为投票
+                  _this.isVote = data.elem[data.elem.selectedIndex].text === '投票' ? true : false;
+
+                  _this.selectLabel(data.value);
+                  tag.getList(data.value).then(res => {
+                    // 服了
+                    _this.tagList = res.data;
+                    if (_this.tagList.length > 0) {
+                      if (_this.tagList.length == 1) {
+                        let option = _this.$("<option>").val(_this.tagList[0].id).text((_this.tagList[0].name));
+                        _this.$("select[name=tag]").html(option);
+                        _this.layform.render('select');
+                      } else {
+                        _this.$("select[name=tag]").html('<option value="">选择模块</option>');
+                        _this.$.each(_this.tagList, function (key, val) {
+                          let option = _this.$("<option>").val(val.id).text(val.name);
+                          _this.$("select[name=tag]").append(option);
+                          _this.layform.render('select');
+                        });
+                      }
+                    }
+                  })
+                } else {
+                  _this.layform.render('select');
+                }
+              });
+              _this.layform.on('select(tag)', function (data) {
+                if (!!data.value) {
+                  _this.selectTag(data.value);
+                } else {
+                  _this.layform.render('select');
+                }
+              })
+              _this.layform.render('select');
+            })
+          })
+          // this.layui.form.on('select', function (data) {
+          //   _this.post.labelId = data.value;
+          // })
+          // this.$nextTick(() => {
+          //   let _this = this;
+          //   layui.use(['layer', 'form'], function () {
+          //     let form = layui.form;
+          //     // _this.post.labelId = _this.labelList[0].id;
+          //     // console.log(_this.labelList[0].id)
+          //     form.on('select', function (data) {
+          //       _this.selectLabel(data.value);
+          //       tag.getList(data.value).then(res => {
+          //         _this.tagList = res.data;
+          //       })
+          //       // if (data.elem[data.elem.selectedIndex].text == '提问') {
+          //       //   _this.showGrade = true;
+          //       // }
+          //     });
+          //     form.render();
+          //   })
+          // });
+          // this.$nextTick(() => {
+          //   if (this.labelList[this.activeBtn].name === '提问') {
+          //     this.isGrade = true;
+          //   }
+          // })
+
         })
       },
       selectLabel(labelId) {
-        this.getTagListByLabelId(labelId);
-        this.labelList.forEach(e => {
-          if (labelId == e.id) {
-            this.isVote = e.name === '投票' ? true : false;
-          }
-        })
+        this.post.labelId = labelId;
       },
-      selectTag(tag) {
-        console.log(tag)
-        // this.post.tagId = tagId;
+      selectTag(tagId) {
+        this.post.tagId = tagId;
       },
       initLayUI() {
         let _this = this;
@@ -503,12 +555,6 @@
           this.$router.push('/home/index');
         });
       },
-      getTagListByLabelId(labelId) {
-        tag.getList(labelId).then(res => {
-          this.tagList = res.data
-        })
-
-      },
       // 查询文章详情
       getPostDetail() {
         post.getDetail(this.postId).then(res => {
@@ -521,7 +567,7 @@
           this.layedit.setContent(this.editIndex, res.data.content);
           // 假增加当前积分
           this.currGrade = this.currGrade + this.post.grade;
-          this.getTagListByLabelId(this.post.labelId);
+
 
           // let _this = this;
           // layui.use('form', function () {
@@ -587,10 +633,5 @@
     .layui-input-block {
       margin-left: 80px;
     }
-  }
-
-  /deep/ .el-input__inner {
-    border-radius: 0px !important;
-    height: 38px !important;
   }
 </style>

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
-@TableName("bbs_tab")
+@TableName("bbs_tag")
 public class BbsTagEntity implements Serializable {
 	//
 

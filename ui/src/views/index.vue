@@ -34,7 +34,7 @@
                 <a name="signin"> </a></div>
             </div>
           </div>
-          <div class="fly-panel layui-hide-xs" v-if="labelId == 0">
+          <div class="fly-panel layui-hide-xs" v-if="false">
             <div style="padding: 0; height: 50px">
               <!--<div class="layui-container">-->
                 <!--<ul class="layui-clear">-->

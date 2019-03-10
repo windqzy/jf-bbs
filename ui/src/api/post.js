@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function getList(obj) {
   return request({
     url: '/posts/list?currPage=' + obj.currPage + '&pageSize=' + obj.pageSize + '&sortType=' + obj.sortType + '&postType=' +
-    obj.postType + '&labelId=' + obj.labelId,
+    obj.postType + '&labelId=' + obj.labelId + '&tagId=' + obj.tagId,
     method: 'GET'
   })
 }

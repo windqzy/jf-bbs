@@ -11,7 +11,12 @@
         <result property="name" column="name"/>
     </resultMap>
 
-
+    <select id="getTagByLabelId" parameterType="integer" resultMap="bbsTabMap">
+        SELECT *
+        FROM bbs_tag bt
+        RIGHT JOIN bbs_label bl ON bt.label_id = bl.id
+        WHERE bl.id = #{labelId}
+    </select>
 
 
 </mapper>

@@ -457,7 +457,7 @@
             title: this.post.title,
             rewardGrade: this.post.grade,
             content: this.post.content,
-            isVote: this.post.isVote,
+            vote: this.isVote,
             tagId: this.post.tagId
           };
           post.publish(bbsPosts).then(res => {

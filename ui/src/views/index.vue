@@ -99,7 +99,8 @@
             </div>
             <div class="layui-card-body">
               <div class="layuiadmin-card-link">
-                <a href="javascript:;" v-for="item in 3">操作一</a>
+                <a href="javascript:;" @click="tagIdChanged('')">全部</a>
+                <a href="javascript:;" v-for="tag in tagList" @click="tagIdChanged(tag.id)">{{tag.name}}</a>
               </div>
             </div>
           </div>
@@ -176,7 +177,7 @@
                   <img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
                 </router-link>
                 <h2>
-                  <a class="layui-badge">{{post.labelName}}</a>
+                  <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
                   <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}
                   </router-link>
                 </h2>
@@ -412,6 +413,7 @@
   import * as sign from '@/api/sign';
   import * as grade from '@/api/grade';
   import * as label from '@/api/label';
+  import * as tag from '@/api/tag';
 
   export default {
     name: "index",
@@ -430,6 +432,7 @@
         sortType: 0,         // 排序类型：0 时间， 1 热度
         postType: 0,         // 文章类型：0 所有， 1 未结， 2 已结， 3 精华
         labelId: '',
+        tagId: '',
         sortTypeActive: 0,
         postTypeActive: 0,
         signCount: 0, //连续签到次数
@@ -439,7 +442,8 @@
         $: null,
         todayHotList: [],
         defaultAvatar: require('../../static/images/avatar/4.jpg'),
-        labelList: []
+        labelList: [],
+        tagList: [],
       }
     },
     created() {
@@ -477,6 +481,7 @@
     watch: {
       '$route.query.id'(val) {
         this.changeLabel(val);
+        this.getTagByLabelId();
       }
     },
     methods: {
@@ -537,7 +542,6 @@
       //   }).use('a');
       // },
       changeLabel(e) {
-        console.log(e);
         this.labelId = e;
         this.getPostList();
       },
@@ -549,9 +553,11 @@
           sortType: this.sortType,
           postType: this.postType,
           labelId: this.labelId,
+          tagId: this.tagId,
           beginTime: '',
           endTime: ''
         };
+        console.log("obj.tagId" + obj.tagId);
         post.getList(obj).then(res => {
           this.postList = res.data;
         })
@@ -600,7 +606,6 @@
         };
         // console.log(obj)
         post.getList(obj).then(res => {
-          console.log(res.data)
           this.todayHotList = res.data;
         })
       },
@@ -623,13 +628,13 @@
       },
       nextPage() {
         this.currPage += 1;
-        console.log(this.currPage)
         let obj = {
           currPage: this.currPage,
           pageSize: this.pageSize,
           sortType: this.sortType,
           postType: this.postType,
           labelId: this.labelId,
+          tagId: this.tagId,
           beginTime: '',
           endTime: ''
         };
@@ -667,10 +672,20 @@
       // 查询所有 Label
       getAllLabel() {
         label.getList().then(res => {
-          console.log(res.data)
           this.labelList = res.data.list;
         })
       },
+      getTagByLabelId() {
+        tag.getList(this.labelId).then(res => {
+          this.tagList = res.data;
+        })
+      },
+      tagIdChanged(tagId) {
+        this.tagId = tagId;
+        console.log("tagId  " + this.tagId);
+        this.getPostList();
+        this.tagId = 0
+      }
     },
     filters: {
       getDate(dateTimeStamp) {

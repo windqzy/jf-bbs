@@ -16,7 +16,7 @@
         FROM bbs_posts bp INNER JOIN bbs_vote bv ON bp.id = bv.post_id
         LEFT JOIN bbs_vote_option bvo ON bv.id = bvo.vote_id
         LEFT JOIN bbs_vote_record bvr ON bvr.option_id = bvo.id
-        WHERE bvr.user_id = #{userId} AND bp.id = #{postId}
+        WHERE bvr.user_id = #{userId} AND bp.id = #{postId} LIMIT 1
     </select>
 
 </mapper>

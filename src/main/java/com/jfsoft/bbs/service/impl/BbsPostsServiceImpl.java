@@ -36,11 +36,12 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
 
     @Override
     public List<BbsPostsEntity> getList(Integer currPage, Integer pageSize, Integer sortType, Integer postType,
-                                        Integer labelId, String beginTime, String endTime) {
+                                        Integer labelId, Integer tagId, String beginTime, String endTime) {
         Map<String, Object> params = new HashMap<>();
         params.put("startPage", pageSize * (currPage - 1));
         params.put("endPage", pageSize);
         params.put("labelId", labelId);
+        params.put("tagId", tagId);
         if (StringUtils.isNotBlank(beginTime)) {
             params.put("beginTime", beginTime + BaseContants.BEGIN_TIME_EXT);
         }

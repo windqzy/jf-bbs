@@ -39,9 +39,9 @@ public class PostsController extends AbstractController {
      * @return
      */
     @RequestMapping("/list")
-    public R list(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId,
+    public R list(Integer currPage, Integer pageSize, Integer sortType, Integer postType, Integer labelId, Integer tagId,
                   String beginTime, String endTime) {
-        List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sortType, postType, labelId, beginTime, endTime);
+        List<BbsPostsEntity> list = bbsPostsService.getList(currPage, pageSize, sortType, postType, labelId, tagId, beginTime, endTime);
         return R.ok().put("data", list);
     }
 

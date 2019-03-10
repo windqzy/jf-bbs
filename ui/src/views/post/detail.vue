@@ -74,11 +74,12 @@
                   <el-checkbox :label="item.id" v-bind:checked="item.sel">
                     {{item.content}}
                   </el-checkbox>
-                  <el-progress v-if="! isVote" :percentage="parseInt(item.num / item.total * 100)"></el-progress>
+                  <!--<el-progress v-if="isVote" :percentage="parseInt(item.count / item.total * 100)"></el-progress>-->
                 </div>
               </el-checkbox-group>
               <!-- TODO 根据用户是否对帖子投票判断是否显示 -->
               <button v-if="! isVote" class="layui-btn" @click="vote">投票</button>
+
             </div>
           </div>
           <!-- 热门回帖 -->
@@ -564,12 +565,11 @@
       },
       vote() {
         if (this.voteArr.length < this.voteInfo.minSel) {
-          this.layer.msg("您至少选择" + voteInfo.minSel + "个选项！！！");
+          this.layer.msg("您至少选择" + this.voteInfo.minSel + "个选项！！！");
         } else {
           console.log("voteArr  " + this.voteArr)
           vote.userVote(this.voteArr).then(res => {
             this.layer.msg(res.data);
-
             this.isVoted();
           })
         }

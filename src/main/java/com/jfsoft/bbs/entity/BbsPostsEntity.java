@@ -90,7 +90,18 @@ public class BbsPostsEntity implements Serializable {
 
     private Integer tagId;
 
+    @TableField(exist = false)
+    private String tagName;
+
     private Boolean isDel;
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
 
     public Integer getTagId() {
         return tagId;

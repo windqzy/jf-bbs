@@ -78,12 +78,12 @@
       <div class="layui-container">
         <ul class="layui-clear">
           <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'>
-            <a style="cursor: pointer; padding: 0px 26px 0px 4px" @click="getPost(0, -1)">推荐</a>
+            <a style="cursor: pointer;" @click="getPost(0, -1)">推荐</a>
           </li>
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
-            <a style="cursor: pointer; padding: 0px 26px 0px 4px" @click="getPost(label.id, index)">{{label.name}}</a>
+            <a style="cursor: pointer;" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
-          <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block">
+          <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block" :class='{"layui-this":activeLabel==index}'>
             <a @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <!--<li><a >分享<span class="layui-badge-dot"></span></a></li>-->
@@ -91,7 +91,7 @@
           <!--<li><a href="jie/index.html">建议</a></li>-->
           <!--<li><a href="jie/index.html">公告</a></li>-->
           <!--<li><a href="jie/index.html">动态</a></li>-->
-          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>-->
+          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
 
           <!-- 用户登入后显示 -->
           <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">

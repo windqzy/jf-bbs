@@ -37,58 +37,70 @@
           <div class="fly-panel layui-hide-xs" v-if="false">
             <div style="padding: 0; height: 50px">
               <!--<div class="layui-container">-->
-                <!--<ul class="layui-clear">-->
-                  <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
-                  <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
-                    <!--<router-link to="/set/index">我发表的贴</router-link>-->
-                  <!--</li>-->
-                  <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
-                    <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
-                  <!--</li>-->
-                <!--</ul>-->
+              <!--<ul class="layui-clear">-->
+              <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
+              <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+              <!--<router-link to="/set/index">我发表的贴</router-link>-->
+              <!--</li>-->
+              <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+              <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
+              <!--</li>-->
+              <!--</ul>-->
 
-                <!--<div class="fly-column-right layui-hide-xs">-->
-                  <!--<span class="fly-search"><i class="layui-icon"></i></span>-->
-                  <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
-                <!--</div>-->
-                <!--<div class="layui-hide-sm layui-show-xs-block"-->
-                     <!--style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
-                  <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
-                <!--</div>-->
+              <!--<div class="fly-column-right layui-hide-xs">-->
+              <!--<span class="fly-search"><i class="layui-icon"></i></span>-->
+              <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
               <!--</div>-->
-                <div class="layui-row">
-                  <div class="layui-col-md9">
-                    <div class="layui-row">
-                      <div class="layui-col-md1">
-                        <img :src="defaultAvatar" style="height: 50px">
-                      </div>
+              <!--<div class="layui-hide-sm layui-show-xs-block"-->
+              <!--style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
+              <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+              <!--</div>-->
+              <!--</div>-->
+              <div class="layui-row">
+                <div class="layui-col-md9">
+                  <div class="layui-row">
+                    <div class="layui-col-md1">
+                      <img :src="defaultAvatar" style="height: 50px">
+                    </div>
 
-                      <div class="layui-col-md11 fly-column">
-                        <ul class="layui-clear layui-row">
-                          <li class="layui-hide-xs" >
-                            <a style="cursor: pointer; padding: 0 0 0 20px;" @click="selectPostType">
-                              <i class="layui-icon layui-icon-edit" style="font-size: 20px; top: 2px; position: relative;"></i>
-                              写文章
-                            </a>
-                          </li>
-                          <!--<li class="layui-hide-xs">-->
-                            <!--<a style="cursor: pointer; padding: 0 0 0 20px">-->
-                              <!--<i class="layui-icon layui-icon-link" style="font-size: 12px;"></i>-->
-                              <!--分享链接-->
-                            <!--</a>-->
-                          <!--</li>-->
-                        </ul>
-                      </div>
+                    <div class="layui-col-md11 fly-column">
+                      <ul class="layui-clear layui-row">
+                        <li class="layui-hide-xs">
+                          <a style="cursor: pointer; padding: 0 0 0 20px;" @click="selectPostType">
+                            <i class="layui-icon layui-icon-edit"
+                               style="font-size: 20px; top: 2px; position: relative;"></i>
+                            写文章
+                          </a>
+                        </li>
+                        <!--<li class="layui-hide-xs">-->
+                        <!--<a style="cursor: pointer; padding: 0 0 0 20px">-->
+                        <!--<i class="layui-icon layui-icon-link" style="font-size: 12px;"></i>-->
+                        <!--分享链接-->
+                        <!--</a>-->
+                        <!--</li>-->
+                      </ul>
                     </div>
                   </div>
-                  <div class="layui-col-md3 fly-column" style="display: flex;justify-content: space-around;">
-                    <!--<a style="cursor: pointer"></a>-->
-                    <!--<a style="cursor: pointer">收藏</a>-->
-                    <router-link to="/set/index#collection">我的收藏</router-link>
-                    <router-link to="/set/index">我的帖子</router-link>
-                    <!--<a style="cursor: pointer">我的收藏</a>-->
-                  </div>
                 </div>
+                <div class="layui-col-md3 fly-column" style="display: flex;justify-content: space-around;">
+                  <!--<a style="cursor: pointer"></a>-->
+                  <!--<a style="cursor: pointer">收藏</a>-->
+                  <router-link to="/set/index#collection">我的收藏</router-link>
+                  <router-link to="/set/index">我的帖子</router-link>
+                  <!--<a style="cursor: pointer">我的收藏</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 标签 -->
+          <div class="layui-card" v-if="labelId != 0">
+            <div class="layui-card-header">
+              模块
+            </div>
+            <div class="layui-card-body">
+              <div class="layuiadmin-card-link">
+                <a href="javascript:;" v-for="item in 3">操作一</a>
+              </div>
             </div>
           </div>
           <!-- 置顶区 -->
@@ -729,4 +741,8 @@
   .icon-pinglun1 {
     right: 5px;
   }
+  .layuiadmin-card-link a{
+    margin-right: 20px;
+  }
+
 </style>

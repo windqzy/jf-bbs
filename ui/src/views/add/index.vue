@@ -254,9 +254,6 @@
       this.initLayUI();
       this.getLabelList();
     },
-    updated() {
-
-    },
     methods: {
       getLabelList() {
         label.getList().then(res => {
@@ -506,6 +503,9 @@
       getTagListByLabelId(labelId) {
         tag.getList(labelId).then(res => {
           this.tagList = res.data
+          if (this.tagList.length == 1) {
+            this.post.tagId = res.data[0].id;
+          }
         })
 
       },
@@ -592,5 +592,8 @@
   /deep/ .el-input__inner {
     border-radius: 0px !important;
     height: 38px !important;
+  }
+  .el-select {
+    width: 100%;
   }
 </style>

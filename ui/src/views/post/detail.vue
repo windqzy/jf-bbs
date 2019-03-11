@@ -59,7 +59,8 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span style="padding-right: 10px; color: #FF7200">悬赏：{{postInfo.rewardGrade}}钻石</span>
-                <span v-if="userInfo.id == postInfo.userId && !postInfo.end" class="layui-btn layui-btn-xs jie-admin"
+                <span v-if="userInfo.id == postInfo.userId && !postInfo.end && !postInfo.vote"
+                      class="layui-btn layui-btn-xs jie-admin"
                       type="edit">
                   <router-link :to="'/add/index?postId=' + postInfo.id">编辑此贴</router-link>
                 </span>
@@ -69,9 +70,10 @@
             <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
             <!-- 投票 -->
             <div class="vote-box" v-if="postInfo.vote">
+              {{'最多选' + voteInfo.maxSel + '项(截止日期：'+ voteInfo.endTime +')'}}
               <el-checkbox-group v-model="voteArr" @change="changeVote" :max="voteInfo.maxSel">
                 <div v-for="item in voteInfo.optionList" style="margin: 10px 0;">
-                  <el-checkbox :label="item.id" v-bind:checked="item.sel">
+                  <el-checkbox :label="item.id" v-bind:checked="item.sel" :disabled="isVote">
                     {{item.content}}
                   </el-checkbox>
                   <div style="display: flex; align-items: center;">
@@ -82,8 +84,7 @@
                 </div>
               </el-checkbox-group>
               <!-- TODO 根据用户是否对帖子投票判断是否显示 -->
-              <button v-if="! isVote" class="layui-btn" @click="vote">投票</button>
-
+              <button v-if="!isVote" class="layui-btn" @click="vote">投票</button>
             </div>
           </div>
           <!-- 热门回帖 -->
@@ -423,9 +424,7 @@
           });
           // 判断是否为投票贴
           if (this.postInfo.vote) {
-            vote.getList(this.postInfo.id).then(res => {
-              this.voteInfo = res.data;
-            })
+            this.getVoteList(this.postInfo.id)
           }
         })
       },
@@ -447,6 +446,8 @@
           labelId: this.labelId,
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
+          //TODO
+          tagId:''
         }
         post.getList(obj).then(res => {
           this.hotList = res.data;
@@ -577,13 +578,18 @@
           vote.userVote(this.voteArr).then(res => {
             this.layer.msg(res.data);
             this.isVoted();
+            this.getVoteList(this.postId);
           })
         }
-
       },
       isVoted() {
         vote.isVoted(this.postId).then(res => {
           this.isVote = res.data;
+        })
+      },
+      getVoteList(postId) {
+        vote.getList(postId).then(res => {
+          this.voteInfo = res.data;
         })
       }
     },

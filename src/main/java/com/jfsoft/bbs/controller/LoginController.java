@@ -66,24 +66,21 @@ public class LoginController {
     @Autowired
     private DingDingInterfaceService dingDingInterfaceService;
 
+//    @GetMapping("/login/free")
+//    @ResponseBody
+//    public R freeLogin(String code) {
+//        try {
+//            logger.info("登录开始，免登录code：" + code);
+//            String accessTokenUrl = "https://oapi.dingtalk.com/gettoken?appkey=key&appsecret=secret";
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return R.ok("钉钉登录开始");
+//    }
+
+
     @GetMapping("/login/free")
-    @ResponseBody
-    public R freeLogin() {
-        try {
-            logger.info("钉钉内登录开始");
-            String redirectUrl = URLEncoder.encode("http://oa.bjjfsoft.com:8848/ding/action", "UTF-8");
-            String url = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + "dingoalp0riozjvog7wzkp"
-                    + "&response_type=code&scope=snsapi_auth&state=STATE&redirect_uri=" + redirectUrl;
-            HttpUtil.get(url);
-            logger.info(url);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return R.ok("钉钉登录开始");
-    }
-
-
-    @GetMapping("/ding/action")
     public String freeLoginHandel(String code, Model model) {
         logger.info("code" + code);
         String appSecret = "7LkeSfEusPwCez-yfdHiJGFMJbODWXZItH0nTSkU2sACV8wrtfZKwWRVAHpNg4-w";

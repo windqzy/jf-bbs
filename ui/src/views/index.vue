@@ -8,8 +8,8 @@
           <div class="fly-panel" v-if="false">
             <div class="fly-panel-title fly-filter">
               <a>标签</a>
-              <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right"
-                 style="color: #FF5722;">去签到</a>
+              <a class="layui-hide-sm layui-show-xs-block fly-right"
+                 style="color: #FF5722;" @click="toSignin">去签到</a>
             </div>
             <div class="layui-row fly-panel-main" style="padding: 15px;">
               <div class="layui-clear fly-list-quick">
@@ -109,8 +109,8 @@
           <div class="fly-panel" v-if="labelId == 0">
             <div class="fly-panel-title fly-filter">
               <a>置顶</a>
-              <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
-                 style="color: #FF5722;">去签到</a>
+              <a class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
+                 style="color: #FF5722;" @click="toSignin">去签到</a>
             </div>
             <ul class="fly-list">
               <li v-for="top in topPostList">
@@ -213,7 +213,7 @@
         <!-- 右侧卡片 -->
         <div class="layui-col-md4">
           <!-- 签到 -->
-          <div class="fly-panel fly-signin" v-if="labelId == 0">
+          <div class="fly-panel fly-signin" v-if="labelId == 0" id="signin">
             <div class="fly-panel-title">
               签到
               <i class="fly-mid"></i>
@@ -488,6 +488,10 @@
       }
     },
     methods: {
+      // 跳转到签到
+      toSignin() {
+        document.querySelector("#signin").scrollIntoView(true);
+      },
       toUserHome(userId) {
         this.layer.closeAll();
         this.$router.push('/user/index?userId=' + userId);

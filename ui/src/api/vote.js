@@ -18,9 +18,9 @@ export function addVote(bbsVote) {
 }
 
 // 查询投票选项
-export function userVote(voteArr) {
+export function userVote(voteId, voteArr) {
   return request({
-    url: '/vote/record?options=' + voteArr,
+    url: '/vote/record?voteId=' + voteId + '&options=' + voteArr,
     method: 'GET'
   })
 }

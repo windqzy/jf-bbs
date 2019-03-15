@@ -11,6 +11,7 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfsoft.bbs.common.utils.DateUtil;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsVoteEntity;
@@ -21,7 +22,6 @@ import com.jfsoft.bbs.service.BbsVoteRecordService;
 import com.jfsoft.bbs.service.BbsVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.security.util.Length;
 
 import java.util.*;
 
@@ -123,27 +123,36 @@ public class VoteController extends AbstractController {
      * 投票
      */
     @RequestMapping("/record")
-    public R userVote(Integer[] options){
-        List<BbsVoteRecordEntity> voteRecordList = new ArrayList<>();
-        List<BbsVoteOptionEntity> voteOptionList = new ArrayList<>();
-        for (int i = 0; i < options.length; i++) {
-            BbsVoteRecordEntity voteRecord = new BbsVoteRecordEntity();
-            voteRecord.setInitTime(new Date());
-            voteRecord.setOptionId(options[i]);
-            voteRecord.setUserId(getUserId());
-            voteRecordList.add(voteRecord);
-            // 修改被投项目的投票数
-            BbsVoteOptionEntity optionEntity = bbsVoteOptionService.selectById(options[i]);
-            optionEntity.setOptionCount(optionEntity.getOptionCount() + 1);
-            voteOptionList.add(optionEntity);
-        }
-        Boolean insertBatch = bbsVoteRecordService.insertBatch(voteRecordList);
-        boolean updateBatchById = bbsVoteOptionService.updateBatchById(voteOptionList);
+    public R userVote(Integer voteId, Integer[] options){
+        // 投票时先判断是否在投票时间内
+        BbsVoteEntity voteEntity = bbsVoteService.selectById(voteId);
+        if (DateUtil.compare(new Date(), voteEntity.getEndTime()) <= 0) {
 
-        if (insertBatch) {
-            return R.ok().put("data", "投票成功");
-        }  else {
-            return R.ok().put("data", "投票失败");
+            // 如果未结束，添加投票记录投票
+            List<BbsVoteRecordEntity> voteRecordList = new ArrayList<>();
+            List<BbsVoteOptionEntity> voteOptionList = new ArrayList<>();
+            for (int i = 0; i < options.length; i++) {
+                BbsVoteRecordEntity voteRecord = new BbsVoteRecordEntity();
+                voteRecord.setInitTime(new Date());
+                voteRecord.setOptionId(options[i]);
+                voteRecord.setUserId(getUserId());
+                voteRecordList.add(voteRecord);
+                // 修改被投项目的投票数
+                BbsVoteOptionEntity optionEntity = bbsVoteOptionService.selectById(options[i]);
+                optionEntity.setOptionCount(optionEntity.getOptionCount() + 1);
+                voteOptionList.add(optionEntity);
+            }
+            Boolean insertBatch = bbsVoteRecordService.insertBatch(voteRecordList);
+            boolean updateBatchById = bbsVoteOptionService.updateBatchById(voteOptionList);
+
+            if (insertBatch) {
+                return R.ok().put("data", "投票成功");
+            }  else {
+                return R.ok().put("data", "投票失败");
+            }
+
+        } else {
+            return R.ok().put("data", "投票失败,投票已结束");
         }
     }
 

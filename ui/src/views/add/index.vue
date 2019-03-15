@@ -265,6 +265,7 @@
         this.labelList.forEach(e => {
           if (labelId == e.id) {
             this.isVote = e.name === '投票' ? true : false;
+            this.isGrade = e.name === '提问' ? true : false;
           }
         })
       },

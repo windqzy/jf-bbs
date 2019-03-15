@@ -575,7 +575,7 @@
           this.layer.msg("您至少选择" + this.voteInfo.minSel + "个选项！！！");
         } else {
           // console.log("voteArr  " + this.voteArr)
-          vote.userVote(this.voteArr).then(res => {
+          vote.userVote(this.voteInfo.id, this.voteArr).then(res => {
             this.layer.msg(res.data);
             this.isVoted();
             this.getVoteList(this.postId);

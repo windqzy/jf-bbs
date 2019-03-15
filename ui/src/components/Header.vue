@@ -10,13 +10,13 @@
             <router-link to="/home/index?id=0">首页</router-link>
           </li>
           <li class="layui-nav-item">
-            <a style="cursor: pointer" onclick="layer.msg('开发中...')">
-              动态
-            </a>
+            <router-link style="cursor: pointer" to="/case/index">
+              读书
+            </router-link>
           </li>
           <li class="layui-nav-item">
             <a style="cursor: pointer" onclick="layer.msg('开发中...')">
-              读书
+              动态
             </a>
           </li>
           <!--<li class="layui-nav-item">-->

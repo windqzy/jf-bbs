@@ -246,12 +246,12 @@
                 </div>
               </li>
               <!-- TODO：回复框 -->
-              <!--<div class="reply" v-show="activeReplyed == index">-->
-              <!--<input type="text" class="layui-input" :placeholder="'回复' + reply.author + '...'" id="replybtn">-->
-              <!--<div class="reply-btn">-->
-              <!--<button class="layui-btn layui-btn-sm">表情</button>-->
-              <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
-              <!--</div>-->
+              <!--<div class="reply">-->
+                <!--<input type="text" class="layui-input"  id="replybtn">-->
+                <!--<div class="reply-btn">-->
+                  <!--<button class="layui-btn layui-btn-sm">表情</button>-->
+                  <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
+                <!--</div>-->
               <!--</div>-->
 
               <!--<li data-id="111">-->

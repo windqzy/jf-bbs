@@ -13,11 +13,11 @@
     </resultMap>
 
     <select id="getGradeByRule" parameterType="integer" resultType="integer">
-    SELECT grade.* FROM (
+    SELECT g.* FROM (
         SELECT grade FROM bbs_grade_rule WHERE days <![CDATA[ <= ]]> #{signCount}  AND expression ='ge'
         UNION
         SELECT grade FROM bbs_grade_rule WHERE days > #{signCount} AND expression ='lt' ORDER BY grade DESC
-    ) as grade limit 1
+    ) as g limit 1
     </select>
 
 </mapper>

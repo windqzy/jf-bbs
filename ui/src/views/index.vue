@@ -228,6 +228,7 @@
               <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
               <span>可获得<cite v-text="currGrade"></cite>钻石</span>
 
+
               <!-- 已签到状态 -->
               <!--
               <button class="layui-btn layui-btn-disabled">今日已签到</button>
@@ -429,7 +430,7 @@
         hotList: [],
         noticeList: [],
         currPage: 1,
-        pageSize: 10,
+        pageSize: 15,
         sortType: 0,         // 排序类型：0 时间， 1 热度
         postType: 0,         // 文章类型：0 所有， 1 未结， 2 已结， 3 精华
         labelId: '',

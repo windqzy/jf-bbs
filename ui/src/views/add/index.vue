@@ -384,7 +384,7 @@
             //}
             //插入自定义链接
             , customlink: {
-              title: '插入layui官网'
+              title: '插入jfsoft官网'
               , href: 'https://www.bjjfsoft.com'
               , onmouseup: ''
             }
@@ -400,7 +400,7 @@
             , tool: [
               'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'removeformat', 'fontFomatt', 'fontfamily',
               'fontSize', 'fontBackColor', 'colorpicker', 'face'
-              , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt', 'video', 'attachment', 'anchors'
+              , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt', 'music', 'video', 'attachment', 'anchors'
               , '|'
               , 'table', 'customlink'
               , 'fullScreen', 'preview'

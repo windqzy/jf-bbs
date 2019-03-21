@@ -84,6 +84,6 @@ export default new Router({
           component: Case
         }
       ]
-    },
+    }
   ]
 })

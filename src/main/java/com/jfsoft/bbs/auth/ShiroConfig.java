@@ -71,7 +71,7 @@ public class ShiroConfig {
         filterChainMap.put("/login/free", "anon");
         filterChainMap.put("/ding/action", "anon");
         filterChainMap.put("/login/ding", "anon");
-        filterChainMap.put("/upload/file", "anon");
+        filterChainMap.put("/upload/**", "anon");
         filterChainMap.put("/**", "jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainMap);
         return shiroFilterFactoryBean;

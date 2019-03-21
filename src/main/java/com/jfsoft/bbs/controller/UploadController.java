@@ -72,6 +72,45 @@ public class UploadController {
         }
     }
 
+
+    @PostMapping(value = "/file2")
+    public R uFile2(MultipartFile file) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        //文件名
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + suffix;
+        /*上传文件按照时间保存*/
+        Date date = new Date();
+        String dateStr = DateUtil.format(date, "yyyyMMdd");
+
+        String absPath = "";
+        absPath = filePath + dateStr.substring(0, 4) + "/" + dateStr;
+
+        String url = "";
+        List<String> urlList = new LinkedList<>();
+        url = staticUrl + dateStr.substring(0, 4) + "/" + dateStr + "/" + fileName;
+        if (!StringUtils.isBlank(suffix)) {
+            Map<String, Object> map = new HashMap<>();
+            if (!file.isEmpty()) {
+                File imgFile = new File(absPath);
+                if (!imgFile.exists()) imgFile.mkdirs();
+                try {
+                    file.transferTo(new File(absPath + "/" + fileName));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                urlList.add(url);
+                return R.ok("上传成功").put("errno", 0).put("data", urlList);
+            } else {
+                return R.error("文件上传失败").put("errno", 1);
+            }
+        } else {
+            return R.error("上传文件格式错误").put("errno", 1);
+        }
+    }
+
     @RequestMapping("/del")
     public R delFile(@RequestBody String imagePath) {
         String relPath = filePath + imagePath.replace(imagePath, staticUrl);

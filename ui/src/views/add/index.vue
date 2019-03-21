@@ -371,8 +371,8 @@
             }
             //新增iframe外置样式和js
             , quote: {
-              style: ['Content/css.css'],
-              //js: ['/Content/Layui-KnifeZ/lay/modules/jquery.js']
+              style: ['/static/css/iframe.css'],
+              // js: ['/static/js/iframe.js']
             }
             //自定义样式-暂只支持video添加
             //, customTheme: {

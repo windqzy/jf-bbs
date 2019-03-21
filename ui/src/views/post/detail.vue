@@ -67,7 +67,7 @@
               </div>
             </div>
             <!-- 文章内容 -->
-            <div class="detail-body photos" id="detail-body" v-html="postInfo.content"></div>
+            <div class="detail-body photos" id="detail-body" v-html="postInfo.content" v-loading="loadDetail"></div>
             <!-- 投票 -->
             <div class="vote-box" v-if="postInfo.vote">
               {{'最多选' + voteInfo.maxSel + '项(截止日期：'+ voteInfo.endTime +')'}}
@@ -190,7 +190,7 @@
             </ul>
           </div>
           <!-- 回帖 -->
-          <div class="fly-panel detail-box" id="flyReply1">
+          <div class="fly-panel detail-box" id="flyReply1" v-loading="loadReply">
             <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
               <legend>最新回复</legend>
             </fieldset>
@@ -372,6 +372,8 @@
         voteMax: 2,
         voteInfo: '',
         isVote: '',
+        loadReply: false,
+        loadDetail: false
       }
     },
     created() {
@@ -416,7 +418,9 @@
       },
       getDetailById(postId) {
         this.postId = postId;
+        this.loadDetail = true;
         post.getDetail(postId).then(res => {
+          this.loadDetail = false;
           this.postInfo = res.data;
           this.getReplyList(postId);
           this.$nextTick(() => {
@@ -429,10 +433,13 @@
         })
       },
       getReplyList(postId) {
+        this.loadDetail = true;
         reply.getList(postId).then(res => {
+          this.loadDetail = false;
           this.replyList = res.data;
         })
         reply.getHotList(postId).then(res => {
+          this.loadDetail = false;
           this.replyHotList = res.data;
         })
       },

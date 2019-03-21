@@ -106,7 +106,7 @@
             </div>
           </div>
           <!-- 置顶区 -->
-          <div class="fly-panel" v-if="labelId == 0">
+          <div class="fly-panel" v-if="labelId == 0" v-loading="loadTop">
             <div class="fly-panel-title fly-filter">
               <a>置顶</a>
               <a class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin"
@@ -149,7 +149,7 @@
             </ul>
           </div>
           <!-- 文章区 -->
-          <div class="fly-panel" style="margin-bottom: 0;">
+          <div class="fly-panel" style="margin-bottom: 0;" v-loading="loading">
             <!-- TAB -->
             <div class="fly-panel-title fly-filter">
               <a style="cursor: pointer" :class="{'layui-this': postTypeActive == 0}" @click="setPostType(0)">综合</a>
@@ -447,6 +447,8 @@
         labelList: [],
         tagList: [],
         activeTag: -1,
+        loading: false,
+        loadTop: false
       }
     },
     created() {
@@ -566,14 +568,18 @@
           endTime: ''
         };
         // console.log("obj.tagId" + obj.tagId);
+        this.loading = true;
         post.getList(obj).then(res => {
+          this.loading = false;
           this.postList = res.data;
         })
       },
       // 查询置顶文章
       getTopPostList() {
+        this.loadTop = true;
         post.getTop().then(res => {
           // console.log(res.data)
+          this.loadTop = false;
           this.topPostList = res.data;
         })
       },
@@ -614,7 +620,9 @@
           endTime: time.formatDate(new Date()),
         };
         // console.log(obj)
+        // this.layer.load(0, {shade: false});
         post.getList(obj).then(res => {
+          // this.layer.closeAll();
           this.todayHotList = res.data;
         })
       },
@@ -632,7 +640,9 @@
           endTime: time.getWeekEndDate(),
         };
         // console.log(obj)
+        // this.layer.load(0, {shade: false});
         post.getList(obj).then(res => {
+          // this.layer.closeAll();
           this.hotList = res.data;
         })
       },
@@ -648,8 +658,10 @@
           beginTime: '',
           endTime: ''
         };
+        this.loading = true;
         post.getList(obj).then(res => {
           res.data.map(item => {
+            this.loading = false;
             this.postList.push(item);
           })
         })

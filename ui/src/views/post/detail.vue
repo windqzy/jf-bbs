@@ -247,11 +247,11 @@
               </li>
               <!-- TODO：回复框 -->
               <!--<div class="reply">-->
-                <!--<input type="text" class="layui-input"  id="replybtn">-->
-                <!--<div class="reply-btn">-->
-                  <!--<button class="layui-btn layui-btn-sm">表情</button>-->
-                  <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
-                <!--</div>-->
+              <!--<input type="text" class="layui-input"  id="replybtn">-->
+              <!--<div class="reply-btn">-->
+              <!--<button class="layui-btn layui-btn-sm">表情</button>-->
+              <!--<button class="layui-btn layui-btn-sm" @click="childReply(reply)">评 论</button>-->
+              <!--</div>-->
               <!--</div>-->
 
               <!--<li data-id="111">-->
@@ -321,19 +321,19 @@
             <div v-if="hotList.length == 0" class="fly-none">没有相关数据</div>
           </dl>
 
-          <div class="fly-panel">
-            <div class="fly-panel-title">
-              广告区域
-            </div>
-            <div class="fly-panel-main">
-              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>
-            </div>
-          </div>
-
-          <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
-          <!--<img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
-          <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+          <!--<div class="fly-panel">-->
+            <!--<div class="fly-panel-title">-->
+              <!--广告区域-->
+            <!--</div>-->
+            <!--<div class="fly-panel-main">-->
+              <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
+            <!--</div>-->
           <!--</div>-->
+
+          <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+            <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
+            <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
+          </div>
         </div>
       </div>
     </div>
@@ -454,7 +454,7 @@
           beginTime: time.getWeekStartDate(),
           endTime: time.getWeekEndDate(),
           //TODO
-          tagId:''
+          tagId: ''
         }
         post.getList(obj).then(res => {
           this.hotList = res.data;

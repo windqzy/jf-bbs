@@ -313,13 +313,17 @@
             -->
           </dl>
           <!-- 广告区域 -->
-          <div class="fly-panel">
-            <div class="fly-panel-title">
-              广告区域
-            </div>
-            <div class="fly-panel-main">
-              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>
-            </div>
+          <!--<div class="fly-panel">-->
+            <!--<div class="fly-panel-title">-->
+              <!--广告区域-->
+            <!--</div>-->
+            <!--<div class="fly-panel-main">-->
+              <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
+            <!--</div>-->
+          <!--</div>-->
+          <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+            <img src="../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
+            <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
           </div>
           <!-- 友情链接 -->
           <div class="fly-panel fly-link">

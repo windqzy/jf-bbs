@@ -91,15 +91,15 @@
           <!--<li><a href="jie/index.html">建议</a></li>-->
           <!--<li><a href="jie/index.html">公告</a></li>-->
           <!--<li><a href="jie/index.html">动态</a></li>-->
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>-->
 
           <!-- 用户登入后显示 -->
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-            <router-link to="/set/index">我发表的贴</router-link>
-          </li>
-          <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
-            <router-link to="/set/index#collection">我收藏的贴</router-link>
-          </li>
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+            <!--<router-link to="/set/index">我发表的贴</router-link>-->
+          <!--</li>-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+            <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
+          <!--</li>-->
         </ul>
 
         <div class="fly-column-right layui-hide-xs">

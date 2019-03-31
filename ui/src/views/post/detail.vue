@@ -35,7 +35,8 @@
                       @click="collection(postInfo.id)">取消收藏</span>
                 <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
                       @click="collection(postInfo.id)">收藏</span>
-
+                <span v-if="userInfo.id != postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
+                      @click="rewardBox = true">打赏</span>
               </div>
               <span class="fly-list-nums">
                 <a @click="$el.querySelector('#comment').scrollIntoView()" style="cursor: pointer">
@@ -360,6 +361,21 @@
         </div>
       </div>
     </div>
+    <!-- 悬赏 -->
+    <el-dialog
+      title="打赏作者"
+      :visible.sync="rewardBox" width="280px">
+      <el-radio-group v-model="rewardGrade">
+        <el-radio-button :disabled="currGrade >= 10" label="10"></el-radio-button>
+        <el-radio-button :disabled="currGrade >= 20" label="20"></el-radio-button>
+        <el-radio-button :disabled="currGrade >= 50" label="50"></el-radio-button>
+        <el-radio-button :disabled="currGrade >= 100" label="100"></el-radio-button>
+      </el-radio-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="rewardBox = false">取 消</el-button>
+        <el-button type="primary" @click="reward">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -369,6 +385,7 @@
   import * as reply from '@/api/reply';
   import * as time from '@/utils/time';
   import * as collection from '@/api/collection';
+  import * as grade from '@/api/grade';
 
   export default {
     name: "detail",
@@ -396,7 +413,10 @@
         voteInfo: '',
         isVote: '',
         loadReply: false,
-        loadDetail: false
+        loadDetail: false,
+        rewardBox: false,
+        rewardGrade: 0,
+        currGrade: 0,
       }
     },
     created() {
@@ -406,6 +426,7 @@
       this.getDetailById(this.postId);
       this.getWeekHot();
       this.isVoted();
+      this.getCurrGrade();
     },
     mounted() {
       this.layui();
@@ -620,6 +641,19 @@
       getVoteList(postId) {
         vote.getList(postId).then(res => {
           this.voteInfo = res.data;
+        })
+      },
+      // 打赏
+      reward() {
+        grade.reward(this.userInfo.id, this.postInfo.userId, this.rewardGrade).then(res => {
+          this.rewardBox = false;
+          layer.msg('打赏成功');
+        })
+      },
+      // 获取当前钻石
+      getCurrGrade() {
+        grade.getGrade(this.userInfo.id).then(res => {
+          this.currGrade = res.data;
         })
       }
     },

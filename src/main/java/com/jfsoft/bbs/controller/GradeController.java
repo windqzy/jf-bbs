@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
-import com.jfsoft.bbs.entity.BbsSignEntity;
+import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.service.BbsGradeService;
-import com.jfsoft.bbs.service.BbsSignService;
+import com.jfsoft.bbs.service.BbsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -27,6 +31,9 @@ public class GradeController extends AbstractController {
 
     @Autowired
     private BbsGradeService bbsGradeService;
+
+    @Autowired
+    private BbsLogService bbsLogService;
 
 
     /**
@@ -74,11 +81,46 @@ public class GradeController extends AbstractController {
         wrapper.eq("user_id", userId);
         BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
         bbsGrade.setGrade(newGrade);
-
         //更新该用户的积分
         bbsGradeService.updateById(bbsGrade);
-
         return R.ok().put("data", bbsGrade);
+    }
+
+    @RequestMapping("/reward")
+    public R reward(Integer fromId, Integer toId, Integer grade) {
+
+        // 悬赏者
+        EntityWrapper<BbsGradeEntity> fromWrapper = new EntityWrapper<>();
+        fromWrapper.eq("user_id", fromId);
+        BbsGradeEntity fromGradeEntity = bbsGradeService.selectOne(fromWrapper);
+        Integer fromGrade = fromGradeEntity.getGrade();
+        fromGradeEntity.setGrade(fromGrade - grade);
+        bbsGradeService.updateById(fromGradeEntity);
+
+        BbsLogEntity fromLog = new BbsLogEntity();
+        fromLog.setInitTime(new Date());
+        fromLog.setLogType(1);
+        fromLog.setUserId(fromId);
+        fromLog.setRemarks("悬赏文章花费" + grade + "钻石");
+        bbsLogService.insert(fromLog);
+
+        // 被悬赏者
+        EntityWrapper<BbsGradeEntity> toWrapper = new EntityWrapper<>();
+        toWrapper.eq("user_id", toId);
+        BbsGradeEntity toGradeEntity = bbsGradeService.selectOne(toWrapper);
+        Integer toGrade = toGradeEntity.getGrade();
+        toGradeEntity.setGrade(toGrade + grade);
+        bbsGradeService.updateById(toGradeEntity);
+
+        // 记录日志
+        BbsLogEntity toLog = new BbsLogEntity();
+        toLog.setInitTime(new Date());
+        toLog.setLogType(1);
+        toLog.setUserId(fromId);
+        toLog.setRemarks("文章被悬赏，增加" + grade + "钻石");
+        bbsLogService.insert(toLog);
+
+        return R.ok();
     }
 
     /**

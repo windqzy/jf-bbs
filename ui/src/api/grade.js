@@ -18,6 +18,13 @@ export function getGrade(id) {
   })
 }
 
+export function reward(fromId, toId, grade) {
+  return request({
+    url: '/grade/reward?fromId=' + fromId + '&toId=' + toId + '&grade=' + grade,
+    method: 'GET'
+  })
+}
+
 /**
  * 修改积分
  */

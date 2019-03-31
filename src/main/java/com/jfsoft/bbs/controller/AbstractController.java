@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author ChenXc
  * @version V1.0
  * @Date 2018/3/26  10:16
- * @Description TODO(一句话描述类作用)
+ * @Description TODO()
  */
 public abstract class AbstractController {
 

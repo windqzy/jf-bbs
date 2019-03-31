@@ -49,7 +49,7 @@ public class BbsVestController extends AbstractController {
 		EntityWrapper<BbsVestEntity> wrapper = new EntityWrapper<>();
 		wrapper.eq("vest", vest);
 		List<BbsVestEntity> vestEntities = bbsVestService.selectList(wrapper);
-		if (! vestEntities.isEmpty()) {
+		if (!vestEntities.isEmpty()) {
 			return R.error("添加马甲失败! 该马甲已存在");
 		}
 		// 不重名，验证钻石是否充足

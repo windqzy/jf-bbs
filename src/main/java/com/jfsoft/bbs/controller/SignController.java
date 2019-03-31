@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.DateUtil;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
+import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsSignEntity;
 import com.jfsoft.bbs.service.BbsGradeRuleService;
 import com.jfsoft.bbs.service.BbsGradeService;
+import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +42,9 @@ public class SignController extends AbstractController {
 	@Autowired
 	private BbsGradeService bbsGradeService;
 
+	@Autowired
+	private BbsLogService bbsLogService;
+
 	/**
 	 * 列表
 	 */
@@ -72,11 +77,9 @@ public class SignController extends AbstractController {
 	@RequestMapping("/count")
 	public R selectCount() {
 		Integer userId = getUserId();
-
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
 		wrapper.eq("user_id", userId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
-
 		return R.ok().put("data", bbsSign);
 	}
 
@@ -86,6 +89,9 @@ public class SignController extends AbstractController {
 	 */
 	@RequestMapping("/save")
 	public R save() {
+		// 提示信息
+		String msg = "签到失败";
+		Integer grade = 0;
 		Integer userId = getUserId();
 		// 获取当前方法执行时的时间戳
 		Date initTime = new Date();
@@ -105,6 +111,13 @@ public class SignController extends AbstractController {
 		gradeWrapper.eq("user_id", userId);
 		BbsGradeEntity bbsGradeEntity = bbsGradeService.selectOne(gradeWrapper);
 
+		// 保存签到记录
+		BbsLogEntity bbsLog = new BbsLogEntity();
+		bbsLog.setInitTime(initTime);
+		bbsLog.setLogType(1);
+		bbsLog.setUserId(userId);
+
+		// 签到
 		if (bbsSign == null) {
 			newBbsSign.setInitTime(initTime);
 			newBbsSign.setUserId(userId);
@@ -113,17 +126,21 @@ public class SignController extends AbstractController {
 			if (bbsGrade == null) {
 				// grade表为空，新增一条记录
 				gradeEntity.setInitTime(initTime);
-				gradeEntity.setGrade(bbsGradeRuleService.getGradeByRule(1));
+				grade = bbsGradeRuleService.getGradeByRule(1);
+				gradeEntity.setGrade(grade);
 				gradeEntity.setUserId(userId);
 				bbsGradeService.insert(gradeEntity);
 			} else {
 				// grade表不为空，首次签到+5分
 				gradeEntity.setInitTime(initTime);
-				gradeEntity.setGrade(bbsGrade.getGrade() + bbsGradeRuleService.getGradeByRule(1));
+				grade = bbsGradeRuleService.getGradeByRule(1);
+				gradeEntity.setGrade(grade);
 				bbsGradeService.update(gradeEntity, wrapperGrade);
 			}
+			msg = "签到成功";
 			// 新增签到记录
 			bbsSignService.insert(newBbsSign);
+			// 保存签到钻石记录
 		} else {
 			// 最后签到时间
 			Date singTime = bbsSign.getInitTime();
@@ -138,13 +155,13 @@ public class SignController extends AbstractController {
 				// 更新新的签到
 				bbsSignService.updateById(bbsSign);
 				// 查找签到天数应有的分数
-				int grade = bbsGradeRuleService.getGradeByRule(bbsSign.getSignCount());
+				grade = bbsGradeRuleService.getGradeByRule(bbsSign.getSignCount());
 				// 更新用户的分数
 				int currGrade = bbsGradeEntity.getGrade() + grade;
 				bbsGradeEntity.setGrade(currGrade);
 				bbsGradeEntity.setInitTime(new Date());
 				bbsGradeService.update(bbsGradeEntity, gradeWrapper);
-				return R.ok("连续签到");
+				msg = "连续签到";
 			} else if (day > 1) {
 				// 断签，直接清零
 				bbsSign.setInitTime(initTime);
@@ -152,17 +169,19 @@ public class SignController extends AbstractController {
 				// 更新新的签到记录
 				bbsSignService.updateById(bbsSign);
 				// 查找签到天数应有的分数
-				int grade = bbsGradeRuleService.getGradeByRule(1);
+				grade = bbsGradeRuleService.getGradeByRule(1);
 				// 更新用户的分数
 				int currGrade = bbsGradeEntity.getGrade() + grade;
 				bbsGradeEntity.setGrade(currGrade);
 				bbsGradeEntity.setInitTime(new Date());
 				bbsGradeService.update(bbsGradeEntity, gradeWrapper);
-				return R.ok("您断签了，从头开始");
+				msg = "您断签了，从头开始";
 			}
 		}
-
-		return R.ok("执行结束");
+		// 添加钻石记录日志
+		bbsLog.setRemarks("签到增加" + grade + "钻石!");
+		bbsLogService.insert(bbsLog);
+		return R.ok(msg);
 	}
 
 
@@ -190,9 +209,7 @@ public class SignController extends AbstractController {
 				map.put("isSign", false);
 			}
 			map.put("count", bbsSign.getSignCount());
-
 		}
-
 		return R.ok().put("data", map);
 	}
 
@@ -213,7 +230,6 @@ public class SignController extends AbstractController {
 	@RequestMapping("/delete")
 	public R delete(@RequestBody Integer[] ids) {
 		bbsSignService.deleteBatchIds(Arrays.asList(ids));
-
 		return R.ok();
 	}
 

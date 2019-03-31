@@ -2,9 +2,12 @@ package com.jfsoft.bbs.controller;
 
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
+import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.form.ReplyForm;
+import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsPostsService;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class ReplyController extends AbstractController {
 
     @Autowired
     private BbsPostsService bbsPostsService;
+
+    @Autowired
+    private BbsLogService bbsLogService;
 
     /**
      * 列表
@@ -83,9 +89,11 @@ public class ReplyController extends AbstractController {
     @PostMapping("/save")
     public R addReply(@RequestBody ReplyForm ReplyForm) {
         BbsReplyEntity bbsReply = new BbsReplyEntity();
+        BbsUserEntity user = getUser();
         bbsReply.setPostsId(ReplyForm.getPostsId());
         bbsReply.setInitTime(new Date());
-        bbsReply.setUserId(getUserId());
+        bbsReply.setUserId(user.getId());
+        bbsReply.setAuthor(user.getUsername());
         bbsReply.setContent(ReplyForm.getContent());
         // 增加一条评论
         bbsReplyService.insert(bbsReply);
@@ -152,14 +160,12 @@ public class ReplyController extends AbstractController {
      */
     @RequestMapping("/personReply")
     public R getPersonReply(Integer userId) {
-
         Map<String, Object> param = new HashMap<String, Object>();
         if (userId == null) {
             param.put("user_id", getUserId());
         } else {
             param.put("user_id", userId);
         }
-
         List<BbsReplyEntity> list = bbsReplyService.getPersonReplyList(param);
         return R.ok().put("data", list);
     }
@@ -178,6 +184,15 @@ public class ReplyController extends AbstractController {
             bbsReplyService.upGrade(userId, rewardGrade);
             /*完结该贴，不予新采纳*/
             bbsReplyService.upEnd(id);
+            // 被采纳钻石记录
+            if (rewardGrade > 0) {
+                BbsLogEntity bbslog = new BbsLogEntity();
+                bbslog.setInitTime(new Date());
+                bbslog.setUserId(userId);
+                bbslog.setLogType(1);
+                bbslog.setRemarks("回复被采纳获得" + rewardGrade + "钻石");
+                bbsLogService.insert(bbslog);
+            }
             return R.ok("采纳成功");
         } else {
             return R.error("抱歉,该贴已经完成采纳");

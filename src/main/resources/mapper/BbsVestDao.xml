@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jfsoft.bbs.dao.BbsVestDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jfsoft.bbs.entity.BbsVestEntity" id="bbsVestMap">
+        <result property="id" column="id"/>
+        <result property="initTime" column="init_time"/>
+        <result property="vest" column="vest"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+
+</mapper>

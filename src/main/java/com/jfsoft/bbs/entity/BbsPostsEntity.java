@@ -66,7 +66,6 @@ public class BbsPostsEntity implements Serializable {
     /**
      *
      */
-    @TableField(exist = false)
     private String author;
     /**
      *

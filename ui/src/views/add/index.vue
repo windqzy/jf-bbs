@@ -198,6 +198,7 @@
   import * as post from '@/api/post';
   import * as vote from '@/api/vote';
   import * as tag from '@/api/tag';
+  import * as vest from '@/api/vest';
 
   export default {
     name: "index",
@@ -235,6 +236,7 @@
         endTime: '',
         isVisible: true,
         tagList: [],
+        vestList: []
       }
     },
     created() {
@@ -552,9 +554,6 @@
         this.isGrade = label.name === '提问' ? true : false;
         this.isVote = label.name === '投票' ? true : false;
       },
-      // test() {
-      //   console.log(this.inputCount, this.optionMin, this.optionMax, this.isVisible, this.endTime);
-      // }
     }
   }
 </script>

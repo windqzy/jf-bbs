@@ -97,13 +97,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="layui-col-md3 fly-column" style="display: flex;justify-content: space-around;">
-                  <!--<a style="cursor: pointer"></a>-->
-                  <!--<a style="cursor: pointer">收藏</a>-->
-                  <router-link to="/set/index#collection">我的收藏</router-link>
-                  <router-link to="/set/index">我的帖子</router-link>
-                  <!--<a style="cursor: pointer">我的收藏</a>-->
-                </div>
+                <!--<div class="layui-col-md3 fly-column" style="display: flex;justify-content: space-around;">-->
+                <!--&lt;!&ndash;<a style="cursor: pointer"></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a style="cursor: pointer">收藏</a>&ndash;&gt;-->
+                <!--<router-link to="/set/index#collection">我的收藏</router-link>-->
+                <!--<router-link to="/set/index">我的帖子</router-link>-->
+                <!--&lt;!&ndash;<a style="cursor: pointer">我的收藏</a>&ndash;&gt;-->
+                <!--</div>-->
               </div>
             </div>
           </div>
@@ -234,8 +234,7 @@
               <i class="fly-mid"></i>
               <a style="cursor: pointer" @click="signDoc" class="fly-link" id="LAY_signinHelp">说明</a>
               <i class="fly-mid"></i>
-              <a style="cursor: pointer" class="fly-link" id="LAY_signinTop" @click="signTop">活跃榜<span
-                class="layui-badge-dot"></span></a>
+              <a style="cursor: pointer" class="fly-link" id="LAY_signinTop" @click="signTop">活跃榜</a>
               <span class="fly-signin-days">已连续签到<cite><span v-text="signCount"></span></cite>天</span>
             </div>
             <div class="fly-panel-main fly-signin-main">
@@ -249,6 +248,17 @@
               <button class="layui-btn layui-btn-disabled">今日已签到</button>
               <span>获得了<cite>20</cite>飞吻</span>
               -->
+            </div>
+          </div>
+          <!-- 赞助商 -->
+          <div class="fly-panel">
+            <div class="fly-panel-title">
+              钻石赞助商
+              <i class="fly-mid"></i>
+              <a href="http://oa.bjjfsoft.com/bbs/#/post/detail?postId=166&labelId=6" class="fly-link">我要加入</a>
+            </div>
+            <div class="fly-panel-main">
+              <a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">期待您的加入</a>
             </div>
           </div>
           <!-- 温馨通道 -->
@@ -314,12 +324,12 @@
           </dl>
           <!-- 广告区域 -->
           <!--<div class="fly-panel">-->
-            <!--<div class="fly-panel-title">-->
-              <!--广告区域-->
-            <!--</div>-->
-            <!--<div class="fly-panel-main">-->
-              <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
-            <!--</div>-->
+          <!--<div class="fly-panel-title">-->
+          <!--广告区域-->
+          <!--</div>-->
+          <!--<div class="fly-panel-main">-->
+          <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
+          <!--</div>-->
           <!--</div>-->
           <div class="fly-panel" style="padding: 20px 0; text-align: center;">
             <img src="../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
@@ -382,7 +392,7 @@
       <ul class="layui-tab-title">
         <li class="layui-this" @click="getListSign(1)">最新签到</li>
         <li @click="getListSign(2)">今日最快</li>
-        <li @click="getListSign(3)">总签到榜</li>
+        <!--<li @click="getListSign(3)">总签到榜</li>-->
       </ul>
       <div class="layui-tab-content fly-signin-list" id="LAY_signin_list">
         <ul class="layui-tab-item layui-show">
@@ -395,7 +405,7 @@
             <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
             <!--<cite class="fly-link">{{sign.username}}</cite>-->
             <!--</a>-->
-            <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
+            <span class="fly-grey">签到于 {{sign.initTime}}</span>
           </li>
         </ul>
         <ul class="layui-tab-item">
@@ -404,18 +414,18 @@
               <img :src="sign.icon == null ? defaultAvatar : sign.icon">
               <cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>
             </a>
-            <span class="fly-grey">签到于 {{sign.initTime | formatDate}}</span>
+            <span class="fly-grey">签到于 {{sign.initTime}}</span>
           </li>
         </ul>
-        <ul class="layui-tab-item">
-          <li v-for="sign in noticeList">
-            <a style="cursor: pointer" @click="toUserHome(sign.userId)">
-              <img :src="sign.icon == null ? defaultAvatar : sign.icon">
-              <cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>
-            </a>
-            <span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>
-          </li>
-        </ul>
+        <!--<ul class="layui-tab-item">-->
+          <!--<li v-for="sign in noticeList">-->
+            <!--<a style="cursor: pointer" @click="toUserHome(sign.userId)">-->
+              <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
+              <!--<cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>-->
+            <!--</a>-->
+            <!--<span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>-->
+          <!--</li>-->
+        <!--</ul>-->
       </div>
     </div>
     <!-- 文章类型 -->
@@ -696,7 +706,7 @@
         })
       },
       getAD() {
-        this.layer.msg('多攒的钻石，就可以买广告位了');
+        this.layer.msg('期待您的加入');
       },
       selectPostType() {
         this.$router.push('/add/index');

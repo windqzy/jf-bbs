@@ -3,6 +3,7 @@ package com.jfsoft.bbs.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +27,8 @@ public class BbsSignEntity implements Serializable {
 	/**
 	 * 签到时间
 	 */
+
+	@JsonFormat(pattern="HH:mm:ss")
 	private Date initTime;
 	/**
 	 * 连续签到次数

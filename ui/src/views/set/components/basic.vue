@@ -10,27 +10,36 @@
     <div class="layui-tab-content" style="padding: 20px 0;">
       <div class="layui-form layui-form-pane layui-tab-item layui-show">
         <!--<form method="post" action="basic.vue">-->
+        <!--<div class="layui-form-item">-->
+        <!--<label for="L_email" class="layui-form-label">邮箱</label>-->
+        <!--<div class="layui-input-inline">-->
+        <!--<input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" v-model="email"-->
+        <!--class="layui-input">-->
+        <!--</div>-->
+        <!--<div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="javascript:;"-->
+        <!--style="font-size: 12px; color: #4f99cf;">重新验证邮箱</a>。-->
+        <!--</div>-->
+        <!--</div>-->
         <div class="layui-form-item">
-          <label for="L_email" class="layui-form-label">邮箱</label>
+          <label for="L_username" class="layui-form-label">当前马甲</label>
           <div class="layui-input-inline">
-            <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" v-model="email"
-                   class="layui-input">
-          </div>
-          <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需<a href="javascript:;"
-                                                                             style="font-size: 12px; color: #4f99cf;">重新验证邮箱</a>。
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <label for="L_username" class="layui-form-label">昵称</label>
-          <div class="layui-input-inline">
-            <input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"
-                   class="layui-input" maxLength="20"
-                   v-model="username">
+            <!--<input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"-->
+            <!--class="layui-input" maxLength="20"-->
+            <!--v-model="username">-->
+            <el-select v-model="username" placeholder="请选择">
+              <el-option
+                v-for="item in vestList"
+                :key="item.id"
+                :label="item.vest"
+                :value="item.vest">
+              </el-option>
+            </el-select>
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
-              <input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">
-              <input type="radio" name="sex" v-model="selectSex" value="0" title="女">
+              <!--<input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">-->
+              <!--<input type="radio" name="sex" v-model="selectSex" value="0" title="女">-->
+              <el-button type="primary" @click="showBuyVestBox" :disabled="vestList.length >= 5">购买马甲</el-button>
             </div>
           </div>
         </div>
@@ -40,14 +49,20 @@
             <input type="text" id="L_city" name="city" required lay-verify="required" autocomplete="off" v-model="city"
                    class="layui-input">
           </div>
-        </div>
-        <div class="layui-form-item">
-          <label for="L_mobile" class="layui-form-label">电话号码</label>
-          <div class="layui-input-inline">
-            <input type="text" id="L_mobile" name="mobile" required autocomplete="off"
-                   v-model="mobile" class="layui-input">
+          <div class="layui-inline">
+            <div class="layui-input-inline">
+              <input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">
+              <input type="radio" name="sex" v-model="selectSex" value="0" title="女">
+            </div>
           </div>
         </div>
+        <!--<div class="layui-form-item">-->
+        <!--<label for="L_mobile" class="layui-form-label">电话号码</label>-->
+        <!--<div class="layui-input-inline">-->
+        <!--<input type="text" id="L_mobile" name="mobile" required autocomplete="off"-->
+        <!--v-model="mobile" class="layui-input">-->
+        <!--</div>-->
+        <!--</div>-->
         <div class="layui-form-item layui-form-text">
           <label for="L_sign" class="layui-form-label">签名</label>
           <div class="layui-input-block">
@@ -77,6 +92,7 @@
           </div>
         </div>
       </div>
+
 
       <!--<div class="layui-form layui-form-pane layui-tab-item">-->
       <!--<form action="/user/repass" method="post">-->
@@ -130,11 +146,27 @@
       <!--</div>-->
     </div>
 
+    <!-- 购买马甲 -->
+    <el-dialog title="购买马甲" :visible.sync="vestBox" width="320px">
+      <el-form ref="form" :model="vest" label-width="80px" label-position="top">
+        <el-form-item label="">
+          <span style="color: red">说明：每个人最多可以拥有五个马甲，不可修改，不可删除，第二个起，每个马甲200钻石</span>
+        </el-form-item>
+        <el-form-item label="">
+          <el-input v-model="vest.name" placeholder="请输入马甲名称"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="vestBox = false">取 消</el-button>
+        <el-button type="primary" @click="addVest">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import * as user from '@/api/user'
+  import * as vest from '@/api/vest'
   import axios from 'axios'
 
   export default {
@@ -148,7 +180,14 @@
         signature: '',
         mobile: '',
         userInfo: '',
-        selectSex: ''
+        selectSex: '',
+        vestBox: false,
+        vestList: [],
+        vest: {
+          id: '',
+          name: ''
+        },
+
       }
     },
     computed: {
@@ -163,6 +202,7 @@
     created() {
       this.userInfo = this.$store.getters.user;
       this.getUser();
+      this.getVestList();
     },
     mounted() {
       layui.use(['form', 'layer'], function () {
@@ -255,11 +295,39 @@
           layer.msg('修改成功');
           this.$store.dispatch('addUserInfo');// 回填基本信息
         })
+      },
+      // 购买马甲
+      showBuyVestBox() {
+        this.vestBox = true;
+      },
+      addVest() {
+        vest.add(this.vest.name).then(res => {
+          this.vestBox = false;
+          layer.msg(res.msg);
+          this.getVestList();
+        })
+      },
+      getVestList() {
+        vest.getList().then(res => {
+          this.vestList = res.data;
+          this.vestName = this.username;
+        })
       }
     }
   }
 </script>
 
 <style scoped>
+  /deep/ .el-input__inner {
+    border-radius: 0px !important;
+    height: 38px !important;
+  }
 
+  .el-select {
+    width: 100%;
+  }
+
+  .el-button {
+    border-radius: 0px;
+  }
 </style>

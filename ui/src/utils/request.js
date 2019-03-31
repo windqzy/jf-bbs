@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Message } from 'element-ui';
 // 创建axios实例
 const service = axios.create({
   baseURL: window.localStorage.baseUrl, // api的base_url
@@ -29,12 +30,8 @@ service.interceptors.response.use(
 
     const res = response.data
 
-    if (res.status == 'failure') {
-      // Message({
-      //   message: res.message,
-      //   type: 'error',
-      //   duration: 5 * 1000
-      // })
+    if (res.code == 500) {
+      layer.msg(res.msg);
     } else {
       return response.data
     }

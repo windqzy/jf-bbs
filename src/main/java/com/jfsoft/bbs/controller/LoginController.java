@@ -123,12 +123,12 @@ public class LoginController {
                     bbsUserEntity.setPosition(position);
                     bbsUserService.insert(bbsUserEntity);
                     int id = bbsUserEntity.getId();
-                    BbsGradeEntity gradeEntity = new BbsGradeEntity();
+//                    BbsGradeEntity gradeEntity = new BbsGradeEntity();
 
-                    gradeEntity.setGrade(100);
-                    gradeEntity.setInitTime(new Date());
-                    gradeEntity.setUserId(id);
-                    bbsGradeService.insert(gradeEntity);
+//                    gradeEntity.setGrade(100);
+//                    gradeEntity.setInitTime(new Date());
+//                    gradeEntity.setUserId(id);
+//                    bbsGradeService.insert(gradeEntity);
                     token = JWTUtils.sign(String.valueOf(id), unionId);
                     return "redirect:" + webUrl + "?token=" + token;
                 } else {
@@ -202,12 +202,12 @@ public class LoginController {
 //            bbsUserEntity.setPosition(position);
             bbsUserService.insert(bbsUserEntity);
             int id = bbsUserEntity.getId();
-            BbsGradeEntity gradeEntity = new BbsGradeEntity();
+//            BbsGradeEntity gradeEntity = new BbsGradeEntity();
 
-            gradeEntity.setGrade(100);
-            gradeEntity.setInitTime(new Date());
-            gradeEntity.setUserId(id);
-            bbsGradeService.insert(gradeEntity);
+//            gradeEntity.setGrade(100);
+//            gradeEntity.setInitTime(new Date());
+//            gradeEntity.setUserId(id);
+//            bbsGradeService.insert(gradeEntity);
             token = JWTUtils.sign(String.valueOf(id), unionId);
             return "redirect:" + webUrl + "?token=" + token;
         } else {

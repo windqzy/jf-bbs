@@ -3,9 +3,14 @@ package com.jfsoft.bbs.controller;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
+import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
+import com.jfsoft.bbs.entity.BbsVestEntity;
 import com.jfsoft.bbs.form.UserForm;
+import com.jfsoft.bbs.service.BbsGradeService;
+import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsUserService;
+import com.jfsoft.bbs.service.BbsVestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +32,15 @@ public class UserController extends AbstractController {
 
     @Autowired
     private BbsUserService bbsUserService;
+
+    @Autowired
+    private BbsLogService bbsLogService;
+
+    @Autowired
+    private BbsVestService bbsVestService;
+
+    @Autowired
+    private BbsGradeService bbsGradeService;
 
     /**
      * 列表
@@ -78,6 +92,27 @@ public class UserController extends AbstractController {
 //        bbsUserService.updateAllColumnById(bbsUser);//全部更新
         Integer userId = getUserId();
         BbsUserEntity bbsUser = bbsUserService.selectById(userId);
+        if (bbsUser == null) {
+            // 每个人初始化100积分
+            BbsGradeEntity gradeEntity = new BbsGradeEntity();
+            gradeEntity.setGrade(100);
+            gradeEntity.setInitTime(new Date());
+            gradeEntity.setUserId(userId);
+            bbsGradeService.insert(gradeEntity);
+            // 记录钻石
+            BbsLogEntity logEntity = new BbsLogEntity();
+            logEntity.setInitTime(new Date());
+            logEntity.setLogType(1);
+            logEntity.setUserId(getUserId());
+            logEntity.setRemarks("创建账号,系统赠送 100 钻石");
+            bbsLogService.insert(logEntity);
+            // 初始化马甲
+            BbsVestEntity vestEntity = new BbsVestEntity();
+            vestEntity.setInitTime(new Date());
+            vestEntity.setVest(userForm.getUsername());
+            vestEntity.setUserId(getUserId());
+            bbsVestService.insert(vestEntity);
+        }
         bbsUser.setEmail(userForm.getEmail());
         bbsUser.setUsername(userForm.getUsername());
         bbsUser.setCity(userForm.getCity());
@@ -85,12 +120,6 @@ public class UserController extends AbstractController {
         bbsUser.setMobile(userForm.getMobile());
         bbsUser.setSex(userForm.getSex());
         bbsUserService.updateById(bbsUser);
-
-        // 每个人初始化100积分
-        BbsGradeEntity gradeEntity = new BbsGradeEntity();
-        gradeEntity.setGrade(100);
-        gradeEntity.setInitTime(new Date());
-        gradeEntity.setUserId(userId);
         return R.ok().put("data", bbsUser);
     }
 

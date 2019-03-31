@@ -67,7 +67,7 @@ public class BbsVestController extends AbstractController {
 		boolean insert = bbsVestService.insert(bbsVestEntity);
 		// 扣钻石
 		BbsGradeEntity bbsGradeEntity = new BbsGradeEntity();
-		bbsGradeEntity.setId(gradeEntity.getUserId());
+		bbsGradeEntity.setId(gradeEntity.getId());
 		bbsGradeEntity.setGrade(gradeEntity.getGrade() - 200);
 		bbsGradeService.updateById(bbsGradeEntity);
 		// 钻石记录

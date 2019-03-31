@@ -189,22 +189,28 @@
             <!-- LIST -->
             <ul class="fly-list">
               <li v-for="post in postList">
-                <router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">
+                <!--<router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">-->
+                  <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
+                <!--</router-link>-->
+                <a class="fly-avatar">
                   <img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
-                </router-link>
+                </a>
                 <h2>
                   <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
                   <router-link :to="'/post/detail?postId=' + post.id + '&labelId=' + post.labelId">{{post.title}}
                   </router-link>
                 </h2>
                 <div class="fly-list-info">
-                  <router-link :to="'/user/index?userId='+ post.userId">
+                  <!--<router-link :to="'/user/index?userId='+ post.userId">-->
+                    <!--<cite>{{post.author}}</cite>-->
+                    <!--&lt;!&ndash;-->
+                    <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
+                    <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
+                    <!--&ndash;&gt;-->
+                  <!--</router-link>-->
+                  <a>
                     <cite>{{post.author}}</cite>
-                    <!--
-                    <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                    <i class="layui-badge fly-badge-vip">VIP3</i>
-                    -->
-                  </router-link>
+                  </a>
                   <span>{{post.replytime | getDate}}</span>
                   <span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="post.rewardGrade != 0">
                     <i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>

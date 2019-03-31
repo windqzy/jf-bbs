@@ -45,16 +45,23 @@
               </span>
             </div>
             <div class="detail-about">
-              <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">
+              <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">-->
+                <!--<img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"-->
+                     <!--:alt="postInfo.author">-->
+              <!--</router-link>-->
+              <a class="fly-avatar">
                 <img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"
                      :alt="postInfo.author">
-              </router-link>
+              </a>
               <div class="fly-detail-user">
-                <router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">
+                <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">-->
+                  <!--<cite>{{postInfo.author}}</cite>-->
+                  <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息"></i>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                <!--</router-link>-->
+                <a class="fly-link">
                   <cite>{{postInfo.author}}</cite>
-                  <!--<i class="iconfont icon-renzheng" title="认证信息"></i>-->
-                  <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                </router-link>
+                </a>
                 <span>{{postInfo.initTime | dateStr}}</span>
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
@@ -140,17 +147,25 @@
               <li data-id="111" class="jieda-daan" v-for="reply in replyHotList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
+                  <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">-->
+                    <!--<img-->
+                      <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
+                      <!--:alt="reply.author">-->
+                  <!--</router-link>-->
+                  <a class="fly-avatar">
                     <img
                       :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
-                  </router-link>
+                  </a>
                   <div class="fly-detail-user">
-                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
+                    <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">-->
+                      <!--<cite>{{reply.author}}</cite>-->
+                      <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
+                      <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                    <!--</router-link>-->
+                    <a class="fly-link">
                       <cite>{{reply.author}}</cite>
-                      <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
-                      <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                    </router-link>
+                    </a>
                     <span v-if="reply.userId === postInfo.userId">(楼主)</span>
                     <!--
                     <span style="color:#5FB878">(管理员)</span>
@@ -198,17 +213,25 @@
               <li data-id="111" class="jieda-daan" v-for="reply in replyList">
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
-                  <router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">
+                  <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">-->
+                    <!--<img-->
+                      <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
+                      <!--:alt="reply.author">-->
+                  <!--</router-link>-->
+                  <a class="fly-avatar">
                     <img
                       :src="reply.icon == null ? defaultAvatar : reply.icon"
                       :alt="reply.author">
-                  </router-link>
+                  </a>
                   <div class="fly-detail-user">
-                    <router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">
+                    <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">-->
+                      <!--<cite>{{reply.author}}</cite>-->
+                      <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
+                      <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                    <!--</router-link>-->
+                    <a class="fly-link">
                       <cite>{{reply.author}}</cite>
-                      <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
-                      <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                    </router-link>
+                    </a>
                     <span v-if="reply.userId === postInfo.userId">(楼主)</span>
                     <!--
                     <span style="color:#5FB878">(管理员)</span>

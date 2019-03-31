@@ -22,8 +22,8 @@ public class BbsVestController extends AbstractController {
 	@Autowired
 	private BbsUserService bbsUserService;
 
-	@RequestMapping("/add/{vest}")
-	public R addVest(@PathVariable("vest") String vest) {
+	@RequestMapping("/add")
+	public R addVest(String vest) {
 		BbsVestEntity bbsVestEntity = new BbsVestEntity();
 		bbsVestEntity.setInitTime(new Date());
 		bbsVestEntity.setUserId(getUserId());
@@ -32,7 +32,7 @@ public class BbsVestController extends AbstractController {
 		return R.ok().put("data", "添加马甲成功!");
 	}
 
-	@RequestMapping("/Rename/{vest}")
+	@RequestMapping("/rename/id")
 	public R updateUsername(@PathVariable("vest") String vest) {
 		BbsUserEntity bbsUserEntity = new BbsUserEntity();
 		bbsUserEntity.setId(getUserId());

@@ -35,7 +35,8 @@
                       @click="collection(postInfo.id)">取消收藏</span>
                 <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
                       @click="collection(postInfo.id)">收藏</span>
-                <span v-if="userInfo.id != postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1"
+                <span v-if="userInfo.id != postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="set"
+                      field="status" rank="1"
                       @click="rewardBox = true">打赏</span>
               </div>
               <span class="fly-list-nums">
@@ -47,8 +48,8 @@
             </div>
             <div class="detail-about">
               <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">-->
-                <!--<img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"-->
-                     <!--:alt="postInfo.author">-->
+              <!--<img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"-->
+              <!--:alt="postInfo.author">-->
               <!--</router-link>-->
               <a class="fly-avatar">
                 <img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"
@@ -56,9 +57,9 @@
               </a>
               <div class="fly-detail-user">
                 <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">-->
-                  <!--<cite>{{postInfo.author}}</cite>-->
-                  <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息"></i>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                <!--<cite>{{postInfo.author}}</cite>-->
+                <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息"></i>&ndash;&gt;-->
+                <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
                 <!--</router-link>-->
                 <a class="fly-link">
                   <cite>{{postInfo.author}}</cite>
@@ -149,9 +150,9 @@
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
                   <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">-->
-                    <!--<img-->
-                      <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
-                      <!--:alt="reply.author">-->
+                  <!--<img-->
+                  <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
+                  <!--:alt="reply.author">-->
                   <!--</router-link>-->
                   <a class="fly-avatar">
                     <img
@@ -160,9 +161,9 @@
                   </a>
                   <div class="fly-detail-user">
                     <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">-->
-                      <!--<cite>{{reply.author}}</cite>-->
-                      <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
-                      <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                    <!--<cite>{{reply.author}}</cite>-->
+                    <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
                     <!--</router-link>-->
                     <a class="fly-link">
                       <cite>{{reply.author}}</cite>
@@ -215,9 +216,9 @@
                 <a name="item-1111111111"></a>
                 <div class="detail-about detail-about-reply">
                   <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-avatar">-->
-                    <!--<img-->
-                      <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
-                      <!--:alt="reply.author">-->
+                  <!--<img-->
+                  <!--:src="reply.icon == null ? defaultAvatar : reply.icon"-->
+                  <!--:alt="reply.author">-->
                   <!--</router-link>-->
                   <a class="fly-avatar">
                     <img
@@ -226,9 +227,9 @@
                   </a>
                   <div class="fly-detail-user">
                     <!--<router-link :to="'/user/index?userId='+ reply.userId" class="fly-link">-->
-                      <!--<cite>{{reply.author}}</cite>-->
-                      <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
-                      <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                    <!--<cite>{{reply.author}}</cite>-->
+                    <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
                     <!--</router-link>-->
                     <a class="fly-link">
                       <cite>{{reply.author}}</cite>
@@ -318,11 +319,13 @@
 
             <div class="layui-form layui-form-pane">
               <div class="layui-form-item layui-form-text">
-                <a name="comment" id="comment"></a>
+
                 <div class="layui-input-block">
-                    <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"
-                              class="layui-textarea fly-editor" style="height: 150px;" v-model="content">
-                    </textarea>
+                  <!--<textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"-->
+                  <!--class="layui-textarea fly-editor" style="height: 150px;" v-model="content">-->
+                  <!--</textarea>-->
+                  <div name="comment" id="comment" style="padding-top: 100px"></div>
+                  <div ref="editor" style="text-align:left"></div>
                 </div>
               </div>
               <div class="layui-form-item">
@@ -346,12 +349,12 @@
           </dl>
 
           <!--<div class="fly-panel">-->
-            <!--<div class="fly-panel-title">-->
-              <!--广告区域-->
-            <!--</div>-->
-            <!--<div class="fly-panel-main">-->
-              <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
-            <!--</div>-->
+          <!--<div class="fly-panel-title">-->
+          <!--广告区域-->
+          <!--</div>-->
+          <!--<div class="fly-panel-main">-->
+          <!--<a @click="getAD" class="fly-zanzhu" style="background-color: #5FB878; cursor: pointer">敬请期待</a>-->
+          <!--</div>-->
           <!--</div>-->
 
           <div class="fly-panel" style="padding: 20px 0; text-align: center;">
@@ -386,6 +389,8 @@
   import * as time from '@/utils/time';
   import * as collection from '@/api/collection';
   import * as grade from '@/api/grade';
+  import E from 'wangeditor'
+  import * as face from '@/assets/face.json'
 
   export default {
     name: "detail",
@@ -417,6 +422,9 @@
         rewardBox: false,
         rewardGrade: 0,
         currGrade: 0,
+        editorContent: '',
+        faceList: [],
+        editor: null
       }
     },
     created() {
@@ -427,14 +435,62 @@
       this.getWeekHot();
       this.isVoted();
       this.getCurrGrade();
+      this.getFace();
     },
     mounted() {
       this.layui();
+      this.editor = new E(this.$refs.editor)
+      this.editor.customConfig.onchange = (html) => {
+        this.editorContent = html
+      }
+      this.editor.customConfig.uploadImgServer = window.localStorage.baseUrl + '/upload/file2';
+      this.editor.customConfig.uploadFileName = 'file';
+      this.editor.customConfig.zIndex = 100
+      // 自定义菜单配置
+      this.editor.customConfig.menus = [
+        'emoticon',
+        'image',
+        'link',
+        'code'
+      ];
+      this.editor.customConfig.emotions = [
+        {
+          // tab 的标题
+          title: '默认',
+          // type -> 'emoji' / 'image'
+          type: 'image',
+          // content -> 数组
+          content: face
+        },
+        // {
+        //   // tab 的标题
+        //   title: 'emoji',
+        //   // type -> 'emoji' / 'image'
+        //   type: 'emoji',
+        //   // content -> 数组
+        //   content: [
+        //     '😀', '😁', '😂', '🤣', '😃', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '💩', '🤮',
+        //     '☺', '🙂', '🤗', '🤩', '🤔', '🤨', '😐', '😑', '😶', '🙄', '😏', '😣', '😥', '😮', '🤐', '😯', '😪', '😫', '😴',
+        //     '😌', '😛', '😜', '😝', '🤤 ', '😒', '😓', '😕', '🙃', '🤑', '😲', '☹', '🙁',
+        //   ]
+        // }
+      ];
+      this.editor.create()
     },
     beforeDestroy() {
       this.layer.closeAll();
     },
     methods: {
+      getFace() {
+        // let arr = [];
+        // face.map(item => {
+        //   arr.push({
+        //     alt: item.value,
+        //     src: item.icon
+        //   })
+        // });
+        // this.faceList = arr;
+      },
       layui() {
         let _this = this;
         layui.use(['layedit', 'layer', 'upload', 'form', 'element'], function () {
@@ -508,27 +564,27 @@
         if (this.replyId == '') {
           let bbsReply = {
             postsId: this.postId,
-            content: this.layedit.getContent(this.editIndex),
+            content: this.editorContent,
           }
           reply.addReply(bbsReply).then(res => {
+            this.editor.txt.clear();
             //  提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
             this.getWeekHot();
-            this.layedit.setContent(this.editIndex, '');
             this.layer.msg('回复成功')
           })
         } else {
           let bbsReply = {
             id: this.replyId,
-            content: this.layedit.getContent(this.editIndex),
+            content: this.editorContent,
           }
           reply.updateReply(bbsReply).then(res => {
             // 提示回复成功
             this.getReplyList(this.postId);
             this.getDetailById(this.postId);
             this.getWeekHot();
-            this.layedit.setContent(this.editIndex, '');
+            this.editor.txt.clear();
             this.replyId = '';
             this.layer.msg('修改成功')
           })
@@ -542,11 +598,12 @@
       },
       updateReply(content, replyId) {
         this.replyId = replyId;
-        this.layedit.setContent(this.editIndex, content);
+        //this.layedit.setContent(this.editIndex, content);
+        this.editor.txt.html(content);
         this.$el.querySelector('#comment').scrollIntoView();
       },
       cancel() {
-        this.layedit.setContent(this.editIndex, '');
+        this.editor.txt.clear();
         this.replyId = '';
       },
       delReply(replyId) {
@@ -615,7 +672,7 @@
       childReply(e) {
         this.$el.querySelector('#comment').scrollIntoView();
         let user = '<a href="#/user/index?userId=' + e.userId + '" class="fly-link">@' + e.author + '&nbsp;</a>';
-        this.layedit.setContent(this.editIndex, user);
+        this.editor.txt.html(user);
       },
       // TODO:投票
       changeVote(val) {
@@ -717,11 +774,46 @@
     }
   }
 
+  /deep/ .w-e-text {
+    overflow-y: auto;
+
+    p {
+      margin: 10px 0;
+    }
+  }
+
   /deep/ .el-progress {
     width: 50%;
   }
 
-  /* 投票 */
+  /deep/ .w-e-toolbar {
+    height: 43px;
+    line-height: 36px;
+    background-color: #fff !important;
+
+    i {
+      color: #009688 !important;
+      font-size: 16px;
+    }
+  }
+
+  /deep/ .w-e-panel-container {
+    width: 66% !important;
+    margin-left: -50% !important;
+  }
+
+  /deep/ .w-e-text-container {
+    height: 190px !important;
+  }
+
+  /deep/ .w-e-text-container .w-e-panel-container .w-e-emoticon-container .w-e-item {
+    margin: 1px;
+  }
+  /deep/ .w-e-text-container .w-e-panel-container .w-e-panel-tab-content {
+    padding: 10px 0px 10px 9px;
+  }
+
+    /* 投票 */
   .vote-box {
     li {
       position: relative;
@@ -738,5 +830,21 @@
         }
       }
     }
+  }
+
+  /*滚动条样式*/
+  /deep/ .w-e-panel-tab-content::-webkit-scrollbar { /*高宽分别对应横竖滚动条的尺寸*/
+    width: 4px;
+    height: 10px;
+  }
+  /deep/ .w-e-panel-tab-content::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 2px;
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);*/
+    background: hsla(220, 5%, 80%, .5);
+  }
+  /deep/ .w-e-panel-tab-content::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);*/
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0);
   }
 </style>

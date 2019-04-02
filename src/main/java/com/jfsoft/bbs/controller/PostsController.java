@@ -108,8 +108,10 @@ public class PostsController extends AbstractController {
             // 帖子显示发帖时的用户姓名
 			bbsPosts.setAuthor(user.getUsername());
             bbsPostsService.insert(bbsPosts);
+
         } else {
             bbsPostsService.updateById(bbsPosts);
+
         }
         // 发帖钻石记录
 		if (bbsPosts.getRewardGrade() > 0) {
@@ -119,6 +121,7 @@ public class PostsController extends AbstractController {
 			bbslog.setLogType(1);
 			bbslog.setRemarks("发帖悬赏 " + bbsPosts.getRewardGrade() + " 钻石");
 			bbsLogService.insert(bbslog);
+
 		}
         return R.ok().put("data", bbsPosts);
     }

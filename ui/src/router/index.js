@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Layer from '@/views/layer'
 import Index from '@/views/index'
 import Detail from '@/views/post/detail'
+import Search from '@/views/post/search'
 import Add from '@/views/add'
 import Login from '@/views/loginpc'
 import UserIndex from '@/views/user/home'
@@ -37,6 +38,10 @@ export default new Router({
         {
           path: 'detail',
           component: Detail
+        },
+        {
+          path: 'search',
+          component: Search
         }
       ]
     }, {

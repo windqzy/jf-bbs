@@ -46,7 +46,7 @@
                 <!--<div class="layui-col-xs6">-->
                 <!--<div><a href="http://fly.layui.com/jie/13435/" target="_blank"> 关于飞吻 </a></div>-->
                 <!--</div>-->
-                <a name="signin"> </a></div>
+                <a name="signin"></a></div>
             </div>
           </div>
           <div class="fly-panel layui-hide-xs" v-if="false">
@@ -246,7 +246,10 @@
             <div class="fly-panel-main fly-signin-main">
               <button v-if="isSign" class="layui-btn layui-btn-disabled">今日已签到</button>
               <button v-else class="layui-btn layui-btn-danger" @click="saveSign">今日签到</button>
-              <span>可获得<cite v-text="currGrade"></cite>钻石</span>
+              <span>
+                可获得<cite v-text="currGrade"></cite>钻石
+                <a @click="openLog" style="cursor: pointer" class="fly-link">记录</a>
+              </span>
 
 
               <!-- 已签到状态 -->
@@ -440,6 +443,13 @@
         <div class="fly-panel-main">{{label.name}}</div>
       </div>
     </div>
+    <!-- 钻石记录 -->
+    <el-dialog title="钻石记录" :visible.sync="logBox">
+      <el-table :data="logList" size="mini" height="calc(100vh - 190px)">
+        <el-table-column property="initTime" label="时间" ></el-table-column>
+        <el-table-column property="remarks" label="记录" ></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -451,6 +461,7 @@
   import * as grade from '@/api/grade';
   import * as label from '@/api/label';
   import * as tag from '@/api/tag';
+  import * as log from '@/api/log';
 
   export default {
     name: "index",
@@ -483,7 +494,9 @@
         tagList: [],
         activeTag: -1,
         loading: false,
-        loadTop: false
+        loadTop: false,
+        logList: [],
+        logBox: false
       }
     },
     created() {
@@ -569,7 +582,14 @@
         });
         this.getListSign(1);
       },
-
+      openLog() {
+        this.logBox = true;
+        let type = 1;  // 钻石记录
+        log.getList(type).then(res => {
+          // console.log(res.data)
+          this.logList = res.data;
+        })
+      },
       //TODO userId
       // init_layui() {
       //   layui.cache.user = {
@@ -805,7 +825,7 @@
     }
   }
 </script>
-<style scoped>
+<style scoped lang="scss">
   .fly-list-one dd span {
     float: right;
   }
@@ -816,6 +836,26 @@
 
   .layuiadmin-card-link a {
     margin-right: 20px;
+  }
+
+
+  @media screen and (max-width: 750px) {
+    /deep/ .el-dialog {
+      width: 90%;
+    }
+    /deep/ .el-dialog__body {
+      padding: 0 20px;
+    }
+  }
+
+
+  @media only screen and (min-width: 750px) {
+    /deep/ .el-dialog {
+      width: 40%;
+    }
+    /deep/ .el-dialog__body {
+      padding: 0 20px;
+    }
   }
 
 </style>

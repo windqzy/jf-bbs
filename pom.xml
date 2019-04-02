@@ -58,6 +58,22 @@
             <artifactId>mybatisplus-spring-boot-starter</artifactId>
             <version>${mybatisplus.spring.boot.version}</version>
         </dependency>
+        <!-- ES搜索 -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-elasticsearch -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId><!--可以查查最新版-->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.ibeetl/beetl-framework-starter -->
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-framework-starter</artifactId>
+            <version>1.1.46.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
@@ -152,11 +168,11 @@
         </dependency>
         <!-- dingding -->
         <!--<dependency>-->
-            <!--　　<groupId>com.taobao.top</groupId>-->
-            <!--　　<artifactId>htmlunit</artifactId>-->
-            <!--　　<version>2.21-OSGi</version>-->
-            <!--　　<scope>system</scope>-->
-            <!--　　<systemPath>${project.basedir}/libs/taobao-sdk-java-auto_1479188381469-20190227.jar</systemPath>-->
+        <!--　　<groupId>com.taobao.top</groupId>-->
+        <!--　　<artifactId>htmlunit</artifactId>-->
+        <!--　　<version>2.21-OSGi</version>-->
+        <!--　　<scope>system</scope>-->
+        <!--　　<systemPath>${project.basedir}/libs/taobao-sdk-java-auto_1479188381469-20190227.jar</systemPath>-->
         <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-generator -->

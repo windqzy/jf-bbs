@@ -10,6 +10,7 @@ import UserIndex from '@/views/user/home'
 import setIndex from '@/views/set/index'
 import userReg from '@/views/user/reg'
 import Case from '@/views/case/index'
+import Games from '@/views/games/index'
 
 Vue.use(Router)
 
@@ -87,6 +88,15 @@ export default new Router({
         {
           path: 'index',
           component: Case
+        }
+      ]
+    }, {
+      path: '/games',
+      component: Layer,
+      children: [
+        {
+          path: 'index',
+          component: Games
         }
       ]
     }

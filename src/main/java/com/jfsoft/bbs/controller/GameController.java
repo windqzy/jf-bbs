@@ -10,6 +10,7 @@
  */
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGameEntity;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,9 +42,9 @@ public class GameController extends AbstractController {
      */
     @RequestMapping("/list")
 
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = bbsGameService.queryPage(params);
-        return R.ok().put("page", page);
+    public R list() {
+        List<BbsGameEntity> bbsGameEntities = bbsGameService.selectList(new EntityWrapper<>());
+        return R.ok().put("data", bbsGameEntities);
     }
 
 

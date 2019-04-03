@@ -2,26 +2,32 @@
   <div id="header">
     <div class="fly-header layui-bg-black">
       <div class="layui-container">
-        <router-link class="fly-logo" to="/home/index?id=0">
-          <img src="../../static/images/logo.png" alt="layui">
-        </router-link>
-        <ul class="layui-nav fly-nav layui-hide-xs">
-          <li class="layui-nav-item layui-this">
-            <router-link to="/home/index?id=0">首页</router-link>
+        <a class="fly-logo" @click="toNav(0)" style="cursor: pointer" >
+          <img src="../../static/images/logo.png" alt="layui" class="layui-hide-xs">
+          <img src="../../static/images/avatar/00.jpg" class="layui-hide-sm layui-show-xs-block" style="width: 40px" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav">
+          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 0}'>
+            <a style="cursor: pointer" @click="toNav(0)">首页</a>
           </li>
-          <li class="layui-nav-item">
-            <a style="cursor: pointer" onclick="layer.msg('开发中...')">
+          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 1}'>
+            <a style="cursor: pointer" @click="toNav(1)">游戏</a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
+            <a style="cursor: pointer" onclick="toNav(2)">
               读书
             </a>
           </li>
+        </ul>
+        <ul class="layui-nav layui-hide-sm layui-show-xs-block" style="margin-left: 138px;">
           <li class="layui-nav-item">
-            <a style="cursor: pointer" onclick="layer.msg('开发中...')">
-              动态
-            </a>
+            <a style="cursor: pointer" @click="toNav(0)">首页</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a style="cursor: pointer" @click="toNav(1)">游戏</a></dd>
+              <dd><a style="cursor: pointer" onclick="toNav(2)">读书</a></dd>
+              <!--<dd><a href="">电商平台</a></dd>-->
+            </dl>
           </li>
-          <!--<li class="layui-nav-item">-->
-          <!--<a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>-->
-          <!--</li>-->
         </ul>
 
         <ul class="layui-nav fly-nav-user">
@@ -131,7 +137,8 @@
         activeLabel: -1,
         isChildMenu: true,
         userInfo: '',
-        searchText: ''
+        searchText: '',
+        activeNav: 0
         // defaultAvatar: require('../../static/images/avatar/4.jpg')
       }
     },
@@ -200,6 +207,14 @@
       });
     },
     methods: {
+      toNav(index) {
+        this.activeNav = index;
+        switch (index) {
+          case 0: this.$router.push('/home/index?id=0'); break;
+          case 1: this.$router.push('/games/index?id=1'); break;
+          case 2: layer.msg('开发中...'); break;
+        }
+      },
       search() {
         this.$router.push('/post/search?key=' + this.searchText);
         layer.closeAll();

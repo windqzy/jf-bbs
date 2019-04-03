@@ -190,7 +190,7 @@
             <ul class="fly-list">
               <li v-for="post in postList">
                 <!--<router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">-->
-                  <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
+                <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
                 <!--</router-link>-->
                 <a class="fly-avatar">
                   <img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
@@ -202,11 +202,11 @@
                 </h2>
                 <div class="fly-list-info">
                   <!--<router-link :to="'/user/index?userId='+ post.userId">-->
-                    <!--<cite>{{post.author}}</cite>-->
-                    <!--&lt;!&ndash;-->
-                    <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
-                    <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
-                    <!--&ndash;&gt;-->
+                  <!--<cite>{{post.author}}</cite>-->
+                  <!--&lt;!&ndash;-->
+                  <!--<i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
+                  <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
+                  <!--&ndash;&gt;-->
                   <!--</router-link>-->
                   <a>
                     <cite>{{post.author}}</cite>
@@ -427,13 +427,13 @@
           </li>
         </ul>
         <!--<ul class="layui-tab-item">-->
-          <!--<li v-for="sign in noticeList">-->
-            <!--<a style="cursor: pointer" @click="toUserHome(sign.userId)">-->
-              <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
-              <!--<cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>-->
-            <!--</a>-->
-            <!--<span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>-->
-          <!--</li>-->
+        <!--<li v-for="sign in noticeList">-->
+        <!--<a style="cursor: pointer" @click="toUserHome(sign.userId)">-->
+        <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
+        <!--<cite class="fly-link" :title="sign.username">{{sign.username | subString(6)}}</cite>-->
+        <!--</a>-->
+        <!--<span class="fly-grey">已连续签到 <i>{{sign.signCount}} </i>天</span>-->
+        <!--</li>-->
         <!--</ul>-->
       </div>
     </div>
@@ -446,8 +446,8 @@
     <!-- 钻石记录 -->
     <el-dialog title="钻石记录" :visible.sync="logBox">
       <el-table :data="logList" size="mini" height="calc(100vh - 190px)">
-        <el-table-column property="initTime" label="时间" ></el-table-column>
-        <el-table-column property="remarks" label="记录" ></el-table-column>
+        <el-table-column property="initTime" label="时间"></el-table-column>
+        <el-table-column property="remarks" label="记录"></el-table-column>
       </el-table>
     </el-dialog>
   </div>

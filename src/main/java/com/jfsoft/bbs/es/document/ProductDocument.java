@@ -24,6 +24,10 @@ public class ProductDocument implements Serializable {
     //@Field(analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String productDesc;
 
+    private String author;
+
+    private String label;
+
     private Date createTime;
 
     private Date updateTime;
@@ -66,5 +70,21 @@ public class ProductDocument implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

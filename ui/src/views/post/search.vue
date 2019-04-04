@@ -28,23 +28,24 @@
               </span>
             </div>
             <ul class="fly-list">
-              <li>
+              <li v-for="top in data">
                 <a href="user/home.html" class="fly-avatar">
                   <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
                 </a>
                 <h2>
-                  <a class="layui-badge">分享</a>
-                  <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
+                  <a class="layui-badge">{{top.source.label}}</a>
+                  <a href="jie/detail.html" v-html="top.highlight.productName"></a>
+                  <!--{{top.highlight.productDesc}}-->
                 </h2>
                 <div class="fly-list-info">
                   <a href="user/home.html" link>
-                    <cite>贤心</cite>
+                    <cite>{{top.source.author}}</cite>
                     <!--
                     <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                     <i class="layui-badge fly-badge-vip">VIP3</i>
                     -->
                   </a>
-                  <span>刚刚</span>
+                  <span>{{top.source.createTime}}</span>
 
                   <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>
                   <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
@@ -376,8 +377,22 @@
 </template>
 
 <script>
+  import * as post from '@/api/post';
   export default {
-    name: "search"
+    name: "search",
+    data() {
+      return {
+       data:[]
+      }
+    },
+    created() {
+      console.log(this.$route.query.key+":::1231231231")
+      this.keyword = this.$route.query.key;
+      post.search(this.keyword).then(res => {
+        console.log(res)
+        this.data=res
+      })
+    },
   }
 </script>
 

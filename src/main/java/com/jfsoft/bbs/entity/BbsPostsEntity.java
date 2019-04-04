@@ -67,6 +67,10 @@ public class BbsPostsEntity implements Serializable {
      *
      */
     private String author;
+
+    private BbsUserEntity bbsUserEntity;
+
+    private BbsTagEntity bbsTagEntity;
     /**
      *
      */
@@ -188,6 +192,22 @@ public class BbsPostsEntity implements Serializable {
 
     public void setEnd(Boolean end) {
         this.end = end;
+    }
+
+    public BbsUserEntity getBbsUserEntity() {
+        return bbsUserEntity;
+    }
+
+    public void setBbsUserEntity(BbsUserEntity bbsUserEntity) {
+        this.bbsUserEntity = bbsUserEntity;
+    }
+
+    public BbsTagEntity getBbsTagEntity() {
+        return bbsTagEntity;
+    }
+
+    public void setBbsTagEntity(BbsTagEntity bbsTagEntity) {
+        this.bbsTagEntity = bbsTagEntity;
     }
 
     /**

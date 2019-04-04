@@ -217,6 +217,7 @@
       },
       search() {
         this.$router.push('/post/search?key=' + this.searchText);
+        console.log(this.searchText)
         layer.closeAll();
       },
       // 查询所有 Label

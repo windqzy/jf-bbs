@@ -96,4 +96,5 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     public Integer upEnd(Integer id){
         return bbsReplyDao.upEnd(id);
     }
+
 }

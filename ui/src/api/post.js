@@ -25,6 +25,14 @@ export function getDetail(postId) {
   })
 }
 
+//搜索引擎查询
+export function search(keyword) {
+  return request({
+    url: '/posts/search/' + keyword,
+    method: 'GET'
+  })
+}
+
 // 查询个人发布文章列表
 export function getPersonList(id) {
   return request({

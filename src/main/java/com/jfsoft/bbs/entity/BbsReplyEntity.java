@@ -45,6 +45,7 @@ public class BbsReplyEntity implements Serializable {
     /**
      *
      */
+    @TableField(exist = false)
     private String author;
     /**
      *

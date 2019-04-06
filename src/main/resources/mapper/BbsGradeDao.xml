@@ -9,6 +9,7 @@
         <result property="initTime" column="init_time"/>
         <result property="grade" column="grade"/>
         <result property="userId" column="user_id"/>
+        <result property="unionId" column="union_id"/>
     </resultMap>
 
     <update id="updateGradeByUserId" parameterType="com.jfsoft.bbs.entity.BbsGradeEntity">

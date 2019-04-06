@@ -18,6 +18,13 @@ export function getAccessToken() {
   })
 }
 
+export function turnAccount(userId) {
+  return request({
+    url: '/turnAccount?userId=' + userId,
+    method: 'GET',
+  })
+}
+
 export function freeLogin() {
   return request({
     url: 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?' +

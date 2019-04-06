@@ -21,6 +21,8 @@ public class BbsLogEntity implements Serializable {
 
 	private String remarks;
 
+	private String unionId;
+
 	public Integer getId() {
 		return id;
 	}
@@ -59,5 +61,13 @@ public class BbsLogEntity implements Serializable {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 }

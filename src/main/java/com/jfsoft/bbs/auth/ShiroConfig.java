@@ -70,6 +70,7 @@ public class ShiroConfig {
         filterChainMap.put("/css/**", "anon");
         filterChainMap.put("/login/free", "anon");
         filterChainMap.put("/ding/action", "anon");
+        filterChainMap.put("/turnAccount", "anon");
         filterChainMap.put("/login/ding", "anon");
         filterChainMap.put("/upload/**", "anon");
         filterChainMap.put("/**", "jwt");

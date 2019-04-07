@@ -32,8 +32,8 @@ public class BbsSignServiceImpl extends ServiceImpl<BbsSignDao, BbsSignEntity> i
     }
 
     @Override
-    public BbsSignEntity getSignByUserId(Integer userId) {
-        return bbsSignDao.getSignByUserId(userId);
+    public BbsSignEntity getSignByUserId(String unionId) {
+        return bbsSignDao.getSignByUserId(unionId);
     }
 
     @Override

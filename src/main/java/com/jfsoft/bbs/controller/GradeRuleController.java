@@ -37,8 +37,9 @@ public class GradeRuleController extends AbstractController {
     @RequestMapping("/curr")
     public R curr(){
         Integer grade;
+        String unionId = getUnionId();
         // 查询最大连签
-        BbsSignEntity signByUserId = bbsSignService.getSignByUserId(getUserId());
+        BbsSignEntity signByUserId = bbsSignService.getSignByUserId(getUnionId());
         // 查询应得的分数
         if (signByUserId == null) {
             grade = bbsGradeRuleService.getGradeByRule(1);

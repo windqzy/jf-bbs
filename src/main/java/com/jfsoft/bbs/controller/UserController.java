@@ -106,6 +106,7 @@ public class UserController extends AbstractController {
         fromLog.setInitTime(new Date());
         fromLog.setLogType(1);
         fromLog.setUserId(userId);
+        fromLog.setUnionId(getUnionId());
         fromLog.setRemarks("购买子账号花费500钻石");
         bbsLogService.insert(fromLog);
         return R.ok();
@@ -119,13 +120,19 @@ public class UserController extends AbstractController {
 //        ValidatorUtils.validateEntity(bbsUser);
 //        bbsUserService.updateAllColumnById(bbsUser);//全部更新
         Integer userId = getUserId();
+        String unionId = getUnionId();
         BbsUserEntity bbsUser = bbsUserService.selectById(userId);
-        if (bbsUser == null) {
+        // 查找这个unionId是否已存在账号
+		EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
+		wrapper.eq("union_id", getUnionId());
+		List<BbsUserEntity> userEntities = bbsUserService.selectList(wrapper);
+		if (userEntities == null) {
             // 每个人初始化100积分
             BbsGradeEntity gradeEntity = new BbsGradeEntity();
             gradeEntity.setGrade(100);
             gradeEntity.setInitTime(new Date());
             gradeEntity.setUserId(userId);
+            gradeEntity.setUnionId(unionId);
             bbsGradeService.insert(gradeEntity);
             // 记录钻石
             BbsLogEntity logEntity = new BbsLogEntity();
@@ -139,6 +146,7 @@ public class UserController extends AbstractController {
             vestEntity.setInitTime(new Date());
             vestEntity.setVest(userForm.getUsername());
             vestEntity.setUserId(getUserId());
+            vestEntity.setIcon(userForm.getIcon());
             bbsVestService.insert(vestEntity);
         }
         bbsUser.setEmail(userForm.getEmail());

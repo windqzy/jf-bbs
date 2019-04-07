@@ -11,12 +11,13 @@
         <result property="userId" column="user_id"/>
         <result property="username" column="username"/>
         <result property="icon" column="icon"/>
+        <result property="unionId" column="union_id"/>
     </resultMap>
 
-    <select id="getSignByUserId" parameterType="integer" resultMap="bbsSignMap">
+    <select id="getSignByUserId" parameterType="string" resultMap="bbsSignMap">
         SELECT *
         FROM bbs_sign
-        WHERE user_id = #{userId}
+        WHERE union_id = #{unionId}
     </select>
 
     <insert id="insertSign" parameterType="integer">

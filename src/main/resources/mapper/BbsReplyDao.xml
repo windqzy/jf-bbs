@@ -88,7 +88,7 @@
     <update id="upGrade" parameterType="map">
         UPDATE bbs_grade
         SET grade = #{rewardgrade}+grade
-        WHERE user_id = #{userId}
+        WHERE union_id = #{unionId}
     </update>
 
     <update id="upEnd" parameterType="integer">

@@ -28,7 +28,7 @@ public class BbsLogController extends AbstractController {
     public R getLog(@PathVariable Integer type) {
         EntityWrapper<BbsLogEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("log_type", type);
-        wrapper.eq("user_id", getUserId());
+        wrapper.eq("union_id", getUnionId());
         List<BbsLogEntity> bbsLogEntities = logService.selectList(wrapper);
         return R.ok().put("data", bbsLogEntities);
     }

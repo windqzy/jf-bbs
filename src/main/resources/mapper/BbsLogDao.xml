@@ -10,6 +10,7 @@
         <result property="userId" column="user_id"/>
         <result property="logType" column="log_type"/>
         <result property="remarks" column="remarks"/>
+        <result property="unionId" column="union_id"/>
     </resultMap>
 
 

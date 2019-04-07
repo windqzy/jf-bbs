@@ -23,4 +23,8 @@ public abstract class AbstractController {
     protected Integer getUserId() {
         return getUser().getId();
     }
+
+    protected String getUnionId() {
+        return getUser().getUnionId();
+    }
 }

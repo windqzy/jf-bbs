@@ -30,7 +30,7 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
 
     Integer getRewardGrade(Integer id);
 
-    Integer upGrade(Integer userId, Integer rewardgrade);
+    Integer upGrade(String unionId, Integer rewardgrade);
 
     Integer upEnd(Integer id);
 }

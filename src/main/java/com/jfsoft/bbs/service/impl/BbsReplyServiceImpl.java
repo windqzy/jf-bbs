@@ -85,9 +85,9 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     }
 
     @Override
-    public Integer upGrade(Integer userId, Integer rewardgrade) {
+    public Integer upGrade(String unionId, Integer rewardgrade) {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
+        params.put("unionId", unionId);
         params.put("rewardgrade", rewardgrade);
         return bbsReplyDao.upGrade(params);
     }

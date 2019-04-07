@@ -9,7 +9,9 @@
         <result property="initTime" column="init_time"/>
         <result property="title" column="title"/>
         <result property="desc" column="desc"/>
-        <result property="imgUrl" column="imgUrl"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="startUrl" column="start_url"/>
     </resultMap>
+
 
 </mapper>

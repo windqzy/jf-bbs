@@ -18,7 +18,7 @@ public interface BbsSignService extends IService<BbsSignEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    BbsSignEntity getSignByUserId(Integer userId);
+    BbsSignEntity getSignByUserId(String unionId);
 
     int insertSign(Integer userId);
 

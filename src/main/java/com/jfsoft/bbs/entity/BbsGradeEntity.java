@@ -35,6 +35,8 @@ public class BbsGradeEntity implements Serializable {
 	 */
 	private Integer userId;
 
+	private String unionId;
+
 	/**
 	 * 设置：
 	 */
@@ -82,5 +84,13 @@ public class BbsGradeEntity implements Serializable {
 	 */
 	public Integer getUserId() {
 		return userId;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 }

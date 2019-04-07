@@ -6,6 +6,7 @@ import Detail from '@/views/post/detail'
 import Search from '@/views/post/search'
 import Add from '@/views/add'
 import Login from '@/views/loginpc'
+import Login2 from '@/views/login'
 import UserIndex from '@/views/user/home'
 import setIndex from '@/views/set/index'
 import userReg from '@/views/user/reg'
@@ -22,6 +23,9 @@ export default new Router({
     }, {
       path: '/login',
       component: Login,
+    }, {
+      path: '/login2',
+      component: Login2,
     }, {
       path: '/home',
       component: Layer,

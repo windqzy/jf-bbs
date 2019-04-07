@@ -17,7 +17,7 @@ import java.util.Map;
 @Mapper
 public interface BbsSignDao extends BaseMapper<BbsSignEntity> {
 
-    BbsSignEntity getSignByUserId(Integer userId);
+    BbsSignEntity getSignByUserId(String unionId);
 
     int insertSign(Integer userId);
 

@@ -338,15 +338,17 @@
         </div>
         <div class="layui-col-md4">
           <dl class="fly-panel fly-list-one">
-            <dt class="fly-panel-title">本周热议</dt>
-            <dd v-for="hot in hotList">
-              <a style="cursor: pointer" @click="getDetailById(hot.id)">{{hot.title}}</a>
-              <span><i class="iconfont icon-pinglun1"></i>{{hot.replyCount}}</span>
+            <dt class="fly-panel-title">打赏榜</dt>
+            <dd v-for="reward in rewardList">
+              <a style="cursor: pointer">{{reward.rewardName}}</a>
+              <span><i class="layui-icon layui-icon-diamond"></i>{{reward.rewardMoney}}</span>
             </dd>
+
 
             <!-- 无数据时 -->
             <div v-if="hotList.length == 0" class="fly-none">没有相关数据</div>
           </dl>
+
 
           <!--<div class="fly-panel">-->
           <!--<div class="fly-panel-title">-->
@@ -403,6 +405,7 @@
         content: '',
         replyHotList: [],// 热门回帖
         replyList: [],
+        rewardList: [],
         hotList: [],
         editIndex: '',
         layedit: null,
@@ -432,6 +435,7 @@
       this.labelId = this.$route.query.labelId;
       this.userInfo = this.$store.getters.user;
       this.getDetailById(this.postId);
+      this.getTopThree(this.$route.query.postId)
       this.getWeekHot();
       this.isVoted();
       this.getCurrGrade();
@@ -559,6 +563,13 @@
         post.getList(obj).then(res => {
           this.hotList = res.data;
         })
+      },
+      getTopThree(postsId){
+      console.log(postsId)
+      grade.getTopThree(postsId).then(res=>{
+        console.log(res.data)
+        this.rewardList=res.data
+      })
       },
       addReply() {
         if (this.replyId == '') {
@@ -765,6 +776,10 @@
   }
 
   .icon-pinglun1 {
+    right: 5px;
+  }
+
+  .layui-icon-diamond {
     right: 5px;
   }
 

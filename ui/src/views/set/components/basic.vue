@@ -21,25 +21,24 @@
         <!--</div>-->
         <!--</div>-->
         <div class="layui-form-item">
-          <label for="L_username" class="layui-form-label">当前马甲</label>
+          <label for="L_username" class="layui-form-label">昵称</label>
           <div class="layui-input-inline">
-            <!--<input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"-->
-            <!--class="layui-input" maxLength="20"-->
-            <!--v-model="username">-->
-            <el-select v-model="username" placeholder="请选择">
-              <el-option
-                v-for="item in vestList"
-                :key="item.id"
-                :label="item.vest"
-                :value="item.vest">
-              </el-option>
-            </el-select>
+            <input type="text" id="L_username" required lay-verify="required" autocomplete="off" name="username"
+                   class="layui-input" maxLength="20"
+                   v-model="username">
+            <!--<el-select v-model="username" placeholder="请选择">-->
+            <!--<el-option-->
+            <!--v-for="item in vestList"-->
+            <!--:key="item.id"-->
+            <!--:label="item.vest"-->
+            <!--:value="item.vest">-->
+            <!--</el-option>-->
+            <!--</el-select>-->
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
-              <!--<input type="radio" name="sex" v-model="selectSex" value="1" checked title="男">-->
-              <!--<input type="radio" name="sex" v-model="selectSex" value="0" title="女">-->
-              <el-button type="primary" @click="showBuyVestBox" :disabled="vestList.length >= 5">购买马甲</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="addAccountBox = true"></el-button>
+              <el-button type="primary" @click="getAccount">切换账号</el-button>
             </div>
           </div>
         </div>
@@ -161,6 +160,40 @@
         <el-button type="primary" @click="addVest">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- account -->
+    <el-dialog title="账号列表" :visible.sync="accountBox" width="320px">
+      <div class="fly-panel fly-rank fly-rank-reply">
+        <dl>
+          <dd v-for="account in accountList">
+            <a @click="turnAccount(account.id)">
+              <img :src="account.icon == null? defaultAvatar : account.icon">
+              <cite>{{account.username}}</cite>
+            </a>
+          </dd>
+        </dl>
+      </div>
+    </el-dialog>
+
+    <!-- add account -->
+    <el-dialog title="添加账号" :visible.sync="addAccountBox" width="320px">
+      <el-form :model="accountForm" label-width="40px">
+        <el-form-item label="说明">
+          <span style="color: red">说明：每个人最多可以拥有账号，第二个起，每个马甲200钻石</span>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="accountForm.username" placeholder="昵称"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio v-model="accountForm.sex" label="1">男</el-radio>
+          <el-radio v-model="accountForm.sex" label="2">女</el-radio>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addAccountBox = false">取 消</el-button>
+        <el-button type="primary" @click="addAccount">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -186,6 +219,14 @@
         vest: {
           id: '',
           name: ''
+        },
+        accountBox: false,
+        accountList: [],
+        addAccountBox: false,
+        accountForm: {
+          username: '',
+          sex: '',
+          unionId: ''
         },
 
       }
@@ -312,6 +353,33 @@
           this.vestList = res.data;
           this.vestName = this.username;
         })
+      },
+      // 获得上好信息
+      getAccount() {
+        this.accountBox = true;
+        user.getAccount().then(res => {
+          this.accountList = res.data;
+        })
+      },
+      // 切换账号
+      turnAccount(userId) {
+        window.location.href = window.localStorage.baseUrl + '/turnAccount?userId=' + userId;
+      },
+      addAccount() {
+        this.accountForm.unionId = this.userInfo.unionId;
+        user.addUser(this.accountForm).then(res => {
+          this.addAccountBox = false;
+          layer.msg('添加成功');
+        })
+      }
+    },
+    filters: {
+      subString(str, n) {
+        if (!str) {
+          return '';
+        }
+        let sign = str.length > n ? '...' : '';
+        return str.substring(0, n) + sign;
       }
     }
   }

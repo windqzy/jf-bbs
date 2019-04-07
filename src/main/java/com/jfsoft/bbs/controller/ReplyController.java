@@ -10,6 +10,7 @@ import com.jfsoft.bbs.form.ReplyForm;
 import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsPostsService;
 import com.jfsoft.bbs.service.BbsReplyService;
+import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,9 @@ public class ReplyController extends AbstractController {
 
     @Autowired
     private BbsLogService bbsLogService;
+
+    @Autowired
+    private BbsUserService bbsUserService;
 
     /**
      * 列表
@@ -175,13 +179,15 @@ public class ReplyController extends AbstractController {
     public R accept(Integer id, Integer userId) {
         /*看是否存在已采纳的回复*/
         Integer bbsReply = bbsReplyService.getAccept(id);
+        /* 获取被采纳用户的unionId*/
+        BbsUserEntity userEntity = bbsUserService.selectById(userId);
         if (bbsReply == 0) {
             /*将该回复修改为已采纳状态*/
             bbsReplyService.trueAccept(id);
             /*获取该贴悬赏的飞吻数*/
             Integer rewardGrade = bbsReplyService.getRewardGrade(id);
             /*将飞吻加到被采纳的回复者账号上*/
-            bbsReplyService.upGrade(userId, rewardGrade);
+            bbsReplyService.upGrade(userEntity.getUnionId(), rewardGrade);
             /*完结该贴，不予新采纳*/
             bbsReplyService.upEnd(id);
             // 被采纳钻石记录
@@ -189,6 +195,7 @@ public class ReplyController extends AbstractController {
                 BbsLogEntity bbslog = new BbsLogEntity();
                 bbslog.setInitTime(new Date());
                 bbslog.setUserId(userId);
+                bbslog.setUnionId(userEntity.getUnionId());
                 bbslog.setLogType(1);
                 bbslog.setRemarks("回复被采纳获得" + rewardGrade + "钻石");
                 bbsLogService.insert(bbslog);

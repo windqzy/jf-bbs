@@ -77,8 +77,10 @@ public class SignController extends AbstractController {
 	@RequestMapping("/count")
 	public R selectCount() {
 		Integer userId = getUserId();
+		String unionId = getUnionId();
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
-		wrapper.eq("user_id", userId);
+//		wrapper.eq("user_id", userId);
+		wrapper.eq("union_id", unionId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
 		return R.ok().put("data", bbsSign);
 	}
@@ -93,22 +95,27 @@ public class SignController extends AbstractController {
 		String msg = "签到失败";
 		Integer grade = 0;
 		Integer userId = getUserId();
+		String uNamm = getUser().getUsername();
+		String unionId = getUnionId();
 		// 获取当前方法执行时的时间戳
 		Date initTime = new Date();
 		// 检查是否有该用户的签到记录
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
-		wrapper.eq("user_id", userId);
+//		wrapper.eq("user_id", unionId);
+		wrapper.eq("union_id", unionId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
 		// 检查是否有该用户的积分记录
 		EntityWrapper<BbsGradeEntity> wrapperGrade = new EntityWrapper<>();
-		wrapperGrade.eq("user_id", userId);
+//		wrapperGrade.eq("user_id", userId);
+		wrapperGrade.eq("union_id", unionId);
 		BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapperGrade);
 		// 向签到表中存储的数据
 		BbsSignEntity newBbsSign = new BbsSignEntity();
 
 		// 查询用户的分数
 		EntityWrapper<BbsGradeEntity> gradeWrapper = new EntityWrapper<>();
-		gradeWrapper.eq("user_id", userId);
+//		gradeWrapper.eq("user_id", userId);
+		gradeWrapper.eq("union_id", unionId);
 		BbsGradeEntity bbsGradeEntity = bbsGradeService.selectOne(gradeWrapper);
 
 		// 保存签到记录
@@ -116,11 +123,13 @@ public class SignController extends AbstractController {
 		bbsLog.setInitTime(initTime);
 		bbsLog.setLogType(1);
 		bbsLog.setUserId(userId);
+		bbsLog.setUnionId(unionId);
 
 		// 签到
 		if (bbsSign == null) {
 			newBbsSign.setInitTime(initTime);
 			newBbsSign.setUserId(userId);
+			newBbsSign.setUnionId(unionId);
 			newBbsSign.setSignCount(1);
 			BbsGradeEntity gradeEntity = new BbsGradeEntity();
 			if (bbsGrade == null) {
@@ -129,6 +138,7 @@ public class SignController extends AbstractController {
 				grade = bbsGradeRuleService.getGradeByRule(1);
 				gradeEntity.setGrade(grade);
 				gradeEntity.setUserId(userId);
+				gradeEntity.setUnionId(unionId);
 				bbsGradeService.insert(gradeEntity);
 			} else {
 				// grade表不为空，首次签到+5分
@@ -179,7 +189,7 @@ public class SignController extends AbstractController {
 			}
 		}
 		// 添加钻石记录日志
-		bbsLog.setRemarks("签到增加" + grade + "钻石!");
+		bbsLog.setRemarks(uNamm + " 签到增加 " + grade + " 钻石!");
 		bbsLogService.insert(bbsLog);
 		return R.ok(msg);
 	}
@@ -189,11 +199,13 @@ public class SignController extends AbstractController {
 	public R isSign() {
 		Map<String, Object> map = new HashMap<>();
 		Integer userId = getUserId();
+		String unionId = getUnionId();
 		//当前时间
 		Date initTime = new Date();
 		//检查是否有该用户的签到记录
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
-		wrapper.eq("user_id", userId);
+//		wrapper.eq("user_id", userId);
+		wrapper.eq("union_id", unionId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
 
 		if (bbsSign == null) {
@@ -212,8 +224,6 @@ public class SignController extends AbstractController {
 		}
 		return R.ok().put("data", map);
 	}
-
-
 
 
 	/**

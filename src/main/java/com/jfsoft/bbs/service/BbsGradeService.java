@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
+import com.jfsoft.bbs.entity.BbsRewardEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +21,10 @@ public interface BbsGradeService extends IService<BbsGradeEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     BbsGradeEntity upGrade(Integer userId, Integer postsId, BbsPostsEntity rewardgrade);
+
+    List<BbsRewardEntity> finTopThree(String postsId);
+
+
+
 }
 

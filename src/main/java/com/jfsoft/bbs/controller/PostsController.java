@@ -56,6 +56,7 @@ public class PostsController extends AbstractController {
         return R.ok().put("data", list);
     }
 
+
     /**
      * 个人中心发布文章列表
      * * @return
@@ -73,6 +74,8 @@ public class PostsController extends AbstractController {
         return R.ok().put("data", list);
     }
 
+
+
     /**
      * 查询置顶
      *
@@ -83,6 +86,7 @@ public class PostsController extends AbstractController {
         List<BbsPostsEntity> topList = bbsPostsService.getTopList();
         return R.ok().put("data", topList);
     }
+
 
     /**
      * 信息
@@ -102,35 +106,29 @@ public class PostsController extends AbstractController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsPostsEntity bbsPosts) {
         Integer postId = bbsPosts.getId();
-        BbsUserEntity user = getUser();
-        bbsPosts.setInitTime(new Date());
+		BbsUserEntity user = getUser();
+		bbsPosts.setInitTime(new Date());
         if (postId == null) {
             // 新增
             bbsPosts.setUserId(user.getId());
             // 帖子显示发帖时的用户姓名
-            bbsPosts.setAuthor(user.getUsername());
+			bbsPosts.setAuthor(user.getUsername());
             bbsPostsService.insert(bbsPosts);
-            ProductDocument productDocument = ProductDocumentBuilder.create()
-                    .addId(bbsPosts.getId().toString())
-                    .addProductName(bbsPosts.getTitle())
-                    .addProductDesc(bbsPosts.getContent())
-                    .addAuthor(bbsPosts.getAuthor())
-                    .addLabel(bbsPosts.getLabelId().toString())
-                    .addCreateTime(new Date()).addUpdateTime(new Date())
-                    .builder();
-            esSearchService.save(productDocument);
+
         } else {
             bbsPostsService.updateById(bbsPosts);
+
         }
         // 发帖钻石记录
-        if (bbsPosts.getRewardGrade() > 0) {
-            BbsLogEntity bbslog = new BbsLogEntity();
-            bbslog.setInitTime(new Date());
-            bbslog.setUserId(getUserId());
-            bbslog.setLogType(1);
-            bbslog.setRemarks("发帖悬赏 " + bbsPosts.getRewardGrade() + " 钻石");
-            bbsLogService.insert(bbslog);
-        }
+		if (bbsPosts.getRewardGrade() > 0) {
+			BbsLogEntity bbslog = new BbsLogEntity();
+			bbslog.setInitTime(new Date());
+			bbslog.setUserId(getUserId());
+			bbslog.setLogType(1);
+			bbslog.setRemarks("发帖悬赏 " + bbsPosts.getRewardGrade() + " 钻石");
+			bbsLogService.insert(bbslog);
+
+		}
         return R.ok().put("data", bbsPosts);
     }
 
@@ -140,19 +138,19 @@ public class PostsController extends AbstractController {
     @RequestMapping("/update")
     public R update(@RequestBody BbsPostsEntity bbsPosts) {
 
-        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(bbsPosts.getId());
-        bbsPostsService.updateById(bbsPosts);
-        // 发帖钻石记录
-        if (bbsPosts.getRewardGrade() > 0) {
-            BbsLogEntity bbslog = new BbsLogEntity();
-            bbslog.setInitTime(new Date());
-            bbslog.setUserId(getUserId());
-            bbslog.setLogType(1);
-            bbslog.setRemarks("帖子" + bbsPostsEntity.getTitle()
-                    + " 修改钻石悬赏，由 " + bbsPostsEntity.getRewardGrade()
-                    + "修改为 " + bbsPosts.getRewardGrade() + " 钻石");
-            bbsLogService.insert(bbslog);
-        }
+		BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(bbsPosts.getId());
+		bbsPostsService.updateById(bbsPosts);
+		// 发帖钻石记录
+		if (bbsPosts.getRewardGrade() > 0) {
+			BbsLogEntity bbslog = new BbsLogEntity();
+			bbslog.setInitTime(new Date());
+			bbslog.setUserId(getUserId());
+			bbslog.setLogType(1);
+			bbslog.setRemarks("帖子" + bbsPostsEntity.getTitle()
+					+ " 修改钻石悬赏，由 " + bbsPostsEntity.getRewardGrade()
+					+ "修改为 " + bbsPosts.getRewardGrade() + " 钻石");
+			bbsLogService.insert(bbslog);
+		}
         return R.ok().put("data", bbsPosts);
     }
 
@@ -202,11 +200,5 @@ public class PostsController extends AbstractController {
         }
         bbsPostsService.updateById(bbsPostsEntity);
         return R.ok("操作成功");
-    }
-
-    @RequestMapping("/search/{keyword}")
-    public List<Map<String, Object>> search(@PathVariable String keyword) {
-        String[] fieldNames = {"productName"};
-        return esSearchService.queryHit(keyword, "orders",fieldNames);
     }
 }

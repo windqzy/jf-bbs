@@ -10,6 +10,7 @@
  */
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -38,6 +39,11 @@ public class BbsGameEntity implements Serializable {
     private String desc;
 
     private String imgUrl;
+
+    private String startUrl;
+
+    @TableField(exist = false)
+    private String first;
 
     public Integer getId() {
         return id;
@@ -78,4 +84,21 @@ public class BbsGameEntity implements Serializable {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    public String getStartUrl() {
+        return startUrl;
+    }
+
+    public void setStartUrl(String startUrl) {
+        this.startUrl = startUrl;
+    }
+
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
 }

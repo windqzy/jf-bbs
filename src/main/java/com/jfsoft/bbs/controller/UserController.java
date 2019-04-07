@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -76,10 +75,40 @@ public class UserController extends AbstractController {
 
     /**
      * 保存
+     * 钻石减少500钻石
      */
     @RequestMapping("/save")
     public R save(@RequestBody BbsUserEntity bbsUser) {
+        bbsUser.setInitTime(new Date());
         bbsUserService.insert(bbsUser);
+        return R.ok();
+    }
+
+    /**
+     * 更新钻石，新增用户
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/update/grade")
+    public R update(Integer userId) {
+
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("union_id", getUnionId());
+
+        // 扣除钻石
+//        BbsGradeEntity gradeEntity = bbsGradeService.selectById(userId);
+        BbsGradeEntity gradeEntity = bbsGradeService.selectOne(wrapper);
+        gradeEntity.setGrade(gradeEntity.getGrade() - 500);
+        gradeEntity.setInitTime(new Date());
+        bbsGradeService.updateById(gradeEntity);
+        // 增加钻石记录
+        BbsLogEntity fromLog = new BbsLogEntity();
+        fromLog.setInitTime(new Date());
+        fromLog.setLogType(1);
+        fromLog.setUserId(userId);
+        fromLog.setUnionId(getUnionId());
+        fromLog.setRemarks("购买子账号花费500钻石");
+        bbsLogService.insert(fromLog);
         return R.ok();
     }
 
@@ -91,13 +120,19 @@ public class UserController extends AbstractController {
 //        ValidatorUtils.validateEntity(bbsUser);
 //        bbsUserService.updateAllColumnById(bbsUser);//全部更新
         Integer userId = getUserId();
+        String unionId = getUnionId();
         BbsUserEntity bbsUser = bbsUserService.selectById(userId);
-        if (bbsUser == null) {
+        // 查找这个unionId是否已存在账号
+		EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
+		wrapper.eq("union_id", getUnionId());
+		List<BbsUserEntity> userEntities = bbsUserService.selectList(wrapper);
+		if (userEntities == null) {
             // 每个人初始化100积分
             BbsGradeEntity gradeEntity = new BbsGradeEntity();
             gradeEntity.setGrade(100);
             gradeEntity.setInitTime(new Date());
             gradeEntity.setUserId(userId);
+            gradeEntity.setUnionId(unionId);
             bbsGradeService.insert(gradeEntity);
             // 记录钻石
             BbsLogEntity logEntity = new BbsLogEntity();
@@ -111,6 +146,7 @@ public class UserController extends AbstractController {
             vestEntity.setInitTime(new Date());
             vestEntity.setVest(userForm.getUsername());
             vestEntity.setUserId(getUserId());
+            vestEntity.setIcon(userForm.getIcon());
             bbsVestService.insert(vestEntity);
         }
         bbsUser.setEmail(userForm.getEmail());
@@ -145,6 +181,21 @@ public class UserController extends AbstractController {
         bbsUserService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * @return
+     */
+    @RequestMapping("/getAccount")
+    public R getAccount() {
+        Integer userId = getUserId();
+        EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("id", userId);
+        BbsUserEntity bbsUserEntity = bbsUserService.selectOne(wrapper);
+        EntityWrapper<BbsUserEntity> wrapper2 = new EntityWrapper<>();
+        wrapper2.eq("union_id", bbsUserEntity.getUnionId());
+        List<BbsUserEntity> bbsUserEntities = bbsUserService.selectList(wrapper2);
+        return R.ok().put("data", bbsUserEntities);
     }
 
 }

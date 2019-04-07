@@ -11,16 +11,19 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGameEntity;
+import com.jfsoft.bbs.entity.BbsGameGradeEntity;
+import com.jfsoft.bbs.service.BbsGameGradeService;
 import com.jfsoft.bbs.service.BbsGameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -37,13 +40,23 @@ public class GameController extends AbstractController {
     @Autowired
     private BbsGameService bbsGameService;
 
+    @Autowired
+    private BbsGameGradeService bbsGameGradeService;
+
     /**
      * 列表
      */
     @RequestMapping("/list")
-
     public R list() {
         List<BbsGameEntity> bbsGameEntities = bbsGameService.selectList(new EntityWrapper<>());
+        bbsGameEntities.forEach(game -> {
+            BbsGameGradeEntity firstGrade = bbsGameGradeService.getFirstGrade(game.getId());
+            if (firstGrade != null) {
+                game.setFirst(firstGrade.getUserName());
+            } else {
+                game.setFirst(null);
+            }
+        });
         return R.ok().put("data", bbsGameEntities);
     }
 

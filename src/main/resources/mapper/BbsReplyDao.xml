@@ -20,14 +20,14 @@
     </resultMap>
 
     <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
-        SELECT br.*,br.author as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
+        SELECT br.*, bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
         FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
         LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
         WHERE br.posts_id = #{postId} ORDER BY br.init_time DESC
     </select>
 
     <select id="getHotReplyByPostid" parameterType="map" resultMap="bbsReplyMap">
-        SELECT br.*,br.author as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
+        SELECT br.*, bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
         FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
         LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
         WHERE br.posts_id = #{postId} and br.up > 0 ORDER BY br.up DESC, br.init_time DESC
@@ -88,7 +88,7 @@
     <update id="upGrade" parameterType="map">
         UPDATE bbs_grade
         SET grade = #{rewardgrade}+grade
-        WHERE user_id = #{userId}
+        WHERE union_id = #{unionId}
     </update>
 
     <update id="upEnd" parameterType="integer">

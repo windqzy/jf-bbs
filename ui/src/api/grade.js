@@ -25,6 +25,13 @@ export function reward(fromId, toId, grade) {
   })
 }
 
+export function getTopThree(postsId){
+  return request({
+    url: '/grade/finTopThree/?postsId='+postsId,
+    method:'GET'
+  })
+}
+
 /**
  * 修改积分
  */

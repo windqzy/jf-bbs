@@ -7,8 +7,6 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.JWTUtils;
 import com.jfsoft.bbs.entity.BbsUserEntity;
-import com.jfsoft.bbs.service.BbsGradeService;
-import com.jfsoft.bbs.service.BbsSignService;
 import com.jfsoft.bbs.service.BbsUserService;
 import com.jfsoft.bbs.service.DingDingInterfaceService;
 import org.apache.commons.codec.binary.Base64;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -26,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -55,26 +55,7 @@ public class LoginController {
     private BbsUserService bbsUserService;
 
     @Autowired
-    private BbsSignService bbsSignService;
-
-    @Autowired
-    private BbsGradeService bbsGradeService;
-
-    @Autowired
     private DingDingInterfaceService dingDingInterfaceService;
-
-//    @GetMapping("/login/free")
-//    @ResponseBody
-//    public R freeLogin(String code) {
-//        try {
-//            logger.info("登录开始，免登录code：" + code);
-//            String accessTokenUrl = "https://oapi.dingtalk.com/gettoken?appkey=key&appsecret=secret";
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return R.ok("钉钉登录开始");
-//    }
 
 
     @GetMapping("/login/free")
@@ -99,37 +80,25 @@ public class LoginController {
             object = JSON.parseObject(HttpUtil.post(url, JSON.toJSONString(params)));
             if (object.getInteger("errcode") == 0) {
                 com.alibaba.fastjson.JSONObject userInfo = (com.alibaba.fastjson.JSONObject) object.get("user_info");
-                String name = null;
-                String mobile = null;
-                String position = null;
                 String unionId = null;
                 String token = null;
-                name = (String) userInfo.get("nick");
                 unionId = (String) userInfo.get("unionid");
 
                 EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
                 wrapper.eq("union_id", unionId);
-                BbsUserEntity bbsUser = bbsUserService.selectOne(wrapper);
-                if (bbsUser == null) {
+                // 查询unionId下所有的子账号
+                List<BbsUserEntity> userList = bbsUserService.selectList(wrapper);
+                if (userList.size() == 0) {
                     //insert
                     BbsUserEntity bbsUserEntity = new BbsUserEntity();
                     bbsUserEntity.setInitTime(new Date());
                     bbsUserEntity.setUnionId(unionId);
-                    bbsUserEntity.setName(name);
-                    bbsUserEntity.setMobile(mobile);
-                    bbsUserEntity.setPosition(position);
                     bbsUserService.insert(bbsUserEntity);
                     int id = bbsUserEntity.getId();
-//                    BbsGradeEntity gradeEntity = new BbsGradeEntity();
-
-//                    gradeEntity.setGrade(100);
-//                    gradeEntity.setInitTime(new Date());
-//                    gradeEntity.setUserId(id);
-//                    bbsGradeService.insert(gradeEntity);
                     token = JWTUtils.sign(String.valueOf(id), unionId);
                     return "redirect:" + webUrl + "?token=" + token;
                 } else {
-                    token = JWTUtils.sign(String.valueOf(bbsUser.getId()), unionId);
+                    token = JWTUtils.sign(String.valueOf(userList.get(0).getId()), unionId);
                     return "redirect:" + webUrl + "?token=" + token;
                 }
             } else {
@@ -161,14 +130,7 @@ public class LoginController {
     @GetMapping("/login/ding")
     public String getUserFromDingDing(String code) {
         logger.info("code: " + code);
-//            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/sns/getuserinfo_bycode");
-//            OapiSnsGetuserinfoBycodeRequest req = new OapiSnsGetuserinfoBycodeRequest();
-//            req.setTmpAuthCode(code);
-//            OapiSnsGetuserinfoBycodeResponse response = client.execute(req, DD_APPID, DD_APPSECRET);
 
-        String name = null;
-        String mobile = null;
-        String position = null;
         String token = null;
 
         String accessToken = dingDingInterfaceService.getAccessToken().getStr("access_token");
@@ -180,38 +142,45 @@ public class LoginController {
         String userId = dingDingInterfaceService.getUserId(companyToken, unionId).getStr("userid");
         logger.info("unionId: " + userId);
         JSONObject user = dingDingInterfaceService.getUser(companyToken, userId);
-        name = (String) user.get("name");
-        mobile = (String) user.get("mobile");
-        position = (String) user.get("position");
 
         EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("union_id", unionId);
-
-        BbsUserEntity bbsUser = bbsUserService.selectOne(wrapper);
-        if (bbsUser == null) {
+        // 查询unionId下所有的子账号
+        List<BbsUserEntity> userList = bbsUserService.selectList(wrapper);
+        if (userList.size() == 0) {
             //insert
             BbsUserEntity bbsUserEntity = new BbsUserEntity();
             bbsUserEntity.setInitTime(new Date());
             bbsUserEntity.setUnionId(unionId);
-            // 实现完全匿名
-//            bbsUserEntity.setName(name);
-//            bbsUserEntity.setMobile(mobile);
-//            bbsUserEntity.setPosition(position);
             bbsUserService.insert(bbsUserEntity);
             int id = bbsUserEntity.getId();
-//            BbsGradeEntity gradeEntity = new BbsGradeEntity();
-
-//            gradeEntity.setGrade(100);
-//            gradeEntity.setInitTime(new Date());
-//            gradeEntity.setUserId(id);
-//            bbsGradeService.insert(gradeEntity);
             token = JWTUtils.sign(String.valueOf(id), unionId);
             return "redirect:" + webUrl + "?token=" + token;
         } else {
-            token = JWTUtils.sign(String.valueOf(bbsUser.getId()), unionId);
+            token = JWTUtils.sign(String.valueOf(userList.get(0).getId()), unionId);
             return "redirect:" + webUrl + "?token=" + token;
         }
 
+    }
+
+    /**
+     * 切换账号
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/turnAccount")
+    public String getToken(Model model, Integer userId) {
+        EntityWrapper<BbsUserEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("id", userId);
+        BbsUserEntity bbsUserEntity = bbsUserService.selectOne(wrapper);
+        if (bbsUserEntity != null) {
+            String token = JWTUtils.sign(String.valueOf(userId), bbsUserEntity.getUnionId());
+            return "redirect:" + webUrl + "?token=" + token;
+        } else {
+            model.addAttribute("error", "未查询到账号信息");
+            return "error";
+        }
     }
 
     public static void main(String[] args) {

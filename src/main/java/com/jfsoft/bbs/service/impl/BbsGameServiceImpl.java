@@ -18,6 +18,7 @@ import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsGameDao;
 import com.jfsoft.bbs.entity.BbsGameEntity;
 import com.jfsoft.bbs.service.BbsGameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,6 +34,8 @@ import java.util.Map;
 @Service("bbsGameService")
 public class BbsGameServiceImpl extends ServiceImpl<BbsGameDao, BbsGameEntity> implements BbsGameService {
 
+
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<BbsGameEntity> page = this.selectPage(
@@ -42,4 +45,6 @@ public class BbsGameServiceImpl extends ServiceImpl<BbsGameDao, BbsGameEntity> i
 
         return new PageUtils(page);
     }
+
+
 }

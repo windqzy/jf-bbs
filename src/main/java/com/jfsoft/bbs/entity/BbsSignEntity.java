@@ -39,11 +39,21 @@ public class BbsSignEntity implements Serializable {
 	 */
 	private Integer userId;
 
+	private String unionId;
+
 	@TableField(exist = false)
 	private String username;
 
 	@TableField(exist = false)
 	private String icon;
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
 
 	public String getUsername() {
 		return username;

@@ -54,5 +54,5 @@ spring:
             multi-statement-allow: true
   data:
     elasticsearch:
-      cluster-nodes: 10.0.2.51:9300
+      cluster-nodes: localhost:9300
 

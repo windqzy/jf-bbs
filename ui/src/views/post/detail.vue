@@ -713,8 +713,9 @@
       },
       // 打赏
       reward() {
-        grade.reward(this.userInfo.id, this.postInfo.userId, this.rewardGrade).then(res => {
+        grade.reward(this.userInfo.id, this.postInfo.userId, this.rewardGrade, this.postId).then(res => {
           this.rewardBox = false;
+          this.getTopThree(this.postId);
           layer.msg('打赏成功');
         })
       },

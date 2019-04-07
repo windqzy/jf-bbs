@@ -18,17 +18,17 @@ export function getGrade(id) {
   })
 }
 
-export function reward(fromId, toId, grade) {
+export function reward(fromId, toId, grade, postsId) {
   return request({
-    url: '/grade/reward?fromId=' + fromId + '&toId=' + toId + '&grade=' + grade,
+    url: '/grade/reward?fromId=' + fromId + '&toId=' + toId + '&grade=' + grade + '&postsId=' + postsId,
     method: 'GET'
   })
 }
 
-export function getTopThree(postsId){
+export function getTopThree(postsId) {
   return request({
-    url: '/grade/finTopThree/?postsId='+postsId,
-    method:'GET'
+    url: '/grade/finTopThree/?postsId=' + postsId,
+    method: 'GET'
   })
 }
 

@@ -8,10 +8,7 @@ import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.entity.BbsVestEntity;
 import com.jfsoft.bbs.form.UserForm;
-import com.jfsoft.bbs.service.BbsGradeService;
-import com.jfsoft.bbs.service.BbsLogService;
-import com.jfsoft.bbs.service.BbsUserService;
-import com.jfsoft.bbs.service.BbsVestService;
+import com.jfsoft.bbs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +37,7 @@ public class UserController extends AbstractController {
 
     @Autowired
     private BbsGradeService bbsGradeService;
+
 
     /**
      * 列表

@@ -3,7 +3,7 @@ package com.jfsoft.bbs.entity;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author ChenXc
@@ -18,10 +18,14 @@ public class BbsRewardEntity {
 
     @TableId
     private Integer id;
-    private String rewardName;
-    private String rewardMoney;
-    private String postsId;
 
+    private String rewardName;
+
+    private int rewardMoney;
+
+    private int postsId;
+
+    private Date initTime;
 
     public Integer getId() {
         return id;
@@ -39,19 +43,27 @@ public class BbsRewardEntity {
         this.rewardName = rewardName;
     }
 
-    public String getRewardMoney() {
+    public int getRewardMoney() {
         return rewardMoney;
     }
 
-    public void setRewardMoney(String rewardMoney) {
+    public void setRewardMoney(int rewardMoney) {
         this.rewardMoney = rewardMoney;
     }
 
-    public String getPostsId() {
+    public int getPostsId() {
         return postsId;
     }
 
-    public void setPostsId(String postsId) {
+    public void setPostsId(int postsId) {
         this.postsId = postsId;
+    }
+
+    public Date getInitTime() {
+        return initTime;
+    }
+
+    public void setInitTime(Date initTime) {
+        this.initTime = initTime;
     }
 }

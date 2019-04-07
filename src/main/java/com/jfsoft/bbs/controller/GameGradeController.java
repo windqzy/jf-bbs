@@ -10,18 +10,23 @@
  */
 package com.jfsoft.bbs.controller;
 
-import com.jfsoft.bbs.common.utils.PageUtils;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsGameEntity;
 import com.jfsoft.bbs.entity.BbsGameGradeEntity;
 import com.jfsoft.bbs.service.BbsGameGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
 
 /**
- * 〈一句话功能简述〉<br> 
+ * 〈一句话功能简述〉<br>
  * 〈〉
  *
  * @author Administrator
@@ -29,7 +34,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/gradeGrade")
+@RequestMapping("/game/rank")
 public class GameGradeController extends AbstractController {
 
     @Autowired
@@ -39,10 +44,9 @@ public class GameGradeController extends AbstractController {
      * 列表
      */
     @RequestMapping("/list")
-
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = bbsGameGradeService.queryPage(params);
-        return R.ok().put("page", page);
+    public R list(Integer gameId) {
+        List<BbsGameEntity> rankList = bbsGameGradeService.getRankList(gameId);
+        return R.ok().put("data", rankList);
     }
 
 
@@ -52,25 +56,27 @@ public class GameGradeController extends AbstractController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Integer id) {
         BbsGameGradeEntity bbsGradeGame = bbsGameGradeService.selectById(id);
-        return R.ok().put("bbsGradeGame", bbsGradeGame);
+        return R.ok().put("data", bbsGradeGame);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody BbsGameGradeEntity bbsGameGradeEntity){
-        bbsGameGradeService.insert(bbsGameGradeEntity);
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
     @RequestMapping("/update")
-    public R update(@RequestBody BbsGameGradeEntity bbsGameGradeEntity){
-//        ValidatorUtils.validateEntity(bbsGradeRule);
-        bbsGameGradeService.updateAllColumnById(bbsGameGradeEntity);//全部更新
+    public R save(@RequestBody BbsGameGradeEntity bbsGameGradeEntity) {
+
+        bbsGameGradeEntity.setInitTime(new Date());
+        EntityWrapper<BbsGameGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("user_id", bbsGameGradeEntity.getUserId());
+        wrapper.eq("game_id", bbsGameGradeEntity.getGameId());
+        BbsGameGradeEntity gameGradeEntity = bbsGameGradeService.selectOne(wrapper);
+        if (gameGradeEntity == null) {
+            bbsGameGradeService.insert(bbsGameGradeEntity);
+        } else {
+            if (bbsGameGradeEntity.getGrade() > gameGradeEntity.getGrade()) {
+                bbsGameGradeService.update(bbsGameGradeEntity, wrapper);
+            }
+        }
         return R.ok();
     }
 
@@ -78,7 +84,7 @@ public class GameGradeController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids){
+    public R delete(@RequestBody Integer[] ids) {
         bbsGameGradeService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();

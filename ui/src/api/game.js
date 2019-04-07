@@ -6,3 +6,10 @@ export function getList() {
     method: 'GET'
   })
 }
+
+export function getRankList(gameId) {
+  return request({
+    url: '/game/rank/list?gameId=' + gameId,
+    method: 'GET'
+  })
+}

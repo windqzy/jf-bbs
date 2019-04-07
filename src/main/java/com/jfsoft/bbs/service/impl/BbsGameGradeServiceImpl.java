@@ -16,10 +16,13 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsGameGradeDao;
+import com.jfsoft.bbs.entity.BbsGameEntity;
 import com.jfsoft.bbs.entity.BbsGameGradeEntity;
 import com.jfsoft.bbs.service.BbsGameGradeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +36,9 @@ import java.util.Map;
 @Service("bbsGameGradeService")
 public class BbsGameGradeServiceImpl extends ServiceImpl<BbsGameGradeDao, BbsGameGradeEntity> implements BbsGameGradeService {
 
+    @Autowired
+    private BbsGameGradeDao bbsGameGradeDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<BbsGameGradeEntity> page = this.selectPage(
@@ -41,5 +47,15 @@ public class BbsGameGradeServiceImpl extends ServiceImpl<BbsGameGradeDao, BbsGam
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public BbsGameGradeEntity getFirstGrade(Integer id) {
+        return bbsGameGradeDao.getFirstGrade(id);
+    }
+
+    @Override
+    public List<BbsGameEntity> getRankList(Integer gameId) {
+        return bbsGameGradeDao.getRankList(gameId);
     }
 }

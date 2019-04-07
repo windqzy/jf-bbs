@@ -25,11 +25,13 @@
     data() {
       return {
         userId: '',
+        gameId: '',
         grade: 0
       }
     },
     created() {
-      this.userId = this.getQueryString('userId')
+      this.userId = this.getQueryString('userId');
+      this.gameId = this.getQueryString('gameId');
     },
     mounted() {
 
@@ -257,7 +259,15 @@
     },
     methods: {
       updateGrade(grade) {
-
+        let form = {
+          userId: this.userId,
+          gameId: this.gameId,
+          grade: grade
+        }
+        this.$http.post(window.localStorage.baseUrl + "/game/rank/update", form).
+        then(res => {
+          console.log(res)
+        })
       },
       getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

@@ -10,6 +10,28 @@
         <result property="userId" column="user_id"/>
         <result property="gameId" column="game_id"/>
         <result property="grade" column="grade"/>
+        <result property="userName" column="user_name"/>
+        <result property="userIcon" column="user_icon"/>
     </resultMap>
 
+    <select id="getFirstGrade" resultMap="bbsGameGradeMap">
+        select bgg.id, bgg.user_id, bgg.game_id, bgg.grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
+        from bbs_game_grade bgg
+        left join bbs_user bu on bu.id = bgg.user_id
+        where bgg.grade = (
+          select max(grade)
+          from bbs_game_grade
+          where game_id = #{gameId}
+          order by init_time
+        )
+        limit 1
+    </select>
+
+    <select id="getRankList" resultMap="bbsGameGradeMap">
+        select bgg.id, bgg.user_id, bgg.game_id, bgg.grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
+        from bbs_game_grade bgg
+        left join bbs_user bu on bu.id = bgg.user_id
+        where bgg.game_id = #{gameId}
+        order by bgg.grade desc
+    </select>
 </mapper>

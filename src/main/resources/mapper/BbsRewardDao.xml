@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jfsoft.bbs.dao.BbsRewardDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jfsoft.bbs.entity.BbsRewardEntity" id="bbsRewardMap">
+        <result property="id" column="id"/>
+        <result property="rewardName" column="reward_name"/>
+        <result property="rewardMoney" column="reward_money"/>
+        <result property="postsId" column="posts_id"/>
+    </resultMap>
+    <select id="findRewardTopThree" parameterType="string" resultMap="bbsRewardMap">
+        select * from bbs_reward where posts_id=#{postsId} order by reward_money desc limit 5
+    </select>
+
+</mapper>

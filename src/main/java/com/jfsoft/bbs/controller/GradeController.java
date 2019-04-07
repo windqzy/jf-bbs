@@ -5,6 +5,7 @@ import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsLogEntity;
+import com.jfsoft.bbs.entity.BbsRewardEntity;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsUserService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -139,5 +141,17 @@ public class GradeController extends AbstractController {
 	public R delete(@RequestBody Integer[] ids) {
 		bbsGradeService.deleteBatchIds(Arrays.asList(ids));
 		return R.ok();
+	}
+
+	/**
+	 * 根据postsID查询打赏榜前三名
+	 * @author haoxl
+	 * @param postsId
+	 * @return
+	 */
+	@RequestMapping("/finTopThree")
+	public R finTopThree(String postsId){
+		List<BbsRewardEntity> list = bbsGradeService.finTopThree(postsId);
+		return R.ok().put("data",list);
 	}
 }

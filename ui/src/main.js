@@ -7,6 +7,8 @@ import store from './store/index'
 import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/base.scss'
+
+import '@/icons' // icon
 import './permission' // 权限
 
 /*引入资源请求插件*/

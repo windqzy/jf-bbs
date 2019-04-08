@@ -33,7 +33,7 @@
           <li v-for="rank in rankList">
             <a style="cursor: pointer" >
               <img :src="rank.userIcon == null ? defaultAvatar : rank.userIcon">
-              <cite class="fly-link" title="sign.username">{{rank.userName}}</cite>
+              <cite class="fly-link" title="sign.username">{{rank.userName | getUserName}}</cite>
             </a>
             <!--<a href="" target="_blank">-->
             <!--<img :src="sign.icon == null ? defaultAvatar : sign.icon">-->
@@ -97,6 +97,15 @@
           this.rankList = res.data;
           this.rankBox = true;
         })
+      }
+    },
+    filters: {
+      getUserName(str) {
+        if (!str) {
+          return '暂无'
+        } else {
+          return str;
+        }
       }
     }
   }

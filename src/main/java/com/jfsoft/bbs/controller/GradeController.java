@@ -6,8 +6,10 @@ import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsRewardEntity;
+import com.jfsoft.bbs.entity.BbsUserEntity;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsLogService;
+import com.jfsoft.bbs.service.BbsRewardService;
 import com.jfsoft.bbs.service.BbsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +42,9 @@ public class GradeController extends AbstractController {
 
 	@Autowired
 	private BbsUserService bbsUserService;
+
+	@Autowired
+	private BbsRewardService bbsRewardService;
 
 
 	/**
@@ -94,7 +99,7 @@ public class GradeController extends AbstractController {
 	}
 
 	@RequestMapping("/reward")
-	public R reward(Integer fromId, Integer toId, Integer grade) {
+	public R reward(Integer fromId, Integer toId, Integer grade, Integer postsId) {
 
 		// 打赏者
 		String fromUnionId = bbsUserService.selectById(fromId).getUnionId();
@@ -130,6 +135,14 @@ public class GradeController extends AbstractController {
 		toLog.setUnionId(toUnionId);
 		toLog.setRemarks("文章被打赏，获得" + grade + "钻石");
 		bbsLogService.insert(toLog);
+		//记录到打赏表
+		BbsUserEntity bbsUserEntity = bbsUserService.selectById(fromId);
+		BbsRewardEntity bbsRewardEntity = new BbsRewardEntity();
+		bbsRewardEntity.setPostsId(postsId);
+		bbsRewardEntity.setRewardMoney(grade);
+		bbsRewardEntity.setRewardName(bbsUserEntity.getUsername());
+		bbsRewardEntity.setInitTime(new Date());
+		bbsRewardService.insert(bbsRewardEntity);
 
 		return R.ok();
 	}

@@ -6,18 +6,20 @@ import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsUserEntity;
-import com.jfsoft.bbs.entity.BbsVestEntity;
 import com.jfsoft.bbs.form.UserForm;
-import com.jfsoft.bbs.service.BbsGradeService;
-import com.jfsoft.bbs.service.BbsLogService;
-import com.jfsoft.bbs.service.BbsUserService;
-import com.jfsoft.bbs.service.BbsVestService;
+import com.jfsoft.bbs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -40,6 +42,7 @@ public class UserController extends AbstractController {
 
     @Autowired
     private BbsGradeService bbsGradeService;
+
 
     /**
      * 列表
@@ -79,18 +82,9 @@ public class UserController extends AbstractController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody BbsUserEntity bbsUser) {
+        // 添加账号
         bbsUser.setInitTime(new Date());
         bbsUserService.insert(bbsUser);
-        return R.ok();
-    }
-
-    /**
-     * 更新钻石，新增用户
-     * @param userId
-     * @return
-     */
-    @RequestMapping("/update/grade")
-    public R update(Integer userId) {
 
         EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("union_id", getUnionId());
@@ -105,10 +99,22 @@ public class UserController extends AbstractController {
         BbsLogEntity fromLog = new BbsLogEntity();
         fromLog.setInitTime(new Date());
         fromLog.setLogType(1);
-        fromLog.setUserId(userId);
+        fromLog.setUserId(bbsUser.getId());
         fromLog.setUnionId(getUnionId());
         fromLog.setRemarks("购买子账号花费500钻石");
         bbsLogService.insert(fromLog);
+        return R.ok();
+    }
+
+    /**
+     * 更新钻石，新增用户
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/update/grade")
+    public R update(Integer userId) {
+
+
         return R.ok();
     }
 
@@ -138,16 +144,17 @@ public class UserController extends AbstractController {
             BbsLogEntity logEntity = new BbsLogEntity();
             logEntity.setInitTime(new Date());
             logEntity.setLogType(1);
-            logEntity.setUserId(getUserId());
+            logEntity.setUserId(userId);
+            logEntity.setUnionId(unionId);
             logEntity.setRemarks("创建账号,系统赠送 100 钻石");
             bbsLogService.insert(logEntity);
             // 初始化马甲
-            BbsVestEntity vestEntity = new BbsVestEntity();
-            vestEntity.setInitTime(new Date());
-            vestEntity.setVest(userForm.getUsername());
-            vestEntity.setUserId(getUserId());
-            vestEntity.setIcon(userForm.getIcon());
-            bbsVestService.insert(vestEntity);
+//            BbsVestEntity vestEntity = new BbsVestEntity();
+//            vestEntity.setInitTime(new Date());
+//            vestEntity.setVest(userForm.getUsername());
+//            vestEntity.setUserId(getUserId());
+//            vestEntity.setIcon(userForm.getIcon());
+//            bbsVestService.insert(vestEntity);
         }
         bbsUser.setEmail(userForm.getEmail());
         bbsUser.setUsername(userForm.getUsername());

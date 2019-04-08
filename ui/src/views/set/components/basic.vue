@@ -37,8 +37,8 @@
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
-              <el-button type="primary" icon="el-icon-plus" @click="addAccountBox = true"></el-button>
-              <el-button type="primary" @click="getAccount">切换账号</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="addAccountBox = true" :disabled="currGrade < 500 || accountList.length == 5"></el-button>
+              <el-button type="primary" @click="accountBox = true" :disabled="accountList.length <= 1 || accountList.length > 5">切换账号</el-button>
             </div>
           </div>
         </div>
@@ -148,8 +148,8 @@
     <!-- 购买马甲 -->
     <el-dialog title="购买马甲" :visible.sync="vestBox" width="320px">
       <el-form ref="form" :model="vest" label-width="80px" label-position="top">
-        <el-form-item label="">
-          <span style="color: red">说明：每个人最多可以拥有五个马甲，不可修改，不可删除，第二个起，每个马甲200钻石</span>
+        <el-form-item label="说明">
+          <span style="color: red">每位用户最多可以拥有五个子账号，不可修改，不可删除，第二个起，每个子账号500钻石</span>
         </el-form-item>
         <el-form-item label="">
           <el-input v-model="vest.name" placeholder="请输入马甲名称"></el-input>
@@ -179,7 +179,7 @@
     <el-dialog title="添加账号" :visible.sync="addAccountBox" width="320px">
       <el-form :model="accountForm" label-width="40px">
         <el-form-item label="说明">
-          <span style="color: red">说明：每个人最多可以拥有账号，第二个起，每个马甲200钻石</span>
+          <span style="color: red">每位用户最多可以拥有五个子账号，不可修改，不可删除，第二个起，每个子账号500钻石</span>
         </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="accountForm.username" placeholder="昵称"></el-input>
@@ -201,6 +201,7 @@
   import * as user from '@/api/user'
   import * as vest from '@/api/vest'
   import axios from 'axios'
+  import * as grade from '@/api/grade'
 
   export default {
     name: "base",
@@ -228,7 +229,8 @@
           sex: '',
           unionId: ''
         },
-
+        currGrade: '',
+        defaultAvatar: require('../../../../static/images/avatar/4.jpg'),
       }
     },
     computed: {
@@ -244,6 +246,8 @@
       this.userInfo = this.$store.getters.user;
       this.getUser();
       this.getVestList();
+      this.getUserGrade();
+      this.getAccount();
     },
     mounted() {
       layui.use(['form', 'layer'], function () {
@@ -356,7 +360,6 @@
       },
       // 获得上好信息
       getAccount() {
-        this.accountBox = true;
         user.getAccount().then(res => {
           this.accountList = res.data;
         })
@@ -369,7 +372,13 @@
         this.accountForm.unionId = this.userInfo.unionId;
         user.addUser(this.accountForm).then(res => {
           this.addAccountBox = false;
+          this.getAccount();
           layer.msg('添加成功');
+        })
+      },
+      getUserGrade() {
+        grade.getGrade(this.userInfo.id).then(res => {
+          this.currGrade = res.data.grade;
         })
       }
     },

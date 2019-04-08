@@ -9,6 +9,7 @@
         <result property="rewardName" column="reward_name"/>
         <result property="rewardMoney" column="reward_money"/>
         <result property="postsId" column="posts_id"/>
+        <result property="initTime" column="init_time"/>
     </resultMap>
     <select id="findRewardTopThree" parameterType="string" resultMap="bbsRewardMap">
         select * from bbs_reward where posts_id=#{postsId} order by reward_money desc limit 5

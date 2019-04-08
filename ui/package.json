@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@huchenme/github-trending": "^1.5.4",
     "axios": "^0.18.0",
     "element-ui": "^2.5.4",
     "svg-sprite-loader": "^4.1.3",

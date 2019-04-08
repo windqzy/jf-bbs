@@ -12,6 +12,7 @@ import setIndex from '@/views/set/index'
 import userReg from '@/views/user/reg'
 import Case from '@/views/case/index'
 import Games from '@/views/games/index'
+import Gitter from '@/views/gitter/index'
 
 Vue.use(Router)
 
@@ -101,6 +102,15 @@ export default new Router({
         {
           path: 'index',
           component: Games
+        }
+      ]
+    }, {
+      path: '/gitter',
+      component: Layer,
+      children: [
+        {
+          path: 'index',
+          component: Gitter
         }
       ]
     }

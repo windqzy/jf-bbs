@@ -31,14 +31,14 @@ module.exports = {
     }
   },
   // 引用jquery
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      jquery: "jquery",
-      "window.jQuery": "jquery"
-    })
-  ],
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     $: "jquery",
+  //     jQuery: "jquery",
+  //     jquery: "jquery",
+  //     "window.jQuery": "jquery"
+  //   })
+  // ],
   module: {
     rules: [
       {

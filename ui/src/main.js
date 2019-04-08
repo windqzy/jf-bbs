@@ -14,6 +14,8 @@ import './permission' // 权限
 /*引入资源请求插件*/
 import VueResource from 'vue-resource'
 
+import 'jquery'
+
 /*使用VueResource插件*/
 Vue.use(VueResource)
 

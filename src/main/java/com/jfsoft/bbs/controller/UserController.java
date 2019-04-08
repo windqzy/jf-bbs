@@ -82,27 +82,29 @@ public class UserController extends AbstractController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody BbsUserEntity bbsUser) {
-        // 添加账号
-        bbsUser.setInitTime(new Date());
-        bbsUserService.insert(bbsUser);
-
         EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("union_id", getUnionId());
 
         // 扣除钻石
-//        BbsGradeEntity gradeEntity = bbsGradeService.selectById(userId);
+        // BbsGradeEntity gradeEntity = bbsGradeService.selectById(userId);
         BbsGradeEntity gradeEntity = bbsGradeService.selectOne(wrapper);
-        gradeEntity.setGrade(gradeEntity.getGrade() - 500);
-        gradeEntity.setInitTime(new Date());
-        bbsGradeService.updateById(gradeEntity);
-        // 增加钻石记录
-        BbsLogEntity fromLog = new BbsLogEntity();
-        fromLog.setInitTime(new Date());
-        fromLog.setLogType(1);
-        fromLog.setUserId(bbsUser.getId());
-        fromLog.setUnionId(getUnionId());
-        fromLog.setRemarks("购买子账号花费500钻石");
-        bbsLogService.insert(fromLog);
+        Integer grade = gradeEntity.getGrade();
+        if (grade >= 500) {
+            gradeEntity.setGrade(grade - 500);
+            gradeEntity.setInitTime(new Date());
+            bbsGradeService.updateById(gradeEntity);
+            // 先扣钻石再添加账号
+            bbsUser.setInitTime(new Date());
+            bbsUserService.insert(bbsUser);
+            // 增加钻石记录
+            BbsLogEntity fromLog = new BbsLogEntity();
+            fromLog.setInitTime(new Date());
+            fromLog.setLogType(1);
+            fromLog.setUserId(bbsUser.getId());
+            fromLog.setUnionId(getUnionId());
+            fromLog.setRemarks("购买子账号花费 500 钻石");
+            bbsLogService.insert(fromLog);
+        }
         return R.ok();
     }
 

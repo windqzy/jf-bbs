@@ -34,137 +34,140 @@ import java.util.Map;
 @RequestMapping("/grade")
 public class GradeController extends AbstractController {
 
-	@Autowired
-	private BbsGradeService bbsGradeService;
+    @Autowired
+    private BbsGradeService bbsGradeService;
 
-	@Autowired
-	private BbsLogService bbsLogService;
+    @Autowired
+    private BbsLogService bbsLogService;
 
-	@Autowired
-	private BbsUserService bbsUserService;
+    @Autowired
+    private BbsUserService bbsUserService;
 
-	@Autowired
-	private BbsRewardService bbsRewardService;
-
-
-	/**
-	 * 列表
-	 */
-	@RequestMapping("/list")
-	public R list(@RequestParam Map<String, Object> params) {
-		PageUtils page = bbsGradeService.queryPage(params);
-		return R.ok().put("page", page);
-	}
+    @Autowired
+    private BbsRewardService bbsRewardService;
 
 
-	/**
-	 * 信息
-	 */
-	@RequestMapping("/info")
-	public R info(Integer userId) {
-		EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
-		String unionId;
-		if (userId == null) {
-			unionId = getUnionId();
-		} else {
-			unionId = bbsUserService.selectById(userId).getUnionId();
-		}
-		wrapper.eq("union_id", unionId);
-		BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
-		return R.ok().put("data", bbsGrade);
-	}
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    public R list(@RequestParam Map<String, Object> params) {
+        PageUtils page = bbsGradeService.queryPage(params);
+        return R.ok().put("page", page);
+    }
 
-	/**
-	 * 保存
-	 */
-	@RequestMapping("/save")
-	public R save(@RequestBody BbsGradeEntity bbsGrade) {
-		bbsGradeService.insert(bbsGrade);
-		return R.ok();
-	}
 
-	/**
-	 * 修改
-	 */
-	@RequestMapping("/update")
-	public R update(@RequestBody Integer newGrade) {
-		//ValidatorUtils.validateEntity(bbsGrade);
-		EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
-		wrapper.eq("union_id", getUnionId());
-		BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
-		bbsGrade.setGrade(newGrade);
-		//更新该用户的积分
-		bbsGradeService.updateById(bbsGrade);
-		return R.ok().put("data", bbsGrade);
-	}
+    /**
+     * 信息
+     */
+    @RequestMapping("/info")
+    public R info(Integer userId) {
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        String unionId;
+        if (userId == null) {
+            unionId = getUnionId();
+        } else {
+            unionId = bbsUserService.selectById(userId).getUnionId();
+        }
+        wrapper.eq("union_id", unionId);
+        BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
+        return R.ok().put("data", bbsGrade);
+    }
 
-	@RequestMapping("/reward")
-	public R reward(Integer fromId, Integer toId, Integer grade, Integer postsId) {
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
+    public R save(@RequestBody BbsGradeEntity bbsGrade) {
+        bbsGradeService.insert(bbsGrade);
+        return R.ok();
+    }
 
-		// 打赏者
-		String fromUnionId = bbsUserService.selectById(fromId).getUnionId();
-		EntityWrapper<BbsGradeEntity> fromWrapper = new EntityWrapper<>();
-		fromWrapper.eq("union_id", fromUnionId);
-		BbsGradeEntity fromGradeEntity = bbsGradeService.selectOne(fromWrapper);
-		Integer fromGrade = fromGradeEntity.getGrade();
-		fromGradeEntity.setGrade(fromGrade - grade);
-		bbsGradeService.updateById(fromGradeEntity);
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    public R update(@RequestBody Integer newGrade) {
+        //ValidatorUtils.validateEntity(bbsGrade);
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("union_id", getUnionId());
+        BbsGradeEntity bbsGrade = bbsGradeService.selectOne(wrapper);
+        bbsGrade.setGrade(newGrade);
+        //更新该用户的积分
+        bbsGradeService.updateById(bbsGrade);
+        return R.ok().put("data", bbsGrade);
+    }
 
-		BbsLogEntity fromLog = new BbsLogEntity();
-		fromLog.setInitTime(new Date());
-		fromLog.setLogType(1);
-		fromLog.setUserId(fromId);
-		fromLog.setUnionId(fromUnionId);
-		fromLog.setRemarks("打赏文章花费" + grade + "钻石");
-		bbsLogService.insert(fromLog);
+    @RequestMapping("/reward")
+    public R reward(Integer fromId, Integer toId, Integer grade, Integer postsId) {
+        // 打赏者
+        String fromUnionId = bbsUserService.selectById(fromId).getUnionId();
+        EntityWrapper<BbsGradeEntity> fromWrapper = new EntityWrapper<>();
+        fromWrapper.eq("union_id", fromUnionId);
+        BbsGradeEntity fromGradeEntity = bbsGradeService.selectOne(fromWrapper);
+        Integer fromGrade = fromGradeEntity.getGrade();
+        if (fromGrade - grade >= 0) {
+            fromGradeEntity.setGrade(fromGrade - grade);
+            bbsGradeService.updateById(fromGradeEntity);
+            BbsLogEntity fromLog = new BbsLogEntity();
+            fromLog.setInitTime(new Date());
+            fromLog.setLogType(1);
+            fromLog.setUserId(fromId);
+            fromLog.setUnionId(fromUnionId);
+            fromLog.setRemarks("打赏文章花费" + grade + "钻石");
+            bbsLogService.insert(fromLog);
 
-		// 被打赏者
-		String toUnionId = bbsUserService.selectById(toId).getUnionId();
-		EntityWrapper<BbsGradeEntity> toWrapper = new EntityWrapper<>();
-		toWrapper.eq("union_id", toUnionId);
-		BbsGradeEntity toGradeEntity = bbsGradeService.selectOne(toWrapper);
-		Integer toGrade = toGradeEntity.getGrade();
-		toGradeEntity.setGrade(toGrade + grade);
-		bbsGradeService.updateById(toGradeEntity);
+            // 被打赏者
+            String toUnionId = bbsUserService.selectById(toId).getUnionId();
+            EntityWrapper<BbsGradeEntity> toWrapper = new EntityWrapper<>();
+            toWrapper.eq("union_id", toUnionId);
+            BbsGradeEntity toGradeEntity = bbsGradeService.selectOne(toWrapper);
+            Integer toGrade = toGradeEntity.getGrade();
+            toGradeEntity.setGrade(toGrade + grade);
+            bbsGradeService.updateById(toGradeEntity);
 
-		// 记录日志
-		BbsLogEntity toLog = new BbsLogEntity();
-		toLog.setInitTime(new Date());
-		toLog.setLogType(1);
-		toLog.setUserId(fromId);
-		toLog.setUnionId(toUnionId);
-		toLog.setRemarks("文章被打赏，获得" + grade + "钻石");
-		bbsLogService.insert(toLog);
-		//记录到打赏表
-		BbsUserEntity bbsUserEntity = bbsUserService.selectById(fromId);
-		BbsRewardEntity bbsRewardEntity = new BbsRewardEntity();
-		bbsRewardEntity.setPostsId(postsId);
-		bbsRewardEntity.setRewardMoney(grade);
-		bbsRewardEntity.setRewardName(bbsUserEntity.getUsername());
-		bbsRewardEntity.setInitTime(new Date());
-		bbsRewardService.insert(bbsRewardEntity);
+            // 记录日志
+            BbsLogEntity toLog = new BbsLogEntity();
+            toLog.setInitTime(new Date());
+            toLog.setLogType(1);
+            toLog.setUserId(fromId);
+            toLog.setUnionId(toUnionId);
+            toLog.setRemarks("文章被打赏，获得" + grade + "钻石");
+            bbsLogService.insert(toLog);
+            //记录到打赏表
+            BbsUserEntity bbsUserEntity = bbsUserService.selectById(fromId);
+            BbsRewardEntity bbsRewardEntity = new BbsRewardEntity();
+            bbsRewardEntity.setPostsId(postsId);
+            bbsRewardEntity.setRewardMoney(grade);
+            bbsRewardEntity.setRewardName(bbsUserEntity.getUsername());
+            bbsRewardEntity.setInitTime(new Date());
+            bbsRewardService.insert(bbsRewardEntity);
 
-		return R.ok();
-	}
+            return R.ok("打赏成功");
+        } else {
+            return R.error("钻石不足，打赏失败");
+        }
+    }
 
-	/**
-	 * 删除
-	 */
-	@RequestMapping("/delete")
-	public R delete(@RequestBody Integer[] ids) {
-		bbsGradeService.deleteBatchIds(Arrays.asList(ids));
-		return R.ok();
-	}
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    public R delete(@RequestBody Integer[] ids) {
+        bbsGradeService.deleteBatchIds(Arrays.asList(ids));
+        return R.ok();
+    }
 
-	/**
-	 * 根据postsID查询打赏榜前三名
-	 * @author haoxl
-	 * @param postsId
-	 * @return
-	 */
-	@RequestMapping("/finTopThree")
-	public R finTopThree(String postsId){
-		List<BbsRewardEntity> list = bbsGradeService.finTopThree(postsId);
-		return R.ok().put("data",list);
-	}
+    /**
+     * 根据postsID查询打赏榜前三名
+     *
+     * @param postsId
+     * @return
+     * @author haoxl
+     */
+    @RequestMapping("/finTopThree")
+    public R finTopThree(String postsId) {
+        List<BbsRewardEntity> list = bbsGradeService.finTopThree(postsId);
+        return R.ok().put("data", list);
+    }
 }

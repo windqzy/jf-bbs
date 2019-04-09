@@ -8,15 +8,13 @@
         </a>
         <ul class="layui-nav fly-nav">
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 0}'>
-            <a style="cursor: pointer" @click="toNav(0)">首页</a>
+            <a style="cursor: pointer" @click="toNav(0)">论坛</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 1}'>
             <a style="cursor: pointer" @click="toNav(1)">游戏</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
-            <a style="cursor: pointer" onclick="toNav(2)">
-              读书
-            </a>
+            <a style="cursor: pointer" @click="toNav(2)">Gitter</a>
           </li>
         </ul>
         <ul class="layui-nav layui-hide-sm layui-show-xs-block" style="margin-left: 138px;">
@@ -24,7 +22,7 @@
             <a style="cursor: pointer" @click="toNav(0)">首页</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
               <dd><a style="cursor: pointer" @click="toNav(1)">游戏</a></dd>
-              <dd><a style="cursor: pointer" onclick="toNav(2)">读书</a></dd>
+              <dd><a style="cursor: pointer" @click="toNav(2)">Gitter</a></dd>
               <!--<dd><a href="">电商平台</a></dd>-->
             </dl>
           </li>
@@ -212,7 +210,7 @@
         switch (index) {
           case 0: this.$router.push('/home/index?id=0'); break;
           case 1: this.$router.push('/games/index?id=1'); break;
-          case 2: layer.msg('开发中...'); break;
+          case 2: this.$router.push('/gitter/index?id=2'); break;
         }
       },
       search() {

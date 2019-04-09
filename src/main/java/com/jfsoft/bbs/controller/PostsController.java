@@ -2,12 +2,10 @@ package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
-import com.jfsoft.bbs.entity.BbsUserEntity;
-import com.jfsoft.bbs.es.document.ProductDocument;
-import com.jfsoft.bbs.es.document.ProductDocumentBuilder;
-import com.jfsoft.bbs.es.service.EsSearchService;
+import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +32,10 @@ public class PostsController extends AbstractController {
     private BbsPostsService bbsPostsService;
 
     @Autowired
-    private EsSearchService esSearchService;
+    private BbsLogService bbsLogService;
 
     @Autowired
-    private BbsLogService bbsLogService;
+    private BbsGradeService bbsGradeService;
 
     /**
      * 首页列表查询
@@ -75,7 +73,6 @@ public class PostsController extends AbstractController {
     }
 
 
-
     /**
      * 查询置顶
      *
@@ -106,30 +103,42 @@ public class PostsController extends AbstractController {
     @RequestMapping("/save")
     public R save(@RequestBody BbsPostsEntity bbsPosts) {
         Integer postId = bbsPosts.getId();
-		BbsUserEntity user = getUser();
-		bbsPosts.setInitTime(new Date());
-        if (postId == null) {
-            // 新增
-            bbsPosts.setUserId(user.getId());
-            // 帖子显示发帖时的用户姓名
-			bbsPosts.setAuthor(user.getUsername());
-            bbsPostsService.insert(bbsPosts);
+        String username = getUser().getUsername();
+        String unionId = getUnionId();
+        EntityWrapper<BbsGradeEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("union_id", unionId);
+        BbsGradeEntity gradeEntity = bbsGradeService.selectOne(wrapper);
+        Integer grade = gradeEntity.getGrade();
+        if (grade - bbsPosts.getRewardGrade() >= 0) {
+            //
+            gradeEntity.setGrade(grade - bbsPosts.getRewardGrade());
+            //更新该用户的钻石
+            bbsGradeService.updateById(gradeEntity);
+            bbsPosts.setInitTime(new Date());
+            if (postId == null) {
+                // 新增
+                bbsPosts.setUserId(getUserId());
+                // 帖子显示发帖时的用户姓名
+                bbsPosts.setAuthor(username);
+                bbsPostsService.insert(bbsPosts);
+            } else {
+                bbsPostsService.updateById(bbsPosts);
 
-        } else {
-            bbsPostsService.updateById(bbsPosts);
+            }
+            // 发帖钻石记录
+            if (bbsPosts.getRewardGrade() > 0) {
+                BbsLogEntity bbslog = new BbsLogEntity();
+                bbslog.setInitTime(new Date());
+                bbslog.setUserId(getUserId());
+                bbslog.setUnionId(getUnionId());
+                bbslog.setLogType(1);
+                bbslog.setRemarks(username + "发帖悬赏 " + bbsPosts.getRewardGrade() + " 钻石");
+                bbsLogService.insert(bbslog);
 
+            }
+            return R.ok().put("data", bbsPosts);
         }
-        // 发帖钻石记录
-		if (bbsPosts.getRewardGrade() > 0) {
-			BbsLogEntity bbslog = new BbsLogEntity();
-			bbslog.setInitTime(new Date());
-			bbslog.setUserId(getUserId());
-			bbslog.setLogType(1);
-			bbslog.setRemarks("发帖悬赏 " + bbsPosts.getRewardGrade() + " 钻石");
-			bbsLogService.insert(bbslog);
-
-		}
-        return R.ok().put("data", bbsPosts);
+        return R.error("账号钻石不足，发帖失败");
     }
 
     /**
@@ -137,20 +146,20 @@ public class PostsController extends AbstractController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody BbsPostsEntity bbsPosts) {
-
-		BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(bbsPosts.getId());
-		bbsPostsService.updateById(bbsPosts);
-		// 发帖钻石记录
-		if (bbsPosts.getRewardGrade() > 0) {
-			BbsLogEntity bbslog = new BbsLogEntity();
-			bbslog.setInitTime(new Date());
-			bbslog.setUserId(getUserId());
-			bbslog.setLogType(1);
-			bbslog.setRemarks("帖子" + bbsPostsEntity.getTitle()
-					+ " 修改钻石悬赏，由 " + bbsPostsEntity.getRewardGrade()
-					+ "修改为 " + bbsPosts.getRewardGrade() + " 钻石");
-			bbsLogService.insert(bbslog);
-		}
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(bbsPosts.getId());
+        bbsPostsService.updateById(bbsPosts);
+        // 发帖钻石记录
+        if (bbsPosts.getRewardGrade() > 0) {
+            BbsLogEntity bbslog = new BbsLogEntity();
+            bbslog.setInitTime(new Date());
+            bbslog.setUserId(getUserId());
+            bbslog.setUnionId(getUnionId());
+            bbslog.setLogType(1);
+            bbslog.setRemarks("帖子" + bbsPostsEntity.getTitle()
+                    + " 修改钻石悬赏，由 " + bbsPostsEntity.getRewardGrade()
+                    + "修改为 " + bbsPosts.getRewardGrade() + " 钻石");
+            bbsLogService.insert(bbslog);
+        }
         return R.ok().put("data", bbsPosts);
     }
 

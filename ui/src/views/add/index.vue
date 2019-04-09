@@ -466,7 +466,8 @@
           post.publish(bbsPosts).then(res => {
             // console.log(res.data);
             this.postId = res.data.id;
-            this.updateGrade();
+            // 去后台扣钻石，不在前台计算
+            // this.updateGrade();
 
             if (this.isVote) {
               let bbsVote = {

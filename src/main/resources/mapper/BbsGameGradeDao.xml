@@ -12,6 +12,7 @@
         <result property="grade" column="grade"/>
         <result property="userName" column="user_name"/>
         <result property="userIcon" column="user_icon"/>
+        <result property="sumGrade" column="sum_grade"/>
     </resultMap>
 
     <select id="getFirstGrade" resultMap="bbsGameGradeMap">
@@ -33,5 +34,14 @@
         left join bbs_user bu on bu.id = bgg.user_id
         where bgg.game_id = #{gameId}
         order by bgg.grade desc
+    </select>
+
+    <select id="getSumRankList" resultMap="bbsGameGradeMap">
+        select bgg.user_id, sum(bgg.grade) as sum_grade, bu.username as user_name, bu.icon as user_icon
+        from bbs_game_grade bgg, bbs_user bu
+        where bu.id = bgg.user_id
+        group by bgg.user_id
+        order by sum_grade desc
+        limit 10
     </select>
 </mapper>

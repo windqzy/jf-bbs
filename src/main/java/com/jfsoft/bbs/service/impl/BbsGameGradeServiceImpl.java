@@ -58,4 +58,9 @@ public class BbsGameGradeServiceImpl extends ServiceImpl<BbsGameGradeDao, BbsGam
     public List<BbsGameEntity> getRankList(Integer gameId) {
         return bbsGameGradeDao.getRankList(gameId);
     }
+
+    @Override
+    public List<BbsGameGradeEntity> getSumRankList() {
+        return bbsGameGradeDao.getSumRankList();
+    }
 }

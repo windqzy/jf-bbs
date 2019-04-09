@@ -264,8 +264,7 @@
           gameId: this.gameId,
           grade: grade
         }
-        this.$http.post(window.localStorage.baseUrl + "/game/rank/update", form).
-        then(res => {
+        this.$http.post(window.localStorage.baseUrl + "/game/rank/update", form).then(res => {
           console.log(res)
         })
       },

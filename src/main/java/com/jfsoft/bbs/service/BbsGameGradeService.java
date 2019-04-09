@@ -15,4 +15,6 @@ public interface BbsGameGradeService extends IService<BbsGameGradeEntity> {
     BbsGameGradeEntity getFirstGrade(Integer id);
 
     List<BbsGameEntity> getRankList(Integer gameId);
+
+    List<BbsGameGradeEntity> getSumRankList();
 }

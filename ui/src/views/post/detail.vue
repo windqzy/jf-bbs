@@ -37,7 +37,7 @@
                       @click="collection(postInfo.id)">收藏</span>
                 <span v-if="userInfo.id != postInfo.userId" class="layui-btn layui-btn-xs jie-admin" type="set"
                       field="status" rank="1"
-                      @click="rewardBox = true">打赏</span>
+                      @click="openReward">打赏</span>
               </div>
               <span class="fly-list-nums">
                 <a @click="$el.querySelector('#comment').scrollIntoView()" style="cursor: pointer">
@@ -371,10 +371,10 @@
       title="打赏作者"
       :visible.sync="rewardBox" width="280px">
       <el-radio-group v-model="rewardGrade">
-        <el-radio-button :disabled="currGrade >= 10" label="10"></el-radio-button>
-        <el-radio-button :disabled="currGrade >= 20" label="20"></el-radio-button>
-        <el-radio-button :disabled="currGrade >= 50" label="50"></el-radio-button>
-        <el-radio-button :disabled="currGrade >= 100" label="100"></el-radio-button>
+        <el-radio-button v-if="currGrade >= 10" label="10"></el-radio-button>
+        <el-radio-button v-if="currGrade >= 20" label="20"></el-radio-button>
+        <el-radio-button v-if="currGrade >= 50" label="50"></el-radio-button>
+        <el-radio-button v-if="currGrade >= 100" label="100"></el-radio-button>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="rewardBox = false">取 消</el-button>
@@ -485,6 +485,13 @@
       this.layer.closeAll();
     },
     methods: {
+      openReward() {
+        if (this.currGrade >= 10) {
+          this.rewardBox = true;
+        } else {
+          layer.msg('你太穷了，不能打赏')
+        }
+      },
       getFace() {
         // let arr = [];
         // face.map(item => {
@@ -716,13 +723,14 @@
         grade.reward(this.userInfo.id, this.postInfo.userId, this.rewardGrade, this.postId).then(res => {
           this.rewardBox = false;
           this.getTopThree(this.postId);
-          layer.msg('打赏成功');
+          this.getCurrGrade();
+          layer.msg(res.msg);
         })
       },
       // 获取当前钻石
       getCurrGrade() {
         grade.getGrade(this.userInfo.id).then(res => {
-          this.currGrade = res.data;
+          this.currGrade = res.data.grade;
         })
       }
     },

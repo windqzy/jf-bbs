@@ -5,6 +5,9 @@ import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsGradeEntity;
 import com.jfsoft.bbs.entity.BbsLogEntity;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
+import com.jfsoft.bbs.es.document.ProductDocument;
+import com.jfsoft.bbs.es.document.ProductDocumentBuilder;
+import com.jfsoft.bbs.es.service.EsSearchService;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsPostsService;
@@ -33,6 +36,9 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsLogService bbsLogService;
+
+    @Autowired
+    private EsSearchService esSearchService;
 
     @Autowired
     private BbsGradeService bbsGradeService;
@@ -121,6 +127,13 @@ public class PostsController extends AbstractController {
                 // 帖子显示发帖时的用户姓名
                 bbsPosts.setAuthor(username);
                 bbsPostsService.insert(bbsPosts);
+                ProductDocument productDocument = ProductDocumentBuilder.create()
+                        .addId(postId)
+                        .addProductName(bbsPosts.getTitle())
+                        .addProductDesc(bbsPosts.getContent())
+                        .addCreateTime(bbsPosts.getInitTime())
+                        .builder();
+                esSearchService.save(productDocument);
             } else {
                 bbsPostsService.updateById(bbsPosts);
 
@@ -209,5 +222,16 @@ public class PostsController extends AbstractController {
         }
         bbsPostsService.updateById(bbsPostsEntity);
         return R.ok("操作成功");
+    }
+    /**
+     * 根据key值查询所有带key的数据
+     * @param keyword
+     * @return
+     */
+    @RequestMapping("/search/{keyword}")
+    public R search(@PathVariable String keyword){
+        String[] fieldNames = {"productName","productDesc"};
+        List<Map<String,Object>> list = esSearchService.queryHit(keyword, "orders", fieldNames);
+        return R.ok().put("data",list);
     }
 }

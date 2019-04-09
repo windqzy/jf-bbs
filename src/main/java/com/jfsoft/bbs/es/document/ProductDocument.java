@@ -18,7 +18,7 @@ import java.util.Date;
 public class ProductDocument implements Serializable {
 
     @Id
-    private String id;
+    private Integer id;
     //@Field(analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String productName;
     //@Field(analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
@@ -32,11 +32,11 @@ public class ProductDocument implements Serializable {
 
     private Date updateTime;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

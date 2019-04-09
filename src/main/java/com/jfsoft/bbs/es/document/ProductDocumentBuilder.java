@@ -18,7 +18,7 @@ public class ProductDocumentBuilder {
         return new ProductDocumentBuilder();
     }
 
-    public ProductDocumentBuilder addId(String id) {
+    public ProductDocumentBuilder addId(Integer id) {
         productDocument.setId(id);
         return this;
     }

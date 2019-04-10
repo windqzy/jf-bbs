@@ -19,6 +19,8 @@ public class BbsVestEntity implements Serializable {
 
 	private Integer userId;
 
+	private String icon;
+
 	public Integer getId() {
 		return id;
 	}
@@ -51,4 +53,11 @@ public class BbsVestEntity implements Serializable {
 		this.userId = userId;
 	}
 
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 }

@@ -3,6 +3,7 @@ package com.jfsoft.bbs.dao;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfsoft.bbs.entity.BbsGameEntity;
 import com.jfsoft.bbs.entity.BbsGameGradeEntity;
+import com.jfsoft.bbs.service.BbsGameGradeService;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BbsGameGradeDao extends BaseMapper<BbsGameGradeEntity> {
     List<BbsGameEntity> getRankList(Integer gameId);
 
     List<BbsGameGradeEntity> getSumRankList();
+
+    List<BbsGameGradeService> getRankAll();
 }

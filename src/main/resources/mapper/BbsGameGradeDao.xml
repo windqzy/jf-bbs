@@ -16,10 +16,14 @@
     </resultMap>
 
     <select id="getFirstGrade" resultMap="bbsGameGradeMap">
-        select bgg.id, bgg.user_id, bgg.game_id, max(bgg.grade) as grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
-        from bbs_game_grade bgg
-        left join bbs_user bu on bu.id = bgg.user_id
-        where  bgg.game_id = #{gameId}
+--         select bgg.id, bgg.user_id, bgg.game_id, max(bgg.grade) as grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
+--         from bbs_game_grade bgg
+--         left join bbs_user bu on bu.id = bgg.user_id
+--         where  bgg.game_id = #{gameId}
+        select bgg.id, bgg.user_id, bgg.game_id, bgg.grade as grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
+        from  bbs_game_grade bgg
+        inner join bbs_user bu on bu.id = bgg.user_id
+        where game_id = #{gameId} order by grade desc limit 1
     </select>
 
     <select id="getRankList" resultMap="bbsGameGradeMap">
@@ -37,5 +41,31 @@
         group by bgg.user_id
         order by sum_grade desc
         limit 10
+    </select>
+
+    <select id="getRankAll" resultMap="bbsGameGradeMap">
+        select bu.username, bu.icon,game_id,bgrg.grade as TrueGrade ,bg.grade,rownum
+from (
+	select c.*,h.pre_game_user_count,
+	case when @a=1 and pre_game_user_count is null  then @rownum:=1 else @rownum:=@rownum+1 end as rownum,
+	case when pre_game_user_count is not null then @a:=1 else @a:=0 end as temp
+	from (
+		SELECT a.*
+		from
+		bbs_game_grade a LEFT JOIN bbs_game_grade b ON a.game_id=b.game_id AND a.grade lt; b.grade
+		GROUP BY a.user_id,a.game_id,a.grade HAVING COUNT(b.id) lt; 10
+		ORDER BY a.game_id,a.grade DESC
+		) c left join (
+		select game_id,min(grade) as pre_game_user_count
+		from (
+		SELECT z.*
+		FROM bbs_game_grade z
+		LEFT JOIN bbs_game_grade x ON z.game_id=x.game_id AND z.grade lt; x.grade
+		GROUP BY z.user_id,z.game_id,z.grade HAVING COUNT(x.id) lt; 10
+		ORDER BY z.game_id,z.grade DESC ) bgg group by game_id) h
+		on c.game_id=h.game_id and pre_game_user_count=c.grade , (select @rownum:=0) g,(select @1:=0) j
+	) bg
+		inner join bbs_game_rank_grade bgrg on bg.rownum=bgrg.Rank_id
+		left join bbs_user bu on bg.user_id=bu.id;
     </select>
 </mapper>

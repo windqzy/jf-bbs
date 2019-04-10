@@ -58,6 +58,16 @@ public class GameGradeController extends AbstractController {
         return R.ok().put("data", sumRankList);
     }
 
+    /**
+     * 列表
+     */
+    @RequestMapping("/rank")
+    public R getRank() {
+
+        List<BbsGameGradeEntity> sumRankList = bbsGameGradeService.getSumRankList();
+        return R.ok().put("data", sumRankList);
+    }
+
 
     /**
      * 信息

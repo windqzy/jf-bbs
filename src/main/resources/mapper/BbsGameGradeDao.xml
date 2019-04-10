@@ -16,16 +16,10 @@
     </resultMap>
 
     <select id="getFirstGrade" resultMap="bbsGameGradeMap">
-        select bgg.id, bgg.user_id, bgg.game_id, bgg.grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
+        select bgg.id, bgg.user_id, bgg.game_id, max(bgg.grade) as grade, bgg.init_time, bu.username as user_name, bu.icon as user_icon
         from bbs_game_grade bgg
         left join bbs_user bu on bu.id = bgg.user_id
-        where bgg.grade = (
-          select max(grade)
-          from bbs_game_grade
-          where game_id = #{gameId}
-          order by init_time
-        )
-        limit 1
+        where  bgg.game_id = #{gameId}
     </select>
 
     <select id="getRankList" resultMap="bbsGameGradeMap">

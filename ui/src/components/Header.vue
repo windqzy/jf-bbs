@@ -11,22 +11,22 @@
             <a style="cursor: pointer" @click="toNav(0)">论坛</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 1}'>
-            <a style="cursor: pointer" @click="toNav(1)">游戏</a>
+            <a style="cursor: pointer" @click="toNav(1)">Game</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
             <a style="cursor: pointer" @click="toNav(2)">Gitter</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
-            <a style="cursor: pointer" @click="toNav(3)">大世界</a>
+            <a style="cursor: pointer" @click="toNav(3)">Healthy</a>
           </li>
         </ul>
         <ul class="layui-nav layui-hide-sm layui-show-xs-block" style="margin-left: 138px;">
           <li class="layui-nav-item">
             <a style="cursor: pointer" @click="toNav(0)">首页</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a style="cursor: pointer" @click="toNav(1)">游戏</a></dd>
+              <dd><a style="cursor: pointer" @click="toNav(1)">Game</a></dd>
               <dd><a style="cursor: pointer" @click="toNav(2)">Gitter</a></dd>
-              <dd><a style="cursor: pointer" @click="toNav(3)">大世界</a></dd>
+              <dd><a style="cursor: pointer" @click="toNav(3)">Healthy</a></dd>
               <!--<dd><a href="">电商平台</a></dd>-->
             </dl>
           </li>
@@ -120,6 +120,34 @@
         </div>
       </div>
     </div>
+
+    <!-- 写死的 -->
+    <!--<div class="fly-panel fly-column">-->
+      <!--<div class="layui-container">-->
+        <!--<ul class="layui-clear">-->
+          <!--<li class="layui-hide-xs"><a href="/">首页</a></li>-->
+          <!--<li class="layui-this"><a href="">提问</a></li>-->
+          <!--<li><a href="">分享<span class="layui-badge-dot"></span></a></li>-->
+          <!--<li><a href="">讨论</a></li>-->
+          <!--<li><a href="">建议</a></li>-->
+          <!--<li><a href="">公告</a></li>-->
+          <!--<li><a href="">动态</a></li>-->
+          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>&ndash;&gt;-->
+
+          <!--&lt;!&ndash;&lt;!&ndash; 用户登入后显示 &ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html">我发表的贴</a></li>&ndash;&gt;-->
+          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html#collection">我收藏的贴</a></li>&ndash;&gt;-->
+        <!--</ul>-->
+
+        <!--&lt;!&ndash;<div class="fly-column-right layui-hide-xs">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="fly-search"><i class="layui-icon"></i></span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">&ndash;&gt;-->
+          <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
     <!-- search -->
     <div id="searchBox" style="display: none">
       <input autocomplete="off" placeholder="搜索内容，回车跳转" v-model="searchText" type="text" @keyup.enter="search">

@@ -2,7 +2,7 @@
   <div class="layui-container">
     <el-row :gutter="16" style="flex-direction: row-reverse">
       <el-col :xs="24" :sm="16" class="mt8">
-        <el-card shadow="never" class="card-box">
+        <el-card shadow="never" class="card-box" v-loading="loading">
           <el-row slot="header" type="flex" justify="space-between">
             <div class="layuiadmin-card-link fly-filter">
               <a v-for="(tag, index) in healthTagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
@@ -13,38 +13,67 @@
               <!--<a :class='{"layui-this":activeTag == 2}' @click="getHealthCNList(2, 'monthly')">本月最热</a>-->
             </div>
           </el-row>
-          <el-row type="flex" justify="flex-start" class="card-row">
+          <el-row type="flex" justify="flex-start" class="card-row" v-for="item in articleList" :key="item.id">
             <div>
-              <img src="http://placehold.it/64x64" alt="">
+              <img :src="item.cover" alt="">
             </div>
             <div class="indextext-right">
               <div class="indextitle-text">
-                <h2>国务院部署年度工作 盘点卫生健康三大管家重点任务</h2>
-                <p class="indextext-ms">国家卫生健康委、国家医保局和国家药监局2019年重点工作有哪些，国务院给出明确指示。</p>
+                <!--<h2>{{item.title}}</h2>-->
+                <router-link :to="'/world/detail?articleId=' + item.id">{{item.title}}
+                </router-link>
+                <p class="indextext-ms">{{item.description}}</p>
               </div>
               <div class="indexright-botbox">
-                <a>aaaa</a>
-                <a>2019-01-01</a>
-                <a style="float: right">数据来源</a>
+                <a>{{item.author}}</a>
+                <a>{{item.pubdate}}</a>
+                <a style="float: right">数据来源：<span>{{item.source}}</span></a>
               </div>
             </div>
           </el-row>
+          <div style="text-align: center" v-if="articleList.length > 0">
+            <div class="laypage-main">
+              <a style="cursor: pointer" @click="nextPage" class="laypage-next">更多求解</a>
+            </div>
+          </div>
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="8" class="mt8">
-        <el-card shadow="never">
-          <div slot="header">分类</div>
-          <ul>
-            <!--<li v-for="tag in healthTagList">{{tag.value}}</li>-->
+
+        <div class="fly-panel">
+          <h3 class="fly-panel-title">72小时热文</h3>
+          <ul class="fly-panel-main fly-list-static">
+            <li v-for="health in health72">
+              <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>-->
+              <router-link :to="'/world/detail?articleId=' + health.id">{{health.title}}
+              </router-link>
+            </li>
           </ul>
-        </el-card>
+        </div>
+
+        <div class="fly-panel">
+          <h3 class="fly-panel-title">TOP20</h3>
+          <ul class="fly-panel-main fly-list-static">
+            <li v-for="health in health20">
+              <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>-->
+              <router-link :to="'/world/detail?articleId=' + health.id">{{health.title}}
+              </router-link>
+            </li>
+          </ul>
+        </div>
+
+        <!--<el-card shadow="never">-->
+        <!--<div slot="header">72小时热文</div>-->
+        <!--<ul>-->
+        <!--<li v-for="health in health72">{{health.title}}</li>-->
+        <!--</ul>-->
+        <!--</el-card>-->
         <div class="fly-panel mt8" style="padding: 20px 0; text-align: center;">
           <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
           <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
         </div>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -104,24 +133,60 @@
           },
         ],
         articleList: [],
+        articleTag: [],
         activeTag: 0,
         pageIndex: 1,
-        pageSize: 10
+        pageSize: 10,
+        health72: [],
+        health20: [],
+        loading: false
       }
     },
     created() {
+      this.getHealthCNList(0, 1013)
+      this.getHealthCN72();
+      this.getHealthCN20();
     },
     methods: {
       getHealthCNList(index, key) {
         this.activeTag = index;
+        this.articleTag = key;
         let type = 'health';
         let params = {
           start: this.pageIndex,
           size: this.pageSize,
-          arctype: key
+          arctype: this.articleTag
         }
+        this.loading = true;
         world.getList(type, params).then(res => {
-          console.log(res.data)
+          this.loading = false;
+          this.articleList = res.data;
+        })
+      },
+      getHealthCN72() {
+        world.getHealthCN72().then(res => {
+          this.health72 = res.data;
+        })
+      },
+      getHealthCN20() {
+        world.getHealthCN20().then(res => {
+          this.health20 = res.data;
+        })
+      },
+      nextPage() {
+        this.pageIndex += 1;
+        let params = {
+          start: this.pageIndex,
+          size: this.pageSize,
+          arctype: this.articleTag
+        };
+        let type = 'health';
+        this.loading = true;
+        world.getList(type, params).then(res => {
+          res.data.map(item => {
+            this.loading = false;
+            this.articleList.push(item);
+          })
         })
       }
     }
@@ -137,6 +202,14 @@
     padding: 0 16px 16px;
   }
 
+  /deep/ .el-card__header {
+    padding: 13px 10px;
+  }
+
+  /deep/ .el-card__body {
+    padding: 0px 5px 15px 20px;
+  }
+
   /* 卡片 */
   .card-box {
     .fly-filter {
@@ -150,6 +223,8 @@
     .card-row {
       width: 100%;
       overflow: hidden;
+      border-bottom: 1px solid rgba(178, 186, 194, .25);
+      padding: 15px 0px;
     }
 
     img {
@@ -171,7 +246,7 @@
       height: 110px;
       overflow: hidden;
 
-      h2 {
+      a {
         width: 100%;
         height: 34px;
         overflow: hidden;
@@ -179,8 +254,7 @@
         text-overflow: ellipsis;
         display: block;
         line-height: 160%;
-        font-size: 22px;
-        color: #333333;
+        font-size: 18px;
       }
 
       .indextext-ms {
@@ -204,7 +278,7 @@
       a {
         display: inline-block;
         height: 24px;
-        line-height: 24px;
+        line-height: 38px;
         font-size: 12px;
         color: #999999;
         margin-right: 5px;

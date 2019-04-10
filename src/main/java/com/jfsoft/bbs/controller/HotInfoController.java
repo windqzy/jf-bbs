@@ -24,14 +24,18 @@ import java.util.Map;
 @RequestMapping("/hot")
 public class HotInfoController {
 
-    private static final String HEALTH_CN_LIST = "https://www.cn-healthcare.com/api/article/articlelist?data=";
+    private static final String HEALTH_CN_HOST = "https://www.cn-healthcare.com";
+    private static final String HEALTH_CN_LIST = HEALTH_CN_HOST + "/api/article/articlelist?data=";
+    private static final String HEALTH_CN_LIST72 = HEALTH_CN_HOST + "/api/article/nhourarticlelist?data={\"hot\":\"-72\"}";
+    private static final String HEALTH_CN_LIST20 = HEALTH_CN_HOST + "/freezingapi/api/article/articletop20";
+    private static final String HEALTH_CN_VO = HEALTH_CN_HOST + "/freezingapi/api/article/articleVo?data=";
 
     /**
      * @param type 类型   health-cn
      * @return
      */
     @RequestMapping("/list")
-    public R getTrendingList(String type, String start, String size, String arctype) {
+    public R getArticleList(String type, String start, String size, String arctype) {
         switch (type) {
             case "health":
                 return getHealthCN(start, size, arctype);
@@ -39,6 +43,43 @@ public class HotInfoController {
                 return null;
         }
     }
+
+    @RequestMapping("/info")
+    public R getArticleInfo(String type, String articleId) {
+
+        switch (type) {
+            case "health":
+                return getHealthCNarctVo(articleId);
+            default:
+                return null;
+        }
+
+    }
+
+    private static R getHealthCNarctVo(String articleId) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("articleId", articleId);
+        String s = HttpUtil.get(HEALTH_CN_VO + jsonObject);
+        JSONObject result = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) result.get("data");
+        return R.ok().put("data", data);
+    }
+
+    @RequestMapping("/getHealthCN72")
+    public R getHealthCN72() {
+        String s = HttpUtil.get(HEALTH_CN_LIST72);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONArray array = (JSONArray) jsonObject.get("data");
+        return R.ok().put("data", array);
+    }
+
+    @RequestMapping("/getHealthCN20")
+    public R getHealthCN20() {
+        String s = HttpUtil.get(HEALTH_CN_LIST20);
+        JSONArray array = (JSONArray) JSON.parse(s);
+        return R.ok().put("data", array);
+    }
+
 
     private static R getHealthCN(String start, String size, String arctype) {
         List<ArticleForm> articleList = new ArrayList<>();
@@ -57,7 +98,7 @@ public class HotInfoController {
             articleForm.setId(article.getInteger("id"));
             articleForm.setTitle(article.getString("title"));
             articleForm.setContent(article.getString("content"));
-            articleForm.setCover(article.getString("litpic"));
+            articleForm.setCover(HEALTH_CN_HOST + article.getString("litpic"));
             articleForm.setPubdate(DateUtil.date(article.getLong("pubdate")));
             articleForm.setDescription(article.getString("description"));
             articleForm.setSource(article.getString("source"));

@@ -14,6 +14,7 @@ import Case from '@/views/case/index'
 import Games from '@/views/games/index'
 import Gitter from '@/views/gitter/index'
 import World from '@/views/world/index'
+import WorldDetail from '@/views/world/detail'
 
 Vue.use(Router)
 
@@ -121,6 +122,10 @@ export default new Router({
         {
           path: 'index',
           component: World
+        },
+        {
+          path: 'detail',
+          component: WorldDetail
         }
       ]
     }

@@ -68,12 +68,6 @@ public class BbsPostsEntity implements Serializable {
      */
     @TableField(exist = false)
     private String author;
-
-    @TableField(exist = false)
-    private BbsUserEntity bbsUserEntity;
-
-    @TableField(exist = false)
-    private BbsTagEntity bbsTagEntity;
     /**
      *
      */
@@ -197,21 +191,6 @@ public class BbsPostsEntity implements Serializable {
         this.end = end;
     }
 
-    public BbsUserEntity getBbsUserEntity() {
-        return bbsUserEntity;
-    }
-
-    public void setBbsUserEntity(BbsUserEntity bbsUserEntity) {
-        this.bbsUserEntity = bbsUserEntity;
-    }
-
-    public BbsTagEntity getBbsTagEntity() {
-        return bbsTagEntity;
-    }
-
-    public void setBbsTagEntity(BbsTagEntity bbsTagEntity) {
-        this.bbsTagEntity = bbsTagEntity;
-    }
 
     /**
      * 设置：

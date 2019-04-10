@@ -166,6 +166,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.geccocrawler</groupId>-->
+            <!--<artifactId>gecco</artifactId>-->
+            <!--<version>1.3.0</version>-->
+        <!--</dependency>-->
+
         <!-- dingding -->
         <!--<dependency>-->
         <!--　　<groupId>com.taobao.top</groupId>-->

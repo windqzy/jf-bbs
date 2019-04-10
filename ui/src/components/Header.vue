@@ -16,6 +16,9 @@
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
             <a style="cursor: pointer" @click="toNav(2)">Gitter</a>
           </li>
+          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
+            <a style="cursor: pointer" @click="toNav(3)">大世界</a>
+          </li>
         </ul>
         <ul class="layui-nav layui-hide-sm layui-show-xs-block" style="margin-left: 138px;">
           <li class="layui-nav-item">
@@ -23,6 +26,7 @@
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
               <dd><a style="cursor: pointer" @click="toNav(1)">游戏</a></dd>
               <dd><a style="cursor: pointer" @click="toNav(2)">Gitter</a></dd>
+              <dd><a style="cursor: pointer" @click="toNav(3)">大世界</a></dd>
               <!--<dd><a href="">电商平台</a></dd>-->
             </dl>
           </li>
@@ -211,6 +215,7 @@
           case 0: this.$router.push('/home/index?id=0'); break;
           case 1: this.$router.push('/games/index?id=1'); break;
           case 2: this.$router.push('/gitter/index?id=2'); break;
+          case 3: this.$router.push('/world/index?id=2'); break;
         }
       },
       search() {

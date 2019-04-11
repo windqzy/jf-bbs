@@ -7,6 +7,13 @@ export function getList() {
   })
 }
 
+export function getSumRankList() {
+  return request({
+    url: '/game/rank/all',
+    method: 'GET'
+  })
+}
+
 export function getRankList(gameId) {
   return request({
     url: '/game/rank/list?gameId=' + gameId,

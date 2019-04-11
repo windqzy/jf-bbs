@@ -46,6 +46,9 @@ public class BbsGameGradeEntity implements Serializable {
     @TableField(exist = false)
     private String userIcon;
 
+    @TableField(exist = false)
+    private int sumGrade;
+
     public Integer getId() {
         return id;
     }
@@ -100,5 +103,13 @@ public class BbsGameGradeEntity implements Serializable {
 
     public void setUserIcon(String userIcon) {
         this.userIcon = userIcon;
+    }
+
+    public int getSumGrade() {
+        return sumGrade;
+    }
+
+    public void setSumGrade(int sumGrade) {
+        this.sumGrade = sumGrade;
     }
 }

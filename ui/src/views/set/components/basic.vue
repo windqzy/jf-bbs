@@ -37,8 +37,8 @@
           </div>
           <div class="layui-inline">
             <div class="layui-input-inline">
-              <el-button type="primary" icon="el-icon-plus" @click="addAccountBox = true" :disabled="currGrade < 500 || accountList.length == 5"></el-button>
-              <el-button type="primary" @click="accountBox = true" :disabled="accountList.length <= 1 || accountList.length > 5">切换账号</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="openAddAccount"></el-button>
+              <el-button type="primary" @click="openTurnAccount">切换账号</el-button>
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@
           <div class="avatar-add">
             <p>建议尺寸168*168，支持jpg、png、gif</p>
             <input type="file" id="file" name="myfile" style="display: none" ref="file" @change="finishFile"/>
-            <button type="button" class="layui-btn upload-img" @click="UpladFile()">
+            <button type="button" class="layui-btn upload-img" @click="UploadFile()">
               <i class="layui-icon">&#xe67c;</i>上传头像
             </button>
 
@@ -284,7 +284,7 @@
           });
         })
       },
-      UpladFile() {
+      UploadFile() {
         this.$refs.file.click();
       },
       finishFile(e) {
@@ -314,13 +314,13 @@
 
       },
       upDateUser() {
-        let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if (!emailReg.test(this.email)) {
-          return layer.msg('邮箱格式不正确', {icon: 5});
-        }
-        if (!this.username || !this.city) {
-          return false;
-        }
+        // let emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        // if (!emailReg.test(this.email)) {
+        //   return layer.msg('邮箱格式不正确', {icon: 5});
+        // }
+        // if (!this.username || !this.city) {
+        //   return false;
+        // }
 
         let UserForm = {
           email: this.email,
@@ -380,6 +380,21 @@
         grade.getGrade(this.userInfo.id).then(res => {
           this.currGrade = res.data.grade;
         })
+      },
+      openTurnAccount() {
+        // :disabled="accountList.length <= 1 || accountList.length > 5
+        if (this.accountList.length <= 1) {
+          layer.msg('您没有可切换的账号')
+        } else {
+          this.accountBox = true;
+        }
+      },
+      openAddAccount() {
+        if (this.currGrade < 500 || this.accountList.length >= 5) {
+          layer.msg('您的钻石余额不足500，无法购买子账号')
+        } else {
+          this.addAccountBox = true;
+        }
       }
     },
     filters: {

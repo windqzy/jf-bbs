@@ -142,10 +142,9 @@ public class GradeController extends AbstractController {
             bbsRewardEntity.setRewardName(bbsUserEntity.getUsername());
             bbsRewardEntity.setInitTime(new Date());
             bbsRewardService.insert(bbsRewardEntity);
-
             return R.ok("打赏成功");
         } else {
-            return R.error("钻石不足，打赏失败");
+            return R.ok("钻石不足，打赏失败");
         }
     }
 

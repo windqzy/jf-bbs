@@ -133,3 +133,23 @@ export function dateStr(date) {
     return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
   }
 }
+export function formatTime(timestamp) {
+  if (!timestamp) {
+    return "";
+  }
+  let date = new Date(timestamp);
+  let month = date.getMonth() + 1;
+  let strDate = date.getDate();
+  if (month >= 1 && month <= 9) {
+    month = "0" + month;
+  }
+  if (strDate >= 0 && strDate <= 9) {
+    strDate = "0" + strDate;
+  }
+  let dateStr = date.getFullYear() + '-' + month + '-' + strDate +
+    " " + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':' +
+    (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+    ':' + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
+  return dateStr;
+}
+

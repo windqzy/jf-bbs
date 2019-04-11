@@ -22,14 +22,13 @@
                 <!--</a>-->
                 <h2>
                   <a class="layui-badge">{{top.source.label}}</a>
-                  <!--<a v-if="top.highlight.productName != null" v-html="top.highlight.productName"></a>-->
                   <router-link :to="'/post/detail?postId=' + top.source.id + '&labelId=' + top.source.label" v-html="top.highlight.productName"></router-link>
                 </h2>
                 <div class="fly-list-info">
                   <a href="user/home.html" link>
                     <cite>{{top.source.author}}</cite>
                   </a>
-                  <span>{{top.source.createTime}}</span>
+                  <span>{{formatTime(top.source.createTime)}}</span>
                   <span class="fly-list-nums">
               </span>
                 </div>
@@ -52,6 +51,7 @@
 
 <script>
   import * as post from '@/api/post';
+  import {formatTime} from '@/utils/time'
   export default {
     name: "search",
     data() {
@@ -62,6 +62,7 @@
     created() {
       this.keyword = this.$route.query.key;
       post.search(this.keyword).then(res => {
+        formatTime();
         console.log(res)
         this.data=res.data
       })

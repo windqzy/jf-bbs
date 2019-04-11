@@ -62,7 +62,6 @@
     created() {
       this.keyword = this.$route.query.key;
       post.search(this.keyword).then(res => {
-        formatTime();
         console.log(res)
         this.data=res.data
       })

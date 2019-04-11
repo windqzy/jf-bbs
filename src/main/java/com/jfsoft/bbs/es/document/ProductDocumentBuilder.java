@@ -18,7 +18,7 @@ public class ProductDocumentBuilder {
         return new ProductDocumentBuilder();
     }
 
-    public ProductDocumentBuilder addId(Integer id) {
+    public ProductDocumentBuilder addId(String id) {
         productDocument.setId(id);
         return this;
     }
@@ -33,25 +33,12 @@ public class ProductDocumentBuilder {
         return this;
     }
 
-    public ProductDocumentBuilder addLabel(String label) {
-        productDocument.setLabel(label);
-        return this;
-    }
-
-    public ProductDocumentBuilder addAuthor(String author) {
-        productDocument.setAuthor(author);
-        return this;
-    }
 
     public ProductDocumentBuilder addCreateTime(Date createTime) {
         productDocument.setCreateTime(createTime);
         return this;
     }
 
-    public ProductDocumentBuilder addUpdateTime(Date updateTime) {
-        productDocument.setUpdateTime(updateTime);
-        return this;
-    }
 
     public ProductDocument builder() {
         return productDocument;

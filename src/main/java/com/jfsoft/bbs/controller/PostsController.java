@@ -130,6 +130,7 @@ public class PostsController extends AbstractController {
                 ProductDocument productDocument = ProductDocumentBuilder.create()
                         .addId(postId.toString())
                         .addProductName(bbsPosts.getTitle())
+                        .addLabel(bbsPosts.getLabelId().toString())
                         .addProductDesc(bbsPosts.getContent())
                         .addCreateTime(bbsPosts.getInitTime())
                         .builder();

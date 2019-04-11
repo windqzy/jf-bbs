@@ -21,13 +21,13 @@
                 <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
                 <!--</a>-->
                 <h2>
-                  <a class="layui-badge">{{top.source.label}}</a>
+                  <!--<a class="layui-badge">{{top.source.label}}</a>-->
                   <router-link :to="'/post/detail?postId=' + top.source.id + '&labelId=' + top.source.label" v-html="top.highlight.productName"></router-link>
                 </h2>
                 <div class="fly-list-info">
-                  <a href="user/home.html" link>
-                    <cite>{{top.source.author}}</cite>
-                  </a>
+                  <!--<a href="user/home.html" link>-->
+                    <!--<cite>{{top.source.author}}</cite>-->
+                  <!--</a>-->
                   <span>{{formatTime(top.source.createTime)}}</span>
                   <span class="fly-list-nums">
               </span>

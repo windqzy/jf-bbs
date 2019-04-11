@@ -34,6 +34,12 @@ public class ProductDocumentBuilder {
     }
 
 
+    public ProductDocumentBuilder addLabel(String label) {
+        productDocument.setLabel(label);
+        return this;
+    }
+
+
     public ProductDocumentBuilder addCreateTime(Date createTime) {
         productDocument.setCreateTime(createTime);
         return this;

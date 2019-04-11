@@ -1,4 +1,4 @@
-icons<template>
+<template>
   <svg :class="svgClass" aria-hidden="true" v-on="$listeners">
     <use :xlink:href="iconName"/>
   </svg>

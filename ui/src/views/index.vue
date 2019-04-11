@@ -445,7 +445,7 @@
     </div>
     <!-- 钻石记录 -->
     <el-dialog title="钻石记录" :visible.sync="logBox">
-      <el-table :data="logList" size="mini" height="calc(100vh - 190px)">
+      <el-table :data="logList" size="mini" height="60vh">
         <el-table-column property="initTime" label="时间"></el-table-column>
         <el-table-column property="remarks" label="记录"></el-table-column>
       </el-table>

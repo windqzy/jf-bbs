@@ -154,7 +154,7 @@
   }
 
   .overhide {
-    width: 100px;
+    max-width: 100px;
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;

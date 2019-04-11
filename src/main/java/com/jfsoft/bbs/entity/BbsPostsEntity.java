@@ -191,7 +191,6 @@ public class BbsPostsEntity implements Serializable {
         this.end = end;
     }
 
-
     /**
      * 设置：
      */

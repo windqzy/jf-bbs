@@ -102,4 +102,8 @@
         WHERE bc.user_id = #{userId} ORDER BY bc.init_time DESC
     </select>
 
+    <select id="findAll" resultMap="bbsPostsMap">
+        select * from bbs_posts
+    </select>
+
 </mapper>

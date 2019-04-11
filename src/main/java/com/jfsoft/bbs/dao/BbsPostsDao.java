@@ -26,4 +26,6 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 
 	List<BbsPostsEntity> getPostByCollection(Integer userId);
 
+	List<BbsPostsEntity> findAll();
+
 }

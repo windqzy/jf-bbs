@@ -22,13 +22,14 @@
                 <!--</a>-->
                 <h2>
                   <!--<a class="layui-badge">{{top.source.label}}</a>-->
-                  <router-link :to="'/post/detail?postId=' + top.source.id + '&labelId=' + top.source.label" v-html="top.highlight.productName"></router-link>
+                  <router-link :to="'/post/detail?postId=' + top.source.id + '&labelId=' + top.source.label"
+                               v-html="top.highlight.productName"></router-link>
                 </h2>
                 <div class="fly-list-info">
                   <!--<a href="user/home.html" link>-->
-                    <!--<cite>{{top.source.author}}</cite>-->
+                  <!--<cite>{{top.source.author}}</cite>-->
                   <!--</a>-->
-                  <span>{{formatTime(top.source.createTime)}}</span>
+                  <span>{{top.source.createTime | formatTime}}</span>
                   <span class="fly-list-nums">
               </span>
                 </div>
@@ -52,20 +53,42 @@
 <script>
   import * as post from '@/api/post';
   import {formatTime} from '@/utils/time'
+
   export default {
     name: "search",
     data() {
       return {
-        data:[]
+        data: []
       }
     },
     created() {
       this.keyword = this.$route.query.key;
       post.search(this.keyword).then(res => {
         console.log(res)
-        this.data=res.data
+        this.data = res.data
       })
     },
+    filters: {
+      formatTime(timestamp) {
+        if (!timestamp) {
+          return "";
+        }
+        let date = new Date(timestamp);
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        let dateStr = date.getFullYear() + '-' + month + '-' + strDate +
+          " " + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':' +
+          (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+          ':' + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
+        return dateStr;
+      }
+    }
   }
 </script>
 

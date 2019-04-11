@@ -491,8 +491,8 @@
               })
             }
             this.layer.msg('发布成功');
+            this.$router.push('/home/index');
           })
-
         }
       },
       //修改积分

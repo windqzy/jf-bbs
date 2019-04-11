@@ -29,6 +29,8 @@ public class HotInfoController {
     private static final String HEALTH_CN_LIST72 = HEALTH_CN_HOST + "/api/article/nhourarticlelist?data={\"hot\":\"-72\"}";
     private static final String HEALTH_CN_LIST20 = HEALTH_CN_HOST + "/freezingapi/api/article/articletop20";
     private static final String HEALTH_CN_VO = HEALTH_CN_HOST + "/freezingapi/api/article/articleVo?data=";
+    private static final String CODE_DAILY_DATE = "http://140.143.153.135:3001/api/daily_list";
+    private static final String CODE_DAILY_INFO = "http://140.143.153.135:3001/api/daily_info/";
 
     /**
      * @param type 类型   health-cn
@@ -78,6 +80,20 @@ public class HotInfoController {
         String s = HttpUtil.get(HEALTH_CN_LIST20);
         JSONArray array = (JSONArray) JSON.parse(s);
         return R.ok().put("data", array);
+    }
+
+    @RequestMapping("/getCoderDailyDate")
+    public JSONObject getCoderDayilyDate() {
+        String s = HttpUtil.get(CODE_DAILY_DATE);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        return jsonObject;
+    }
+
+    @RequestMapping("/getCoderDailyInfo")
+    public JSONObject getCoderDailyInfo(String date) {
+        String s = HttpUtil.get(CODE_DAILY_INFO + date);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        return jsonObject;
     }
 
 

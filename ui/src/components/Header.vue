@@ -2,9 +2,10 @@
   <div id="header">
     <div class="fly-header layui-bg-black">
       <div class="layui-container">
-        <a class="fly-logo" @click="toNav(0)" style="cursor: pointer" >
+        <a class="fly-logo" @click="toNav(0)" style="cursor: pointer">
           <img src="../../static/images/logo.png" alt="layui" class="layui-hide-xs">
-          <img src="../../static/images/avatar/00.jpg" class="layui-hide-sm layui-show-xs-block" style="width: 40px" alt="layui">
+          <img src="../../static/images/avatar/00.jpg" class="layui-hide-sm layui-show-xs-block" style="width: 40px"
+               alt="layui">
         </a>
         <ul class="layui-nav fly-nav">
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 0}'>
@@ -14,22 +15,40 @@
             <a style="cursor: pointer" @click="toNav(1)">Game</a>
           </li>
           <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
-            <a style="cursor: pointer" @click="toNav(2)">Gitter</a>
+            <a style="cursor: pointer" @click="toNav(2)">Developer</a>
           </li>
-          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 2}'>
-            <a style="cursor: pointer" @click="toNav(3)">Healthy</a>
+          <li class="layui-nav-item layui-hide-xs" :class='{"layui-this":activeNav == 3}'>
+            <a style="cursor: pointer" @click="toNav(3)">News</a>
           </li>
         </ul>
-        <ul class="layui-nav layui-hide-sm layui-show-xs-block" style="margin-left: 138px;">
-          <li class="layui-nav-item">
-            <a style="cursor: pointer" @click="toNav(0)">首页</a>
-            <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a style="cursor: pointer" @click="toNav(1)">Game</a></dd>
-              <dd><a style="cursor: pointer" @click="toNav(2)">Gitter</a></dd>
-              <dd><a style="cursor: pointer" @click="toNav(3)">Healthy</a></dd>
-              <!--<dd><a href="">电商平台</a></dd>-->
-            </dl>
-          </li>
+        <ul class="layui-nav layui-hide-sm layui-show-xs-block main-nav-list" style="margin-left: 138px;">
+          <div @click="isPhoneMenu = !isPhoneMenu" class="phone-show-menu">
+            {{phoneMenuName}}
+            <i class="el-icon-caret-bottom"></i>
+          </div>
+          <ul v-show="isPhoneMenu">
+            <li :class='{"active-nav":activeNav == 0}' @click="toNav(0,'论坛')">论坛</li>
+            <li :class='{"active-nav":activeNav == 1}' @click="toNav(1,'Game')">Game</li>
+            <li :class='{"active-nav":activeNav == 2}' @click="toNav(2,'Developer')">Developer</li>
+            <li :class='{"active-nav":activeNav == 3}' @click="toNav(3,'News')">News</li>
+          </ul>
+          <!--<li class="layui-nav-item">-->
+          <!--<a style="cursor: pointer" @click="toNav(0)">首页</a>-->
+          <!--<dl class="layui-nav-child"> &lt;!&ndash; 二级菜单 &ndash;&gt;-->
+          <!--<dd><a style="cursor: pointer" @click="toNav(1)">Game</a></dd>-->
+          <!--<dd><a style="cursor: pointer" @click="toNav(2)">Developer</a></dd>-->
+          <!--<dd><a style="cursor: pointer" @click="toNav(3)">News</a></dd>-->
+          <!--&lt;!&ndash;<dd><a href="">电商平台</a></dd>&ndash;&gt;-->
+          <!--</dl>-->
+          <!--</li>-->
+          <!--<el-dropdown>-->
+          <!--<el-dropdown-menu slot="dropdown">-->
+          <!--<el-dropdown-item @click="toNav(0)">首页</el-dropdown-item>-->
+          <!--<el-dropdown-item @click="toNav(1)">Game</el-dropdown-item>-->
+          <!--<el-dropdown-item @click="toNav(2)">Developer</el-dropdown-item>-->
+          <!--<el-dropdown-item @click="toNav(3)">News</el-dropdown-item>-->
+          <!--</el-dropdown-menu>-->
+          <!--</el-dropdown>-->
         </ul>
 
         <ul class="layui-nav fly-nav-user">
@@ -91,7 +110,8 @@
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
             <a style="cursor: pointer;" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
-          <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block" :class='{"layui-this":activeLabel==index}'>
+          <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block"
+              :class='{"layui-this":activeLabel==index}'>
             <a @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
           <!--<li><a >分享<span class="layui-badge-dot"></span></a></li>-->
@@ -103,10 +123,10 @@
 
           <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
           <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
-            <!--<router-link to="/set/index">我发表的贴</router-link>-->
+          <!--<router-link to="/set/index">我发表的贴</router-link>-->
           <!--</li>-->
           <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
-            <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
+          <!--<router-link to="/set/index#collection">我收藏的贴</router-link>-->
           <!--</li>-->
         </ul>
 
@@ -123,30 +143,30 @@
 
     <!-- 写死的 -->
     <!--<div class="fly-panel fly-column">-->
-      <!--<div class="layui-container">-->
-        <!--<ul class="layui-clear">-->
-          <!--<li class="layui-hide-xs"><a href="/">首页</a></li>-->
-          <!--<li class="layui-this"><a href="">提问</a></li>-->
-          <!--<li><a href="">分享<span class="layui-badge-dot"></span></a></li>-->
-          <!--<li><a href="">讨论</a></li>-->
-          <!--<li><a href="">建议</a></li>-->
-          <!--<li><a href="">公告</a></li>-->
-          <!--<li><a href="">动态</a></li>-->
-          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>&ndash;&gt;-->
+    <!--<div class="layui-container">-->
+    <!--<ul class="layui-clear">-->
+    <!--<li class="layui-hide-xs"><a href="/">首页</a></li>-->
+    <!--<li class="layui-this"><a href="">提问</a></li>-->
+    <!--<li><a href="">分享<span class="layui-badge-dot"></span></a></li>-->
+    <!--<li><a href="">讨论</a></li>-->
+    <!--<li><a href="">建议</a></li>-->
+    <!--<li><a href="">公告</a></li>-->
+    <!--<li><a href="">动态</a></li>-->
+    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>&ndash;&gt;-->
 
-          <!--&lt;!&ndash;&lt;!&ndash; 用户登入后显示 &ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html">我发表的贴</a></li>&ndash;&gt;-->
-          <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html#collection">我收藏的贴</a></li>&ndash;&gt;-->
-        <!--</ul>-->
+    <!--&lt;!&ndash;&lt;!&ndash; 用户登入后显示 &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html">我发表的贴</a></li>&ndash;&gt;-->
+    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html#collection">我收藏的贴</a></li>&ndash;&gt;-->
+    <!--</ul>-->
 
-        <!--&lt;!&ndash;<div class="fly-column-right layui-hide-xs">&ndash;&gt;-->
-          <!--&lt;!&ndash;<span class="fly-search"><i class="layui-icon"></i></span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">&ndash;&gt;-->
-          <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--</div>-->
+    <!--&lt;!&ndash;<div class="fly-column-right layui-hide-xs">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="fly-search"><i class="layui-icon"></i></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
     <!--</div>-->
     <!-- search -->
     <div id="searchBox" style="display: none">
@@ -163,6 +183,10 @@
     name: "Header",
     data() {
       return {
+        isPhoneMenu: false,
+        phoneMenuName: '论坛',
+
+
         labelList: [],
         activeLabel: -1,
         isChildMenu: true,
@@ -237,13 +261,23 @@
       });
     },
     methods: {
-      toNav(index) {
+      toNav(index,name) {
+        this.isPhoneMenu = false;
+        this.phoneMenuName = name;
         this.activeNav = index;
         switch (index) {
-          case 0: this.$router.push('/home/index?id=0'); break;
-          case 1: this.$router.push('/games/index?id=1'); break;
-          case 2: this.$router.push('/gitter/index?id=2'); break;
-          case 3: this.$router.push('/world/index?id=2'); break;
+          case 0:
+            this.$router.push('/home/index?id=0');
+            break;
+          case 1:
+            this.$router.push('/games/index?id=1');
+            break;
+          case 2:
+            this.$router.push('/gitter/index?id=2');
+            break;
+          case 3:
+            this.$router.push('/world/index?id=2');
+            break;
         }
       },
       search() {
@@ -281,6 +315,48 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .main-nav-list {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 12px;
+    background-color: #393D49;
+    width: 100px;
+
+    .phone-show-menu {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 16px;
+      justify-content: center;
+      padding: 0 24px;
+    }
+
+    ul {
+      background-color: #fff;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+      border: 1px solid rgba(177, 180, 185, .45);
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    li {
+      color: #71777c;
+      padding: 4px 16px;
+      font-size: 16px;
+      line-height: 24px;
+      margin: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      &.active-nav {
+        color: #009688;
+      }
+    }
+  }
 
 </style>

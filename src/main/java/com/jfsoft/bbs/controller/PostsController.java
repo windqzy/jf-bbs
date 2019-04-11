@@ -128,7 +128,7 @@ public class PostsController extends AbstractController {
                 bbsPosts.setAuthor(username);
                 bbsPostsService.insert(bbsPosts);
                 ProductDocument productDocument = ProductDocumentBuilder.create()
-                        .addId(postId.toString())
+                        .addId(bbsPosts.getId().toString())
                         .addProductName(bbsPosts.getTitle())
                         .addLabel(bbsPosts.getLabelId().toString())
                         .addProductDesc(bbsPosts.getContent())

@@ -5,6 +5,32 @@
         <el-card shadow="never">
           <img src="../../../static/images/music.jpg" alt="金风音乐会" style="max-width: 100%;">
         </el-card>
+        <el-card shadow="never" class="sider mt8">
+          <!--<div slot="header">前端</div>-->
+          <div class="type-box">
+            <span>前端</span>
+            <div class="fly-mid"></div>
+            <a @click="searchLanguage('')">All</a>
+            <a @click="searchLanguage('javascript')">Javascript</a>
+            <a @click="searchLanguage('css')">CSS</a>
+            <a @click="searchLanguage('vue')">Vue</a>
+            <a @click="searchLanguage('angular')">Angular</a>
+            <a @click="searchLanguage('react')">React</a>
+          </div>
+          <div class="type-box">
+            <span>后端</span>
+            <div class="fly-mid"></div>
+            <a @click="searchLanguage('')">All</a>
+            <a @click="searchLanguage('c')">C</a>
+            <a @click="searchLanguage('c++')">C++</a>
+            <a @click="searchLanguage('c#')">C#</a>
+            <a @click="searchLanguage('java')">Java</a>
+            <a @click="searchLanguage('python')">Python</a>
+            <a @click="searchLanguage('go')">Go</a>
+            <a @click="searchLanguage('pascal')">Delphi</a>
+          </div>
+        </el-card>
+
         <el-card shadow="never" class="mt8 repo" v-loading="loading">
           <el-row slot="header" type="flex" justify="space-between">
             <a>开源库推荐<span v-if="language"> / {{decodeURIComponent(decodeURIComponent(language))}}</span> </a>
@@ -44,30 +70,54 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :md="8">
-        <el-card shadow="never" class="sider mt8">
-          <div slot="header">前端</div>
-          <div class="type-box">
-            <a @click="searchLanguage('')">All</a>
-            <a @click="searchLanguage('javascript')">Javascript</a>
-            <a @click="searchLanguage('css')">CSS</a>
-            <a @click="searchLanguage('vue')">Vue</a>
-            <a @click="searchLanguage('angular')">Angular</a>
-            <a @click="searchLanguage('react')">React</a>
-          </div>
-        </el-card>
-        <el-card shadow="never" class="sider mt8">
-          <div slot="header">后端</div>
-          <div class="type-box">
-            <a @click="searchLanguage('')">All</a>
-            <a @click="searchLanguage('c')">C</a>
-            <a @click="searchLanguage('c++')">C++</a>
-            <a @click="searchLanguage('c#')">C#</a>
-            <a @click="searchLanguage('java')">Java</a>
-            <a @click="searchLanguage('python')">Python</a>
-            <a @click="searchLanguage('go')">Go</a>
-            <a @click="searchLanguage('pascal')">Delphi</a>
-          </div>
-        </el-card>
+        <!--<el-card shadow="never" class="sider mt8">-->
+          <!--<div slot="header">前端</div>-->
+          <!--<div class="type-box">-->
+            <!--<a @click="searchLanguage('')">All</a>-->
+            <!--<a @click="searchLanguage('javascript')">Javascript</a>-->
+            <!--<a @click="searchLanguage('css')">CSS</a>-->
+            <!--<a @click="searchLanguage('vue')">Vue</a>-->
+            <!--<a @click="searchLanguage('angular')">Angular</a>-->
+            <!--<a @click="searchLanguage('react')">React</a>-->
+          <!--</div>-->
+        <!--</el-card>-->
+        <!--<el-card shadow="never" class="sider mt8">-->
+          <!--<div slot="header">后端</div>-->
+          <!--<div class="type-box">-->
+            <!--<a @click="searchLanguage('')">All</a>-->
+            <!--<a @click="searchLanguage('c')">C</a>-->
+            <!--<a @click="searchLanguage('c++')">C++</a>-->
+            <!--<a @click="searchLanguage('c#')">C#</a>-->
+            <!--<a @click="searchLanguage('java')">Java</a>-->
+            <!--<a @click="searchLanguage('python')">Python</a>-->
+            <!--<a @click="searchLanguage('go')">Go</a>-->
+            <!--<a @click="searchLanguage('pascal')">Delphi</a>-->
+          <!--</div>-->
+        <!--</el-card>-->
+        <!--<div class="fly-panel mt8">-->
+          <!--&lt;!&ndash;<div class="fly-panel-title">前端日报</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="fly-panel-main fly-list-static">&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-collapse v-model="activeName" accordion @change="getCoderDailyInfo">&ndash;&gt;-->
+              <!--&lt;!&ndash;<el-collapse-item :title="item.title" :name="item.id" v-for="(item, index) in dailyDateList">&ndash;&gt;-->
+                <!--&lt;!&ndash;<ul class="fly-panel-main fly-list-static">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<li v-for="(info, index) in dailyInfoList" :key="index">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a :href="info.url" target="_blank">{{info.title}}</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+              <!--&lt;!&ndash;</el-collapse-item>&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-collapse>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--</div>-->
+        <el-collapse v-model="activeName" accordion @change="getCoderDailyInfo" class="mt8">
+          <el-collapse-item :title="item.title" :name="item.id" v-for="(item, index) in dailyDateList">
+            <ul class="fly-panel-main fly-list-static">
+              <li v-for="(info, index) in dailyInfoList" :key="index">
+                <a :href="info.url" target="_blank">{{info.title}}</a>
+              </li>
+            </ul>
+          </el-collapse-item>
+        </el-collapse>
         <div class="fly-panel mt8" style="padding: 20px 0; text-align: center;">
           <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
           <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
@@ -94,11 +144,15 @@
         loading: true,
         language: '',
         since: 'daily',    //weekly monthly
-        activeTag: 0
+        activeTag: 0,
+        activeName: '',
+        dailyDateList: [],
+        dailyInfoList: []
       }
     },
     created() {
       this.getReposTrendingList();
+      this.getCoderDailyDate();
     },
     methods: {
       getReposTrendingList() {
@@ -127,7 +181,20 @@
       searchLanguage(language) {
         this.language = encodeURIComponent(language);
         this.getReposTrendingList();
+      },
+      getCoderDailyDate() {
+        gitter.getCoderDailyDate().then(res => {
+          this.dailyDateList = res.data;
+          this.activeName = res.data[0].id;
+          this.getCoderDailyInfo(this.activeName);
+        })
+      },
+      getCoderDailyInfo(date) {
+        gitter.getCoderDailyInfo(date).then(res => {
+          this.dailyInfoList = res.data.links;
+        })
       }
+
     },
     filters: {
       formatTime(dateTime) {
@@ -327,6 +394,11 @@
           color: #1b56a5;
         }
       }
+    }
+  }
+  .el-collapse {
+    /deep/ &-item__header {
+      padding: 0 16px;
     }
   }
 

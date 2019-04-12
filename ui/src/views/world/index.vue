@@ -5,7 +5,7 @@
         <el-card shadow="never" class="card-box" v-loading="loading">
           <el-row slot="header" type="flex" justify="space-between">
             <div class="layuiadmin-card-link fly-filter">
-              <a v-for="(tag, index) in healthTagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
+              <a v-for="(tag, index) in tagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
                  @click="getHealthCNList(index, tag.key)">{{tag.value}}</a>
               <!--<span class="fly-mid"></span>-->
               <!--<a :class='{"layui-this":activeTag == 1}' @click="getHealthCNList(1, 'weekly')">本周最热</a>-->
@@ -84,6 +84,7 @@
     name: "index",
     data() {
       return {
+        tagList: [],
         healthTagList: [
           {
             key: 1013,
@@ -132,6 +133,33 @@
             value: '保险'
           },
         ],
+        ttTagList: [
+          {
+            key: 0,
+            value: '热点'
+          }, {
+            key: 1,
+            value: '社会'
+          }, {
+            key: 2,
+            value: '娱乐'
+          }, {
+            key: 3,
+            value: '体育'
+          }, {
+            key: 4,
+            value: '美文'
+          }, {
+            key: 5,
+            value: '科技'
+          }, {
+            key: 6,
+            value: '财经'
+          }, {
+            key: 7,
+            value: '时尚'
+          },
+        ],
         articleList: [],
         articleTag: [],
         activeTag: 0,
@@ -139,15 +167,31 @@
         pageSize: 10,
         health72: [],
         health20: [],
-        loading: false
+        loading: false,
+        labelId: 0
       }
     },
     created() {
-      this.getHealthCNList(0, 1013)
       this.getHealthCN72();
       this.getHealthCN20();
+      this.tagList = this.healthTagList;
+      this.getHealthCNList(0, 1013)
+    },
+    watch: {
+      '$route.query.id'(val) {
+        this.changeLabel(val);
+        if (val == 0) {
+          this.tagList = this.healthTagList;
+        } else {
+          this.tagList = this.ttTagList;
+        }
+      }
     },
     methods: {
+      changeLabel(e) {
+        this.labelId = e;
+        console.log(e)
+      },
       getHealthCNList(index, key) {
         this.activeTag = index;
         this.articleTag = key;

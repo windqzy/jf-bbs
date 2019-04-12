@@ -10,7 +10,7 @@ router.beforeEach((to, from, next) => {
   document.documentElement.scrollTop = 0;// firefox
   window.pageYOffset = 0;// safari
   if (window.localStorage['B-Token']) {
-    console.log(store.getters.user.username)
+    // console.log(store.getters.user.username)
     if (!store.getters.user.username) {
       store.dispatch('addUserInfo').then(() => {
         next()

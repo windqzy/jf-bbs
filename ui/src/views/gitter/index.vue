@@ -110,7 +110,7 @@
 
         <!--</div>-->
         <el-collapse v-model="activeName" accordion @change="getCoderDailyInfo" class="mt8">
-          <el-collapse-item :title="item.title" :name="item.id" v-for="(item, index) in dailyDateList">
+          <el-collapse-item :title="item.title" :name="item.id" v-for="(item, index) in dailyDateList" :key="index">
             <ul class="fly-panel-main fly-list-static">
               <li v-for="(info, index) in dailyInfoList" :key="index">
                 <a :href="info.url" target="_blank">{{info.title}}</a>

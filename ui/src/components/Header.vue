@@ -142,32 +142,31 @@
     </div>
 
     <!-- 写死的 -->
-    <!--<div class="fly-panel fly-column">-->
-    <!--<div class="layui-container">-->
-    <!--<ul class="layui-clear">-->
-    <!--<li class="layui-hide-xs"><a href="/">首页</a></li>-->
-    <!--<li class="layui-this"><a href="">提问</a></li>-->
-    <!--<li><a href="">分享<span class="layui-badge-dot"></span></a></li>-->
-    <!--<li><a href="">讨论</a></li>-->
-    <!--<li><a href="">建议</a></li>-->
-    <!--<li><a href="">公告</a></li>-->
-    <!--<li><a href="">动态</a></li>-->
-    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>&ndash;&gt;-->
+    <div class="fly-panel fly-column" v-show="isChildMenu2">
+      <div class="layui-container">
+        <ul class="layui-clear" style="margin-left: 16px;">
+          <li :class='{"layui-this":activeLabel2==0}'><a style="cursor: pointer" @click="getPost2(0, 0)">医疗</a></li>
+          <li :class='{"layui-this":activeLabel2==1}'><a style="cursor: pointer" @click="getPost2(1, 1)">今日头条</a></li>
+          <li :class='{"layui-this":activeLabel2==2}'><a style="cursor: pointer" @click="getPost2(2, 2)">知乎日报</a></li>
+          <!--<li :class='{"layui-this":activeLabel==index}'><a href="">建议</a></li>-->
+          <!--<li :class='{"layui-this":activeLabel==index}'><a href="">公告</a></li>-->
+          <!--<li :class='{"layui-this":activeLabel==index}'><a href="">动态</a></li>-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>-->
 
-    <!--&lt;!&ndash;&lt;!&ndash; 用户登入后显示 &ndash;&gt;&ndash;&gt;-->
-    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html">我发表的贴</a></li>&ndash;&gt;-->
-    <!--&lt;!&ndash;<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html#collection">我收藏的贴</a></li>&ndash;&gt;-->
-    <!--</ul>-->
+          <!--&lt;!&ndash; 用户登入后显示 &ndash;&gt;-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html">我发表的贴</a></li>-->
+          <!--<li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../user/index.html#collection">我收藏的贴</a></li>-->
+        </ul>
 
-    <!--&lt;!&ndash;<div class="fly-column-right layui-hide-xs">&ndash;&gt;-->
-    <!--&lt;!&ndash;<span class="fly-search"><i class="layui-icon"></i></span>&ndash;&gt;-->
-    <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">&ndash;&gt;-->
-    <!--&lt;!&ndash;<a href="add.html" class="layui-btn">发表新帖</a>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-    <!--</div>-->
+        <!--<div class="fly-column-right layui-hide-xs">-->
+        <!--<span class="fly-search"><i class="layui-icon"></i></span>-->
+        <!--<a href="add.html" class="layui-btn">发表新帖</a>-->
+        <!--</div>-->
+        <!--<div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
+        <!--<a href="add.html" class="layui-btn">发表新帖</a>-->
+        <!--</div>-->
+      </div>
+    </div>
     <!-- search -->
     <div id="searchBox" style="display: none">
       <input autocomplete="off" placeholder="搜索内容，回车跳转" v-model="searchText" type="text" @keyup.enter="search">
@@ -185,11 +184,11 @@
       return {
         isPhoneMenu: false,
         phoneMenuName: '论坛',
-
-
         labelList: [],
         activeLabel: -1,
+        activeLabel2: 0,
         isChildMenu: true,
+        isChildMenu2: true,
         userInfo: '',
         searchText: '',
         activeNav: 0
@@ -209,10 +208,17 @@
       // 监听路由
       '$route': {
         handler(val) {
-          if (val.path.indexOf('/home/index') !== -1 || val.path.indexOf('/post/detail') !== -1 || val.path.indexOf('/post/search') !== -1) {
+          if (val.path.indexOf('/home/index') !== -1 || val.path.indexOf('/post/detail') !== -1 ||
+            val.path.indexOf('/post/search') !== -1) {
             this.isChildMenu = true;
           } else {
             this.isChildMenu = false;
+          }
+
+          if (val.path.indexOf('/world/index') != -1 || val.path.indexOf('/world/detail') != -1) {
+            this.isChildMenu2 = true;
+          } else {
+            this.isChildMenu2 = false;
           }
 
           if (val.path.indexOf('/home/index') !== -1) {
@@ -261,7 +267,7 @@
       });
     },
     methods: {
-      toNav(index,name) {
+      toNav(index, name) {
         this.isPhoneMenu = false;
         this.phoneMenuName = name;
         this.activeNav = index;
@@ -282,13 +288,13 @@
       },
       search() {
         this.$router.push('/post/search?key=' + this.searchText);
-        console.log(this.searchText)
+        // console.log(this.searchText)
         layer.closeAll();
       },
       // 查询所有 Label
       getAllLabel() {
         label.getList().then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.labelList = res.data.list;
         })
       },
@@ -296,13 +302,16 @@
         this.activeLabel = index;
         this.$router.push('/home/index?id=' + id);
       },
+      getPost2(id, index) {
+        this.activeLabel2 = index;
+        this.$router.push('/world/index?id=' + id);
+      },
       toAdd() {
         this.isChildMenu = false;
         this.$router.push('/add/index');
       },
       getUser() {
         user.getUser().then(res => {
-          console.log(res.data);
           this.userInfo = res.data;
         })
       },
@@ -353,6 +362,7 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+
       &.active-nav {
         color: #009688;
       }

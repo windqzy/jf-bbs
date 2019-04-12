@@ -17,5 +17,5 @@ public interface BbsGameGradeDao extends BaseMapper<BbsGameGradeEntity> {
 
     List<BbsGameGradeEntity> getSumRankList();
 
-    List<BbsGameGradeService> getRankAll();
+    List<BbsGameGradeEntity> getRankAll();
 }

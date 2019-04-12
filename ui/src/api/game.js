@@ -9,7 +9,7 @@ export function getList() {
 
 export function getSumRankList() {
   return request({
-    url: '/game/rank/all',
+    url: '/game/rank/leader',
     method: 'GET'
   })
 }

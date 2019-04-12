@@ -31,7 +31,12 @@
           </el-col>
           <el-col :xs="24" :md="8">
             <el-card class="mt8" shadow="never">
-              <div slot="header">总积分榜</div>
+              <div slot="header">
+                总积分榜
+                <i class="fly-mid"></i>
+                <a style="cursor: pointer" @click="gameDoc()" class="fly-link">说明</a>
+              </div>
+
               <ul>
                 <li v-for="(item, index) in sumRankList" class="rank">
                   <div :style="{color: index == 2?'#e6a23c':index == 1?'silver':index == 0?'gold':''}">
@@ -74,6 +79,60 @@
         </ul>
       </div>
     </el-dialog>
+    <!-- 游戏积分规则 -->
+    <div class="layui-text" style="padding: 20px; display: none" id="gameDoc">
+      <blockquote class="layui-elem-quote">游戏积分规则如下</blockquote>
+      <table class="layui-table">
+        <thead>
+        <tr>
+          <th>游戏名次</th>
+          <th>可获积分</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>36</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>24</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>16</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>2</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -133,8 +192,19 @@
       getSumRankList() {
         game.getSumRankList().then(res => {
           this.sumRankList = res.data;
+          console.log(res.data)
         })
-      }
+      },
+      gameDoc() {
+        this.layer.open({
+          type: 1
+          , title: '游戏说明'
+          , area: '300px'
+          , shade: 0.8
+          , shadeClose: true
+          , content: this.$('#gameDoc')
+        });
+      },
     },
     filters: {
       getUserName(str) {

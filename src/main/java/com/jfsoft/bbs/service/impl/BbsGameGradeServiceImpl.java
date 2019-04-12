@@ -61,7 +61,7 @@ public class BbsGameGradeServiceImpl extends ServiceImpl<BbsGameGradeDao, BbsGam
 
     @Override
     public List<BbsGameGradeEntity> getSumRankList() {
-        return bbsGameGradeDao.getSumRankList();
+        return bbsGameGradeDao.getRankAll();
     }
 
     @Override

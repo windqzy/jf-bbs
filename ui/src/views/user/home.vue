@@ -20,7 +20,7 @@
       <!--<p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>-->
 
       <p class="fly-home-info">
-        <i class="layui-icon layui-icon-diamond" title="钻石"></i><span style="color: #FF7200;">{{grade}} 钻石</span>
+        <i class="layui-icon layui-icon-diamond" title="钻石" v-if="userInfo.enable == 1 || loginUserId == userInfo.id"></i><span style="color: #FF7200;"v-if="userInfo.enable == 1 || loginUserId == userInfo.id">{{grade}} 钻石</span>
         <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime | filterDate}} 加入</span>
         <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city == null ? '地球' : userInfo.city}}</span>
       </p>

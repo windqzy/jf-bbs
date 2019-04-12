@@ -28,3 +28,4 @@ export function getHealthCN20() {
     method: 'GET',
   })
 }
+

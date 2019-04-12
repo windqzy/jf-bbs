@@ -1,9 +1,9 @@
 <template>
   <div class="layui-container">
     <el-row :gutter="16" style="flex-direction: row-reverse">
-      <el-col :xs="24" :sm="16" class="mt8">
+      <el-col :xs="24" :sm="16">
         <el-card shadow="never" class="card-box" v-loading="loading">
-          <el-row slot="header" type="flex" justify="space-between">
+          <el-row slot="header" type="flex" justify="space-between" v-if="labelId != 2">
             <div class="layuiadmin-card-link fly-filter">
               <a v-for="(tag, index) in tagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
                  @click="getHealthCNList(index, tag.key)">{{tag.value}}</a>
@@ -20,7 +20,7 @@
             <div class="indextext-right">
               <div class="indextitle-text">
                 <!--<h2>{{item.title}}</h2>-->
-                <router-link :to="'/world/detail?articleId=' + item.id">{{item.title}}
+                <router-link :to="'/world/detail?articleId=' + item.id + '&labelId=' + labelId">{{item.title}}
                 </router-link>
                 <p class="indextext-ms">{{item.description}}</p>
               </div>
@@ -33,12 +33,12 @@
           </el-row>
           <div style="text-align: center" v-if="articleList.length > 0">
             <div class="laypage-main">
-              <a style="cursor: pointer" @click="nextPage" class="laypage-next">更多求解</a>
+              <a style="cursor: pointer" @click="nextPage" class="laypage-next" v-if="labelId != 2">更多求解</a>
             </div>
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="8" class="mt8">
+      <el-col :xs="24" :sm="8">
 
         <div class="fly-panel">
           <h3 class="fly-panel-title">72小时热文</h3>
@@ -190,7 +190,11 @@
     methods: {
       changeLabel(e) {
         this.labelId = e;
-        console.log(e)
+        if (e == 0) {
+          this.getHealthCNList(0, 1013)
+        } else if (e == 2) {
+          this.getZhiHuList();
+        }
       },
       getHealthCNList(index, key) {
         this.activeTag = index;
@@ -200,6 +204,19 @@
           start: this.pageIndex,
           size: this.pageSize,
           arctype: this.articleTag
+        }
+        this.loading = true;
+        world.getList(type, params).then(res => {
+          this.loading = false;
+          this.articleList = res.data;
+        })
+      },
+      getZhiHuList() {
+        let type = 'zhihu';
+        let params = {
+          start: null,
+          size: null,
+          arctype: null
         }
         this.loading = true;
         world.getList(type, params).then(res => {

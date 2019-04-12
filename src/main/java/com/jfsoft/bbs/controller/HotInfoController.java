@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.form.ArticleForm;
+import com.jfsoft.bbs.form.ArticleVo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +30,14 @@ public class HotInfoController {
     private static final String HEALTH_CN_LIST72 = HEALTH_CN_HOST + "/api/article/nhourarticlelist?data={\"hot\":\"-72\"}";
     private static final String HEALTH_CN_LIST20 = HEALTH_CN_HOST + "/freezingapi/api/article/articletop20";
     private static final String HEALTH_CN_VO = HEALTH_CN_HOST + "/freezingapi/api/article/articleVo?data=";
-    private static final String CODE_DAILY_DATE = "http://140.143.153.135:3001/api/daily_list";
-    private static final String CODE_DAILY_INFO = "http://140.143.153.135:3001/api/daily_info/";
+
+
+    private static final String TX_HOST = "http://140.143.153.135:3001";
+    private static final String TX_HOST2 = "http://140.143.153.135:3002";
+    private static final String CODE_DAILY_DATE = TX_HOST + "/api/daily_list";
+    private static final String CODE_DAILY_INFO = TX_HOST + "/api/daily_info/";
+    private static final String ZHIHU_LIST = TX_HOST2 + "/zhihu_news";
+    private static final String ZHIHU_VO = TX_HOST2 + "/zhihu_news_detail?id=";
 
     /**
      * @param type 类型   health-cn
@@ -41,6 +48,8 @@ public class HotInfoController {
         switch (type) {
             case "health":
                 return getHealthCN(start, size, arctype);
+            case "zhihu":
+                return getZhiHuList();
             default:
                 return null;
         }
@@ -52,6 +61,8 @@ public class HotInfoController {
         switch (type) {
             case "health":
                 return getHealthCNarctVo(articleId);
+            case "zhihu":
+                return getZhiHuVo(articleId);
             default:
                 return null;
         }
@@ -99,7 +110,7 @@ public class HotInfoController {
 
     private static R getHealthCN(String start, String size, String arctype) {
         List<ArticleForm> articleList = new ArrayList<>();
-        Map<String , Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("start", start);
         map.put("size", size);
         map.put("arctype", arctype);
@@ -111,7 +122,7 @@ public class HotInfoController {
             ArticleForm articleForm = new ArticleForm();
             JSONObject article = array.getJSONObject(i);
             articleForm.setAuthor(article.getString("author"));
-            articleForm.setId(article.getInteger("id"));
+            articleForm.setId(article.getString("id"));
             articleForm.setTitle(article.getString("title"));
             articleForm.setContent(article.getString("content"));
             articleForm.setCover(HEALTH_CN_HOST + article.getString("litpic"));
@@ -122,5 +133,86 @@ public class HotInfoController {
         }
 
         return R.ok().put("data", articleList);
+    }
+
+    private static R getHeadlines(String start, String size, Integer arctype) {
+        List<ArticleForm> articleList = new ArrayList<>();
+        String host = "http://m.toutiao.com";
+        //0 热点新闻 1 社会新闻 2 娱乐新闻 3体育新闻 4美文 散文 5科技 6 财经 7 时尚
+        String path;
+        switch (arctype) {
+            case 0:
+                path = "/list/?tag=news_hot&ac=wap&count=20&format=json_raw&as=A1A59982B911729&cp=5929E12752796E1&min_behot_time=0";
+                break;
+            case 1:
+                path = "/list/?tag=news_society&ac=wap&count=20&format=json_raw&as=A195B9F229018CD&cp=592991783C9D8E1&min_behot_time=0";
+                break;
+            case 2:
+                path = "/list/?tag=news_entertainment&ac=wap&count=20&format=json_raw&as=A1C51992996195E&cp=5929D119B58EFE1&min_behot_time=0";
+                break;
+            case 3:
+                path = "/list/?tag=news_sports&ac=wap&count=20&format=json_raw&as=A1054902B911A1E&cp=592991AA81AEAE1&min_behot_time=0";
+                break;
+            case 4:
+                path = "/list/?tag=news_essay&ac=wap&count=20&format=json_raw&as=A195495279C19DE&cp=5929C1F91DFEEE1&min_behot_time=0";
+                break;
+            case 5:
+                path = "/list/?tag=news_tech&ac=wap&count=20&format=json_raw&as=A1854972BABC6FF&cp=592A9CC64FCFAE1&max_behot_time=0";
+                break;
+            case 6:
+                path = "/list/?tag=news_finance&ac=wap&count=20&format=json_raw&as=A145E9025A6C78B&cp=592ACC87687B1E1&max_behot_time=0";
+                break;
+            case 7:
+                path = "/list/?tag=news_fashion&ac=wap&count=20&format=json_raw&as=A1353902AA9C7F9&cp=592ADCD7CF89AE1&max_behot_time=0";
+                break;
+            default:
+                path = "/list/?tag=news_hot&ac=wap&count=20&format=json_raw&as=A1A59982B911729&cp=5929E12752796E1&min_behot_time=0";
+
+        }
+        String s = HttpUtil.get(host + path);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONArray array = (JSONArray) jsonObject.get("data");
+//        for (int i = 0; i < array.size(); i++) {
+//            ArticleForm articleForm = new ArticleForm();
+//            JSONObject article = array.getJSONObject(i);
+//            articleForm.setId(article.getString("item_id"));
+//            articleForm.setAuthor(article.getString("media_name"));
+//            articleForm.setTitle(article.getString("title"));
+//            articleForm.setDescription(article.getString("abstract"));
+////            articleForm.setCover(article.getString());
+//        }
+        return null;
+    }
+
+    private static R getZhiHuList() {
+        List<ArticleForm> articleList = new ArrayList<>();
+        String s = HttpUtil.get(ZHIHU_LIST);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        JSONArray array = (JSONArray) data.get("stories");
+        for (int i = 0; i < array.size(); i++) {
+            ArticleForm articleForm = new ArticleForm();
+            JSONObject article = array.getJSONObject(i);
+            articleForm.setId(article.getString("id"));
+            articleForm.setAuthor("知乎日报");
+            articleForm.setTitle(article.getString("title"));
+            articleForm.setDescription(null);
+            articleForm.setCover((String) article.getJSONArray("images").get(0));
+            articleForm.setPubdate(data.getDate("data"));
+            articleForm.setSource("知乎日报");
+            articleList.add(articleForm);
+        }
+        return R.ok().put("data", articleList);
+    }
+
+
+    private static R getZhiHuVo(String articleId) {
+        String s = HttpUtil.get(ZHIHU_VO + articleId);
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.setTitle(data.getString("title"));
+        articleVo.setContent(data.getString("body"));
+        return R.ok().put("data", articleVo);
     }
 }

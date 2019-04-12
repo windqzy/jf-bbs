@@ -240,11 +240,17 @@
     },
     created() {
       this.articleId = this.$route.query.articleId;
-      this.getArticleVo();
+      this.labelId = this.$route.query.labelId;
+      this.getArticleVo(this.labelId);
     },
     methods: {
-      getArticleVo() {
-        let type = 'health';
+      getArticleVo(labelId) {
+        let type;
+        switch (labelId) {
+          case '0' : type = 'health'; console.log(labelId); break;
+          case '2' : type = 'zhihu'; console.log(labelId);break;
+        }
+
         world.getInfo(type, this.articleId).then(res => {
           this.articleInfo = res.data;
         })

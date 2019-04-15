@@ -22,7 +22,7 @@
     },
     mounted() {
       let _this = this;
-      layui.use(['layer', 'util'], function () {
+      layui.use(['layer', 'util', 'element'], function () {
         _this.layUtil = layui.util;
         _this.layUtil.fixbar({
           bar1: '&#xe642;'

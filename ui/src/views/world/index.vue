@@ -221,7 +221,6 @@
       getArticleList(index, key) {
         this.activeTag = index;
         this.articleTag = key;
-        console.log(this.$route.query.id)
         switch (this.$route.query.id) {
           case "0": this.getHealthCNList(); break;
           case "1": this.getKrList(); break;
@@ -295,13 +294,28 @@
         })
       },
       nextPage() {
-        this.pageIndex += 1;
-        let params = {
-          start: this.pageIndex,
-          size: this.pageSize,
-          arctype: this.articleTag
-        };
-        let type = 'health';
+        let params = {};
+        let type;
+        switch (this.$route.query.id) {
+          case "0":
+            this.pageIndex += 1;
+            params = {
+              start: this.pageIndex,
+              size: this.pageSize,
+              arctype: this.articleTag
+            };
+            type = 'health';
+          break;
+          case "1":
+            this.pageIndex += 1;
+            params = {
+              start: this.articleList[this.articleList.length - 1].id,
+              size: this.pageSize,
+              arctype: this.articleTag
+            };
+            type = 'kr';
+          break;
+        }
         this.loading = true;
         world.getList(type, params).then(res => {
           res.data.map(item => {

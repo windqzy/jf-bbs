@@ -218,7 +218,7 @@ public class HotInfoController {
     private static R getKrList(String start, String size, String arctype) {
         List<ArticleForm> articleList = new ArrayList<>();
         String s;
-        if (start == "1") {
+        if (start.equals("1")) {
             s = HttpUtil.get(KR_LIST + "&feed_id=" + arctype + "&per_page=" + size);
         } else {
             s = HttpUtil.get(KR_LIST + "&feed_id=" + arctype + "&b_id=" + start + "&per_page=" + size);
@@ -229,7 +229,7 @@ public class HotInfoController {
         for (int i = 0; i < array.size(); i++) {
             ArticleForm articleForm = new ArticleForm();
             JSONObject article = array.getJSONObject(i);
-            articleForm.setId(article.getString("entity_id"));
+            articleForm.setId(article.getString("id"));
 
             JSONObject extra = (JSONObject) article.get("extra");
             JSONObject author = (JSONObject) extra.get("author_info");

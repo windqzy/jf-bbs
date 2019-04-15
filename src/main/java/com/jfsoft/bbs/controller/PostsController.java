@@ -11,7 +11,9 @@ import com.jfsoft.bbs.es.service.EsSearchService;
 import com.jfsoft.bbs.service.BbsGradeService;
 import com.jfsoft.bbs.service.BbsLogService;
 import com.jfsoft.bbs.service.BbsPostsService;
+import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -134,7 +136,11 @@ public class PostsController extends AbstractController {
                         .addProductDesc(bbsPosts.getContent())
                         .addCreateTime(bbsPosts.getInitTime())
                         .builder();
-                esSearchService.save(productDocument);
+                try {
+                    esSearchService.save(productDocument);
+                } catch (NoNodeAvailableException e) {
+                    e.printStackTrace();
+                }
             } else {
                 bbsPostsService.updateById(bbsPosts);
 

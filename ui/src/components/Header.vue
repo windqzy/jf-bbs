@@ -146,7 +146,7 @@
       <div class="layui-container">
         <ul class="layui-clear" style="margin-left: 16px;">
           <li :class='{"layui-this":activeLabel2==0}'><a style="cursor: pointer" @click="getPost2(0, 0)">医疗</a></li>
-          <!--<li :class='{"layui-this":activeLabel2==1}'><a style="cursor: pointer" @click="getPost2(1, 1)">今日头条</a></li>-->
+          <li :class='{"layui-this":activeLabel2==1}'><a style="cursor: pointer" @click="getPost2(1, 1)">36氪</a></li>
           <li :class='{"layui-this":activeLabel2==2}'><a style="cursor: pointer" @click="getPost2(2, 2)">知乎日报</a></li>
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">建议</a></li>-->
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">公告</a></li>-->
@@ -232,6 +232,7 @@
       this.getAllLabel();
       this.userInfo = this.$store.getters.user;
       // this.getUser();
+      this.activeLabel2 = this.$route.query.id;
     },
     mounted() {
       let _this = this;
@@ -282,7 +283,8 @@
             this.$router.push('/gitter/index?id=2');
             break;
           case 3:
-            this.$router.push('/world/index?id=2');
+            this.$router.push('/world/index?id=0');
+            this.activeLabel2 = '0';
             break;
         }
       },

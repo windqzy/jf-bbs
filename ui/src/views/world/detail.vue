@@ -248,6 +248,7 @@
         let type;
         switch (labelId) {
           case '0' : type = 'health'; console.log(labelId); break;
+          case '1' : type = 'kr'; console.log(labelId); break;
           case '2' : type = 'zhihu'; console.log(labelId);break;
         }
 

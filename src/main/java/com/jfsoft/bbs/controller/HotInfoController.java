@@ -8,9 +8,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.form.ArticleForm;
 import com.jfsoft.bbs.form.ArticleVo;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,6 +43,8 @@ public class HotInfoController {
     private static final String ZHIHU_LIST = TX_HOST2 + "/zhihu_news";
     private static final String ZHIHU_VO = TX_HOST2 + "/zhihu_news_detail?id=";
 
+    private static final String KR_LIST = "https://36kr.com/pp/api/feed-stream";
+
     /**
      * @param type 类型   health-cn
      * @return
@@ -50,6 +56,8 @@ public class HotInfoController {
                 return getHealthCN(start, size, arctype);
             case "zhihu":
                 return getZhiHuList();
+            case "kr":
+                return getKrList(start, size, arctype);
             default:
                 return null;
         }
@@ -63,6 +71,8 @@ public class HotInfoController {
                 return getHealthCNarctVo(articleId);
             case "zhihu":
                 return getZhiHuVo(articleId);
+            case "kr":
+                return getKrVo(articleId);
             default:
                 return null;
         }
@@ -205,6 +215,52 @@ public class HotInfoController {
         return R.ok().put("data", articleList);
     }
 
+    private static R getKrList(String start, String size, String arctype) {
+        List<ArticleForm> articleList = new ArrayList<>();
+        String s;
+        if (start == "1") {
+            s = HttpUtil.get(KR_LIST + "&feed_id=" + arctype + "&per_page=" + size);
+        } else {
+            s = HttpUtil.get(KR_LIST + "&feed_id=" + arctype + "&b_id=" + start + "&per_page=" + size);
+        }
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        JSONArray array = (JSONArray) data.get("items");
+        for (int i = 0; i < array.size(); i++) {
+            ArticleForm articleForm = new ArticleForm();
+            JSONObject article = array.getJSONObject(i);
+            articleForm.setId(article.getString("entity_id"));
+
+            JSONObject extra = (JSONObject) article.get("extra");
+            JSONObject author = (JSONObject) extra.get("author_info");
+
+            articleForm.setAuthor(author.getString("nickname"));
+            articleForm.setTitle(article.getString("title"));
+            articleForm.setDescription(article.getString("summary"));
+            articleForm.setCover((String) article.getJSONArray("images").get(0));
+            articleForm.setPubdate(article.getDate("published_at"));
+            articleForm.setSource("36氪");
+            articleForm.setPubdateStr(article.getString("updated_at"));
+            articleList.add(articleForm);
+        }
+        return R.ok().put("data", articleList);
+    }
+
+    private static R getKrVo(String articleId) {
+        String url = "https://36kr.com/p/";
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url + articleId).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Elements body = doc.select(".article-mian-content");
+        Elements title = doc.select(".article-title");
+        ArticleVo articleVo = new ArticleVo();
+//        articleVo.setTitle(title.text());
+        articleVo.setContent(body.toString());
+        return R.ok().put("data", articleVo);
+    }
 
     private static R getZhiHuVo(String articleId) {
         String s = HttpUtil.get(ZHIHU_VO + articleId);

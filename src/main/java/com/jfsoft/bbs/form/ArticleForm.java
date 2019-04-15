@@ -25,6 +25,8 @@ public class ArticleForm {
 
     private String content;
 
+    private String pubdateStr;
+
     public String getId() {
         return id;
     }
@@ -87,5 +89,13 @@ public class ArticleForm {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getPubdateStr() {
+        return pubdateStr;
+    }
+
+    public void setPubdateStr(String pubdateStr) {
+        this.pubdateStr = pubdateStr;
     }
 }

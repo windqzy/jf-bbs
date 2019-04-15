@@ -6,7 +6,7 @@
           <el-row slot="header" type="flex" justify="space-between" v-if="labelId != 2">
             <div class="layuiadmin-card-link fly-filter">
               <a v-for="(tag, index) in tagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
-                 @click="getHealthCNList(index, tag.key)">{{tag.value}}</a>
+                 @click="getArticleList(index, tag.key)">{{tag.value}}</a>
               <!--<span class="fly-mid"></span>-->
               <!--<a :class='{"layui-this":activeTag == 1}' @click="getHealthCNList(1, 'weekly')">本周最热</a>-->
               <!--<span class="fly-mid"></span>-->
@@ -38,8 +38,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="8">
-
+      <el-col :xs="24" :sm="8" v-show="$route.query.id == 0">
         <div class="fly-panel">
           <h3 class="fly-panel-title">72小时热文</h3>
           <ul class="fly-panel-main fly-list-static">
@@ -160,6 +159,39 @@
             value: '时尚'
           },
         ],
+        krTagList: [
+          {
+            key: 303,
+            value: '最新'
+          },{
+            key: 304,
+            value: '推荐'
+          },{
+            key: 305,
+            value: '创投'
+          },{
+            key: 306,
+            value: '科技'
+          },{
+            key: 307,
+            value: '生活'
+          },{
+            key: 309,
+            value: '职场'
+          },{
+            key: 310,
+            value: '出行'
+          },{
+            key: 325,
+            value: '创新'
+          },{
+            key: 311,
+            value: '房产'
+          },{
+            key: 312,
+            value: '其他'
+          },
+        ],
         articleList: [],
         articleTag: [],
         activeTag: 0,
@@ -176,29 +208,43 @@
       this.getHealthCN20();
       this.tagList = this.healthTagList;
       this.getHealthCNList(0, 1013)
+
+      // this.activeTag = this.$route.query.id;
+      this.changeLabel(this.$route.query.id);
     },
     watch: {
       '$route.query.id'(val) {
         this.changeLabel(val);
-        if (val == 0) {
-          this.tagList = this.healthTagList;
-        } else {
-          this.tagList = this.ttTagList;
-        }
       }
     },
     methods: {
+      getArticleList(index, key) {
+        this.activeTag = index;
+        this.articleTag = key;
+        console.log(this.$route.query.id)
+        switch (this.$route.query.id) {
+          case "0": this.getHealthCNList(); break;
+          case "1": this.getKrList(); break;
+        }
+      },
       changeLabel(e) {
         this.labelId = e;
         if (e == 0) {
-          this.getHealthCNList(0, 1013)
+          this.tagList = this.healthTagList;
+          this.activeTag = 0;
+          this.articleTag = 1013;
+          this.getHealthCNList()
+        } else if (e == 1) {
+          this.activeTag = 0;
+          this.articleTag = 303;
+          this.tagList = this.krTagList;
+          this.getKrList();
         } else if (e == 2) {
+          this.tagList = this.ttTagList;
           this.getZhiHuList();
         }
       },
-      getHealthCNList(index, key) {
-        this.activeTag = index;
-        this.articleTag = key;
+      getHealthCNList() {
         let type = 'health';
         let params = {
           start: this.pageIndex,
@@ -217,11 +263,25 @@
           start: null,
           size: null,
           arctype: null
-        }
+        };
         this.loading = true;
         world.getList(type, params).then(res => {
           this.loading = false;
           this.articleList = res.data;
+        })
+      },
+      getKrList() {
+        let type = 'kr';
+        let params = {
+          start: this.pageIndex,
+          size: this.pageSize,
+          arctype: this.articleTag
+        };
+        this.loading = true;
+        world.getList(type, params).then(res => {
+          this.loading = false;
+          this.articleList = res.data;
+          // console.log(res.data)
         })
       },
       getHealthCN72() {

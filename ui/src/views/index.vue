@@ -550,7 +550,7 @@
       //获取该用户今日签到与否
       getBool() {
         sign.getBool().then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.isSign = res.data.isSign;
           this.signCount = res.data.count;
         })

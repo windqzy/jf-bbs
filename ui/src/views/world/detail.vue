@@ -1,5 +1,5 @@
 <template>
-  <div class="layui-container" style="top: 15px;">
+  <div class="layui-container">
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md8 content detail">
         <div class="fly-panel detail-box">
@@ -45,7 +45,7 @@
           <!--<span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>-->
           <!--</div>-->
           <!--</div>-->
-          <div class="detail-body photos" v-html="articleInfo.content">
+          <div class="detail-body photos" v-html="articleInfo.content" v-loading="loading">
           </div>
         </div>
 
@@ -235,7 +235,8 @@
     data() {
       return {
         articleId: '',
-        articleInfo: ''
+        articleInfo: '',
+        loading: false
       }
     },
     created() {
@@ -247,13 +248,17 @@
       getArticleVo(labelId) {
         let type;
         switch (labelId) {
-          case '0' : type = 'health'; console.log(labelId); break;
-          case '1' : type = 'kr'; console.log(labelId); break;
-          case '2' : type = 'zhihu'; console.log(labelId);break;
+          case '0' : type = 'health'; break;
+          case '1' : type = 'kr'; break;
+          case '2' : type = 'zhihu'; break;
+          case '3' : type = 'infoQ'; break;
         }
-
+        this.loading = true;
         world.getInfo(type, this.articleId).then(res => {
+          this.loading = false;
           this.articleInfo = res.data;
+        }).catch(() => {
+          this.loading = false;
         })
       }
     }

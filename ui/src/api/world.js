@@ -29,3 +29,10 @@ export function getHealthCN20() {
   })
 }
 
+export function getInfoQIndex() {
+  return request({
+    url: '/hot/getInfoQIndex',
+    method: 'GET',
+  })
+}
+

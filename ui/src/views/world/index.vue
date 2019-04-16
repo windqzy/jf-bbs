@@ -72,6 +72,55 @@
           <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
         </div>
       </el-col>
+
+      <el-col :xs="24" :sm="8" v-show="$route.query.id == 3">
+        <div class="fly-panel">
+          <div class="fly-panel-title">
+            热点
+            <div style="float: right" class="layuiadmin-card-link fly-filter">
+              <a style="cursor: pointer" :class='{"layui-this":activeTime == 0}' @click="getInfoQIndex(0)">7天</a>
+              <i class="fly-mid"></i>
+              <a style="cursor: pointer" :class='{"layui-this":activeTime == 1}' @click="getInfoQIndex(1)">1个月</a>
+              <i class="fly-mid"></i>
+              <a style="cursor: pointer" :class='{"layui-this":activeTime == 2}' @click="getInfoQIndex(2)">6个月</a>
+            </div>
+          </div>
+          <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+            <!--<el-tab-pane label="7天" name="first">7天</el-tab-pane>-->
+            <!--<el-tab-pane label="1个月" name="second">1个月</el-tab-pane>-->
+            <!--<el-tab-pane label="6个月" name="third">6个月</el-tab-pane>-->
+          <!--</el-tabs>-->
+          <ul class="fly-panel-main fly-list-static">
+            <li v-for="item in infoQIndexList">
+              <!--<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>-->
+              <router-link :to="'/world/detail?articleId=' + item.uuid + '&labelId=3'">{{item.article_title}}
+              </router-link>
+            </li>
+          </ul>
+        </div>
+
+        <!--<div class="fly-panel">-->
+          <!--<h3 class="fly-panel-title">快讯</h3>-->
+          <!--<ul class="fly-panel-main fly-list-static">-->
+            <!--<li v-for="health in health20">-->
+              <!--&lt;!&ndash;<a href="http://fly.layui.com/jie/4281/" target="_blank">{{item.title}}</a>&ndash;&gt;-->
+              <!--<router-link :to="'/world/detail?articleId=' + health.id">{{health.title}}-->
+              <!--</router-link>-->
+            <!--</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+
+        <!--<el-card shadow="never">-->
+        <!--<div slot="header">72小时热文</div>-->
+        <!--<ul>-->
+        <!--<li v-for="health in health72">{{health.title}}</li>-->
+        <!--</ul>-->
+        <!--</el-card>-->
+        <div class="fly-panel mt8" style="padding: 20px 0; text-align: center;">
+          <img src="../../../static/images/weixin.jpg" style="max-width: 100%;" alt="layui">
+          <p style="position: relative; color: #666;">微信扫码关注 金风推特 公众号</p>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -83,6 +132,7 @@
     name: "index",
     data() {
       return {
+        activeTime: 0,
         tagList: [],
         healthTagList: [
           {
@@ -163,33 +213,51 @@
           {
             key: 303,
             value: '最新'
-          },{
+          }, {
             key: 304,
             value: '推荐'
-          },{
+          }, {
             key: 305,
             value: '创投'
-          },{
+          }, {
             key: 306,
             value: '科技'
-          },{
+          }, {
             key: 307,
             value: '生活'
-          },{
+          }, {
             key: 309,
             value: '职场'
-          },{
+          }, {
             key: 310,
             value: '出行'
-          },{
+          }, {
             key: 325,
             value: '创新'
-          },{
+          }, {
             key: 311,
             value: '房产'
-          },{
+          }, {
             key: 312,
             value: '其他'
+          },
+        ],
+        infoTagList: [
+          {
+            key: 8,
+            value: '架构'
+          }, {
+            key: 11,
+            value: '云计算'
+          }, {
+            key: 31,
+            value: 'AI'
+          }, {
+            key: 38,
+            value: '运维'
+          }, {
+            key: 33,
+            value: '前端'
           },
         ],
         articleList: [],
@@ -200,16 +268,12 @@
         health72: [],
         health20: [],
         loading: false,
-        labelId: 0
+        labelId: 0,
+        infoQIndexList: []
       }
     },
     created() {
-      this.getHealthCN72();
-      this.getHealthCN20();
       this.tagList = this.healthTagList;
-      this.getHealthCNList(0, 1013)
-
-      // this.activeTag = this.$route.query.id;
       this.changeLabel(this.$route.query.id);
     },
     watch: {
@@ -222,8 +286,15 @@
         this.activeTag = index;
         this.articleTag = key;
         switch (this.$route.query.id) {
-          case "0": this.getHealthCNList(); break;
-          case "1": this.getKrList(); break;
+          case "0":
+            this.getHealthCNList();
+            break;
+          case "1":
+            this.getKrList();
+            break;
+          case "3":
+            this.getInfoQList();
+            break;
         }
       },
       changeLabel(e) {
@@ -233,6 +304,8 @@
           this.activeTag = 0;
           this.articleTag = 1013;
           this.getHealthCNList()
+          this.getHealthCN72();
+          this.getHealthCN20();
         } else if (e == 1) {
           this.activeTag = 0;
           this.articleTag = 303;
@@ -241,6 +314,12 @@
         } else if (e == 2) {
           this.tagList = this.ttTagList;
           this.getZhiHuList();
+        } else if (e == 3) {
+          this.activeTag = 0;
+          this.articleTag = 8;
+          this.tagList = this.infoTagList;
+          this.getInfoQList();
+          this.getInfoQIndex(0);
         }
       },
       getHealthCNList() {
@@ -269,6 +348,20 @@
           this.articleList = res.data;
         })
       },
+      getInfoQList() {
+        let type = 'infoQ';
+        let params = {
+          start: this.pageIndex,
+          size: this.pageSize,
+          arctype: this.articleTag
+        };
+        this.loading = true;
+        world.getList(type, params).then(res => {
+          this.loading = false;
+          this.articleList = res.data;
+          // console.log(res.data)
+        })
+      },
       getKrList() {
         let type = 'kr';
         let params = {
@@ -293,6 +386,18 @@
           this.health20 = res.data;
         })
       },
+      getInfoQIndex(index) {
+        this.activeTime = index;
+        world.getInfoQIndex().then(res => {
+          if (index == 0) {
+            this.infoQIndexList = res.data.hot_day_list;
+          } else if (index == 1) {
+            this.infoQIndexList = res.data.hot_month_list;
+          } else {
+            this.infoQIndexList = res.data.hot_year_list;
+          }
+        })
+      },
       nextPage() {
         let params = {};
         let type;
@@ -305,16 +410,25 @@
               arctype: this.articleTag
             };
             type = 'health';
-          break;
+            break;
           case "1":
             this.pageIndex += 1;
             params = {
-              start: this.articleList[this.articleList.length - 1].id,
+              start: this.articleList[this.articleList.length - 1].code,
               size: this.pageSize,
               arctype: this.articleTag
             };
             type = 'kr';
-          break;
+            break;
+          case "3":
+            this.pageIndex += 1;
+            params = {
+              start: this.articleList[this.articleList.length - 1].code,
+              size: this.pageSize,
+              arctype: this.articleTag
+            };
+            type = 'infoQ';
+            break;
         }
         this.loading = true;
         world.getList(type, params).then(res => {

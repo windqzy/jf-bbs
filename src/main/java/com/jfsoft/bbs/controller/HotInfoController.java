@@ -1,6 +1,7 @@
 package com.jfsoft.bbs.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author chenxc
@@ -45,6 +43,10 @@ public class HotInfoController {
 
     private static final String KR_LIST = "https://36kr.com/pp/api/feed-stream";
 
+    private static final String INFO_Q_LIST = "https://www.infoq.cn/public/v1/article/getList";
+    private static final String INFO_Q_VO = "https://www.infoq.cn/public/v1/article/getDetail";
+    private static final String INFO_Q_INDEX = "https://www.infoq.cn/public/v1/article/getIndexList";
+
     /**
      * @param type 类型   health-cn
      * @return
@@ -58,6 +60,8 @@ public class HotInfoController {
                 return getZhiHuList();
             case "kr":
                 return getKrList(start, size, arctype);
+            case "infoQ":
+                return getInfoQList(start, size, arctype);
             default:
                 return null;
         }
@@ -73,6 +77,8 @@ public class HotInfoController {
                 return getZhiHuVo(articleId);
             case "kr":
                 return getKrVo(articleId);
+            case "infoQ":
+                return getInfoQVo(articleId);
             default:
                 return null;
         }
@@ -85,6 +91,17 @@ public class HotInfoController {
         String s = HttpUtil.get(HEALTH_CN_VO + jsonObject);
         JSONObject result = (JSONObject) JSON.parse(s);
         JSONObject data = (JSONObject) result.get("data");
+        return R.ok().put("data", data);
+    }
+
+    @RequestMapping("/getInfoQIndex")
+    public R getInfoQIndex() {
+        String s = HttpRequest.get(INFO_Q_INDEX)
+                .header("Referer", "https://www.infoq.cn/")
+                .execute()
+                .body();
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) jsonObject.get("data");
         return R.ok().put("data", data);
     }
 
@@ -182,15 +199,6 @@ public class HotInfoController {
         String s = HttpUtil.get(host + path);
         JSONObject jsonObject = (JSONObject) JSON.parse(s);
         JSONArray array = (JSONArray) jsonObject.get("data");
-//        for (int i = 0; i < array.size(); i++) {
-//            ArticleForm articleForm = new ArticleForm();
-//            JSONObject article = array.getJSONObject(i);
-//            articleForm.setId(article.getString("item_id"));
-//            articleForm.setAuthor(article.getString("media_name"));
-//            articleForm.setTitle(article.getString("title"));
-//            articleForm.setDescription(article.getString("abstract"));
-////            articleForm.setCover(article.getString());
-//        }
         return null;
     }
 
@@ -229,11 +237,10 @@ public class HotInfoController {
         for (int i = 0; i < array.size(); i++) {
             ArticleForm articleForm = new ArticleForm();
             JSONObject article = array.getJSONObject(i);
-            articleForm.setId(article.getString("id"));
-
+            articleForm.setId(article.getString("entity_id"));
+            articleForm.setCode(article.getString("id"));
             JSONObject extra = (JSONObject) article.get("extra");
             JSONObject author = (JSONObject) extra.get("author_info");
-
             articleForm.setAuthor(author.getString("nickname"));
             articleForm.setTitle(article.getString("title"));
             articleForm.setDescription(article.getString("summary"));
@@ -257,8 +264,23 @@ public class HotInfoController {
         Elements body = doc.select(".article-mian-content");
         Elements title = doc.select(".article-title");
         ArticleVo articleVo = new ArticleVo();
-//        articleVo.setTitle(title.text());
         articleVo.setContent(body.toString());
+        return R.ok().put("data", articleVo);
+    }
+
+    private static R getInfoQVo(String articleId) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("uuid", articleId);
+        String s = HttpRequest.post(INFO_Q_VO)
+                .header("Referer", "https://www.infoq.cn/article/" + articleId)
+                .body(JSON.toJSONString(body))
+                .execute()
+                .body();
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.setContent(data.getString("content"));
+        articleVo.setTitle(data.getString("article_title"));
         return R.ok().put("data", articleVo);
     }
 
@@ -270,5 +292,53 @@ public class HotInfoController {
         articleVo.setTitle(data.getString("title"));
         articleVo.setContent(data.getString("body"));
         return R.ok().put("data", articleVo);
+    }
+
+    private static R getInfoQList(String start, String size, String arctype) {
+        List<ArticleForm> articleList = new ArrayList<>();
+        String referer = null;
+        int type = 1;
+        Map<String, Object> body = new HashMap<>();
+        if (arctype.equals("8")) {
+            referer = "https://www.infoq.cn/topic/architecture";
+        } else if (arctype.equals("11")) {
+            referer = "https://www.infoq.cn/topic/cloud-computing";
+        } else if (arctype.equals("31")) {
+            referer = "https://www.infoq.cn/topic/AI";
+        } else if (arctype.equals("38")) {
+            referer = "https://www.infoq.cn/topic/operation";
+        } else if (arctype.equals("33")) {
+            referer = "https://www.infoq.cn/topic/Front-end";
+        }
+
+        body.put("type", type);
+        body.put("size", Integer.parseInt(size));
+        body.put("id", Integer.parseInt(arctype));
+        if (!start.equals("1")) {
+            body.put("score", Long.parseLong(start));
+        }
+
+        String s = HttpRequest.post(INFO_Q_LIST)
+                .header("Referer", referer)
+                .body(JSON.toJSONString(body))
+                .execute()
+                .body();
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONArray array = (JSONArray) jsonObject.get("data");
+        for (int i = 0; i < array.size(); i++) {
+            ArticleForm articleForm = new ArticleForm();
+            JSONObject article = array.getJSONObject(i);
+            articleForm.setId(article.getString("uuid"));
+            articleForm.setCode(article.getString("score"));
+//            JSONObject author = (JSONObject) ((JSONArray) article.get("author")).get(0);
+            articleForm.setAuthor("InfoQ");
+            articleForm.setTitle(article.getString("article_title"));
+            articleForm.setDescription(article.getString("article_summary"));
+            articleForm.setCover(article.getString("article_cover"));
+            articleForm.setPubdate(DateUtil.date(article.getLong("publish_time")));
+            articleForm.setSource("InfoQ");
+            articleList.add(articleForm);
+        }
+        return R.ok().put("data", articleList);
     }
 }

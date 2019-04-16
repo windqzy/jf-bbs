@@ -21,21 +21,21 @@
       }
     },
     mounted() {
-      let _this = this;
-      layui.use(['layer', 'util', 'element'], function () {
-        _this.layUtil = layui.util;
-        _this.layUtil.fixbar({
-          bar1: '&#xe642;'
-          , bgcolor: '#009688'
-          , click: function (type) {
-            if (type === 'bar1') {
-              _this.$router.push('/add/index');
-              // layer.msg('打开 index.js，开启发表新帖的路径');
-              //location.href = 'jie/add.html';
-            }
-          }
-        });
-      });
+      // let _this = this;
+      // layui.use(['layer', 'util', 'element'], function () {
+      //   _this.layUtil = layui.util;
+      //   _this.layUtil.fixbar({
+      //     bar1: '&#xe642;'
+      //     , bgcolor: '#009688'
+      //     , click: function (type) {
+      //       if (type === 'bar1') {
+      //         _this.$router.push('/add/index');
+      //         // layer.msg('打开 index.js，开启发表新帖的路径');
+      //         //location.href = 'jie/add.html';
+      //       }
+      //     }
+      //   });
+      // });
     }
   }
 </script>

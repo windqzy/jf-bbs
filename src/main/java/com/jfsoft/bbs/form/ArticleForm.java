@@ -11,6 +11,8 @@ public class ArticleForm {
 
     private String id;
 
+    private String code;
+
     private String title;
 
     private String source;
@@ -97,5 +99,13 @@ public class ArticleForm {
 
     public void setPubdateStr(String pubdateStr) {
         this.pubdateStr = pubdateStr;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div id="header">
-    <div class="fly-header layui-bg-black">
+  <div id="header" :style="{'margin-top':isChildMenu || isChildMenu2?'60px':'0'}">
+    <div class="fly-header layui-bg-black nav-show" v-show="isNavShow">
       <div class="layui-container">
         <a class="fly-logo" @click="toNav(0)" style="cursor: pointer">
           <img src="../../static/images/logo.png" alt="layui" class="layui-hide-xs">
@@ -101,8 +101,8 @@
       </div>
     </div>
     <!-- 板块 -->
-    <div class="fly-panel fly-column" v-show="isChildMenu">
-      <div class="layui-container">
+    <div class="fly-panel fly-column fly-header" v-show="isChildMenu" :style="{'top': isNavShow?'60px':'0'}">
+      <div class="layui-container child-menu">
         <ul class="layui-clear">
           <li class="layui-hide-xs" :class='{"layui-this":activeLabel==-1}'>
             <a style="cursor: pointer;" @click="getPost(0, -1)">推荐</a>
@@ -134,20 +134,21 @@
           <span class="fly-search"><i class="layui-icon"></i></span>
           <a @click="toAdd" class="layui-btn">发表新帖</a>
         </div>
-        <div class="layui-hide-sm layui-show-xs-block"
-             style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
-          <a @click="toAdd" class="layui-btn">发表新帖</a>
-        </div>
+        <!--<div class="layui-hide-sm layui-show-xs-block"-->
+        <!--style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
+        <!--<a @click="toAdd" class="layui-btn">发表新帖</a>-->
+        <!--</div>-->
       </div>
     </div>
 
     <!-- 写死的 -->
-    <div class="fly-panel fly-column" v-show="isChildMenu2">
+    <div class="fly-panel fly-column fly-header" v-show="isChildMenu2" :style="{'top': isNavShow?'60px':'0'}">
       <div class="layui-container">
         <ul class="layui-clear" style="margin-left: 16px;">
           <li :class='{"layui-this":activeLabel2==0}'><a style="cursor: pointer" @click="getPost2(0, 0)">医疗</a></li>
           <li :class='{"layui-this":activeLabel2==1}'><a style="cursor: pointer" @click="getPost2(1, 1)">36氪</a></li>
           <li :class='{"layui-this":activeLabel2==2}'><a style="cursor: pointer" @click="getPost2(2, 2)">知乎日报</a></li>
+          <li :class='{"layui-this":activeLabel2==3}'><a style="cursor: pointer" @click="getPost2(3, 3)">IT</a></li>
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">建议</a></li>-->
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">公告</a></li>-->
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">动态</a></li>-->
@@ -182,6 +183,7 @@
     name: "Header",
     data() {
       return {
+        $: null,
         isPhoneMenu: false,
         phoneMenuName: '论坛',
         labelList: [],
@@ -191,8 +193,9 @@
         isChildMenu2: true,
         userInfo: '',
         searchText: '',
-        activeNav: 0
+        activeNav: 0,
         // defaultAvatar: require('../../static/images/avatar/4.jpg')
+        isNavShow: true
       }
     },
     computed: {
@@ -236,11 +239,25 @@
     },
     mounted() {
       let _this = this;
-      layui.use('element', function () {
+      layui.use(['element', 'util'], function () {
         let element = layui.element;
-        let $ = layui.jquery;
+        _this.$ = layui.jquery;
+        let layUtil = layui.util;
+        layUtil.fixbar({
+          bar1: '&#xe642;'
+          , bgcolor: '#009688'
+          , click: function (type) {
+            if (type === 'bar1') {
+              _this.$router.push('/add/index');
+              // layer.msg('打开 index.js，开启发表新帖的路径');
+              //location.href = 'jie/add.html';
+            } else {
+              _this.isNavShow = true;
+            }
+          }
+        });
         //搜索
-        $('.fly-search').on('click', function () {
+        _this.$('.fly-search').on('click', function () {
           layer.open({
             type: 1
             , title: false
@@ -249,7 +266,7 @@
             , shadeClose: true
             , maxWidth: 10000
             , skin: 'fly-layer-search'
-            , content: $('#searchBox')
+            , content: _this.$('#searchBox')
             , success: function (layero) {
               var input = layero.find('input');
               input.focus();
@@ -266,8 +283,82 @@
           })
         });
       });
+      // 事件监听滚动条
+      // window.addEventListener('scroll', this.watchScroll)
+      let startY;
+      let scrollFunc = function (e) {
+        var direct = 0;
+        e = e || window.event;
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if (scrollTop > 200) {
+          _this.$('.layui-fixbar-top')[0].style.display = 'block';
+        } else {
+          _this.$('.layui-fixbar-top')[0].style.display = 'none';
+        }
+        if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
+          if (e.wheelDelta > 0) { //当滑轮向上滚动时
+            // alert("滑轮向上滚动");
+            _this.isNavShow = true;
+          }
+          if (e.wheelDelta < 0) { //当滑轮向下滚动时
+            // alert("滑轮向下滚动");
+            _this.isNavShow = false;
+          }
+        } else if (e.detail) {  //Firefox滑轮事件
+          if (e.detail > 0) { //当滑轮向上滚动时
+
+            _this.isNavShow = true;
+          }
+          if (e.detail < 0) { //当滑轮向下滚动时
+            _this.isNavShow = false;
+          }
+        }
+      }
+      let touchMoveFunc = function (e) {
+        // e.preventDefault();
+        // let touch = e.touches[0];
+        // y = touch.pageY - startY;
+        // console.log(e.touches[0].pageY , startY)
+        if(e.touches[0].pageY - startY > 0) {
+          _this.isNavShow = true;
+        } else {
+          _this.isNavShow = false;
+        }
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if (scrollTop > 200) {
+          _this.$('.layui-fixbar-top')[0].style.display = 'block';
+        } else {
+          _this.$('.layui-fixbar-top')[0].style.display = 'none';
+        }
+      }
+      let touchStartFunc = function (e) {
+        // console.log(e)
+        // e.preventDefault();
+        let touch=e.touches[0];
+        startY = touch.pageY;   //刚触摸时的坐标
+      }
+      //给页面绑定滑轮滚动事件
+      if (document.addEventListener) {
+        document.addEventListener('DOMMouseScroll', scrollFunc, false);
+        document.addEventListener('touchstart', touchStartFunc, false);
+        document.addEventListener('touchmove', touchMoveFunc, false);
+      }
+      //滚动滑轮触发scrollFunc方法
+      window.onmousewheel = document.onmousewheel = scrollFunc;
+      window.ontouchmove = document.ontouchmove = touchMoveFunc;
+      window.ontouchstart = document.ontouchstart = touchStartFunc;
     },
     methods: {
+      watchScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        // console.log(window)
+        //  当滚动超过 50 时，实现吸顶效果
+        if (scrollTop > 49) {
+          // this.navBarFixed = true
+        } else {
+          // this.navBarFixed = false
+        }
+      },
       toNav(index, name) {
         this.isPhoneMenu = false;
         this.phoneMenuName = name;
@@ -305,6 +396,7 @@
         this.$router.push('/home/index?id=' + id);
       },
       getPost2(id, index) {
+        this.isNavShow = true;
         this.activeLabel2 = index;
         this.$router.push('/world/index?id=' + id);
       },
@@ -371,4 +463,23 @@
     }
   }
 
+  .fly-header {
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+  }
+
+  @media screen and (max-width: 768px) {
+    .nav-show {
+      z-index: 10001;
+    }
+    .child-menu {
+      overflow-x: auto;
+    }
+    .fly-column ul {
+      width: 768px;
+
+      li {
+        width: auto;
+      }
+    }
+  }
 </style>

@@ -3,7 +3,7 @@ import router from './router';
 import store from './store';
 
 const whiteList = ['/login'];// 重定向白名单
-console.log(window.localStorage['B-Token'])
+// console.log(window.localStorage['B-Token'])
 router.beforeEach((to, from, next) => {
   // 路由切换定位顶部
   document.body.scrollTop = 0; // chrome

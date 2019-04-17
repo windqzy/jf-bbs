@@ -9,6 +9,7 @@
         <result property="details" column="details"/>
         <result property="name" column="name"/>
         <result property="postsCount" column="posts_count"/>
+        <result property="postManage" column="post_manage"/>
     </resultMap>
 
 

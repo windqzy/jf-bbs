@@ -104,8 +104,10 @@ public class UserController extends AbstractController {
             fromLog.setUnionId(getUnionId());
             fromLog.setRemarks("购买子账号花费 500 钻石");
             bbsLogService.insert(fromLog);
+            return R.ok();
+        } else {
+            return R.error("钻石不足，购买失败！");
         }
-        return R.ok();
     }
 
     /**

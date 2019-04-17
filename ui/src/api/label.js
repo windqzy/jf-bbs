@@ -6,3 +6,11 @@ export function getList() {
     method: 'GET'
   })
 }
+
+// 查询用户是否是版主
+export function getManager(labelId) {
+  return request ({
+    url: '/label/manage/confirm/' + labelId,
+    method: 'GET'
+  })
+}

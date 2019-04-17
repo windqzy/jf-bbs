@@ -16,15 +16,15 @@
               <!--<span v-if="postInfo.good" class="layui-badge layui-bg-red">精帖</span>-->
 
               <div class="fly-admin-box" data-id="123">
-                <span v-if="userInfo.isAdmin" class="layui-btn layui-btn-danger layui-btn-xs jie-admin" type="del"
+                <span v-if="userInfo.isAdmin || labelManager" class="layui-btn layui-btn-danger layui-btn-xs jie-admin" type="del"
                       @click="delPostConfirm(postInfo.id)">删除</span>
-                <span v-if="userInfo.isAdmin">
+                <span v-if="userInfo.isAdmin || labelManager">
                   <span v-if="postInfo.top" class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
                         rank="0" @click="updatTop(postInfo.id)">取消置顶</span>
                   <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="stick"
                         rank="1" @click="updatTop(postInfo.id)">置顶</span>
                 </span>
-                <span v-if="userInfo.isAdmin">
+                <span v-if="userInfo.isAdmin || labelManager">
                   <span v-if="postInfo.good" class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
                         rank="0" @click="updatGood(postInfo.id)">取消加精</span>
                   <span v-else class="layui-btn layui-btn-xs jie-admin" type="set" field="status"
@@ -391,8 +391,9 @@
   import * as time from '@/utils/time';
   import * as collection from '@/api/collection';
   import * as grade from '@/api/grade';
-  import E from 'wangeditor'
-  import * as face from '@/assets/face.json'
+  import E from 'wangeditor';
+  import * as face from '@/assets/face.json';
+  import * as label from '@/api/label';
 
   export default {
     name: "detail",
@@ -427,7 +428,8 @@
         currGrade: 0,
         editorContent: '',
         faceList: [],
-        editor: null
+        editor: null,
+        labelManager: false
       }
     },
     created() {
@@ -440,6 +442,8 @@
       this.isVoted();
       this.getCurrGrade();
       this.getFace();
+      // TODO 用户是否是版主
+      this.getLabelManger(this.labelId);
     },
     mounted() {
       this.layui();
@@ -731,6 +735,12 @@
       getCurrGrade() {
         grade.getGrade(this.userInfo.id).then(res => {
           this.currGrade = res.data.grade;
+        })
+      },
+      // TODO 获取用户是否是版主
+      getLabelManger(labelId) {
+        label.getManager(labelId).then(res => {
+          this.labelManager = res.data;
         })
       }
     },

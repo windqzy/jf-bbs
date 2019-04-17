@@ -2,18 +2,13 @@ package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
-import com.jfsoft.bbs.entity.BbsGradeEntity;
-import com.jfsoft.bbs.entity.BbsLogEntity;
-import com.jfsoft.bbs.entity.BbsPostsEntity;
+import com.jfsoft.bbs.entity.*;
 import com.jfsoft.bbs.es.document.ProductDocument;
 import com.jfsoft.bbs.es.document.ProductDocumentBuilder;
 import com.jfsoft.bbs.es.service.EsSearchService;
-import com.jfsoft.bbs.service.BbsGradeService;
-import com.jfsoft.bbs.service.BbsLogService;
-import com.jfsoft.bbs.service.BbsPostsService;
+import com.jfsoft.bbs.service.*;
 import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +39,12 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsGradeService bbsGradeService;
+
+    @Autowired
+    private BbsLabelService bbsLabelService;
+
+    @Autowired
+    private BbsLabelManageService bbsLabelManageService;
 
     /**
      * 首页列表查询
@@ -110,6 +111,22 @@ public class PostsController extends AbstractController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody BbsPostsEntity bbsPosts) {
+        // TODO 增加版主功能,在发帖的时候需要先判断版块是否只能是版主发帖
+        EntityWrapper<BbsLabelEntity> wrapperLabel = new EntityWrapper<>();
+        wrapperLabel.eq("id", bbsPosts.getLabelId());
+        BbsLabelEntity labelEntity = bbsLabelService.selectOne(wrapperLabel);
+        if (labelEntity.getPostManage()) {  // 如果只能版主发帖
+            // 用户是否是版主
+            EntityWrapper<BbsLabelManageEntity> wrapperLabelManage = new EntityWrapper<>();
+            wrapperLabelManage.eq("user_id", getUserId());
+            wrapperLabelManage.eq("label_id", bbsPosts.getLabelId());
+            wrapperLabelManage.eq("isuse", true);
+            BbsLabelManageEntity labelManageEntity = bbsLabelManageService.selectOne(wrapperLabelManage);
+            if (labelManageEntity == null) {
+                return R.error("此版块只能版主发帖！！！");
+            }
+        }
+        // 开始发帖
         Integer postId = bbsPosts.getId();
         String username = getUser().getUsername();
         String unionId = getUnionId();

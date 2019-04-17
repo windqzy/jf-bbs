@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 
@@ -34,6 +33,11 @@ public class BbsLabelEntity implements Serializable {
 	 * 
 	 */
 	private Integer postsCount;
+
+	/**
+	 *
+	 */
+	private Boolean postManage;
 
 	/**
 	 * 设置：
@@ -82,5 +86,13 @@ public class BbsLabelEntity implements Serializable {
 	 */
 	public Integer getPostsCount() {
 		return postsCount;
+	}
+
+	public Boolean getPostManage() {
+		return postManage;
+	}
+
+	public void setPostManage(Boolean postManage) {
+		this.postManage = postManage;
 	}
 }

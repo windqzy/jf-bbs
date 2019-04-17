@@ -23,7 +23,7 @@
                 <h2>
                   <!--<a class="layui-badge">{{top.source.label}}</a>-->
                   <router-link :to="'/post/detail?postId=' + top.source.id + '&labelId=' + top.source.label"
-                               v-html="top.highlight.productName"></router-link>
+                               v-html="top.source.productName"></router-link>
                 </h2>
                 <div class="fly-list-info">
                   <!--<a href="user/home.html" link>-->

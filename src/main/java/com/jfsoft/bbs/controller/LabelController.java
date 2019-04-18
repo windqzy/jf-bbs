@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -21,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/label")
-public class LabelController {
+public class LabelController extends AbstractController {
 
     @Autowired
     private BbsLabelService bbsLabelService;
@@ -33,6 +35,17 @@ public class LabelController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = bbsLabelService.queryPage(params);
         return R.ok().put("data", page);
+    }
+
+    /**
+     * 发帖时根据用户ID加载版块
+     */
+    @RequestMapping("/userlist")
+    public R getLabelByUserId(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", getUserId());
+        List<BbsLabelEntity> labels = bbsLabelService.getLabelByUserId(params);
+        return R.ok().put("data", labels);
     }
 
 

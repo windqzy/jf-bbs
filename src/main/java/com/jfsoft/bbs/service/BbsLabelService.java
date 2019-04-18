@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsLabelEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface BbsLabelService extends IService<BbsLabelEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<BbsLabelEntity> getLabelByUserId(Map<String, Object> params);
 }
 

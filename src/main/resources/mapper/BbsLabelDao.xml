@@ -12,5 +12,15 @@
         <result property="postManage" column="post_manage"/>
     </resultMap>
 
+    <select id="getLabelByUserId" parameterType="map" resultMap="bbsLabelMap">
+        SELECT bl1.*
+        FROM bbs_label bl1 WHERE bl1.post_manage IS NOT TRUE
+        UNION ALL
+        SELECT bl.*
+        FROM bbs_label bl
+        LEFT JOIN bbs_label_manage blm ON bl.id = blm.label_id
+        WHERE bl.post_manage AND blm.isuse AND blm.user_id = #{userId}
+        ORDER BY id;
+    </select>
 
 </mapper>

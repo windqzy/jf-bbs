@@ -14,3 +14,11 @@ export function getManager(labelId) {
     method: 'GET'
   })
 }
+
+// 发帖的时候根据用户加载版块列表
+export function getLabelByUser() {
+  return request({
+    url: '/label/userlist',
+    method: 'GET'
+  })
+}

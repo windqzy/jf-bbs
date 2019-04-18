@@ -4,6 +4,9 @@ import com.jfsoft.bbs.entity.BbsLabelEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * 
@@ -13,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BbsLabelDao extends BaseMapper<BbsLabelEntity> {
-	
+
+    List<BbsLabelEntity> getLabelByUserId(Map<String, Object> params);
 }

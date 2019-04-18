@@ -258,8 +258,10 @@
     },
     methods: {
       getLabelList() {
-        label.getList().then(res => {
-          this.labelList = res.data.list;
+        // label.getList().then(res => {
+        label.getLabelByUser().then(res => {
+          this.labelList = res.data;
+          console.log("===="+this.labelList)
         })
       },
       selectLabel(labelId) {

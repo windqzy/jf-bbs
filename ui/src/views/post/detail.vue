@@ -576,9 +576,9 @@
         })
       },
       getTopThree(postsId){
-      console.log(postsId)
+      // console.log(postsId)
       grade.getTopThree(postsId).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.rewardList=res.data
       })
       },

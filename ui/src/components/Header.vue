@@ -110,6 +110,9 @@
           <li v-for="(label, index) in labelList" class="layui-hide-xs" :class='{"layui-this":activeLabel==index}'>
             <a style="cursor: pointer;" @click="getPost(label.id, index)">{{label.name}}</a>
           </li>
+          <li class="layui-hide-sm layui-show-xs-block" :class='{"layui-this":activeLabel==-1}'>
+            <a style="cursor: pointer;" @click="getPost(0, -1)">推荐</a>
+          </li>
           <li v-for="(label, index) in labelList" class="layui-hide-sm layui-show-xs-block"
               :class='{"layui-this":activeLabel==index}'>
             <a @click="getPost(label.id, index)">{{label.name}}</a>
@@ -148,7 +151,8 @@
           <li :class='{"layui-this":activeLabel2==0}'><a style="cursor: pointer" @click="getPost2(0, 0)">医疗</a></li>
           <li :class='{"layui-this":activeLabel2==1}'><a style="cursor: pointer" @click="getPost2(1, 1)">36氪</a></li>
           <li :class='{"layui-this":activeLabel2==2}'><a style="cursor: pointer" @click="getPost2(2, 2)">知乎日报</a></li>
-          <li :class='{"layui-this":activeLabel2==3}'><a style="cursor: pointer" @click="getPost2(3, 3)">IT</a></li>
+          <li :class='{"layui-this":activeLabel2==3}'><a style="cursor: pointer" @click="getPost2(3, 3)">InfoQ</a></li>
+          <li :class='{"layui-this":activeLabel2==4}'><a style="cursor: pointer" @click="getPost2(4, 4)">PMCAFF</a></li>
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">建议</a></li>-->
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">公告</a></li>-->
           <!--<li :class='{"layui-this":activeLabel==index}'><a href="">动态</a></li>-->
@@ -314,12 +318,13 @@
           }
         }
       }
-      let touchMoveFunc = function (e) {
+       let touchMoveFunc = function (e) {
         // e.preventDefault();
         // let touch = e.touches[0];
         // y = touch.pageY - startY;
-        // console.log(e.touches[0].pageY , startY)
-        if(e.touches[0].pageY - startY > 0) {
+        // console.log(e.touches[0].pageY - startY)
+        // console.log(e.touches[0].screenY, startY)
+        if(startY - e.touches[0].screenY <= 60) {
           _this.isNavShow = true;
         } else {
           _this.isNavShow = false;
@@ -334,6 +339,7 @@
       let touchStartFunc = function (e) {
         // console.log(e)
         // e.preventDefault();
+        // _this.isNavShow = false;
         let touch=e.touches[0];
         startY = touch.pageY;   //刚触摸时的坐标
       }
@@ -475,7 +481,7 @@
       overflow-x: auto;
     }
     .fly-column ul {
-      width: 768px;
+      width: 960px;
 
       li {
         width: auto;

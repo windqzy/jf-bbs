@@ -3,7 +3,7 @@
     <el-row :gutter="16" style="flex-direction: row-reverse">
       <el-col :xs="24" :sm="16">
         <el-card shadow="never" class="card-box" v-loading="loading">
-          <el-row slot="header" type="flex" justify="space-between" v-if="labelId != 2">
+          <el-row slot="header" type="flex" justify="space-between" v-if="tagShow">
             <div class="layuiadmin-card-link fly-filter">
               <a v-for="(tag, index) in tagList" :class='{"layui-this":activeTag == index}' :key="tag.key"
                  @click="getArticleList(index, tag.key)">{{tag.value}}</a>
@@ -133,6 +133,7 @@
     data() {
       return {
         activeTime: 0,
+        tagShow: false,
         tagList: [],
         healthTagList: [
           {
@@ -295,11 +296,15 @@
           case "3":
             this.getInfoQList();
             break;
+          case "4":
+            this.getPMList();
+            break;
         }
       },
       changeLabel(e) {
         this.labelId = e;
         if (e == 0) {
+          this.tagShow = true;
           this.tagList = this.healthTagList;
           this.activeTag = 0;
           this.articleTag = 1013;
@@ -307,19 +312,26 @@
           this.getHealthCN72();
           this.getHealthCN20();
         } else if (e == 1) {
+          this.tagShow = true;
           this.activeTag = 0;
           this.articleTag = 303;
           this.tagList = this.krTagList;
           this.getKrList();
         } else if (e == 2) {
+          this.tagShow = false;
           this.tagList = this.ttTagList;
           this.getZhiHuList();
         } else if (e == 3) {
+          this.tagShow = true;
           this.activeTag = 0;
           this.articleTag = 8;
           this.tagList = this.infoTagList;
           this.getInfoQList();
           this.getInfoQIndex(0);
+        } else if (e == 4) {
+          this.tagShow = false;
+          this.articleTag = 2;
+          this.getPMList();
         }
       },
       getHealthCNList() {
@@ -341,6 +353,19 @@
           start: null,
           size: null,
           arctype: null
+        };
+        this.loading = true;
+        world.getList(type, params).then(res => {
+          this.loading = false;
+          this.articleList = res.data;
+        })
+      },
+      getPMList() {
+        let type = 'pm';
+        let params = {
+          start: this.pageIndex,
+          size: this.pageSize,
+          arctype: this.articleTag
         };
         this.loading = true;
         world.getList(type, params).then(res => {
@@ -428,6 +453,15 @@
               arctype: this.articleTag
             };
             type = 'infoQ';
+            break;
+          case "4":
+            this.pageIndex += 1;
+            params = {
+              start: this.pageIndex,
+              size: this.pageSize,
+              arctype: this.articleTag
+            };
+            type = 'pm';
             break;
         }
         this.loading = true;

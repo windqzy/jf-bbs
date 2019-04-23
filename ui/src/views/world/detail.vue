@@ -252,6 +252,7 @@
           case '1' : type = 'kr'; break;
           case '2' : type = 'zhihu'; break;
           case '3' : type = 'infoQ'; break;
+          case '4' : type = 'pm'; break;
         }
         this.loading = true;
         world.getInfo(type, this.articleId).then(res => {

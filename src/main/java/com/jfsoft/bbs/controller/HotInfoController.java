@@ -11,6 +11,7 @@ import com.jfsoft.bbs.form.ArticleForm;
 import com.jfsoft.bbs.form.ArticleVo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,9 @@ public class HotInfoController {
     private static final String INFO_Q_VO = "https://www.infoq.cn/public/v1/article/getDetail";
     private static final String INFO_Q_INDEX = "https://www.infoq.cn/public/v1/article/getIndexList";
 
+    private static final String PM_COFFEE_LIST = "https://coffee.pmcaff.com/list";
+    private static final String PM_COFFEE_VO = "https://coffee.pmcaff.com/article/";
+
     /**
      * @param type 类型   health-cn
      * @return
@@ -62,6 +66,8 @@ public class HotInfoController {
                 return getKrList(start, size, arctype);
             case "infoQ":
                 return getInfoQList(start, size, arctype);
+            case "pm":
+                return getPMList(start, size, arctype);
             default:
                 return null;
         }
@@ -79,6 +85,8 @@ public class HotInfoController {
                 return getKrVo(articleId);
             case "infoQ":
                 return getInfoQVo(articleId);
+            case "pm":
+                return getPMVo(articleId);
             default:
                 return null;
         }
@@ -93,6 +101,7 @@ public class HotInfoController {
         JSONObject data = (JSONObject) result.get("data");
         return R.ok().put("data", data);
     }
+
 
     @RequestMapping("/getInfoQIndex")
     public R getInfoQIndex() {
@@ -268,6 +277,19 @@ public class HotInfoController {
         return R.ok().put("data", articleVo);
     }
 
+    private static R getPMVo(String articleId) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(PM_COFFEE_VO + articleId).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Elements body = doc.select("#articleCont");
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.setContent(body.toString());
+        return R.ok().put("data", articleVo);
+    }
+
     private static R getInfoQVo(String articleId) {
         Map<String, Object> body = new HashMap<>();
         body.put("uuid", articleId);
@@ -330,7 +352,6 @@ public class HotInfoController {
             JSONObject article = array.getJSONObject(i);
             articleForm.setId(article.getString("uuid"));
             articleForm.setCode(article.getString("score"));
-//            JSONObject author = (JSONObject) ((JSONArray) article.get("author")).get(0);
             articleForm.setAuthor("InfoQ");
             articleForm.setTitle(article.getString("article_title"));
             articleForm.setDescription(article.getString("article_summary"));
@@ -340,5 +361,50 @@ public class HotInfoController {
             articleList.add(articleForm);
         }
         return R.ok().put("data", articleList);
+    }
+
+    private static R getPMList(String start, String size, String arctype) {
+        List<ArticleForm> articleList = new ArrayList<>();
+        Map<String, Object> form = new HashMap<>();
+        form.put("page", Integer.parseInt(start));
+        form.put("feed_sum", Integer.parseInt(size));
+        form.put("type", Integer.parseInt(arctype));
+        String s = HttpRequest.post(PM_COFFEE_LIST)
+                .header("referer", "https://coffee.pmcaff.com/?type=" + arctype)
+                .form(form)
+                .execute()
+                .body();
+        JSONObject jsonObject = (JSONObject) JSON.parse(s);
+        JSONArray array = (JSONArray) jsonObject.get("data");
+        for (int i = 0; i < array.size(); i++) {
+            ArticleForm articleForm = new ArticleForm();
+            JSONObject article = array.getJSONObject(i);
+            articleForm.setId(article.getString("id"));
+            articleForm.setCode(article.getString("sourceId"));
+            articleForm.setAuthor(article.getString("author"));
+            articleForm.setTitle(article.getString("title"));
+            articleForm.setDescription(article.getString("description"));
+            articleForm.setCover(article.getString("picUrl"));
+            articleForm.setPubdate(article.getDate("updated_at"));
+            articleForm.setSource("PMCAFF");
+            articleList.add(articleForm);
+        }
+        return R.ok().put("data", articleList);
+    }
+
+    public static void main(String[] args) {
+//        String url = "http://m.ui.cn/study";
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(url).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Elements content = doc.select(".study-list");
+//        Elements li = content.select(".cl");
+//        for (Element element : li) {
+//
+//        }
+        System.out.println(DateUtil.format(new Date(), "yyyyMMdd"));
     }
 }

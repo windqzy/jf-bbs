@@ -4,10 +4,10 @@
       <div class="layui-row layui-col-space15">
         <el-row :gutter="16">
           <el-col :xs="24" :md="16" class="mt8">
-            <el-card shadow="never" class="header">
-              <img src="../../../static/images/music.jpg" alt="金风音乐会" style="max-width: 100%;">
-            </el-card>
-            <el-row :gutter="16" style="margin-top: 20px">
+            <!--<el-card shadow="never" class="header">-->
+              <!--<img src="../../../static/images/music.jpg" alt="金风音乐会" style="max-width: 100%;">-->
+            <!--</el-card>-->
+            <el-row :gutter="16">
               <el-col :xs="12" :sm="12" :md="6" :xl="6" v-for="game in gameList" :key="game.id">
                 <el-card shadow="never" class="game-card">
                   <div>

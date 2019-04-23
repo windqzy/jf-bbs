@@ -1,10 +1,10 @@
 <template>
   <div class="layui-container">
     <el-row :gutter="16" style="padding: 0 16px 16px">
-      <el-col :xs="24" :md="16" class="mt8">
-        <el-card shadow="never">
-          <img src="../../../static/images/music.jpg" alt="金风音乐会" style="max-width: 100%;">
-        </el-card>
+      <el-col :xs="24" :md="16">
+        <!--<el-card shadow="never">-->
+          <!--<img src="../../../static/images/music.jpg" alt="金风音乐会" style="max-width: 100%;">-->
+        <!--</el-card>-->
         <el-card shadow="never" class="sider mt8">
           <!--<div slot="header">前端</div>-->
           <div class="type-box">

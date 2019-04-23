@@ -348,7 +348,7 @@
         this.uploadImgTip = '上传成功';
       },
       submitCase() {
-        console.log(this.caseInfo)
+        // console.log(this.caseInfo)
       }
     }
   }

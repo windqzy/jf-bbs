@@ -4,21 +4,21 @@
     <div class="layui-container">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
-          <div class="fly-panel" v-if="labelId == 0">
-            <div class="layui-row fly-panel-main" style="padding: 8px;">
-              <div class="fly-topline" id="FLY_topline" lay-anim="fade"
-                   style="width: 100%;">
-                <div carousel-item="">
-                  <div class="layui-this">
-                    <router-link to="/post/detail?postId=135&labelId=6">
-                      <img src="../../static/images/music.jpg" alt="金风音乐会"
-                           style="max-width: 100%;">
-                    </router-link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!--<div class="fly-panel" v-if="labelId == 0">-->
+            <!--<div class="layui-row fly-panel-main" style="padding: 8px;">-->
+              <!--<div class="fly-topline" id="FLY_topline" lay-anim="fade"-->
+                   <!--style="width: 100%;">-->
+                <!--<div carousel-item="">-->
+                  <!--<div class="layui-this">-->
+                    <!--<router-link to="/post/detail?postId=135&labelId=6">-->
+                      <!--<img src="../../static/images/music.jpg" alt="金风音乐会"-->
+                           <!--style="max-width: 100%;">-->
+                    <!--</router-link>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
           <!-- 标签区 -->
           <div class="fly-panel" v-if="false">
             <div class="fly-panel-title fly-filter">

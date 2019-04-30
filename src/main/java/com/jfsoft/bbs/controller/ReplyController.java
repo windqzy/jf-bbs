@@ -2,15 +2,9 @@ package com.jfsoft.bbs.controller;
 
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
-import com.jfsoft.bbs.entity.BbsLogEntity;
-import com.jfsoft.bbs.entity.BbsPostsEntity;
-import com.jfsoft.bbs.entity.BbsReplyEntity;
-import com.jfsoft.bbs.entity.BbsUserEntity;
+import com.jfsoft.bbs.entity.*;
 import com.jfsoft.bbs.form.ReplyForm;
-import com.jfsoft.bbs.service.BbsLogService;
-import com.jfsoft.bbs.service.BbsPostsService;
-import com.jfsoft.bbs.service.BbsReplyService;
-import com.jfsoft.bbs.service.BbsUserService;
+import com.jfsoft.bbs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +30,9 @@ public class ReplyController extends AbstractController {
 
     @Autowired
     private BbsUserService bbsUserService;
+
+    @Autowired
+    private BbsMessageService bbsMessageService;
 
     /**
      * 列表
@@ -98,6 +95,7 @@ public class ReplyController extends AbstractController {
         bbsReply.setInitTime(new Date());
         bbsReply.setUserId(user.getId());
         bbsReply.setAuthor(user.getUsername());
+//        bbsReply.setParentId();
         bbsReply.setContent(ReplyForm.getContent());
         // 增加一条评论
         bbsReplyService.insert(bbsReply);
@@ -106,6 +104,9 @@ public class ReplyController extends AbstractController {
         int count = bbsPosts.getReplyCount() + 1;
         bbsPosts.setReplyCount(count);
         bbsPostsService.updateById(bbsPosts);
+        // 添加一条消息
+        bbsMessageService.addMsg(1, user.getUsername() + "评论了您的帖子《" + bbsPosts.getTitle() + "》",
+                bbsPosts.getId(),  user.getId(), bbsPosts.getUserId(),true);
         return R.ok().put("data", "评论成功");
     }
 
@@ -179,6 +180,8 @@ public class ReplyController extends AbstractController {
     public R accept(Integer id, Integer userId) {
         /*看是否存在已采纳的回复*/
         Integer bbsReply = bbsReplyService.getAccept(id);
+        /* 获取帖子*/
+        BbsPostsEntity postsEntity = bbsPostsService.getPostByReplyId(id);
         /* 获取被采纳用户的unionId*/
         BbsUserEntity userEntity = bbsUserService.selectById(userId);
         if (bbsReply == 0) {
@@ -200,6 +203,9 @@ public class ReplyController extends AbstractController {
                 bbslog.setRemarks("回复被采纳获得" + rewardGrade + "钻石");
                 bbsLogService.insert(bbslog);
             }
+            // 添加采纳消息
+            bbsMessageService.addMsg(2, userEntity.getUsername() + "您的回复被采纳",
+                    postsEntity.getId(), postsEntity.getUserId(), userId, true);
             return R.ok("采纳成功");
         } else {
             return R.error("抱歉,该贴已经完成采纳");

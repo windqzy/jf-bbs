@@ -43,6 +43,14 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     }
 
     @Override
+    public List<BbsReplyEntity> getReplyByPid(Integer pid, Integer userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pid", pid);
+        params.put("userId", userId);
+        return bbsReplyDao.getReplyByPid(params);
+    }
+
+    @Override
     public List<BbsReplyEntity> getHotReplyByPostid(Integer postId, Integer userId) {
         Map<String, Object> params = new HashMap<>();
         params.put("postId", postId);

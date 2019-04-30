@@ -26,5 +26,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     List<BbsPostsEntity> getPostByCollection(Integer userId);
 
+    BbsPostsEntity getPostByReplyId(Integer replyId);
+
 }
 

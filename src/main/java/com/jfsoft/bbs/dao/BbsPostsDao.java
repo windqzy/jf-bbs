@@ -28,4 +28,6 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 
 	List<BbsPostsEntity> findAll();
 
+	BbsPostsEntity getPostByReplyId(Integer replyId);
+
 }

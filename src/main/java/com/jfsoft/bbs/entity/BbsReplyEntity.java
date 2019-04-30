@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author chenxc
@@ -69,6 +70,30 @@ public class BbsReplyEntity implements Serializable {
      *
      */
     private Boolean accept;
+
+    /**
+     *
+     */
+    private Integer parentId;
+
+    @TableField(exist = false)
+    private List<BbsReplyEntity> replyList;
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<BbsReplyEntity> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<BbsReplyEntity> replyList) {
+        this.replyList = replyList;
+    }
 
     public String getPostsName() {
         return postsName;

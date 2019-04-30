@@ -17,14 +17,23 @@
         <result property="status" column="status"/>
         <result property="replyCount" column="reply_count"/>
         <result property="postsName" column="posts_name"/>
+        <result property="parentId" column="parent_id"/>
     </resultMap>
 
     <select id="getReplyByPostId" parameterType="map" resultMap="bbsReplyMap">
         SELECT br.id, br.content, br.init_time, br.up, br.posts_id, br.user_id, br.accept,
-        bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status
+        bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status, br.parent_id
         FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
         LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
         WHERE br.posts_id = #{postId} ORDER BY br.init_time DESC
+    </select>
+
+    <select id="getReplyByPid" parameterType="map" resultMap="bbsReplyMap">
+        SELECT br.id, br.content, br.init_time, br.up, br.posts_id, br.user_id, br.accept,
+        bu.username as author, bu.icon as icon, IFNULL(bz.status, FALSE) as status, br.parent_id
+        FROM bbs_reply br LEFT JOIN bbs_user bu ON br.user_id = bu.id
+        LEFT JOIN bbs_up bz ON br.id = bz.reply_id AND bz.user_id = #{userId}
+        WHERE br.parent_id = #{pid} ORDER BY br.init_time DESC
     </select>
 
     <select id="getHotReplyByPostid" parameterType="map" resultMap="bbsReplyMap">

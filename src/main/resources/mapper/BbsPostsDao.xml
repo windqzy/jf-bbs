@@ -106,4 +106,10 @@
         select * from bbs_posts
     </select>
 
+    <select id="getPostByReplyId" parameterType="integer" resultMap="bbsPostsMap">
+        SELECT bp.*
+        FROM bbs_posts bp
+        WHERE bp.id = (SELECT posts_id FROM bbs_reply br WHERE br.id = #{replyId})
+    </select>
+
 </mapper>

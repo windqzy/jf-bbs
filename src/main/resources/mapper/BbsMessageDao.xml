@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jfsoft.bbs.dao.BbsMessageDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jfsoft.bbs.entity.BbsMessageEntity" id="bbsMessageMap">
+        <result property="id" column="id"/>
+        <result property="initTime" column="init_time"/>
+        <result property="readTime" column="read_time"/>
+        <result property="msgType" column="msg_type"/>
+        <result property="msgContent" column="msg_content"/>
+        <result property="postId" column="post_id"/>
+        <result property="sendUserId" column="sendUserId"/>
+        <result property="userId" column="user_id"/>
+        <result property="isuse" column="isuse"/>
+    </resultMap>
+
+    <select id="getMsgsByUser" parameterType="integer" resultMap="bbsMessageMap">
+        SELECT *
+        FROM bbs_message
+        WHERE isuse = TRUE AND user_id = #{userId}
+        ORDER BY init_time ASC
+    </select>
+
+    <insert id="addMessage" parameterType="map">
+        INSERT INTO bbs_message(init_time, read_time, msg_type, msg_content, post_id, send_user_id, user_id, isuse)
+        VALUES (sysdate(), NULL, #{msgType}, #{msgContent}, #{postId}, #{sendUserId}, #{userId}, True)
+    </insert>
+
+</mapper>

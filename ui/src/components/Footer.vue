@@ -1,8 +1,8 @@
 <template>
   <div class="fly-footer">
     <p>
-      <a href="javascript:;" target="_blank">金风社区</a>
-      2019 &copy; <a href="javascript:;" target="_blank">不将就小组出品</a>
+      <a href="javascript:;" target="_blank">神丁社区</a>
+      2019 &copy; <a href="javascript:;" target="_blank">阿拉丁工作室出品</a>
     </p>
     <!--<p>-->
     <!--<a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>-->

@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "产品专区",
+    "cover": "http://iph.href.lu/72x72?text=tagImage",
+    "child": [
+      {
+        "id": 11,
+        "name": "体检",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 12,
+        "name": "影像",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 13,
+        "name": "检验",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "工作中心",
+    "child": [
+      {
+        "id": 21,
+        "name": "研发部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 22,
+        "name": "实施部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 23,
+        "name": "营销部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 24,
+        "name": "财务部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 25,
+        "name": "人事部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 26,
+        "name": "售后部",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 27,
+        "name": "项目管理",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 28,
+        "name": "公共资料",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 29,
+        "name": "各类资料",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "8小时外",
+    "child": [
+      {
+        "id": 31,
+        "name": "神丁社区",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 32,
+        "name": "游戏娱乐",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 33,
+        "name": "读书社",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 34,
+        "name": "足球社",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      },{
+        "id": 35,
+        "name": "象棋社",
+        "cover": "http://iph.href.lu/72x72?text=tagImage"
+      }
+    ]
+  }
+]

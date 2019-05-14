@@ -9,8 +9,8 @@
 
 /* 全局 */
 html,body{overflow-x: hidden;}
-html body{margin-top: 61px;}
-html{background-color: #F2F2F2;}
+/*html body{margin-top: 61px;}*/
+html{background-color: #fafafa;}
 i{font-style: normal;}
 
 /* 图标 */

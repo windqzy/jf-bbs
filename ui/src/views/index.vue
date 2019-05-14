@@ -11,15 +11,57 @@
       </div>
     </el-card>
     <div class="brief">
-
+      <el-row type="flex">
+        <el-col :span="8">
+          <div class="brief-header">
+            <p>
+              <i class="el-icon-news"></i>
+              精华推荐
+            </p>
+            <a>更多>></a>
+          </div>
+          <ul class="brief-content">
+            <li v-for="item in briefList.recommend">
+              <a href="">{{item.title}}</a>
+            </li>
+          </ul>
+        </el-col>
+        <el-col :span="8">
+          <div class="brief-header">
+            <p>
+              <i class="el-icon-news"></i>
+              最新发布
+            </p>
+            <a>更多>></a>
+          </div>
+          <ul class="brief-content">
+            <li v-for="item in briefList.publish">
+              <a href="">{{item.title}}</a>
+            </li>
+          </ul>
+        </el-col>
+        <el-col :span="8">
+          <div class="brief-header">
+            <p>
+              <i class="el-icon-news"></i>
+              最新回复
+            </p>
+            <a>更多>></a>
+          </div>
+          <ul class="brief-content">
+            <li v-for="item in briefList.reply">
+              <a href="">{{item.title}}</a>
+            </li>
+          </ul>
+        </el-col>
+      </el-row>
     </div>
     <div class="label">
       <el-card v-for="label in labelList" shadow="never" :key="label.id">
         <div slot="header" class="label-header">{{label.name}}</div>
         <el-row :gutter="10">
           <el-col :span="8" v-for="tag in label.child" :key="tag.id" class="label-col"
-                  :class="{one: label.child.length % 3 == 1,two: label.child.length % 3 == 2,zero: label.child.length % 3 == 0}">
-
+                  :class="{'one': label.child.length % 3 == 1,'two': label.child.length % 3 == 2,'zero': label.child.length % 3 == 0}">
             <el-row :gutter="10" type="flex">
               <el-col :span="6">
                 <img :src="tag.cover" alt="">
@@ -64,7 +106,8 @@
 
     data() {
       return {
-        labelList: require('../mock/label.json')
+        labelList: require('../mock/label.json'),
+        briefList: require('../mock/brief.json'),
       }
     },
     created() {
@@ -87,8 +130,28 @@
     margin: 5px 0;
     border: 1px solid #EBEEF5;
     height: 200px;
+    padding: 10px;
     background-color: #fff;
+    .el-row {
+      height: 100%;
+    }
+    .el-col {
+      padding: 0 10px;
+      border-right: 1px solid #EBEEF5;
+      &:last-child {
+        border-right: none;
+      }
+    }
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
   }
+
   .el-card {
     margin: 5px 0;
     border-radius: 0px;
@@ -100,6 +163,7 @@
       border-left: 2px solid #009688;
     }
   }
+
   .label {
     /deep/ .el-card__body {
       padding: 0 10px;
@@ -136,15 +200,17 @@
         justify-content: space-around;
       }
       &.zero {
-        &:nth-last-child(1),&:nth-last-child(2),&:nth-last-child(3) {
+        &:nth-last-child(1), &:nth-last-child(2), &:nth-last-child(3) {
           border-bottom: none;
         }
-      }&.one {
+      }
+      &.one {
         &:nth-last-child(1) {
           border-bottom: none;
         }
-      }&.two {
-        &:nth-last-child(1),&:nth-last-child(2) {
+      }
+      &.two {
+        &:nth-last-child(1), &:nth-last-child(2) {
           border-bottom: none;
         }
       }

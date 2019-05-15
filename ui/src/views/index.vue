@@ -150,6 +150,11 @@
       font-weight: bold;
       font-size: 14px;
     }
+    .brief-content {
+      li {
+        margin: 5px 2px;
+      }
+    }
   }
 
   .el-card {

@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :span="16">
         <el-card shadow="never">
-          <div slot="header" class="post-divider">
+          <div class="post-divider">
             <span>全部<em> (25)</em></span>
             <el-divider direction="vertical"></el-divider>
             <span>分类一<em> (25)</em></span>
@@ -21,6 +21,17 @@
             <span>分类七<em> (25)</em></span>
             <el-divider direction="vertical"></el-divider>
             <span>分类八<em> (25)</em></span>
+          </div>
+        </el-card>
+        <el-card shadow="never" class="mt8">
+          <div slot="header">
+            <div class="post-type">
+              <span>雨纷纷</span>
+              <el-divider direction="vertical" content-position="right"></el-divider>
+              <span>旧故里</span>
+              <el-divider direction="vertical"></el-divider>
+              <span>草木深</span>
+            </div>
           </div>
           <div class="post-list">
             <ul>
@@ -184,6 +195,10 @@
           }
         }
       }
+    }
+    .post-type {
+      text-align: right;
+
     }
   }
 </style>

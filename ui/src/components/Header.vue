@@ -21,7 +21,7 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="small">写文章</el-button>
+          <el-button type="primary" size="small" @click="newPosts">写文章</el-button>
         </el-col>
         <el-col :span="1">
           <i class="el-icon-message-solid message" ></i>
@@ -67,6 +67,9 @@
       },
       handleCommand(command) {
         this.$message('click on item ' + command);
+      },
+      newPosts() {
+        this.$router.push('/post/new')
       }
     }
   }

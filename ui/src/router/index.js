@@ -4,6 +4,7 @@ import Layer from '@/views/layer'
 import Index from '@/views/index'
 import Detail from '@/views/post/detail'
 import Search from '@/views/post/search'
+import NewPost from '@/views/post/new'
 import Post from '@/views/post/index'
 import Add from '@/views/add'
 import Login from '@/views/loginpc'
@@ -56,6 +57,10 @@ export default new Router({
         {
           path: 'index',
           component: Post
+        },
+        {
+          path: 'new',
+          component: NewPost
         }
       ]
     }, {

@@ -9,6 +9,7 @@ import Add from '@/views/add'
 import Login from '@/views/loginpc'
 import Login2 from '@/views/login'
 import UserIndex from '@/views/user/home'
+import UserIndex2 from '@/views/user/index'
 import setIndex from '@/views/set/index'
 import userReg from '@/views/user/reg'
 import Case from '@/views/case/index'
@@ -73,6 +74,9 @@ export default new Router({
         {
           path: 'index',
           component: UserIndex
+        },{
+          path: 'home',
+          component: UserIndex2
         }
       ]
     }, {

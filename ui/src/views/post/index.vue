@@ -26,17 +26,17 @@
         <el-card shadow="never" class="mt8">
           <div slot="header">
             <div class="post-type">
-              <span>雨纷纷</span>
+              <span>最新</span>
               <el-divider direction="vertical" content-position="right"></el-divider>
-              <span>旧故里</span>
+              <span>热门</span>
               <el-divider direction="vertical"></el-divider>
-              <span>草木深</span>
+              <span>热帖</span>
             </div>
           </div>
           <div class="post-list">
             <ul>
               <li>
-                <a href="">
+                <router-link :to="'/post/detail?id=' + '1'">
                   <img src="http://placehold.it/64x64" alt="">
                   <div>
                     <h3>这是文章的标题</h3>
@@ -48,7 +48,7 @@
                       </span>
                     </p>
                   </div>
-                </a>
+                </router-link>
               </li>
               <li>
                 <a href="">

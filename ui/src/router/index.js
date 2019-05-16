@@ -18,6 +18,7 @@ import Games from '@/views/games/index'
 import Gitter from '@/views/gitter/index'
 import World from '@/views/world/index'
 import WorldDetail from '@/views/world/detail'
+import PostGuide from '@/views/guide/index'
 
 Vue.use(Router)
 
@@ -25,7 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home/index'
+      redirect: '/home/index',
+      meta: { title: 'Tinymce' }
     }, {
       path: '/login',
       component: Login,
@@ -56,7 +58,8 @@ export default new Router({
         },
         {
           path: 'index',
-          component: Post
+          component: Post,
+          meta: { title: 'Tinymce' }
         },
         {
           path: 'new',
@@ -140,6 +143,15 @@ export default new Router({
         {
           path: 'detail',
           component: WorldDetail
+        }
+      ]
+    }, {
+      path: '/guide',
+      component: Layer,
+      children: [
+        {
+          path: 'index',
+          component: PostGuide
         }
       ]
     }

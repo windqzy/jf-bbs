@@ -2,6 +2,7 @@
   <div id="post" class="layui-container">
     <el-row :gutter="10">
       <el-col :span="16">
+        <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
         <el-card shadow="never">
           <div class="post-divider">
             <span>全部<em> (25)</em></span>
@@ -98,8 +99,12 @@
 </template>
 
 <script>
+  import Breadcrumb from '@/components/Breadcrumb'
   export default {
     name: "index",
+    components: {
+      Breadcrumb
+    },
     data() {
       return {
         labelId: ''

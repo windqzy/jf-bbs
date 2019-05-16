@@ -29,7 +29,7 @@
                   <span>钻石，奖励</span>
                   <el-input placeholder="" size="small"></el-input>
                   <span>次</span>
-                  <span class="grade-tip"> 回帖奖励总额: 0 U币, 税后支付U币 0 , 您有 U币 20</span>
+                  <span class="grade-tip"> 回帖奖励总额: 0 钻石,  您有 钻石 20</span>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="采纳奖励">
@@ -43,7 +43,10 @@
                   :on-change="handleChange"
                   :file-list="fileList">
                   <el-button size="small" type="primary">点击上传</el-button>
-                  <div slot="tip" class="el-upload__tip">只能上传zip文件，且不超过2GB</div>
+                  <div slot="tip" class="el-upload__tip">
+                    <el-checkbox v-model="replyDownload">回复可下载</el-checkbox>
+                    只能上传zip文件，且不超过2GB
+                  </div>
                 </el-upload>
               </el-tab-pane>
             </el-tabs>
@@ -79,7 +82,8 @@
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
             }
-          ]
+          ],
+          replyDownload: false
         }
       },
       components: {
@@ -173,7 +177,7 @@
   }
   .grade-tip {
     margin-left: 10px;
-    color: #999;
+    color: #E6A23C;
   }
   .reward-box {
     /deep/ .el-input {
@@ -183,6 +187,9 @@
   .el-upload__tip {
     display: inline-block;
     margin-left: 10px;
-
+    color: #E6A23C;
+    /deep/ .el-checkbox {
+      margin-right: 10px;
+    }
   }
 </style>

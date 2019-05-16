@@ -18,7 +18,7 @@
               <i class="el-icon-news"></i>
               精华推荐
             </p>
-            <a>更多>></a>
+            <router-link to="/guide/index?type=1">更多>></router-link>
           </div>
           <ul class="brief-content">
             <li v-for="item in briefList.recommend">
@@ -32,7 +32,7 @@
               <i class="el-icon-news"></i>
               最新发布
             </p>
-            <a>更多>></a>
+            <router-link to="/guide/index?type=2">更多>></router-link>
           </div>
           <ul class="brief-content">
             <li v-for="item in briefList.publish">
@@ -46,7 +46,7 @@
               <i class="el-icon-news"></i>
               最新回复
             </p>
-            <a>更多>></a>
+            <router-link to="/guide/index?type=3">更多>></router-link>
           </div>
           <ul class="brief-content">
             <li v-for="item in briefList.reply">

@@ -4,7 +4,7 @@
       <!--<i class="el-icon-message-solid"></i>-->
       <el-row type="flex" align="middle" justify="space-between" :gutter="10">
         <el-col :span="4">
-          <div class="logo"></div>
+          <div class="logo">S.D.C</div>
         </el-col>
         <el-col :span="10">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -105,21 +105,11 @@
     background-color: white;
 
     .logo {
-      display: inline-block;
-      /*width: 153px;*/
-      height: 50px;
-      /*background: url(../../static/images/logo.png) no-repeat 50%;*/
-      background-size: 100%;
-      margin-right: 24px;
+      margin-left: 10px;
+      font-size: 22px;
+      color: #009688;
     }
-    /*.el-input {*/
-      /*float: right;*/
-      /*width: 200px;*/
-      /*margin-top: 10px;*/
-    /*}*/
-    /*.el-button {*/
-      /*float: right;*/
-    /*}*/
+
   }
   .el-menu-demo {
     display: inline-block;

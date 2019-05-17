@@ -36,6 +36,7 @@
           </div>
           <ul class="brief-content">
             <li v-for="item in briefList.publish">
+              {{item.time}}
               <a href="">{{item.title}}</a>
             </li>
           </ul>
@@ -50,6 +51,7 @@
           </div>
           <ul class="brief-content">
             <li v-for="item in briefList.reply">
+              {{item.time}}
               <a href="">{{item.title}}</a>
             </li>
           </ul>
@@ -60,7 +62,7 @@
       <el-card v-for="label in labelList" shadow="never" :key="label.id">
         <div slot="header" class="label-header">{{label.name}}</div>
         <el-row :gutter="10">
-          <el-col :span="8" v-for="tag in label.child" :key="tag.id" class="label-col"
+          <el-col :lg="8" :xs="24" v-for="tag in label.child" :key="tag.id" class="label-col"
                   :class="{'one': label.child.length % 3 == 1,'two': label.child.length % 3 == 2,'zero': label.child.length % 3 == 0}">
             <el-row :gutter="10" type="flex">
               <el-col :span="6">
@@ -137,6 +139,15 @@
     .el-col {
       padding: 0 10px;
       border-right: 1px solid #EBEEF5;
+      &:first-child {
+        li {
+          /*list-style: square;*/
+          color: #666;
+        }
+      }
+      &:nth-child(2) {
+
+      }
       &:last-child {
         border-right: none;
       }
@@ -147,7 +158,21 @@
       justify-content: space-between;
       margin-bottom: 10px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 16px;
+      a {
+        font-size: 12px;
+        font-weight: 400;
+      }
+    }
+    &-content {
+      padding-left: 10px;
+      li {
+        a {
+          &:hover {
+            color: #009688;
+          }
+        }
+      }
     }
     .brief-content {
       li {
@@ -218,7 +243,15 @@
           border-bottom: none;
         }
       }
-
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    .brief {
+      .el-col {
+        margin-bottom: 4px;
+        border-right: none;
+        border-bottom: 1px solid #EBEEF5;
+      }
     }
   }
 </style>

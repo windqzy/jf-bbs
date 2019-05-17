@@ -11,8 +11,8 @@
       </div>
     </el-card>
     <div class="brief">
-      <el-row type="flex">
-        <el-col :span="8">
+      <el-row>
+        <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
               <i class="el-icon-news"></i>
@@ -26,7 +26,7 @@
             </li>
           </ul>
         </el-col>
-        <el-col :span="8">
+        <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
               <i class="el-icon-news"></i>
@@ -40,7 +40,7 @@
             </li>
           </ul>
         </el-col>
-        <el-col :span="8">
+        <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
               <i class="el-icon-news"></i>
@@ -129,7 +129,6 @@
   .brief {
     margin: 5px 0;
     border: 1px solid #EBEEF5;
-    height: 200px;
     padding: 10px;
     background-color: #fff;
     .el-row {

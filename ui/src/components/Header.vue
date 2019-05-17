@@ -10,6 +10,8 @@
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">首页</el-menu-item>
             <el-menu-item index="2">资讯</el-menu-item>
+            <el-menu-item index="3">FAQ</el-menu-item>
+            <el-menu-item index="4">需求墙</el-menu-item>
           </el-menu>
         </el-col>
         <el-col :span="4">
@@ -24,7 +26,23 @@
           <el-button type="primary" size="small" @click="newPosts">写文章</el-button>
         </el-col>
         <el-col :span="1">
-          <i class="el-icon-message-solid message" ></i>
+          <el-popover
+            placement="top"
+            width="215"
+            >
+            <div style="text-align: right; margin: 0">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="通知" name="first">通知</el-tab-pane>
+                <el-tab-pane label="关注" name="second">关注</el-tab-pane>
+                <el-tab-pane label="系统" name="third">系统</el-tab-pane>
+              </el-tabs>
+            </div>
+            <el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>
+          </el-popover>
+
+          <!--<el-badge :value="12" class="item">-->
+            <!--<i class="el-icon-message-solid message" ></i>-->
+          <!--</el-badge>-->
         </el-col>
         <el-col :span="2">
           <el-dropdown @command="handleCommand">
@@ -45,6 +63,7 @@
 </template>
 
 <script>
+
   export default {
     name: "Header",
     data() {
@@ -62,7 +81,8 @@
     methods: {
       handleSelect(key, keyPath) {
         switch (key) {
-          case '1':this.$router.push('/home/index');break
+          case '1':this.$router.push('/home/index');break;
+          case '3':this.$router.push('/faq/index');break;
         }
       },
       handleCommand(command) {
@@ -110,6 +130,11 @@
       color: #009688;
     }
 
+    /deep/ .el-button .el-button--text .el-popover__reference {
+      i {
+        font-size: 18px;
+      }
+    }
   }
   .el-menu-demo {
     display: inline-block;

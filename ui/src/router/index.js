@@ -19,6 +19,7 @@ import Gitter from '@/views/gitter/index'
 import World from '@/views/world/index'
 import WorldDetail from '@/views/world/detail'
 import PostGuide from '@/views/guide/index'
+import Faq from '@/views/faq/index'
 
 Vue.use(Router)
 
@@ -152,6 +153,15 @@ export default new Router({
         {
           path: 'index',
           component: PostGuide
+        }
+      ]
+    }, {
+      path: '/faq',
+      component: Layer,
+      children: [
+        {
+          path: 'index',
+          component: Faq
         }
       ]
     }

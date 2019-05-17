@@ -1,6 +1,7 @@
 package com.jfsoft.bbs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.*;
 import com.jfsoft.bbs.es.document.ProductDocument;
@@ -45,6 +46,7 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsLabelManageService bbsLabelManageService;
+
 
     /**
      * 首页列表查询
@@ -247,15 +249,60 @@ public class PostsController extends AbstractController {
         bbsPostsService.updateById(bbsPostsEntity);
         return R.ok("操作成功");
     }
+
     /**
      * 根据key值查询所有带key的数据
+     *
      * @param keyword
      * @return
      */
     @RequestMapping("/search/{keyword}")
-    public R search(@PathVariable String keyword){
-        String[] fieldNames = {"productName","productDesc"};
-        List<Map<String,Object>> list = esSearchService.queryHit(keyword, "orders", fieldNames);
-        return R.ok().put("data",list);
+    public R search(@PathVariable String keyword) {
+        String[] fieldNames = {"productName", "productDesc"};
+        List<Map<String, Object>> list = esSearchService.queryHit(keyword, "orders", fieldNames);
+        return R.ok().put("data", list);
+    }
+
+
+    /**
+     * 获取文章更新数量
+     * @return
+     */
+    @RequestMapping("/getUpdateCount")
+    public R getUpdateCount() {
+        Map<String, Object> result = new HashMap<>();
+        int todayCount = bbsPostsService.getTodayCount();
+        int yesterdayCount = bbsPostsService.getYesterdayCount();
+        int count = bbsPostsService.selectCount(new EntityWrapper<>());
+        result.put("todayCount", todayCount);
+        result.put("yesterdayCount", yesterdayCount);
+        result.put("count", count);
+        return R.ok().put("data", result);
+    }
+
+    /**
+     * 获取首页置顶
+     * @return
+     */
+    @RequestMapping("/getNewPosts")
+    public R getTopPosts() {
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> page = new HashMap<>();
+        page.put("currPage", "0");
+        page.put("limit", "10");
+        // 最新精华
+        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("good", true);
+        PageUtils goodList = bbsPostsService.queryPage(page, wrapper);
+        // 最新发布
+        EntityWrapper<BbsPostsEntity> wrapper2 = new EntityWrapper<>();
+        wrapper2.orderBy("init_time desc");
+        PageUtils publishList = bbsPostsService.queryPage(page, wrapper2);
+        // 最新回复
+        List<BbsPostsEntity> replyList = bbsPostsService.getListByReplyTime(page);
+        result.put("goodList", goodList.getList());
+        result.put("publishList", publishList.getList());
+        result.put("replyList", replyList);
+        return R.ok().put("data", result);
     }
 }

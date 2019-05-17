@@ -30,4 +30,9 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 
 	BbsPostsEntity getPostByReplyId(Integer replyId);
 
+	int getTodayCount();
+
+	int getYesterdayCount();
+
+	List<BbsPostsEntity> getListByReplyTime(Map<String, Object> page);
 }

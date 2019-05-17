@@ -80,7 +80,22 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
     }
 
     @Override
+    public List<BbsPostsEntity> getListByReplyTime(Map<String, Object> page) {
+        return bbsPostsDao.getListByReplyTime(page);
+    }
+
+    @Override
     public BbsPostsEntity getPostByReplyId(Integer replyId) {
         return bbsPostsDao.getPostByReplyId(replyId);
+    }
+
+    @Override
+    public int getTodayCount() {
+        return bbsPostsDao.getTodayCount();
+    }
+
+    @Override
+    public int getYesterdayCount() {
+        return bbsPostsDao.getTodayCount();
     }
 }

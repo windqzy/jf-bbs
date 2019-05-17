@@ -4,7 +4,7 @@
       <!--<i class="el-icon-message-solid"></i>-->
       <el-row type="flex" align="middle" justify="space-between" :gutter="10">
         <el-col :span="4">
-          <div class="logo">S.D.C</div>
+          <div class="logo">S.D community</div>
         </el-col>
         <el-col :span="10">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -31,7 +31,7 @@
             width="215"
             >
             <div style="text-align: right; margin: 0">
-              <el-tabs v-model="activeName" @tab-click="handleClick">
+              <el-tabs>
                 <el-tab-pane label="通知" name="first">通知</el-tab-pane>
                 <el-tab-pane label="关注" name="second">关注</el-tab-pane>
                 <el-tab-pane label="系统" name="third">系统</el-tab-pane>

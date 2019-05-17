@@ -3,11 +3,11 @@
     <el-card shadow="never">
       <div class="divider">
         <i class="el-icon-s-data"></i>
-        <span>今日: 303</span>
+        <span>今日: {{updateCount.todayCount}}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>昨日: 56</span>
+        <span>昨日: {{updateCount.yesterdayCount}}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>帖子: 342326</span>
+        <span>帖子: {{updateCount.count}}</span>
       </div>
     </el-card>
     <div class="brief">
@@ -15,44 +15,45 @@
         <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
-              <i class="el-icon-news"></i>
+              <i class="el-icon-news" style="margin-right: 6px"></i>
               精华推荐
             </p>
             <router-link to="/guide/index?type=1">更多>></router-link>
           </div>
           <ul class="brief-content">
-            <li v-for="item in briefList.recommend">
-              <a href="">{{item.title}}</a>
+            <li v-for="item in newPost.goodList">
+              <span class="brief-item-time">{{item.initTime | formatTime}}</span>
+              <router-link to="">{{item.title}}</router-link>
             </li>
           </ul>
         </el-col>
         <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
-              <i class="el-icon-news"></i>
+              <i class="el-icon-news" style="margin-right: 6px"></i>
               最新发布
             </p>
             <router-link to="/guide/index?type=2">更多>></router-link>
           </div>
           <ul class="brief-content">
-            <li v-for="item in briefList.publish">
-              {{item.time}}
-              <a href="">{{item.title}}</a>
+            <li v-for="item in newPost.publishList">
+              <span class="brief-item-time">{{item.initTime | formatTime}}</span>
+              <router-link to="">{{item.title}}</router-link>
             </li>
           </ul>
         </el-col>
         <el-col :lg="8" :xs="24">
           <div class="brief-header">
             <p>
-              <i class="el-icon-news"></i>
+              <i class="el-icon-news" style="margin-right: 6px"></i>
               最新回复
             </p>
             <router-link to="/guide/index?type=3">更多>></router-link>
           </div>
           <ul class="brief-content">
-            <li v-for="item in briefList.reply">
-              {{item.time}}
-              <a href="">{{item.title}}</a>
+            <li v-for="item in newPost.replyList">
+              <span class="brief-item-time">{{item.initTime | formatTime}}</span>
+              <router-link to="">{{item.title}}</router-link>
             </li>
           </ul>
         </el-col>
@@ -62,17 +63,17 @@
       <el-card v-for="label in labelList" shadow="never" :key="label.id">
         <div slot="header" class="label-header">{{label.name}}</div>
         <el-row :gutter="10">
-          <el-col :lg="8" :xs="24" v-for="tag in label.child" :key="tag.id" class="label-col"
-                  :class="{'one': label.child.length % 3 == 1,'two': label.child.length % 3 == 2,'zero': label.child.length % 3 == 0}">
+          <el-col :lg="8" :xs="24" v-for="tag in label.children" :key="tag.id" class="label-col"
+                  :class="{'one': label.children.length % 3 == 1,'two': label.children.length % 3 == 2,'zero': label.children.length % 3 == 0}">
             <el-row :gutter="10" type="flex">
               <el-col :span="6">
-                <img :src="tag.cover" alt="">
+                <img :src="tag.icon" :alt="tag.name">
               </el-col>
               <el-col :span="18" class="label-content-col">
                 <div>
                   <router-link :to="'/post/index?labelId='+label.id" class="label-title">
                     {{tag.name}}
-                    <em>(20)</em>
+                    <em>({{tag.postsCount}})</em>
                   </router-link>
                 </div>
                 <div>
@@ -93,27 +94,25 @@
 </template>
 <script>
 
-  import * as post from '@/api/post';
-  import * as reply from '@/api/reply';
-  import * as time from '@/utils/time';
-  import * as sign from '@/api/sign';
-  import * as grade from '@/api/grade';
   import * as label from '@/api/label';
-  import * as tag from '@/api/tag';
-  import * as log from '@/api/log';
-  // import * as labelArr from '@/mock/label.json';
+  import * as posts from '@/api/post';
+  import * as timeUtils from '@/utils/time';
 
   export default {
     name: "index",
 
     data() {
       return {
-        labelList: require('../mock/label.json'),
+        labelList: [],
         briefList: require('../mock/brief.json'),
+        updateCount: '',
+        newPost: ''
       }
     },
     created() {
-      // this.getAllLabel();
+      this.getAllLabel();
+      this.getUpdateCount();
+      this.getNewPosts();
     },
     mounted() {
 
@@ -121,8 +120,24 @@
     methods: {
       getAllLabel() {
         label.getList().then(res => {
-          this.labelList = res.data.list;
+          this.labelList = res.data;
         })
+      },
+      getUpdateCount() {
+        posts.getUpdateCount().then(res => {
+          this.updateCount = res.data;
+        })
+      },
+      getNewPosts() {
+        posts.getNewPosts().then(res => {
+          this.newPost = res.data;
+        })
+      },
+    },
+    filters: {
+      formatTime(dateStr) {
+        let date = new Date(dateStr);
+        return timeUtils.dateFormat('hh:mm', date);
       }
     }
   }
@@ -165,7 +180,8 @@
       }
     }
     &-content {
-      padding-left: 10px;
+      padding-left: 15px;
+      margin-bottom: 8px;
       li {
         a {
           &:hover {
@@ -175,6 +191,11 @@
       }
     }
     .brief-content {
+      .brief-item-time {
+        margin-right: 10px;
+        color: #999;
+        font-size: 13px;
+      }
       li {
         margin: 5px 2px;
       }
@@ -248,7 +269,7 @@
   @media only screen and (max-width: 767px) {
     .brief {
       .el-col {
-        margin-bottom: 4px;
+        margin-bottom: 15px;
         border-right: none;
         border-bottom: 1px solid #EBEEF5;
       }

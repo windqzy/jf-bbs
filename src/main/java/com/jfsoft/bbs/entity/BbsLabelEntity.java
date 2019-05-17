@@ -1,9 +1,11 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 
@@ -38,6 +40,17 @@ public class BbsLabelEntity implements Serializable {
 	 *
 	 */
 	private Boolean postManage;
+
+	/**
+	 *
+	 */
+	private int parentId;
+
+	private String icon;
+
+
+	@TableField(exist = false)
+	private List<BbsLabelEntity> children;
 
 	/**
 	 * 设置：
@@ -94,5 +107,29 @@ public class BbsLabelEntity implements Serializable {
 
 	public void setPostManage(Boolean postManage) {
 		this.postManage = postManage;
+	}
+
+	public int getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
+
+	public List<BbsLabelEntity> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<BbsLabelEntity> children) {
+		this.children = children;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

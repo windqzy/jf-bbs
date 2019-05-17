@@ -112,4 +112,17 @@
         WHERE bp.id = (SELECT posts_id FROM bbs_reply br WHERE br.id = #{replyId})
     </select>
 
+    <select id="getTodayCount" resultType="int">
+        SELECT COUNT(1) FROM bbs_posts WHERE (date_format(init_time,'%Y-%m-%d') = date_sub(curdate(),interval 0 day))
+    </select>
+
+    <select id="getYesterdayCount" resultType="int">
+        SELECT COUNT(1) FROM bbs_posts WHERE (date_format(init_time,'%Y-%m-%d') = date_sub(curdate(),interval 1 day))
+    </select>
+
+    <select id="getListByReplyTime" parameterType="map" resultMap="bbsPostsMap">
+      select * from bbs_posts where id in (
+       select posts_id from bbs_reply order by init_time desc
+       ) limit #{currPage}, #{limit}
+    </select>
 </mapper>

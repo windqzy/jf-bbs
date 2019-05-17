@@ -82,3 +82,20 @@ export function del(id) {
     method: 'GET'
   })
 }
+
+
+// 查询首页文章数量
+export function getUpdateCount() {
+  return request({
+    url: '/posts/getUpdateCount',
+    method: 'GET'
+  })
+}
+
+// 查询首页最新文章列表
+export function getNewPosts() {
+  return request({
+    url: '/posts/getNewPosts',
+    method: 'GET'
+  })
+}

@@ -26,7 +26,12 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     List<BbsPostsEntity> getPostByCollection(Integer userId);
 
+    List<BbsPostsEntity> getListByReplyTime(Map<String, Object> page);
+
     BbsPostsEntity getPostByReplyId(Integer replyId);
 
+    int getTodayCount();
+
+    int getYesterdayCount();
 }
 

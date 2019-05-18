@@ -99,3 +99,14 @@ export function getNewPosts() {
     method: 'GET'
   })
 }
+
+/**
+ * 新本查询文章
+ */
+export function getPostsList(form) {
+  return request({
+    url: '/posts/getPostsList?pageIndex=' + form.pageIndex + '&pageSize=' + form.pageSize + '&type=' + form.type +
+      '&tagId=' + form.tagId,
+    method: 'GET'
+  })
+}

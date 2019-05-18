@@ -39,8 +39,9 @@
               <el-tab-pane label="添加附件">
                 <el-upload
                   class="upload-demo"
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :action="actionUrl"
                   :on-change="handleChange"
+                  :on-success="handleSuccess"
                   :file-list="fileList">
                   <el-button size="small" type="primary">点击上传</el-button>
                   <div slot="tip" class="el-upload__tip">
@@ -69,6 +70,7 @@
       data() {
         return {
           editor: '',
+          actionUrl: window.localStorage.baseUrl + '/upload/file',
           form: {
             title: '',
             labelId: '',
@@ -77,19 +79,17 @@
             grade: 0
           },
           editType: '0',
-          fileList: [
-            {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-            }
-          ],
-          replyDownload: false
+          fileList: [],
+          replyDownload: false,
+          userInfo: ''
         }
       },
       components: {
         'markdown-editor' : MarkdownEditor
       },
       created() {
+        this.userInfo = this.$store.getters.user;
+
       },
       mounted() {
         this.initEditor();
@@ -109,22 +109,30 @@
           console.log(this.form.content)
         },
         switchType() {
-          this.$confirm('此操作将清空当前编辑器内容, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.form.content = '';
-            this.$message({
-              type: 'success',
-              message: '已切换为' + val == '0' ? '富文本编辑器' : 'Markdown编辑器'
-            });
-          }).catch(() => {
-
-          });
+          // this.$confirm('此操作将清空当前编辑器内容, 是否继续?', '提示', {
+          //   confirmButtonText: '确定',
+          //   cancelButtonText: '取消',
+          //   type: 'warning'
+          // }).then(() => {
+          //   this.form.content = '';
+          //   this.$message({
+          //     type: 'success',
+          //     message: '已切换为' + val == '0' ? '富文本编辑器' : 'Markdown编辑器'
+          //   });
+          // }).catch(() => {
+          //
+          // });
         },
         handleChange(file, fileList) {
           this.fileList = fileList.slice(-3);
+        },
+        handleSuccess(res, file, fileList) {
+          let obj = {
+            name: file.name,
+            res: data.src
+          };
+
+          this.fileList.push(obj);
         }
       }
     }

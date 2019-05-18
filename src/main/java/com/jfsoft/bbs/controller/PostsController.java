@@ -305,4 +305,19 @@ public class PostsController extends AbstractController {
         result.put("replyList", replyList);
         return R.ok().put("data", result);
     }
+
+    /**
+     * 查询文章列表
+     * type (0 最新， 1 热门  2 精华)
+     * @param pageIndex
+     * @param pageSize
+     * @param type
+     * @param tagId
+     * @return
+     */
+    @RequestMapping("/getPostsList")
+    public R getPostsList(Integer pageIndex, Integer pageSize, Integer type, Integer tagId) {
+        List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, type, tagId);
+        return R.ok().put("data", postsList);
+    }
 }

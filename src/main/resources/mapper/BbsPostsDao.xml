@@ -25,6 +25,7 @@
         <result property="isVote" column="is_vote"/>
         <result property="tagId" column="tag_id"/>
         <result property="tagName" column="tag_name"/>
+        <result property="lastReply" column="last_reply"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
@@ -123,6 +124,20 @@
     <select id="getListByReplyTime" parameterType="map" resultMap="bbsPostsMap">
       select * from bbs_posts where id in (
        select posts_id from bbs_reply order by init_time desc
-       ) limit #{currPage}, #{limit}
+       ) limit ${currPage},${limit}
+    </select>
+
+    <select id="getPostsList" parameterType="map" resultMap="bbsPostsMap">
+        select bp.id, bp.title, bu.name as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id) as reply_count
+        from bbs_posts bp
+               left join bbs_user bu on bu.id = bp.user_id
+               left join bbs_reply br on br.posts_id = bp.id
+        where bp.is_del = false
+        <if test="tagId != null and tagId != ''">
+           and bp.tag_id = #{tagId}
+        </if>
+        group by bp.title, bu.name, bu.icon, bp.init_time
+        order by last_reply desc
+        LIMIT #{startPage}, #{endPage}
     </select>
 </mapper>

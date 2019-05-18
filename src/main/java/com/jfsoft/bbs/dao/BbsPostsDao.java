@@ -28,6 +28,8 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
 
 	List<BbsPostsEntity> findAll();
 
+	List<BbsPostsEntity> getPostsList(Map<String, Object> params);
+
 	BbsPostsEntity getPostByReplyId(Integer replyId);
 
 	int getTodayCount();

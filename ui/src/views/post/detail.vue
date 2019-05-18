@@ -2,11 +2,76 @@
   <div class="layui-container">
     <el-row :gutter="10">
       <el-col :span="18">
+        <!-- 文章内容 -->
         <el-card shadow="never">
-          <div v-html="content">
+          <div class="detail-box">
+            <h1>{{postsInfo.title}}</h1>
+            <div class="fly-detail-info">
+              <!-- <span class="layui-badge">审核中</span> -->
+              <!--<span class="layui-badge layui-bg-green fly-detail-column">动态</span>-->
+
+              <!--<span class="layui-badge" style="background-color: #999;">未结</span>-->
+              <!--&lt;!&ndash; <span class="layui-badge" style="background-color: #5FB878;">已结</span> &ndash;&gt;-->
+
+              <!--<span class="layui-badge layui-bg-black">置顶</span>-->
+              <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+
+              <!--<div class="fly-admin-box" data-id="123">-->
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
+
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
+                <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;-->
+
+                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
+                <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;-->
+              <!--</div>-->
+              <!--<span class="fly-list-nums">-->
+            <!--<a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>-->
+            <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
+          <!--</span>-->
+            </div>
+            <div class="detail-about">
+              <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">-->
+              <!--<img :src="postInfo.icon == null ? defaultAvatar : postInfo.icon"-->
+              <!--:alt="postInfo.author">-->
+              <!--</router-link>-->
+              <a class="fly-avatar">
+                <img :src="postsInfo.icon == null ? defaultAvatar : postsInfo.icon"
+                     :alt="postsInfo.author">
+              </a>
+              <div class="fly-detail-user">
+                <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">-->
+                <!--<cite>{{postInfo.author}}</cite>-->
+                <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息"></i>&ndash;&gt;-->
+                <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
+                <!--</router-link>-->
+                <a class="fly-link">
+                  <cite>{{postsInfo.author}}</cite>
+                </a>
+                <span>{{postsInfo.initTime | dateStr}}</span>
+              </div>
+              <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postsInfo.rewardGrade}}钻石</span>
+                <span v-if="postsInfo.id == postsInfo.userId && !postsInfo.end && !postsInfo.vote"
+                      class="layui-btn layui-btn-xs jie-admin"
+                      type="edit">
+                  <router-link :to="'/add/index?postId=' + postsInfo.id">编辑此贴</router-link>
+                </span>
+              </div>
+            </div>
+            <div class="detail-body photos" v-html="postsInfo.content" v-loading="loadDetail">
+
+            </div>
           </div>
+        </el-card>
+        <!-- 附件区 -->
+        <el-card shadow="never" class="attach">
+          <el-divider><div class="title">附件下载</div></el-divider>
+        </el-card>
+        <!-- 评论 -->
+        <el-card shadow="never">
           <div class="comment-box">
-            <div class="title">评论</div>
+            <el-divider><div class="title">评论</div></el-divider>
             <div class="comment-form">
               <el-row type="flex" align="middle">
                 <el-col :span="2">
@@ -123,17 +188,26 @@
 </template>
 
 <script>
+  import * as post from '@/api/post'
+  import * as timeUtils from '@/utils/time';
     export default {
       name: "detail",
       data() {
         return {
-          content: '文章区',
           actionBox: false,
           disable: true,
-          comment: ''
+          comment: '',
+          postsInfo: '',
+          loadDetail: false,
+          postId: '',
+          userInfo: '',
+          defaultAvatar: require('../../../static/images/avatar/4.jpg')
         }
       },
       created() {
+        this.postId = this.$route.query.postId;
+        this.getDetailById();
+        this.userInfo = this.$store.getters.user;
       },
       methods: {
         commentChange() {
@@ -142,25 +216,57 @@
           } else {
             this.disable = true;
           }
+        },
+        getDetailById() {
+          this.loadDetail = true;
+          post.getDetail(this.postId).then(res => {
+            this.loadDetail = false;
+            this.postsInfo = res.data;
+            // this.getReplyList(postId);
+            // this.$nextTick(() => {
+            //   this.layui();
+            // });
+            // // 判断是否为投票贴
+            // if (this.postInfo.vote) {
+            //   this.getVoteList(this.postInfo.id)
+            // }
+          })
+        },
+      },
+      filters: {
+        dateStr(date) {
+          return timeUtils.dateDiff(date);
         }
       }
     }
 </script>
 
 <style scoped lang="scss">
+  .detail-box {
+    padding: 0px;
+  }
   .el-card {
     margin-bottom: 8px;
     /deep/ .el-card__header {
       padding: 10px 20px;
     }
   }
+
+  .attach {
+    .title {
+      color: #8a9aa9;
+      font-size: 16px;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
   .comment-box {
     .title {
       color: #8a9aa9;
       font-size: 16px;
       font-weight: 400;
       text-align: center;
-      padding: 14px 0 5px;
     }
     .comment-form {
       margin: 10px 0;

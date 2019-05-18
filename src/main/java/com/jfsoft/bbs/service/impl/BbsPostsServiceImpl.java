@@ -85,6 +85,16 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
     }
 
     @Override
+    public List<BbsPostsEntity> getPostsList(Integer pageIndex, Integer pageSize, Integer type,
+                                             Integer tagId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startPage", pageSize * (pageIndex - 1));
+        params.put("endPage", pageSize);
+        params.put("tagId", tagId);
+        return bbsPostsDao.getPostsList(params);
+    }
+
+    @Override
     public BbsPostsEntity getPostByReplyId(Integer replyId) {
         return bbsPostsDao.getPostByReplyId(replyId);
     }

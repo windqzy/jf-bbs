@@ -95,6 +95,9 @@ public class BbsPostsEntity implements Serializable {
 
     private Boolean isDel;
 
+    @TableField(exist = false)
+    private String lastReply;
+
     public String getTagName() {
         return tagName;
     }
@@ -316,5 +319,13 @@ public class BbsPostsEntity implements Serializable {
      */
     public Integer getUserId() {
         return userId;
+    }
+
+    public String getLastReply() {
+        return lastReply;
+    }
+
+    public void setLastReply(String lastReply) {
+        this.lastReply = lastReply;
     }
 }

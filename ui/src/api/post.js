@@ -51,6 +51,23 @@ export function publish(bbsPosts) {
   })
 }
 
+export function publish2(bbsPosts) {
+  return request({
+    url: '/posts/publish',
+    method: 'POST',
+    data: bbsPosts
+  })
+}
+
+export function updateFile(bbsPostsFiles) {
+  return request({
+    url: '/posts/updateFile',
+    method: 'POST',
+    data: bbsPostsFiles
+  })
+}
+
+
 // 查询个人收藏文章列表
 export function getCollecList() {
   return request({

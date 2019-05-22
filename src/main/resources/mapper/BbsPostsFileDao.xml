@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jfsoft.bbs.dao.BbsPostsFileDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jfsoft.bbs.entity.BbsPostsFileEntity" id="bbsPostsFileMap">
+        <result property="id" column="id"/>
+        <result property="url" column="url"/>
+        <result property="type" column="type"/>
+        <result property="size" column="size"/>
+        <result property="postsId" column="posts_id"/>
+        <result property="isReply" column="is_reply"/>
+        <result property="initTime" column="init_time"/>
+    </resultMap>
+
+</mapper>

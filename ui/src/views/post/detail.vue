@@ -45,18 +45,23 @@
                 <!--&lt;!&ndash;<i class="iconfont icon-renzheng" title="认证信息"></i>&ndash;&gt;-->
                 <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
                 <!--</router-link>-->
-                <a class="fly-link">
+                <a class="fly-link author">
                   <cite>{{postsInfo.author}}</cite>
                 </a>
-                <span>{{postsInfo.initTime | dateStr}}</span>
+
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-                <span style="padding-right: 10px; color: #FF7200">悬赏：{{postsInfo.rewardGrade}}钻石</span>
-                <span v-if="postsInfo.id == postsInfo.userId && !postsInfo.end && !postsInfo.vote"
-                      class="layui-btn layui-btn-xs jie-admin"
-                      type="edit">
-                  <router-link :to="'/add/index?postId=' + postsInfo.id">编辑此贴</router-link>
-                </span>
+                <span>{{postsInfo.initTime | dateStr}}</span>
+                <span>阅读数 200</span>
+                <!--<span style="padding-right: 10px; color: #FF7200">悬赏：{{postsInfo.rewardGrade}}钻石</span>-->
+                <!--<span v-if="postsInfo.id == postsInfo.userId && !postsInfo.end && !postsInfo.vote"-->
+                      <!--class="layui-btn layui-btn-xs jie-admin"-->
+                      <!--type="edit">-->
+                  <!--<router-link :to="'/add/index?postId=' + postsInfo.id">编辑此贴</router-link>-->
+                <!--</span>-->
+              </div>
+              <div class="star">
+                <el-button size="small" type="success">关注</el-button>
               </div>
             </div>
             <div class="detail-body photos" v-html="postsInfo.content" v-loading="loadDetail">
@@ -165,6 +170,19 @@
         <el-card shadow="never">
           <div slot="header">
             关于作者
+          </div>
+          <div class="author-about">
+            <el-row>
+              <el-col :span="6">
+                <el-image :src="userInfo.icon == null? defaultAvatar : userInfo.icon" :alt="userInfo.username"></el-image>
+              </el-col>
+              <el-col :span="18">
+                <div class="info-box">
+                  <a class="username">{{userInfo.username}}</a>
+                  <div class="position">暂无成就</div>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-card>
         <el-card shadow="never">
@@ -338,6 +356,52 @@
           }
         }
       }
+    }
+  }
+
+  .author-about {
+    /deep/ .el-image {
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+      }
+    }
+    .info-box {
+      flex: 1 1 auto;
+      min-width: 0;
+      .username {
+        font-size: 16px;
+        font-weight: 600;
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: pre-wrap;
+      }
+      .position {
+        margin-top: 5px;
+        font-size: 16px;
+        color: #72777b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .detail-about {
+    .star {
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      transform: translateY(-50%);
+    }
+    .author {
+      display: inline-block;
+      max-width: 100%;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #333;
     }
   }
 </style>

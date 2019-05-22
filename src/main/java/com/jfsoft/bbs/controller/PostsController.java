@@ -10,10 +10,7 @@ import com.jfsoft.bbs.es.service.EsSearchService;
 import com.jfsoft.bbs.service.*;
 import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -46,6 +43,9 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsLabelManageService bbsLabelManageService;
+
+    @Autowired
+    private BbsPostsFileService bbsPostsFileService;
 
 
     /**
@@ -117,7 +117,8 @@ public class PostsController extends AbstractController {
         EntityWrapper<BbsLabelEntity> wrapperLabel = new EntityWrapper<>();
         wrapperLabel.eq("id", bbsPosts.getLabelId());
         BbsLabelEntity labelEntity = bbsLabelService.selectOne(wrapperLabel);
-        if (labelEntity.getPostManage()) {  // 如果只能版主发帖
+        if (labelEntity.getPostManage()) {
+            // 如果只能版主发帖
             // 用户是否是版主
             EntityWrapper<BbsLabelManageEntity> wrapperLabelManage = new EntityWrapper<>();
             wrapperLabelManage.eq("user_id", getUserId());
@@ -319,5 +320,30 @@ public class PostsController extends AbstractController {
     public R getPostsList(Integer pageIndex, Integer pageSize, Integer type, Integer tagId) {
         List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, type, tagId);
         return R.ok().put("data", postsList);
+    }
+
+    /**
+     * 发布文章2
+     * @param bbsPosts
+     * @return
+     */
+    @RequestMapping("/publish")
+    public R publish(@RequestBody BbsPostsEntity bbsPosts) {
+        bbsPosts.setInitTime(new Date());
+        bbsPosts.setUpdateTime(new Date());
+        bbsPosts.setUserId(getUserId());
+        bbsPostsService.insert(bbsPosts);
+        return R.ok().put("data", bbsPosts);
+    }
+
+    /**
+     * 跟新文件路径
+     * @param bbsPostsFiles
+     * @return
+     */
+    @PostMapping("/updateFile")
+    public R updateFile(@RequestBody List<BbsPostsFileEntity> bbsPostsFiles) {
+        bbsPostsFileService.insertBatch(bbsPostsFiles);
+        return R.ok();
     }
 }

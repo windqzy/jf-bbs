@@ -29,7 +29,7 @@
                 <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
                 <!--</router-link>-->
                 <a class="fly-avatar">
-                  <img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
+                  <el-image :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author"></el-image>
                 </a>
                 <h2>
                   <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
@@ -62,38 +62,6 @@
                 </div>
               </li>
             </ul>
-            <!--<ul class="fly-list">-->
-              <!--<li v-for="item in postsList">-->
-                <!--<router-link :to="'/post/detail?id=' + '1'">-->
-                  <!--<img :src="item.cion" :alt="item.author">-->
-                  <!--<div>-->
-                    <!--<h3>{{item.title}}</h3>-->
-                    <!--<p>-->
-                      <!--{{item.author}} 于 {{item.initTime}} 发表 最后回复 {{item.lastReply}} 前-->
-                      <!--<span>-->
-                        <!--<i class="el-icon-view"></i>1212-->
-                        <!--<i class="el-icon-chat-line-round"></i>1212-->
-                      <!--</span>-->
-                    <!--</p>-->
-                  <!--</div>-->
-                <!--</router-link>-->
-              <!--</li>-->
-              <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="">&ndash;&gt;-->
-                  <!--&lt;!&ndash;<img src="http://placehold.it/64x64" alt="">&ndash;&gt;-->
-                  <!--&lt;!&ndash;<div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<h3>这是文章的标题</h3>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<p>&ndash;&gt;-->
-                      <!--&lt;!&ndash;张三 于 2019-01-01 发表 最后回复 2019-01-02 10:01:01&ndash;&gt;-->
-                      <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<i class="el-icon-view"></i>1212&ndash;&gt;-->
-                        <!--&lt;!&ndash;<i class="el-icon-chat-line-round"></i>1212&ndash;&gt;-->
-                      <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</p>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;</a>&ndash;&gt;-->
-              <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--</ul>-->
           </div>
         </el-card>
       </el-col>
@@ -130,6 +98,7 @@
   import * as tag from '@/api/tag';
   import * as post from '@/api/post';
   import * as timeUtils from '@/utils/time';
+
 
   export default {
     name: "index",

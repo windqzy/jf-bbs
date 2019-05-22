@@ -26,6 +26,8 @@
         <result property="tagId" column="tag_id"/>
         <result property="tagName" column="tag_name"/>
         <result property="lastReply" column="last_reply"/>
+        <result property="isTemp" column="is_temp"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">

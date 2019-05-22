@@ -3,9 +3,8 @@
     <div class="content">
       <div id="large-header" class="large-header">
         <a style="cursor: pointer; color: white; float: right; margin: 5px" @click="testLogin" v-if="false">开发者登录</a>
-        <canvas id="demo-canvas"></canvas>
+        <canvas></canvas>
         <div class="logo_box">
-          <h3>欢迎登录</h3>
           <div id="login_container"></div>
         </div>
       </div>
@@ -13,10 +12,11 @@
   </div>
 </template>
 <script>
+
   import * as login from '@/api/login'
   import * as user from '@/api/user'
 
-  let width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
+  // let width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
   export default {
     name: "loginpc",
     data() {
@@ -53,9 +53,60 @@
       }
     },
     mounted() {
-      this.initHeader();
-      this.initAnimation();
-      this.addListeners();
+      document.addEventListener('touchmove', function (e) {
+        e.preventDefault()
+      })
+      var c = document.getElementsByTagName('canvas')[0],
+        x = c.getContext('2d'),
+        pr = window.devicePixelRatio || 1,
+        w = window.innerWidth,
+        // w = document.body.clientWidth,
+        // h = document.body.clientHeight,
+        h = window.innerHeight,
+        f = 90,
+        q,
+        m = Math,
+        r = 0,
+        u = m.PI * 2,
+        v = m.cos,
+        z = m.random
+      c.width = w * pr
+      c.height = h * pr
+      x.scale(pr, pr)
+      x.globalAlpha = 0.6
+
+      function i() {
+        x.clearRect(0, 0, w, h)
+        q = [{x: 0, y: h * .7 + f}, {x: 0, y: h * .7 - f}]
+        while (q[1].x < w + f) d(q[0], q[1])
+      }
+
+      function d(i, j) {
+        x.beginPath()
+        x.moveTo(i.x, i.y)
+        x.lineTo(j.x, j.y)
+        var k = j.x + (z() * 2 - 0.25) * f,
+          n = y(j.y)
+        x.lineTo(k, n)
+        x.closePath()
+        r -= u / -50
+        x.fillStyle = '#' + (v(r) * 127 + 128 << 16 | v(r + u / 3) * 127 + 128 << 8 | v(r + u / 3 * 2) * 127 + 128).toString(16)
+        x.fill()
+        q[0] = q[1]
+        q[1] = {x: k, y: n}
+      }
+
+      function y(p) {
+        var t = p + (z() * 2 - 1.1) * f
+        return (t > h || t < 0) ? y(p) : t
+      }
+
+      document.onclick = i
+      document.ontouchstart = i
+      i()
+      // this.initHeader();
+      // this.initAnimation();
+      // this.addListeners();
       // console.log(DingTalkPC.ua.isWeb) //引入钉钉桌面端JSAPI后可直接获取
       this.dingLogin();
       // if (DingTalkPC.ua.isInDingTalk) {
@@ -82,6 +133,7 @@
       //   console.log("不是钉钉客户端")
       //   this.dingLogin();
       // }
+
     },
     methods: {
       testLogin() {
@@ -182,8 +234,8 @@
               c.frameBorder = "0",
               c.allowTransparency = "true",
               c.scrolling = "no",
-              c.width = "330px",
-              c.height = "400px",
+              c.width = "300px",
+              c.height = "300px",
               e = document.getElementById(a.id),
               e.innerHTML = "",
               e.appendChild(c)
@@ -448,173 +500,21 @@
           }
         }
         return '';
-      }
+      },
+
     },
   }
 </script>
 
 <style scoped>
-  *, *:after, *:before {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  .clearfix:before, .clearfix:after {
-    content: '';
-    display: table;
-  }
-
-  .clearfix:after {
-    clear: both;
-  }
-
-  a, button {
-    outline: none;
-  }
-
-  a {
-    color: #566473;
-    text-decoration: none;
-  }
-
-  a:hover, a:focus {
-    color: #34495e;
-  }
-
-  section {
-    padding: 1em;
-    text-align: center;
-  }
-
-  p.ref {
-    text-align: center;
-    padding: 2em 1em;
-  }
-
   .container {
     position: fixed;
     top: 0;
   }
-
-  /* Header */
-  .large-header {
-    position: relative;
-    width: 100%;
-    background: #333;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center center;
-    z-index: 1;
-  }
-
-  .demo-1 .large-header {
-    background-image: url('../../static/images/demo-1-bg.jpg');
-  }
-
   .logo_box {
-    width: 400px;
-    height: 500px;
-    padding: 35px;
-    color: #EEE;
     position: absolute;
-    left: 50%;
     top: 50%;
-    margin-left: -200px;
-    margin-top: -250px;
-  }
-
-  .logo_box h1, h2, h3 {
-    text-align: center;
-    height: 20px;
-    font: 20px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
-    color: #FFFFFF;
-    height: 20px;
-    line-height: 20px;
-    padding: 0 0 35px 0;
-  }
-
-  .forms {
-    width: 280px;
-    height: 485px;
-  }
-
-  .logon_inof {
-    width: 100%;
-    min-height: 450px;
-    padding-top: 35px;
-    position: relative;
-  }
-
-  .input_outer {
-    height: 46px;
-    padding: 0 5px;
-    margin-bottom: 30px;
-    border-radius: 50px;
-    position: relative;
-    border: rgba(255, 255, 255, 0.2) 2px solid !important;
-  }
-
-  .u_user {
-    width: 25px;
-    height: 25px;
-    /*background: url(../img/login_ico.png);*/
-    background-position: -125px 0;
-    position: absolute;
-    margin: 10px 13px;
-  }
-
-  .us_uer {
-    width: 25px;
-    height: 25px;
-    /*background-image: url(../img/login_ico.png);*/
-    background-position: -125px -34px;
-    position: absolute;
-    margin: 10px 13px;
-  }
-
-  .l-login {
-    position: absolute;
-    z-index: 1;
-    left: 50px;
-    top: 0;
-    height: 46px;
-    font: 14px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";
-    line-height: 46px;
-  }
-
-  .text {
-    width: 220px;
-    height: 46px;
-    outline: none;
-    display: inline-block;
-    font: 14px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";
-    margin-left: 50px;
-    border: none;
-    background: none;
-    line-height: 46px;
-  }
-
-  /*///*/
-  .mb2 {
-    margin-bottom: 20px
-  }
-
-  .mb2 a {
-    text-decoration: none;
-    outline: none;
-  }
-
-  .submit {
-    padding: 15px;
-    margin-top: 20px;
-    display: block;
-  }
-
-  .act-but {
-    line-height: 20px;
-    text-align: center;
-    font-size: 20px;
-    border-radius: 50px;
-    background: #0096e6;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

@@ -98,6 +98,10 @@ public class BbsPostsEntity implements Serializable {
     @TableField(exist = false)
     private String lastReply;
 
+    private Boolean isTemp;
+
+    private Date updateTime;
+
     public String getTagName() {
         return tagName;
     }
@@ -327,5 +331,21 @@ public class BbsPostsEntity implements Serializable {
 
     public void setLastReply(String lastReply) {
         this.lastReply = lastReply;
+    }
+
+    public Boolean getTemp() {
+        return isTemp;
+    }
+
+    public void setTemp(Boolean temp) {
+        isTemp = temp;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

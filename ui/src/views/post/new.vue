@@ -180,6 +180,7 @@
             this.fileList.forEach(e => {
               let suffix = e.name.split('.').pop();
               let item = {
+                name: e.name,
                 url: e.response.data.src,
                 type: suffix,
                 size: e.size,

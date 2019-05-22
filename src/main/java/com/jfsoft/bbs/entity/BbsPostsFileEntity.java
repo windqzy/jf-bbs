@@ -19,6 +19,8 @@ public class BbsPostsFileEntity implements Serializable {
     @TableId
     private Integer id;
 
+    private String name;
+
     private String url;
 
     private String type;
@@ -85,5 +87,13 @@ public class BbsPostsFileEntity implements Serializable {
 
     public void setInitTime(Date initTime) {
         this.initTime = initTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

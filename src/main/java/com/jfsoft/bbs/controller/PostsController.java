@@ -267,6 +267,7 @@ public class PostsController extends AbstractController {
 
     /**
      * 获取文章更新数量
+     *
      * @return
      */
     @RequestMapping("/getUpdateCount")
@@ -283,6 +284,7 @@ public class PostsController extends AbstractController {
 
     /**
      * 获取首页置顶
+     *
      * @return
      */
     @RequestMapping("/getNewPosts")
@@ -310,6 +312,7 @@ public class PostsController extends AbstractController {
     /**
      * 查询文章列表
      * type (0 最新， 1 热门  2 精华)
+     *
      * @param pageIndex
      * @param pageSize
      * @param type
@@ -324,6 +327,7 @@ public class PostsController extends AbstractController {
 
     /**
      * 发布文章2
+     *
      * @param bbsPosts
      * @return
      */
@@ -338,6 +342,7 @@ public class PostsController extends AbstractController {
 
     /**
      * 跟新文件路径
+     *
      * @param bbsPostsFiles
      * @return
      */
@@ -345,5 +350,18 @@ public class PostsController extends AbstractController {
     public R updateFile(@RequestBody List<BbsPostsFileEntity> bbsPostsFiles) {
         bbsPostsFileService.insertBatch(bbsPostsFiles);
         return R.ok();
+    }
+
+    /**
+     * 根据文章ID
+     * @param postsId
+     * @return
+     */
+    @GetMapping("/getFileList/{postsId}")
+    public R getFileList(@PathVariable Integer postsId) {
+        EntityWrapper<BbsPostsFileEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("posts_id", postsId);
+        List<BbsPostsFileEntity> bbsPostsFileList = bbsPostsFileService.selectList(wrapper);
+        return R.ok().put("data", bbsPostsFileList);
     }
 }

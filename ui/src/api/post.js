@@ -68,6 +68,13 @@ export function updateFile(bbsPostsFiles) {
 }
 
 
+export function getFileList(postsId) {
+  return request({
+    url: `/posts/getFileList/${postsId}`,
+    method: 'GET'
+  })
+}
+
 // 查询个人收藏文章列表
 export function getCollecList() {
   return request({

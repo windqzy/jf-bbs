@@ -1,7 +1,7 @@
 <template>
   <div class="layui-container">
     <el-row :gutter="10">
-      <el-col :span="18">
+      <el-col :lg="18" :xs="24">
         <!-- 文章内容 -->
         <el-card shadow="never">
           <div class="detail-box">
@@ -17,18 +17,18 @@
               <!--<span class="layui-badge layui-bg-red">精帖</span>-->
 
               <!--<div class="fly-admin-box" data-id="123">-->
-                <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
+              <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
 
-                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
-                <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;-->
+              <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>-->
+              <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;-->
 
-                <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
-                <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;-->
+              <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>-->
+              <!--&lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;-->
               <!--</div>-->
               <!--<span class="fly-list-nums">-->
-            <!--<a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>-->
-            <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
-          <!--</span>-->
+              <!--<a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>-->
+              <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
+              <!--</span>-->
             </div>
             <div class="detail-about">
               <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-avatar">-->
@@ -55,9 +55,9 @@
                 <span>阅读数 200</span>
                 <!--<span style="padding-right: 10px; color: #FF7200">悬赏：{{postsInfo.rewardGrade}}钻石</span>-->
                 <!--<span v-if="postsInfo.id == postsInfo.userId && !postsInfo.end && !postsInfo.vote"-->
-                      <!--class="layui-btn layui-btn-xs jie-admin"-->
-                      <!--type="edit">-->
-                  <!--<router-link :to="'/add/index?postId=' + postsInfo.id">编辑此贴</router-link>-->
+                <!--class="layui-btn layui-btn-xs jie-admin"-->
+                <!--type="edit">-->
+                <!--<router-link :to="'/add/index?postId=' + postsInfo.id">编辑此贴</router-link>-->
                 <!--</span>-->
               </div>
               <div class="star">
@@ -70,13 +70,32 @@
           </div>
         </el-card>
         <!-- 附件区 -->
-        <el-card shadow="never" class="attach">
-          <el-divider><div class="title">附件下载</div></el-divider>
+        <el-card shadow="never" class="attach" v-if="fileList.length > 0">
+          <el-divider>
+            <div class="title">附件下载</div>
+          </el-divider>
+          <el-row :gutter="10">
+            <el-col :lg="8" :xs="24" v-for="item in fileList" :key="item.id">
+              <el-card shadow="hover">
+                <el-row>
+                  <el-col :span="6">
+                    <div class="file-type">{{item.type}}</div>
+                  </el-col>
+                  <el-col :span="18">
+                    <div>{{item.name}}</div>
+                    <div>{{item.size}}</div>
+                  </el-col>
+                </el-row>
+              </el-card>
+            </el-col>
+          </el-row>
         </el-card>
         <!-- 评论 -->
         <el-card shadow="never">
           <div class="comment-box">
-            <el-divider><div class="title">评论</div></el-divider>
+            <el-divider>
+              <div class="title">评论</div>
+            </el-divider>
             <div class="comment-form">
               <el-row type="flex" align="middle">
                 <el-col :span="2">
@@ -166,7 +185,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :lg="6" :xs="24">
         <el-card shadow="never">
           <div slot="header">
             关于作者
@@ -174,7 +193,8 @@
           <div class="author-about">
             <el-row>
               <el-col :span="6">
-                <el-image :src="userInfo.icon == null? defaultAvatar : userInfo.icon" :alt="userInfo.username"></el-image>
+                <el-image :src="userInfo.icon == null? defaultAvatar : userInfo.icon"
+                          :alt="userInfo.username"></el-image>
               </el-col>
               <el-col :span="18">
                 <div class="info-box">
@@ -208,63 +228,74 @@
 <script>
   import * as post from '@/api/post'
   import * as timeUtils from '@/utils/time';
-    export default {
-      name: "detail",
-      data() {
-        return {
-          actionBox: false,
-          disable: true,
-          comment: '',
-          postsInfo: '',
-          loadDetail: false,
-          postId: '',
-          userInfo: '',
-          defaultAvatar: require('../../../static/images/avatar/4.jpg')
+
+  export default {
+    name: "detail",
+    data() {
+      return {
+        actionBox: false,
+        disable: true,
+        comment: '',
+        postsInfo: '',
+        loadDetail: false,
+        postId: '',
+        userInfo: '',
+        defaultAvatar: require('../../../static/images/avatar/4.jpg'),
+        fileList: []
+      }
+    },
+    created() {
+      this.postId = this.$route.query.postId;
+      this.getDetailById();
+      this.userInfo = this.$store.getters.user;
+      this.getFileList();
+    },
+    methods: {
+      commentChange() {
+        if (this.comment) {
+          this.disable = false;
+        } else {
+          this.disable = true;
         }
       },
-      created() {
-        this.postId = this.$route.query.postId;
-        this.getDetailById();
-        this.userInfo = this.$store.getters.user;
+      getDetailById() {
+        this.loadDetail = true;
+        post.getDetail(this.postId).then(res => {
+          this.loadDetail = false;
+          this.postsInfo = res.data;
+          // this.getReplyList(postId);
+          // this.$nextTick(() => {
+          //   this.layui();
+          // });
+          // // 判断是否为投票贴
+          // if (this.postInfo.vote) {
+          //   this.getVoteList(this.postInfo.id)
+          // }
+        })
       },
-      methods: {
-        commentChange() {
-          if (this.comment) {
-            this.disable = false;
-          } else {
-            this.disable = true;
-          }
-        },
-        getDetailById() {
-          this.loadDetail = true;
-          post.getDetail(this.postId).then(res => {
-            this.loadDetail = false;
-            this.postsInfo = res.data;
-            // this.getReplyList(postId);
-            // this.$nextTick(() => {
-            //   this.layui();
-            // });
-            // // 判断是否为投票贴
-            // if (this.postInfo.vote) {
-            //   this.getVoteList(this.postInfo.id)
-            // }
-          })
-        },
-      },
-      filters: {
-        dateStr(date) {
-          return timeUtils.dateDiff(date);
-        }
+      getFileList() {
+        post.getFileList(this.postId).then(res => {
+          this.fileList = res.data;
+          console.log(res.data)
+        })
+      }
+    },
+    filters: {
+      dateStr(date) {
+        return timeUtils.dateDiff(date);
       }
     }
+  }
 </script>
 
 <style scoped lang="scss">
   .detail-box {
     padding: 0px;
   }
+
   .el-card {
     margin-bottom: 8px;
+
     /deep/ .el-card__header {
       padding: 10px 20px;
     }
@@ -286,6 +317,7 @@
       font-weight: 400;
       text-align: center;
     }
+
     .comment-form {
       margin: 10px 0;
       /*display: flex;*/
@@ -293,15 +325,18 @@
       padding: 10px;
       background-color: #fafbfc;
       border-radius: 3px;
+
       img {
         width: 2.667rem;
         height: 2.667rem;
         border-radius: 50%;
       }
-      .el-input{
+
+      .el-input {
         border-radius: 0px;
         width: 100%;
       }
+
       .action-box {
         margin-top: 4px;
       }
@@ -309,45 +344,54 @@
 
     .comment-list {
       margin: 20px 25px 0 24px;
+
       .comment-item {
         margin: 8px 0;
         display: flex;
+
         img {
           width: 40px;
           height: 40px;
           border-radius: 50%;
           margin: 8px;
         }
+
         .comment-content {
           width: 100%;
           border-bottom: 1px solid #f1f1f1;
+
           .author {
 
           }
+
           .content {
             margin-top: 8px;
             line-height: 22px;
             color: #505050;
           }
         }
+
         .stat {
           font-size: 14px;
           color: #8a9aa9;
           cursor: default;
           margin: 7px;
           font-weight: 400;
+
           .action {
             span {
               margin-right: 18px;
             }
           }
         }
+
         .sub-comment-list {
           display: flex;
           flex-direction: column;
           margin: 12px 0;
           background-color: #fafbfc;
           border-radius: 3px;
+
           .item {
             margin: 14px 0;
             width: 100%;
@@ -367,9 +411,11 @@
         border-radius: 50%;
       }
     }
+
     .info-box {
       flex: 1 1 auto;
       min-width: 0;
+
       .username {
         font-size: 16px;
         font-weight: 600;
@@ -379,6 +425,7 @@
         text-overflow: ellipsis;
         white-space: pre-wrap;
       }
+
       .position {
         margin-top: 5px;
         font-size: 16px;
@@ -389,6 +436,7 @@
       }
     }
   }
+
   .detail-about {
     .star {
       position: absolute;
@@ -396,12 +444,30 @@
       right: 30px;
       transform: translateY(-50%);
     }
+
     .author {
       display: inline-block;
       max-width: 100%;
       font-size: 1.3rem;
       font-weight: 500;
       color: #333;
+    }
+  }
+
+  .attach {
+    /deep/ .el-card {
+      .el-card__body {
+        padding: 15px
+      }
+    }
+    .file-type {
+      width: 42px;
+      height: 42px;
+      line-height: 42px;
+      /*border-radius: 50%;*/
+      background-color: #33aba0;
+      color: #fff;
+      text-align: center;
     }
   }
 </style>

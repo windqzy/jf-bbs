@@ -134,33 +134,35 @@
                         <span v-if="reply.replyUser.id == userInfo.id">·删除</span>
                       </el-col>
                       <el-col :span="16"></el-col>
-                      <el-col :span="4">
-                        <div class="action">
+                      <el-col :span="4" class="action tr">
+                        <div>
                           <i class="el-icon-goblet-square"></i>
                           <span>{{reply.upCount}}</span>
+                        </div>
+                        <div>
                           <i class="el-icon-chat-round"></i>
-                          <label @click="replyId = reply.id" :for="replyId">回复</label>
+                          <label @click="replyComment(reply)" :for="replyId">回复</label>
                         </div>
                       </el-col>
                     </el-row>
                   </div>
-                  <el-row type="flex" v-if="replyId == reply.id">
+                  <el-card shadow="never" v-if="replyId == reply.id">
                     <el-col :span="24">
                       <el-input autofocus :id="replyId"
-                                placeholder="输入评论..."
+                                :placeholder="'回复' + reply.replyUser.username+ '...'"
                                 size="small"
-                                v-model="comment">
+                                v-model="commentText">
                       </el-input>
                       <el-row class="action-box" type="flex" justify="space-between" align="middle">
                         <el-col :span="2">
                           <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
                         </el-col>
-                        <el-col :span="2">
+                        <el-col :span="2" class="tr">
                           <el-button type="primary" size="small" @click="postComment(reply)">评论</el-button>
                         </el-col>
                       </el-row>
                     </el-col>
-                  </el-row>
+                  </el-card>
                   <div class="sub-comment-list">
                     <div v-for="item in reply.replayVoList" style="display: flex">
                       <img src="http://iph.href.lu/72x72" alt="">
@@ -179,34 +181,36 @@
                               <span v-if="item.userId == userInfo.id">·删除</span>
                             </el-col>
                             <el-col :span="14"></el-col>
-                            <el-col :span="6">
-                              <div class="action">
+                            <el-col :span="6" class="action tr">
+                              <div>
                                 <i class="el-icon-goblet-square"></i>
                                 <span>{{item.upCount}}</span>
+                              </div>
+                              <div>
                                 <i class="el-icon-chat-round"></i>
-                                <label :for="replyId" @click="replyId = item.id">回复</label>
+                                <label :for="replyId" @click="replyComment(item)">回复</label>
                               </div>
                             </el-col>
                           </el-row>
                         </div>
-                        <el-row type="flex" v-if="replyId == item.id">
+                        <el-card shadow="never" type="flex" v-if="replyId == item.id">
                           <el-col :span="24">
                             <el-input autofocus :id="replyId"
-                                      placeholder="输入评论..."
+                                      :placeholder="'回复' + item.replyUser.username+ '...'"
                                       size="small"
-                                      v-model="comment">
+                                      v-model="commentText">
                             </el-input>
                             <el-row class="action-box" type="flex" justify="space-between" align="middle">
                               <el-col :span="2">
                                 <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
                               </el-col>
-                              <el-col :span="2">
+                              <el-col :span="2" class="tr">
                                 <el-button type="primary" size="small" @click="postComment(item)">评论
                                 </el-button>
                               </el-col>
                             </el-row>
                           </el-col>
-                        </el-row>
+                        </el-card>
                       </div>
                     </div>
                   </div>
@@ -270,7 +274,8 @@
       return {
         actionBox: false,
         disable: true,
-        comment: '',
+        comment: '', // 文章回复
+        commentText: '', // 评论回复
         postsInfo: '',
         loadDetail: false,
         postId: '',
@@ -321,18 +326,27 @@
           this.fileList = res.data;
         })
       },
+      /* 回复评论 */
+      replyComment(item) {
+        if (this.replyId == item.id) {
+          this.replyId = '';
+        } else {
+          this.replyId = item.id
+        }
+        this.commentText = ''
+      },
       /* 发布评论 */
       postComment(item) {
-        this.replyId = item.id;
-        console.log(item);
+        this.replyId = !item.id ? '-1' : item.id;
         let data = {
-          content: this.comment,
+          content: !item.id ? this.comment : this.commentText,
           postsId: +this.postId,
           userId: this.userInfo.id,
           parentId: item.parentId == undefined ? '' : item.parentId,
           replyTo: !item.replyUser ? '' : item.replyUser.id
         }
         console.log(data);
+        return false;
         reply.add(data).then(res => {
           this.$message({type: 'success', message: res.message, duration: 1000});
           this.getReplyList();
@@ -355,6 +369,10 @@
 </script>
 
 <style scoped lang="scss">
+  .tr {
+    text-align: right;
+  }
+
   .detail-box {
     padding: 0px;
   }
@@ -445,8 +463,9 @@
           font-weight: 400;
 
           .action {
-            span {
-              margin-right: 18px;
+            div {
+              display: inline-block;
+              margin-left: 18px;
             }
           }
         }
@@ -454,10 +473,9 @@
         .sub-comment-list {
           display: flex;
           flex-direction: column;
-          margin: 12px 0;
+          margin: 6px 0;
           background-color: #fafbfc;
           border-radius: 3px;
-
           .item {
             margin: 14px 0;
             width: 100%;

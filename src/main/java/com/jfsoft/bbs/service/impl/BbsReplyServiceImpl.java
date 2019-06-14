@@ -8,6 +8,7 @@ import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.Query;
 import com.jfsoft.bbs.dao.BbsReplyDao;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
+import com.jfsoft.bbs.form.ReplayVo;
 import com.jfsoft.bbs.service.BbsReplyService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,13 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
     @Override
     public Integer upEnd(Integer id){
         return bbsReplyDao.upEnd(id);
+    }
+
+    @Override
+    public List<ReplayVo> getReplayByPostsId(Integer postsId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("postsId", postsId);
+        return bbsReplyDao.getReplayByPostsId(params);
     }
 
 }

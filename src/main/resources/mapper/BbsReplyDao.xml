@@ -82,14 +82,14 @@
         WHERE posts_id = (select posts_id from bbs_reply where id = #{id}) AND accept = TRUE
     </select>
 
-    <update id="trueAccept" parameterType="integer" >
+    <update id="trueAccept" parameterType="integer">
         UPDATE bbs_reply
         SET
         accept = true
         WHERE id = #{id}
     </update>
 
-    <select id="getRewardGrade" parameterType="integer" resultType="integer" >
+    <select id="getRewardGrade" parameterType="integer" resultType="integer">
         SELECT reward_grade
         FROM bbs_posts
         WHERE
@@ -108,4 +108,54 @@
         WHERE id = (select posts_id from bbs_reply where id = #{id})
 
     </update>
+
+
+    <resultMap id="RelayMap" type="com.jfsoft.bbs.form.ReplayVo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="initTime" property="initTime" jdbcType="DATE"/>
+        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+        <result column="postsId" property="postsId" jdbcType="VARCHAR"/>
+        <collection property="upCount" ofType="java.lang.Integer"
+                    column="{id=id}"
+                    select="selectUpCount"/>
+        <collection property="replyUser" ofType="com.jfsoft.bbs.entity.BbsUserEntity"
+                    column="{userId=userId}"
+                    select="selectUserInfo"/>
+        <collection property="replyToUser" ofType="com.jfsoft.bbs.entity.BbsUserEntity"
+                    column="{userId=replyToUserId}"
+                    select="selectUserInfo"/>
+        <collection property="replayVoList" ofType="com.jfsoft.bbs.form.ReplayVo"
+                    column="{postsId=postsId,parentId=id}"
+                    select="findOtherReplay"/>
+    </resultMap>
+
+    <select id="getReplayByPostsId" parameterType="map" resultMap="RelayMap">
+        select br.content, br.init_time as initTime, br.author, br.user_id as userId, br.parent_id as parentId, br.id,
+        br.posts_id as postsId, br.user_id, br.reply_to as replyToUserId
+        from bbs_posts bp
+        left join bbs_reply br on br.posts_id = bp.id
+        where br.parent_id = '0' and br.posts_id = #{postsId}
+        order by br.init_time desc
+    </select>
+
+    <select id="findOtherReplay" parameterType="map" resultMap="RelayMap">
+        select br.content, br.init_time as initTime, br.author, br.user_id as userId, br.parent_id as parentId, br.id,
+        br.posts_id as postsId, br.user_id, br.reply_to as replyToUserId
+        from bbs_posts bp
+        left join bbs_reply br on br.posts_id = bp.id
+        where br.posts_id = #{postsId} and br.parent_id = #{parentId}
+        order by br.init_time desc
+    </select>
+
+    <select id="selectUserInfo" parameterType="map" resultType="com.jfsoft.bbs.entity.BbsUserEntity">
+        select * from bbs_user where id = #{userId}
+    </select>
+
+    <select id="selectUpCount" parameterType="map" resultType="java.lang.Integer">
+        select count(-1) as count from bbs_up where reply_id = #{id}
+    </select>
+
 </mapper>

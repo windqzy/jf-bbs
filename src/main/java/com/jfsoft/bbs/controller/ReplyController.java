@@ -3,8 +3,10 @@ package com.jfsoft.bbs.controller;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.*;
+import com.jfsoft.bbs.form.ReplayVo;
 import com.jfsoft.bbs.form.ReplyForm;
 import com.jfsoft.bbs.service.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,7 +108,7 @@ public class ReplyController extends AbstractController {
         bbsPostsService.updateById(bbsPosts);
         // 添加一条消息
         bbsMessageService.addMsg(1, user.getUsername() + "评论了您的帖子《" + bbsPosts.getTitle() + "》",
-                bbsPosts.getId(),  user.getId(), bbsPosts.getUserId(),true);
+                bbsPosts.getId(), user.getId(), bbsPosts.getUserId(), true);
         return R.ok().put("data", "评论成功");
     }
 
@@ -211,4 +213,50 @@ public class ReplyController extends AbstractController {
             return R.error("抱歉,该贴已经完成采纳");
         }
     }
+
+
+    /**
+     * 添加评论
+     *
+     * @Author Lxd
+     * @Date 16:48 2019/6/14
+     * @Param [replyEntity]
+     * @Return
+     **/
+    @PostMapping("/add")
+    public R addReoly(@RequestBody BbsReplyEntity replyEntity) {
+
+        if (StringUtils.isBlank(replyEntity.getReplyTo() + "")) {
+            replyEntity.setParentId(0);
+        }
+        replyEntity.setInitTime(new Date());
+
+        boolean i = bbsReplyService.insert(replyEntity);
+
+        if (i) {
+            return R.ok("评论成功");
+        } else {
+            return R.error("评论失败");
+        }
+
+
+    }
+
+
+    /**
+     * 查询评论内容
+     *
+     * @Author Lxd
+     * @Date 14:34 2019/6/14
+     * @Param [id] 帖子ID
+     * @Return
+     **/
+    @GetMapping("/posts/{id}")
+    public R getReplayByPostsId(@PathVariable Integer id) {
+
+        List<ReplayVo> replyList = bbsReplyService.getReplayByPostsId(id);
+        return R.ok().put("data", replyList);
+
+    }
+
 }

@@ -23,7 +23,7 @@ public class BbsReplyEntity implements Serializable {
     @TableId
     private Integer id;
     /**
-     *
+     *内容
      */
     private String content;
     /**
@@ -31,15 +31,15 @@ public class BbsReplyEntity implements Serializable {
      */
     private Date initTime;
     /**
-     *
+     *置顶
      */
     private Integer up;
     /**
-     *
+     *帖子ID
      */
     private Integer postsId;
     /**
-     *
+     *评论用户ID
      */
     private Integer userId;
 
@@ -72,9 +72,14 @@ public class BbsReplyEntity implements Serializable {
     private Boolean accept;
 
     /**
-     *
+     *评论ID主键
      */
     private Integer parentId;
+
+    /**
+     * 被回复人ID
+     */
+    private Integer replyTo;
 
     @TableField(exist = false)
     private List<BbsReplyEntity> replyList;
@@ -103,13 +108,13 @@ public class BbsReplyEntity implements Serializable {
         this.postsName = postsName;
     }
 
-	public Boolean getStatus() {
-		return status;
-	}
+    public Boolean getStatus() {
+        return status;
+    }
 
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public Integer getReplyCount() {
         return replyCount;
@@ -225,5 +230,13 @@ public class BbsReplyEntity implements Serializable {
      */
     public Integer getUserId() {
         return userId;
+    }
+
+    public Integer getReplyTo() {
+        return replyTo;
+    }
+
+    public void setReplyTo(Integer replyTo) {
+        this.replyTo = replyTo;
     }
 }

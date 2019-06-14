@@ -2,6 +2,8 @@ package com.jfsoft.bbs.dao;
 
 import com.jfsoft.bbs.entity.BbsReplyEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfsoft.bbs.entity.BbsUserEntity;
+import com.jfsoft.bbs.form.ReplayVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,5 +41,13 @@ public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
 
     Integer upGrade(Map<String, Object> params);
 
-    Integer upEnd(@Param("id")Integer id);
+    Integer upEnd(@Param("id") Integer id);
+
+    List<ReplayVo> getReplayByPostsId(Map<String, Object> params);
+
+    List<ReplayVo> findOtherReplay(Map<String, Object> params);
+
+    BbsUserEntity selectUserInfo(Map<String, Object> params);
+
+    Integer selectUpCount(Map<String, Object> params);
 }

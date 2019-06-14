@@ -3,6 +3,7 @@ package com.jfsoft.bbs.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsReplyEntity;
+import com.jfsoft.bbs.form.ReplayVo;
 
 import java.util.List;
 import java.util.Map;
@@ -35,5 +36,7 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
     Integer upGrade(String unionId, Integer rewardgrade);
 
     Integer upEnd(Integer id);
+
+    List<ReplayVo> getReplayByPostsId(Integer postsId);
 }
 

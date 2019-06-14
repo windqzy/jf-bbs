@@ -134,12 +134,23 @@
         from bbs_posts bp
                left join bbs_user bu on bu.id = bp.user_id
                left join bbs_reply br on br.posts_id = bp.id
-        where bp.is_del = false
+        where bp.is_del = false and bp.is_temp = false
         <if test="tagId != null and tagId != ''">
            and bp.tag_id = #{tagId}
         </if>
+        <if test="sortType == 2">
+            and bp.good = true
+        </if>
         group by bp.title, bu.name, bu.icon, bp.init_time
-        order by last_reply desc
+        <if test="sortType == 0">
+            order by last_reply desc
+        </if>
+        <if test="sortType == 1">
+            order by reply_count desc
+        </if>
+        <if test="sortType == 2">
+            order by last_reply desc
+        </if>
         LIMIT #{startPage}, #{endPage}
     </select>
 </mapper>

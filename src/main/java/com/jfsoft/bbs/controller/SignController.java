@@ -79,7 +79,6 @@ public class SignController extends AbstractController {
 		Integer userId = getUserId();
 		String unionId = getUnionId();
 		EntityWrapper<BbsSignEntity> wrapper = new EntityWrapper<>();
-//		wrapper.eq("user_id", userId);
 		wrapper.eq("union_id", unionId);
 		BbsSignEntity bbsSign = bbsSignService.selectOne(wrapper);
 		return R.ok().put("data", bbsSign);

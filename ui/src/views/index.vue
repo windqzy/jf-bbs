@@ -71,7 +71,7 @@
               </el-col>
               <el-col :span="18" class="label-content-col">
                 <div>
-                  <router-link :to="'/post/index?labelId='+tag.id" class="label-title">
+                  <router-link :to="'/post/index?labelId='+tag.id + '&type=0'" class="label-title">
                     {{tag.name}}
                     <em>({{tag.postsCount}})</em>
                   </router-link>
@@ -82,7 +82,7 @@
                   </span>
                 </div>
                 <div>
-                  <a class="label-good">本版精华</a>
+                  <router-link :to="'/post/index?labelId='+tag.id + '&type=0'" class="label-good">本版精华</router-link>
                 </div>
               </el-col>
             </el-row>

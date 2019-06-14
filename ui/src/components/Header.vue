@@ -1,21 +1,36 @@
 <template>
   <el-header height="50px">
     <div id="header" class="layui-container">
-      <!--<i class="el-icon-message-solid"></i>-->
-      <el-row type="flex" align="middle" justify="space-between" :gutter="10">
+      <!-- 移动端 -->
+      <el-row type="flex" class="hidden-sm-and-up">
+        <el-col :span="2">
+          <el-image src="http://iph.href.lu/32x32"></el-image>
+        </el-col>
+        <el-col :span="22">
+          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1"><i class="el-icon-monitor"></i></el-menu-item>
+            <el-menu-item index="2"><i class="el-icon-postcard"></i></el-menu-item>
+            <el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>
+            <el-menu-item index="4"><i class="el-icon-document"></i></el-menu-item>
+            <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-row>
+      <!-- PC端 -->
+      <el-row type="flex" align="middle" justify="space-between" :gutter="10" class="hidden-sm-and-down">
         <el-col :span="4">
-          <div class="logo">S.D community</div>
+          <div class="logo">神丁社区</div>
         </el-col>
         <el-col :span="10">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">首页</el-menu-item>
-            <el-menu-item index="2">资讯</el-menu-item>
+            <!--<el-menu-item index="2">资讯</el-menu-item>-->
             <el-menu-item index="3">FAQ</el-menu-item>
-            <el-menu-item index="4">需求墙</el-menu-item>
+            <!--<el-menu-item index="4">需求墙</el-menu-item>-->
           </el-menu>
         </el-col>
         <el-col :span="4">
-          <el-input size="small" placeholder="请输入关键词搜索">
+          <el-input size="small" placeholder="请输入关键词搜索" class="">
             <i
               class="el-icon-search el-input__icon"
               slot="suffix">
@@ -26,19 +41,20 @@
           <el-button type="primary" size="small" @click="newPosts">写文章</el-button>
         </el-col>
         <el-col :span="1">
-          <el-popover
-            placement="top"
-            width="215"
-            >
-            <div style="text-align: right; margin: 0">
-              <el-tabs>
-                <el-tab-pane label="通知" name="first">通知</el-tab-pane>
-                <el-tab-pane label="关注" name="second">关注</el-tab-pane>
-                <el-tab-pane label="系统" name="third">系统</el-tab-pane>
-              </el-tabs>
-            </div>
-            <el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>
-          </el-popover>
+          <!-- 消息 -->
+          <!--<el-popover-->
+            <!--placement="top"-->
+            <!--width="215"-->
+            <!--&gt;-->
+            <!--<div style="text-align: right; margin: 0">-->
+              <!--<el-tabs>-->
+                <!--<el-tab-pane label="通知" name="first">通知</el-tab-pane>-->
+                <!--<el-tab-pane label="关注" name="second">关注</el-tab-pane>-->
+                <!--<el-tab-pane label="系统" name="third">系统</el-tab-pane>-->
+              <!--</el-tabs>-->
+            <!--</div>-->
+            <!--<el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>-->
+          <!--</el-popover>-->
 
           <!--<el-badge :value="12" class="item">-->
             <!--<i class="el-icon-message-solid message" ></i>-->
@@ -52,7 +68,7 @@
             </router-link>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a">个人中心</el-dropdown-item>
-              <el-dropdown-item command="b">切换账号</el-dropdown-item>
+              <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
               <el-dropdown-item command="c">注销</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -83,6 +99,7 @@
         switch (key) {
           case '1':this.$router.push('/home/index');break;
           case '3':this.$router.push('/faq/index');break;
+          case '5':this.$router.push('/faq/index');break;
         }
       },
       handleCommand(command) {
@@ -97,6 +114,7 @@
 
 <style scoped lang="scss">
   .el-header {
+    padding: 0;
     margin-bottom: 10px;
     background-color: #fff;
     border-bottom: 1px solid #ddd;

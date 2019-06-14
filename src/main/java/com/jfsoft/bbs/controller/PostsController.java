@@ -311,17 +311,17 @@ public class PostsController extends AbstractController {
 
     /**
      * 查询文章列表
-     * type (0 最新， 1 热门  2 精华)
+     * sortType (0 最新， 1 热门  2 精华)
      *
      * @param pageIndex
      * @param pageSize
-     * @param type
+     * @param sortType
      * @param tagId
      * @return
      */
     @RequestMapping("/getPostsList")
-    public R getPostsList(Integer pageIndex, Integer pageSize, Integer type, Integer tagId) {
-        List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, type, tagId);
+    public R getPostsList(Integer pageIndex, Integer pageSize, Integer sortType, Integer tagId) {
+        List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, sortType, tagId);
         return R.ok().put("data", postsList);
     }
 
@@ -334,8 +334,10 @@ public class PostsController extends AbstractController {
     @RequestMapping("/publish")
     public R publish(@RequestBody BbsPostsEntity bbsPosts) {
         bbsPosts.setInitTime(new Date());
-        bbsPosts.setUpdateTime(new Date());
-        bbsPosts.setUserId(getUserId());
+//        bbsPosts.setUpdateTime(new Date());
+        if (!bbsPosts.getAnonymous()) {
+            bbsPosts.setUserId(getUserId());
+        }
         bbsPostsService.insert(bbsPosts);
         return R.ok().put("data", bbsPosts);
     }

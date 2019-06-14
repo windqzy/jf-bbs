@@ -1,8 +1,8 @@
 <template>
   <div id="post" class="layui-container">
     <el-row :gutter="10">
-      <el-col :span="16">
-        <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
+      <el-col :lg="16" :sm="24">
+        <!--<breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>-->
         <el-card shadow="never">
           <div class="post-divider active-form">
             <span :class="{'active': activeTag == -1}" @click="selectTag(-1, '')">全部<em> (25)</em></span>
@@ -15,11 +15,11 @@
         <el-card shadow="never" class="mt8">
           <div slot="header">
             <div class="post-type active-form">
-              <span :class="{'active': activeSort == 0}" @click="selectSort(0)">最新</span>
+              <span :class="{'active': postsForm.sortType == 0}" @click="selectSort(0)">最新</span>
               <el-divider direction="vertical" content-position="right"></el-divider>
-              <span :class="{'active': activeSort == 1}" @click="selectSort(1)">热门</span>
+              <span :class="{'active': postsForm.sortType == 1}" @click="selectSort(1)">热门</span>
               <el-divider direction="vertical"></el-divider>
-              <span :class="{'active': activeSort == 2}" @click="selectSort(2)">精华</span>
+              <span :class="{'active': postsForm.sortType == 2}" @click="selectSort(2)">精华</span>
             </div>
           </div>
           <div class="post-list">
@@ -45,16 +45,16 @@
                   <!--&ndash;&gt;-->
                   <!--</router-link>-->
                   <a>
-                    <cite>{{post.author}}</cite>
+                    <cite>{{post.author == null ? '匿名' : post.author}}</cite>
                   </a>
-                  <span> {{post.initTime | dateStr}} 发表  最后回复 {{post.lastReply | dateStr}}</span>
+                  <span> {{post.initTime | dateStr}}</span>
+                  <!--<span> {{post.initTime | dateStr}} 发表  最后回复 {{post.lastReply | dateStr}}</span>-->
                   <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="post.rewardGrade != 0">-->
                     <!--<i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>-->
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
-                    <i class="iconfont" title="人气">&#xe60b;</i> 99999
+                    <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
                     <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
-
                   </span>
                 </div>
                 <div class="fly-list-badge">
@@ -65,16 +65,16 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :lg="8" :sm="24">
         <el-card shadow="never">
           <el-button type="primary" icon="el-icon-edit">发布新主题</el-button>
         </el-card>
         <el-card shadow="never" class="mt8">
-          <el-button type="warning" class="sign">
-            <div><i class="el-icon-edit"></i>签到</div>
+          <el-button type="warning" class="sign" :disabled="isSign" @click="sign">
+            <div><i class="el-icon-edit"></i>打卡</div>
             <div>
-              <p><i class="el-icon-s-data"></i> 今日排名 第6名</p>
-              <p><i class="el-icon-date"></i> 连续打卡 26天</p>
+              <p><i class="el-icon-s-data"></i> 今日排名 第{{signTop}}名</p>
+              <p><i class="el-icon-date"></i> 连续打卡 {{signCount}}天</p>
             </div>
           </el-button>
         </el-card>
@@ -97,6 +97,7 @@
   import Breadcrumb from '@/components/Breadcrumb'
   import * as tag from '@/api/tag';
   import * as post from '@/api/post';
+  import * as sign from '@/api/sign';
   import * as timeUtils from '@/utils/time';
 
 
@@ -110,21 +111,26 @@
         labelId: '',
         tagList: [],
         activeTag: -1,
-        activeSort: 0,
         postsForm: {
-          type: 0,
           pageIndex: 1,
           pageSize: 20,
-          tagId: ''
+          tagId: '',
+          sortType: 0
         },
         postsList: [],
-        defaultAvatar: require('../../../static/images/avatar/4.jpg')
+        defaultAvatar: require('../../../static/images/avatar/4.jpg'),
+        isSign: false,
+        signCount: 0,
+        signTop: 0
       }
     },
     created() {
       this.labelId = this.$route.query.labelId;
       this.getTagByLabelId();
       this.getPostsList();
+      this.getIsSignFlag();
+      this.getSignCount();
+      this.getSignRank();
     },
     methods: {
       getTagByLabelId() {
@@ -138,11 +144,40 @@
         this.getPostsList();
       },
       selectSort(index) {
-        this.activeSort = index;
+        this.postsForm.sortType = index;
+        this.getPostsList();
       },
       getPostsList() {
         post.getPostsList(this.postsForm).then(res => {
           this.postsList = res.data;
+        })
+      },
+      getIsSignFlag() {
+        sign.isSign().then(res => {
+          this.isSign = res.data.isSign;
+        })
+      },
+      sign() {
+          sign.save().then(res => {
+          this.$message.success(res.msg);
+          this.getIsSignFlag();
+          this.getSignCount();
+          this.getSignRank();
+        })
+      },
+      getSignCount() {
+        sign.getSignCount().then(res => {
+          this.signCount = res.data.signCount;
+        })
+      },
+      getSignRank() {
+        const type= 2;
+        sign.list(type).then(res => {
+          res.data.forEach((e, index) => {
+            if (e.userId == this.$store.getters.user.id) {
+              this.signTop = index + 1;
+            }
+          })
         })
       }
     },
@@ -228,8 +263,7 @@
     }
 
     .post-type {
-      text-align: right;
-
+      text-align: left;
     }
   }
 </style>

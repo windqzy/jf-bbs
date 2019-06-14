@@ -102,6 +102,9 @@ public class BbsPostsEntity implements Serializable {
 
     private Date updateTime;
 
+    @TableField(exist = false)
+    private Boolean isAnonymous;
+
     public String getTagName() {
         return tagName;
     }
@@ -347,5 +350,13 @@ public class BbsPostsEntity implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Boolean getAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setAnonymous(Boolean anonymous) {
+        isAnonymous = anonymous;
     }
 }

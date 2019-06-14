@@ -43,7 +43,7 @@ export function getPersonList(id) {
 
 
 // 发布文章
-export function publish(bbsPosts) {
+export function publish_old(bbsPosts) {
   return request({
     url: '/posts/save',
     method: 'POST',
@@ -51,7 +51,7 @@ export function publish(bbsPosts) {
   })
 }
 
-export function publish2(bbsPosts) {
+export function publish(bbsPosts) {
   return request({
     url: '/posts/publish',
     method: 'POST',
@@ -129,7 +129,7 @@ export function getNewPosts() {
  */
 export function getPostsList(form) {
   return request({
-    url: '/posts/getPostsList?pageIndex=' + form.pageIndex + '&pageSize=' + form.pageSize + '&type=' + form.type +
+    url: '/posts/getPostsList?pageIndex=' + form.pageIndex + '&pageSize=' + form.pageSize + '&sortType=' + form.sortType +
       '&tagId=' + form.tagId,
     method: 'GET'
   })

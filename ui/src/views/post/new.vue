@@ -44,20 +44,20 @@
                 :on-success="handleSuccess"
                 :file-list="fileList">
                 <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">
-                  <el-checkbox v-model="post.replyDownload">回复可下载</el-checkbox>
-                  只能上传zip文件，且不超过2GB
-                </div>
+                <!--<div slot="tip" class="el-upload__tip">-->
+                  <!--<el-checkbox v-model="post.replyDownload">回复可下载</el-checkbox>-->
+                  <!--只能上传zip文件，且不超过2GB-->
+                <!--</div>-->
               </el-upload>
             </el-tab-pane>
             <!--<el-tab-pane label="采纳奖励">-->
             <!--<el-input-number v-model="post.grade" :min="1" :max="10" label="描述文字" size="small"></el-input-number>-->
             <!--<span class="grade-tip">帖子采纳后将钻石发放到对方账户,当前剩余钻石总数2000</span>-->
             <!--</el-tab-pane>-->
-
           </el-tabs>
           <div class="publish-box">
             <el-button @click="publish" size="small" type="primary">发表帖子</el-button>
+            <el-button @click="anonymousPublish" size="small" type="warning">匿名发表</el-button>
             <el-button @click="save" size="small">保存草稿</el-button>
           </div>
         </el-tab-pane>
@@ -73,6 +73,7 @@
   import * as label from '@/api/label';
   import * as tag from '@/api/tag';
   import * as posts from '@/api/post';
+  import { isPC } from '@/utils/common';
 
   export default {
     name: "new",
@@ -88,7 +89,8 @@
           content: '',
           grade: 0,
           isTemp: false,
-          replyDownload: false
+          replyDownload: false,
+          isAnonymous: true
         },
         editType: '0',
         fileList: [],
@@ -116,6 +118,15 @@
           this.editorContent = html;
           _this.post.content = html;
         };
+        // 移动端
+        if (!isPC) {
+          editor.customConfig.menus = [
+            'head',
+            'bold',
+            'italic',
+            'underline'
+          ];
+        }
         this.editor.customConfig.zIndex = 1;
         this.editor.create();
       },
@@ -151,6 +162,10 @@
         this.post.isTemp = true;
         this.publish();
       },
+      anonymousPublish() {
+        this.post.isAnonymous = true;
+        this.publish();
+      },
       publish() {
         if (!this.post.title) {
           this.$message.warning('请填写文章标题');
@@ -172,9 +187,10 @@
           content: this.post.content,
           // vote: this.isVote,
           tagId: this.post.tagId,
-          isTemp: this.post.isTemp
+          temp: this.post.isTemp,
+          anonymous: this.post.isAnonymous,
         };
-        posts.publish2(bbsPosts).then(res => {
+        posts.publish(bbsPosts).then(res => {
           if (this.fileList.length > 0) {
             let bbsPostsFiles = [];
             this.fileList.forEach(e => {

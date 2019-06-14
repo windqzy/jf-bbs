@@ -24,7 +24,6 @@
         <i class="iconfont icon-shijian"></i><span>{{userInfo.initTime | filterDate}} 加入</span>
         <i class="iconfont icon-chengshi"></i><span>来自{{userInfo.city == null ? '地球' : userInfo.city}}</span>
       </p>
-
       <p class="fly-home-sign">{{ userInfo.signature}}</p>
 
       <!--<div class="fly-sns" data-user="">

@@ -46,7 +46,7 @@
                 <!--&lt;!&ndash;<i class="layui-badge fly-badge-vip">VIP3</i>&ndash;&gt;-->
                 <!--</router-link>-->
                 <a class="fly-link author">
-                  <cite>{{postsInfo.author}}</cite>
+                  <cite>{{postsInfo.author == null ? '匿名' : postsInfo.author}}</cite>
                 </a>
 
               </div>
@@ -61,7 +61,7 @@
                 <!--</span>-->
               </div>
               <div class="star">
-                <el-button size="small" type="success">关注</el-button>
+                <!--<el-button size="small" type="success">关注</el-button>-->
               </div>
             </div>
             <div class="detail-body photos" v-html="postsInfo.content" v-loading="loadDetail">
@@ -83,7 +83,7 @@
                   </el-col>
                   <el-col :span="18">
                     <div>{{item.name}}</div>
-                    <div>{{item.size}}</div>
+                    <div>{{item.size | formatSize}}</div>
                   </el-col>
                 </el-row>
               </el-card>
@@ -184,7 +184,10 @@
             </div>
           </div>
         </el-card>
+        <!-- TODO 移动端bar -->
+
       </el-col>
+      <!-- 右侧 -->
       <el-col :lg="6" :xs="24">
         <el-card shadow="never">
           <div slot="header">
@@ -283,6 +286,13 @@
     filters: {
       dateStr(date) {
         return timeUtils.dateDiff(date);
+      },
+      formatSize(size) {
+        if (size < 1000000) {
+          return (size / 1000).toFixed(2) + 'KB'
+        } else {
+          return (size / 1000000).toFixed(2) + 'MB';
+        }
       }
     }
   }
@@ -460,6 +470,7 @@
         padding: 15px
       }
     }
+
     .file-type {
       width: 42px;
       height: 42px;

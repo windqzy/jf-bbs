@@ -28,7 +28,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
 
     List<BbsPostsEntity> getListByReplyTime(Map<String, Object> page);
 
-    List<BbsPostsEntity> getPostsList(Integer pageIndex, Integer pageSize, Integer type, Integer tagId);
+    List<BbsPostsEntity> getPostsList(Integer pageIndex, Integer pageSize, Integer sortType, Integer tagId);
 
     BbsPostsEntity getPostByReplyId(Integer replyId);
 

@@ -40,19 +40,9 @@ public class ReplayVo {
     private Integer postsId;
 
     /**
-     * 作者ID
-     */
-    private Integer userId;
-
-    /**
      * 点赞数量
      */
     private Integer upCount;
-
-    /**
-     * 作者姓名
-     */
-    private String author;
 
     /**
      * 该评论下回复信息
@@ -96,22 +86,6 @@ public class ReplayVo {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public List<ReplayVo> getReplayVoList() {

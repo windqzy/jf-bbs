@@ -226,7 +226,7 @@ public class ReplyController extends AbstractController {
     @PostMapping("/add")
     public R addReoly(@RequestBody BbsReplyEntity replyEntity) {
 
-        if (StringUtils.isBlank(replyEntity.getReplyTo() + "")) {
+        if (replyEntity.getReplyTo() == null) {
             replyEntity.setParentId(0);
         }
         replyEntity.setInitTime(new Date());

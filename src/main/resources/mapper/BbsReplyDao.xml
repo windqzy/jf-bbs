@@ -115,8 +115,6 @@
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="initTime" property="initTime" jdbcType="DATE"/>
         <result column="parentId" property="parentId" jdbcType="INTEGER"/>
-        <result column="userId" property="userId" jdbcType="INTEGER"/>
-        <result column="author" property="author" jdbcType="VARCHAR"/>
         <result column="postsId" property="postsId" jdbcType="VARCHAR"/>
         <collection property="upCount" ofType="java.lang.Integer"
                     column="{id=id}"

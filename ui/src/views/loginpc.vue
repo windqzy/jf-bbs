@@ -1,6 +1,8 @@
 <template>
   <div class="container demo-1">
-    <div class="content">
+    <div class="content" unselectable="on" onselectstart="return false;"
+         oncontextmenu="return false"
+         onmousedown="return false;">
       <div id="large-header" class="large-header">
         <a style="cursor: pointer; color: blue; float: right; margin: 5px" @click="testLogin" v-if="true">开发者登录</a>
         <canvas></canvas>

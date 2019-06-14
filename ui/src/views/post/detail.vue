@@ -97,85 +97,116 @@
               <div class="title">评论</div>
             </el-divider>
             <div class="comment-form">
-              <el-row type="flex" align="middle">
+              <el-row type="flex">
                 <el-col :span="2">
                   <img src="http://iph.href.lu/72x72">
                 </el-col>
                 <el-col :span="22">
-                  <el-input @focus="actionBox = true"
+                  <el-input @focus="replyId = -1"
                             placeholder="输入评论..."
                             @input="commentChange"
                             size="small"
                             v-model="comment">
                   </el-input>
-                  <el-row class="action-box" type="flex" justify="space-between" align="middle" v-show="actionBox">
+                  <el-row class="action-box" type="flex" justify="space-between" align="middle" v-show="replyId == -1">
                     <el-col :span="2">
                       <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
                     </el-col>
                     <el-col :span="2">
-                      <el-button type="primary" size="small" :disabled="disable">评论</el-button>
+                      <el-button type="primary" size="small" :disabled="disable" @click="postComment">评论</el-button>
                     </el-col>
                   </el-row>
                 </el-col>
               </el-row>
             </div>
             <div class="comment-list">
-              <div class="comment-item" v-for="i in 5">
+              <div class="comment-item" v-for="reply in replyList">
                 <img src="http://iph.href.lu/72x72" alt="">
                 <div class="comment-content">
                   <div class="author">
-                    王者之钻
+                    {{reply.replyUser.username}}
                   </div>
-                  <div class="content">
-                    没关系的兄弟，生活多一些磨难挺好，这种垃圾公司，不值得生气，肯定会亏死，垮掉，公司老板肯定会家庭，事业各种不顺，
-                    因为亏心事做的太多，小鬼都不会放过他们
-                  </div>
+                  <div class="content" v-html="reply.content"></div>
                   <div class="stat">
                     <el-row type="flex" justify="space-between">
                       <el-col :span="4">
-                        <span>两小时前</span>
-                        <span>·删除</span>
+                        <span>{{reply.initTime | dateStr}}</span>
+                        <span v-if="reply.replyUser.id == userInfo.id">·删除</span>
                       </el-col>
                       <el-col :span="16"></el-col>
                       <el-col :span="4">
                         <div class="action">
                           <i class="el-icon-goblet-square"></i>
-                          <span>2</span>
+                          <span>{{reply.upCount}}</span>
                           <i class="el-icon-chat-round"></i>
-                          <span>回复</span>
+                          <label @click="replyId = reply.id" :for="replyId">回复</label>
                         </div>
                       </el-col>
                     </el-row>
                   </div>
+                  <el-row type="flex" v-if="replyId == reply.id">
+                    <el-col :span="24">
+                      <el-input autofocus :id="replyId"
+                                placeholder="输入评论..."
+                                size="small"
+                                v-model="comment">
+                      </el-input>
+                      <el-row class="action-box" type="flex" justify="space-between" align="middle">
+                        <el-col :span="2">
+                          <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
+                        </el-col>
+                        <el-col :span="2">
+                          <el-button type="primary" size="small" @click="postComment(reply)">评论</el-button>
+                        </el-col>
+                      </el-row>
+                    </el-col>
+                  </el-row>
                   <div class="sub-comment-list">
-                    <div v-for="item in 3" style="display: flex">
+                    <div v-for="item in reply.replayVoList" style="display: flex">
                       <img src="http://iph.href.lu/72x72" alt="">
                       <div class="item">
                         <div class="author">
-                          王者之钻
+                          {{item.replyUser.username}}
                         </div>
                         <div class="content">
-                          <span class="">回复 <a class="layui-this">张三</a>：</span>
-                          没关系的兄弟，生活多一些磨难挺好，这种垃圾公司，不值得生气，肯定会亏死，垮掉，公司老板肯定会家庭，事业各种不顺，
-                          因为亏心事做的太多，小鬼都不会放过他们
+                          <span class="">回复 <a class="layui-this">{{item.replyToUser.username}}</a>：</span>
+                          <span v-html="item.content"></span>
                         </div>
                         <div class="stat">
                           <el-row type="flex" justify="space-between">
                             <el-col :span="6">
-                              <span>两小时前</span>
-                              <span>·删除</span>
+                              <span>{{item.initTime | dateStr}}</span>
+                              <span v-if="item.userId == userInfo.id">·删除</span>
                             </el-col>
                             <el-col :span="14"></el-col>
                             <el-col :span="6">
                               <div class="action">
                                 <i class="el-icon-goblet-square"></i>
-                                <span>2</span>
+                                <span>{{item.upCount}}</span>
                                 <i class="el-icon-chat-round"></i>
-                                <span>回复</span>
+                                <label :for="replyId" @click="replyId = item.id">回复</label>
                               </div>
                             </el-col>
                           </el-row>
                         </div>
+                        <el-row type="flex" v-if="replyId == item.id">
+                          <el-col :span="24">
+                            <el-input autofocus :id="replyId"
+                                      placeholder="输入评论..."
+                                      size="small"
+                                      v-model="comment">
+                            </el-input>
+                            <el-row class="action-box" type="flex" justify="space-between" align="middle">
+                              <el-col :span="2">
+                                <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
+                              </el-col>
+                              <el-col :span="2">
+                                <el-button type="primary" size="small" @click="postComment(item)">评论
+                                </el-button>
+                              </el-col>
+                            </el-row>
+                          </el-col>
+                        </el-row>
                       </div>
                     </div>
                   </div>
@@ -230,6 +261,7 @@
 
 <script>
   import * as post from '@/api/post'
+  import * as reply from '@/api/reply'
   import * as timeUtils from '@/utils/time';
 
   export default {
@@ -244,7 +276,9 @@
         postId: '',
         userInfo: '',
         defaultAvatar: require('../../../static/images/avatar/4.jpg'),
-        fileList: []
+        fileList: [],
+        replyList: [],// 评论列表
+        replyId: '',
       }
     },
     created() {
@@ -252,8 +286,14 @@
       this.getDetailById();
       this.userInfo = this.$store.getters.user;
       this.getFileList();
+      this.getReplyList();
     },
     methods: {
+      getReplyList() {
+        reply.getReplyList(this.postId).then(res => {
+          this.replyList = res.data;
+        })
+      },
       commentChange() {
         if (this.comment) {
           this.disable = false;
@@ -279,9 +319,25 @@
       getFileList() {
         post.getFileList(this.postId).then(res => {
           this.fileList = res.data;
-          console.log(res.data)
         })
-      }
+      },
+      /* 发布评论 */
+      postComment(item) {
+        this.replyId = item.id;
+        console.log(item);
+        let data = {
+          content: this.comment,
+          postsId: +this.postId,
+          userId: this.userInfo.id,
+          parentId: item.parentId == undefined ? '' : item.parentId,
+          replyTo: !item.replyUser ? '' : item.replyUser.id
+        }
+        console.log(data);
+        reply.add(data).then(res => {
+          this.$message({type: 'success', message: res.message, duration: 1000});
+          this.getReplyList();
+        })
+      },
     },
     filters: {
       dateStr(date) {

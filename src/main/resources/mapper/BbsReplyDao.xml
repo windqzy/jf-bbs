@@ -145,7 +145,7 @@
         from bbs_posts bp
         left join bbs_reply br on br.posts_id = bp.id
         where br.posts_id = #{postsId} and br.parent_id = #{parentId}
-        order by br.init_time desc
+        order by br.init_time asc
     </select>
 
     <select id="selectUserInfo" parameterType="map" resultType="com.jfsoft.bbs.entity.BbsUserEntity">

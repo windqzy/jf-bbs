@@ -67,7 +67,7 @@
                   :class="{'one': label.children.length % 3 == 1,'two': label.children.length % 3 == 2,'zero': label.children.length % 3 == 0}">
             <el-row :gutter="10" type="flex">
               <el-col :span="6">
-                <img :src="tag.icon" :alt="tag.name">
+                <img :src="tag.icon" :alt="tag.name" class="label-col-img">
               </el-col>
               <el-col :span="18" class="label-content-col">
                 <div>
@@ -244,6 +244,10 @@
     .label-col {
       padding: 16px 0;
       border-bottom: 1px solid #EBEEF5;
+      &-img {
+        width: 72px;
+        height: 72px;
+      }
       .label-content-col {
         display: flex;
         flex-direction: column;
@@ -266,6 +270,7 @@
       }
     }
   }
+
   @media only screen and (max-width: 767px) {
     .brief {
       .el-col {

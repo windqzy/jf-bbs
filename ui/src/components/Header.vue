@@ -3,17 +3,23 @@
     <div id="header" class="layui-container">
       <!-- 移动端 -->
       <el-row type="flex" class="hidden-sm-and-up">
-        <el-col :span="2">
-          <el-image src="http://iph.href.lu/32x32"></el-image>
+        <el-col :span="3">
+          <img src="../assets/img/logo-green.png"/>
         </el-col>
-        <el-col :span="22">
+        <el-col :span="21">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1"><i class="el-icon-monitor"></i></el-menu-item>
-            <el-menu-item index="2"><i class="el-icon-postcard"></i></el-menu-item>
+            <!--<el-menu-item index="2"><i class="el-icon-postcard"></i></el-menu-item>-->
             <el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>
-            <el-menu-item index="4"><i class="el-icon-document"></i></el-menu-item>
+            <!--<el-menu-item index="4"><i class="el-icon-document"></i></el-menu-item>-->
             <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>
           </el-menu>
+          <div class="search" v-show="activeIndex == '5'" @keyup.enter="search">
+            <el-input v-model="searchText">
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              <i slot="suffix" class="el-input__icon el-icon-close" @click.stop="searchText = ''"></i>
+            </el-input>
+          </div>
         </el-col>
       </el-row>
       <!-- PC端 -->
@@ -31,10 +37,7 @@
         </el-col>
         <el-col :span="4">
           <el-input size="small" placeholder="请输入关键词搜索" class="">
-            <i
-              class="el-icon-search el-input__icon"
-              slot="suffix">
-            </i>
+            <i class="el-icon-search el-input__icon" slot="suffix"></i>
           </el-input>
         </el-col>
         <el-col :span="2">
@@ -43,21 +46,21 @@
         <el-col :span="1">
           <!-- 消息 -->
           <!--<el-popover-->
-            <!--placement="top"-->
-            <!--width="215"-->
-            <!--&gt;-->
-            <!--<div style="text-align: right; margin: 0">-->
-              <!--<el-tabs>-->
-                <!--<el-tab-pane label="通知" name="first">通知</el-tab-pane>-->
-                <!--<el-tab-pane label="关注" name="second">关注</el-tab-pane>-->
-                <!--<el-tab-pane label="系统" name="third">系统</el-tab-pane>-->
-              <!--</el-tabs>-->
-            <!--</div>-->
-            <!--<el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>-->
+          <!--placement="top"-->
+          <!--width="215"-->
+          <!--&gt;-->
+          <!--<div style="text-align: right; margin: 0">-->
+          <!--<el-tabs>-->
+          <!--<el-tab-pane label="通知" name="first">通知</el-tab-pane>-->
+          <!--<el-tab-pane label="关注" name="second">关注</el-tab-pane>-->
+          <!--<el-tab-pane label="系统" name="third">系统</el-tab-pane>-->
+          <!--</el-tabs>-->
+          <!--</div>-->
+          <!--<el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>-->
           <!--</el-popover>-->
 
           <!--<el-badge :value="12" class="item">-->
-            <!--<i class="el-icon-message-solid message" ></i>-->
+          <!--<i class="el-icon-message-solid message" ></i>-->
           <!--</el-badge>-->
         </el-col>
         <el-col :span="2">
@@ -85,6 +88,7 @@
     data() {
       return {
         activeIndex: '1',
+        searchText: '',
       }
     },
     computed: {},
@@ -96,17 +100,31 @@
     },
     methods: {
       handleSelect(key, keyPath) {
+        this.activeIndex = key;
         switch (key) {
-          case '1':this.$router.push('/home/index');break;
-          case '3':this.$router.push('/faq/index');break;
-          case '5':this.$router.push('/faq/index');break;
+          case '1':
+            this.$router.push('/home/index');
+            break;
+          case '3':
+            this.$router.push('/faq/index');
+            break;
+          case '5':
+            this.$router.push('/faq/index');
+            break;
         }
       },
       handleCommand(command) {
         this.$message('click on item ' + command);
+        if(command =='c') {
+          this.$router.push('/login');
+          window.localStorage['B-Token'] = '';
+        }
       },
       newPosts() {
         this.$router.push('/post/new')
+      },
+      search() {
+        alert('111111111111');
       }
     }
   }
@@ -138,6 +156,7 @@
       font-size: 12px;
     }
   }
+
   #header {
     height: 49px;
     background-color: white;
@@ -154,12 +173,38 @@
       }
     }
   }
+
   .el-menu-demo {
     display: inline-block;
     margin: 0 auto;
   }
+
   .el-menu--horizontal > .el-menu-item {
     height: 49px;
     line-height: 49px;
+  }
+
+  /* 移动端 */
+  .hidden-sm-and-up {
+    position: relative;
+    img {
+      margin: 10px 6px;
+    }
+    .el-col {
+      text-align: right;
+      .el-menu-item {
+        padding: 0 16px;
+      }
+      .search {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        /deep/ input {
+          border-radius: 0;
+        }
+      }
+    }
   }
 </style>

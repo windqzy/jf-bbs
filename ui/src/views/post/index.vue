@@ -82,12 +82,15 @@
           <div slot="header">
             此处应为该板块公告或者广告
           </div>
-        </el-card>
-        <el-card shadow="never" class="mt8">
-          <div slot="header">
-            此处应为该板块公告或者广告
+          <div>
+            <p v-html="labelInfo.details"></p>
           </div>
         </el-card>
+        <!--<el-card shadow="never" class="mt8">-->
+          <!--<div slot="header">-->
+            <!--此处应为该板块公告或者广告-->
+          <!--</div>-->
+        <!--</el-card>-->
       </el-col>
     </el-row>
   </div>
@@ -98,6 +101,7 @@
   import * as tag from '@/api/tag';
   import * as post from '@/api/post';
   import * as sign from '@/api/sign';
+  import * as label from '@/api/label';
   import * as timeUtils from '@/utils/time';
 
 
@@ -109,6 +113,7 @@
     data() {
       return {
         labelId: '',
+        labelInfo: '',
         tagList: [],
         activeTag: -1,
         postsForm: {
@@ -131,6 +136,7 @@
       this.getIsSignFlag();
       this.getSignCount();
       this.getSignRank();
+      this.getLabelList();
     },
     methods: {
       getTagByLabelId() {
@@ -177,6 +183,17 @@
             if (e.userId == this.$store.getters.user.id) {
               this.signTop = index + 1;
             }
+          })
+        })
+      },
+      getLabelList() {
+        label.getList().then(res => {
+          res.data.forEach(e => {
+            e.children.forEach(f => {
+              if (this.labelId == f.id) {
+                this.labelInfo = f;
+              }
+            })
           })
         })
       }

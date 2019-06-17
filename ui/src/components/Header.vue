@@ -15,7 +15,7 @@
             <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>
           </el-menu>
           <div class="search" v-show="activeIndex == '5'" @keyup.enter="search">
-            <el-input v-model="searchText">
+            <el-input v-model="searchText" ref="searchText">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
               <i slot="suffix" class="el-input__icon el-icon-close" @click.stop="searchText = ''"></i>
             </el-input>
@@ -109,7 +109,10 @@
             this.$router.push('/faq/index');
             break;
           case '5':
-            this.$router.push('/faq/index');
+            this.$nextTick(() => {
+              this.$refs['searchText'].focus();
+            })
+            /*this.$router.push('/faq/index');*/
             break;
         }
       },

@@ -184,7 +184,7 @@ public class LoginController {
     }
 
     public static void main(String[] args) {
-        System.out.println(JWTUtils.sign(String.valueOf(76), "gDJv4xQT2iivMfSaTobeNFAiEiE"));
-        System.out.println(JWTUtils.sign(String.valueOf(77), "gDJv4xQT2iivMfSaTobeNFAiaaa"));
+        System.out.println(JWTUtils.sign(String.valueOf(79), "iigDSnDWgTtiSiiF5C8d6JLdgiEiE"));
+//        System.out.println(JWTUtils.sign(String.valueOf(77), "gDJv4xQT2iivMfSaTobeNFAiaaa"));
     }
 }

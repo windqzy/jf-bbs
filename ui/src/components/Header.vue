@@ -66,7 +66,7 @@
         <el-col :span="2">
           <el-dropdown @command="handleCommand">
             <router-link to="/user/home" class="el-dropdown-link">
-              <img src="http://iph.href.lu/32x32" alt="">
+              <img :src="$store.state.user.icon" alt="">
               阿拉灯
             </router-link>
             <el-dropdown-menu slot="dropdown">
@@ -149,6 +149,7 @@
     }
     img {
       width: 32px;
+      height: 32px;
       border-radius: 50%;
       cursor: pointer;
     }

@@ -1,25 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layer from '@/views/layer'
-import Index from '@/views/index'
-import Detail from '@/views/post/detail'
-import Search from '@/views/post/search'
-import NewPost from '@/views/post/new'
-import Post from '@/views/post/index'
-import Add from '@/views/add'
-import Login from '@/views/loginpc'
-import Login2 from '@/views/login'
-import UserIndex from '@/views/user/home'
-import UserIndex2 from '@/views/user/index'
-import setIndex from '@/views/set/index'
-import userReg from '@/views/user/reg'
-import Case from '@/views/case/index'
-import Games from '@/views/games/index'
-import Gitter from '@/views/gitter/index'
-import World from '@/views/world/index'
-import WorldDetail from '@/views/world/detail'
-import PostGuide from '@/views/guide/index'
-import Faq from '@/views/faq/index'
 
 Vue.use(Router)
 
@@ -28,13 +9,13 @@ export default new Router({
     {
       path: '/',
       redirect: '/home/index',
-      meta: { title: 'Tinymce' }
+      meta: {title: 'Tinymce'}
     }, {
       path: '/login',
-      component: Login,
+      component: () => import('@/views/loginpc'),
     }, {
       path: '/login2',
-      component: Login2,
+      component: () => import('@/views/login'),
     }, {
       path: '/home',
       component: Layer,
@@ -42,7 +23,7 @@ export default new Router({
         {
           path: 'index',
           name: 'Index',
-          component: Index
+          component: () => import('@/views/index')
         }
       ]
     }, {
@@ -51,20 +32,20 @@ export default new Router({
       children: [
         {
           path: 'detail',
-          component: Detail
+          component: () => import('@/views/post/detail')
         },
         {
           path: 'search',
-          component: Search
+          component: () => import('@/views/post/search')
         },
         {
           path: 'index',
-          component: Post,
-          meta: { title: 'Tinymce' }
+          component: () => import('@/views/post/index'),
+          meta: {title: 'Tinymce'}
         },
         {
           path: 'new',
-          component: NewPost
+          component: () => import('@/views/post/new')
         }
       ]
     }, {
@@ -73,7 +54,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: Add
+          component: () => import('@/views/add')
         }
       ]
     }, {
@@ -82,10 +63,10 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: UserIndex
-        },{
+          component: () => import('@/views/user/home')
+        }, {
           path: 'home',
-          component: UserIndex2
+          component: () => import('@/views/user/index')
         }
       ]
     }, {
@@ -94,7 +75,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: setIndex
+          component: () => import('@/views/set/index')
         }
       ]
     }, {
@@ -103,7 +84,7 @@ export default new Router({
       children: [
         {
           path: 'reg',
-          component: userReg
+          component: () => import('@/views/user/reg')
         }
       ]
     }, {
@@ -112,7 +93,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: Case
+          component: () => import('@/views/case/index')
         }
       ]
     }, {
@@ -121,7 +102,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: Games
+          component: () => import('@/views/games/index')
         }
       ]
     }, {
@@ -130,7 +111,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: Gitter
+          component: () => import('@/views/gitter/index')
         }
       ]
     }, {
@@ -139,11 +120,11 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: World
+          component: () => import('@/views/world/index')
         },
         {
           path: 'detail',
-          component: WorldDetail
+          component: () => import('@/views/world/detail')
         }
       ]
     }, {
@@ -152,7 +133,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: PostGuide
+          component: () => import('@/views/guide/index')
         }
       ]
     }, {
@@ -161,7 +142,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: Faq
+          component: () => import('@/views/faq/index')
         }
       ]
     }

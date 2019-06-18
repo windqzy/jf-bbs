@@ -1,7 +1,11 @@
 package com.jfsoft.bbs.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.controller.socket.WebSocketServer;
 import com.jfsoft.bbs.entity.*;
 import com.jfsoft.bbs.form.ReplayVo;
 import com.jfsoft.bbs.form.ReplyForm;
@@ -10,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -35,6 +40,12 @@ public class ReplyController extends AbstractController {
 
     @Autowired
     private BbsMessageService bbsMessageService;
+
+    @Autowired
+    private BbsNewMessageService bbsNewMessageService;
+
+    @Autowired
+    private BbsMessageUserService bbsMessageUserService;
 
     /**
      * 列表
@@ -226,12 +237,49 @@ public class ReplyController extends AbstractController {
     @PostMapping("/add")
     public R addReoly(@RequestBody BbsReplyEntity replyEntity) {
 
+        /** 添加消息，并向消息用户中间表中插入一条未读数据 */
+        BbsNewMessageEntity bbsNewMessageEntity = new BbsNewMessageEntity();
+        bbsNewMessageEntity.setContent(replyEntity.getContent());
+        bbsNewMessageEntity.setCreatePer(replyEntity.getUserId());
+        bbsNewMessageEntity.setCreateTime(new Date());
+        bbsNewMessageEntity.setType("1");
+        bbsNewMessageService.insert(bbsNewMessageEntity);
+
+
+        /** 直接评论帖子 */
+
         if (replyEntity.getReplyTo() == null) {
             replyEntity.setParentId(0);
         }
         replyEntity.setInitTime(new Date());
-
         boolean i = bbsReplyService.insert(replyEntity);
+
+        /** 插入未读消息 */
+        BbsMessageUserEntity bbsMessageUserEntity = new BbsMessageUserEntity();
+        bbsMessageUserEntity.setMessageId(bbsNewMessageEntity.getId());
+        bbsMessageUserEntity.setIsRead("0");
+
+        /** 评论帖子，消息通知作者 */
+        if (replyEntity.getParentId() == 0) {
+            bbsMessageUserEntity.setUserId(replyEntity.getUserId());
+        } else {
+            bbsMessageUserEntity.setUserId(replyEntity.getReplyTo());
+        }
+
+        bbsMessageUserService.insert(bbsMessageUserEntity);
+
+        /** 查询出有几条未读消息 */
+        EntityWrapper<BbsMessageUserEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("USER_ID", getUserId());
+        wrapper.eq("IS_READ", "0");
+        int toReadCount = bbsMessageUserService.selectCount(wrapper);
+
+        /** 推送消息 */
+        try {
+            WebSocketServer.sendInfo(JSON.toJSONString(toReadCount, SerializerFeature.WriteMapNullValue), getUserId() + "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (i) {
             return R.ok("评论成功");

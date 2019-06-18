@@ -235,24 +235,39 @@ public class ReplyController extends AbstractController {
      * @Return
      **/
     @PostMapping("/add")
-    public R addReoly(@RequestBody BbsReplyEntity replyEntity) {
+    public R addReply(@RequestBody BbsReplyEntity replyEntity) {
+
+
+        /** 直接评论帖子 */
+        if (replyEntity.getReplyTo() == null) {
+            replyEntity.setParentId(0);
+        }
+        replyEntity.setInitTime(new Date());
+        boolean i = bbsReplyService.insert(replyEntity);
 
         /** 添加消息，并向消息用户中间表中插入一条未读数据 */
         BbsNewMessageEntity bbsNewMessageEntity = new BbsNewMessageEntity();
         bbsNewMessageEntity.setContent(replyEntity.getContent());
         bbsNewMessageEntity.setCreatePer(replyEntity.getUserId());
         bbsNewMessageEntity.setCreateTime(new Date());
-        bbsNewMessageEntity.setType("1");
+        /** 评论帖子，消息通知作者 */
+        if (replyEntity.getParentId() == 0) {
+            bbsNewMessageEntity.setType("0");
+        } else {
+            bbsNewMessageEntity.setType("1");
+        }
+        bbsNewMessageEntity.setReplyId(replyEntity.getId());
+        bbsNewMessageEntity.setPostsId(replyEntity.getPostsId());
+
+        EntityWrapper<BbsNewMessageEntity> bbsNewMessageEntityEntityWrapper = new EntityWrapper<>();
+        bbsNewMessageEntityEntityWrapper.eq("REPLY_ID", replyEntity.getParentId());
+        BbsNewMessageEntity parentMessage = bbsNewMessageService.selectOne(bbsNewMessageEntityEntityWrapper);
+        if (parentMessage != null) {
+            bbsNewMessageEntity.setParentId(parentMessage.getId());
+        }
+
         bbsNewMessageService.insert(bbsNewMessageEntity);
 
-
-        /** 直接评论帖子 */
-
-        if (replyEntity.getReplyTo() == null) {
-            replyEntity.setParentId(0);
-        }
-        replyEntity.setInitTime(new Date());
-        boolean i = bbsReplyService.insert(replyEntity);
 
         /** 插入未读消息 */
         BbsMessageUserEntity bbsMessageUserEntity = new BbsMessageUserEntity();

@@ -43,6 +43,10 @@ public class BbsNewMessageEntity implements Serializable {
 
     private Integer postsId;
 
+    private Integer parentId;
+
+    private Integer replyId;
+
     public Integer getId() {
         return id;
     }
@@ -105,5 +109,21 @@ public class BbsNewMessageEntity implements Serializable {
 
     public void setPostsId(Integer postsId) {
         this.postsId = postsId;
+    }
+
+    public Integer getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

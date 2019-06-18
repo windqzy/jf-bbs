@@ -19,8 +19,11 @@ public class MessageVo {
     /** 帖子 */
     private BbsPostsEntity postsEntity;
 
-    /** 消息体 */
+    /** 评论消息体 */
     private BbsNewMessageEntity messageEntity;
+
+    /** 回复消息体 */
+    private BbsNewMessageEntity replyMessageEntity;
 
     public BbsUserEntity getSponsor() {
         return sponsor;
@@ -44,5 +47,13 @@ public class MessageVo {
 
     public void setMessageEntity(BbsNewMessageEntity messageEntity) {
         this.messageEntity = messageEntity;
+    }
+
+    public BbsNewMessageEntity getReplyMessageEntity() {
+        return replyMessageEntity;
+    }
+
+    public void setReplyMessageEntity(BbsNewMessageEntity replyMessageEntity) {
+        this.replyMessageEntity = replyMessageEntity;
     }
 }

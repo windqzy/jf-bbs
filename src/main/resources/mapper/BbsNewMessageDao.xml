@@ -17,23 +17,38 @@
 
     <resultMap id="MessageVoMap" type="com.jfsoft.bbs.form.MessageVo">
         <collection property="sponsor" ofType="com.jfsoft.bbs.entity.BbsUserEntity"
-                    column="{userId=userId}"
+                    column="{userId=sponsorId}"
                     select="selectUserInfo"/>
         <collection property="postsEntity" ofType="com.jfsoft.bbs.entity.BbsPostsEntity"
-                    column="{userId=replyToUserId}"
-                    select="selectUserInfo"/>
+                    column="{postsId=postsId}"
+                    select="selectPosts"/>
         <collection property="messageEntity" ofType="com.jfsoft.bbs.entity.BbsNewMessageEntity"
-                    column="{postsId=postsId,parentId=id}"
-                    select="findOtherReplay"/>
+                    column="{messageId=messageId}"
+                    select="findMessage"/>
+        <collection property="replyMessageEntity" ofType="com.jfsoft.bbs.entity.BbsNewMessageEntity"
+                    column="{messageId=parentId}"
+                    select="findMessage"/>
     </resultMap>
 
     <select id="querySelfMessage" parameterType="map" resultMap="MessageVoMap">
-        select br.content, br.init_time as initTime, br.author, br.user_id as userId, br.parent_id as parentId, br.id,
-        br.posts_id as postsId, br.user_id, br.reply_to as replyToUserId
-        from bbs_posts bp
-        left join bbs_reply br on br.posts_id = bp.id
-        where br.parent_id = '0' and br.posts_id = #{postsId}
-        order by br.init_time desc
+        select bmu.USER_ID as sponsorId, bnm.ID as messageId, bp.id as postsId, bnm.parent_id as parentId
+        from bbs_message_user bmu
+        left join bbs_new_message bnm on bmu.MESSAGE_ID = bnm.ID
+        left join bbs_posts bp on bp.id = bnm.POSTS_ID
+        where bmu.USER_ID = #{userId}
+        order by bnm.id desc
+    </select>
+
+    <select id="selectUserInfo" parameterType="map" resultType="com.jfsoft.bbs.entity.BbsUserEntity">
+        select * from bbs_user where id = #{userId}
+    </select>
+
+    <select id="selectPosts" parameterType="map" resultType="com.jfsoft.bbs.entity.BbsPostsEntity">
+        select * from bbs_posts where id = #{postsId}
+    </select>
+
+    <select id="findMessage" parameterType="map" resultType="com.jfsoft.bbs.entity.BbsNewMessageEntity">
+        select * from bbs_new_message where id = #{messageId}
     </select>
 
 </mapper>

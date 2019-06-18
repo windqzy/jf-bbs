@@ -34,7 +34,7 @@ public class NewMessageController extends AbstractController {
     @RequestMapping("/list")
     public R list() {
         List<MessageVo> messageVoList = bbsNewMessageService.querySelfMessage(getUserId());
-        return R.ok().put("messageVoList", messageVoList);
+        return R.ok().put("data", messageVoList);
     }
 
 }

@@ -15,12 +15,18 @@ import './permission' // 权限
 import VueResource from 'vue-resource'
 
 // import 'jquery'
+import * as filters from './utils/filters' // 过滤器
 
 /*使用VueResource插件*/
 Vue.use(VueResource)
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+
+// 全局过滤
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 // router.beforeEach((to, from, next) => {
 //   if (store.state.user.username) {

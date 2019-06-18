@@ -403,6 +403,7 @@
         }
         reply.add(data).then(res => {
           this.replyId = '';
+          this.comment = '';
           this.$message({type: 'success', message: res.msg, duration: 1000});
           this.getReplyList();
         })

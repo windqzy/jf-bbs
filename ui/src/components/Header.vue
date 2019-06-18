@@ -25,7 +25,7 @@
       <!-- PC端 -->
       <el-row type="flex" align="middle" justify="space-between" :gutter="10" class="hidden-sm-and-down">
         <el-col :span="4">
-          <div class="logo">神丁社区</div>
+          <router-link to="/" class="logo">神丁社区</router-link>
         </el-col>
         <el-col :span="10">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -58,15 +58,16 @@
            <el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>
            </el-popover>-->
 
-          <el-badge :value="12" class="item">
-            <i class="el-icon-message-solid message" @click="toMessage"></i>
+          <el-badge :value="count" :hidden="count == 0" class="item">
+            <i class="el-icon-message-solid message" :class="{'active': $route.fullPath == '/msg/index'}"
+               @click="toMessage"></i>
           </el-badge>
         </el-col>
         <el-col :span="2">
           <el-dropdown @command="handleCommand">
             <router-link to="/user/home" class="el-dropdown-link">
               <img :src="$store.state.user.icon" alt="">
-              阿拉灯
+              {{$store.state.user.username}}
             </router-link>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a">个人中心</el-dropdown-item>
@@ -87,23 +88,25 @@
     data() {
       return {
         socket: null,
+        count: '',
         activeIndex: '1',
         searchText: '',
       }
     },
     computed: {},
     created() {
-
+      console.log(this.$route)
     },
     mounted() {
       let socketUrl = window.localStorage.baseUrl + "/websocket/" + this.$store.state.user.id;
       this.socket = new WebSocket(socketUrl.replace("http", "ws"));
-      this.socket.onopen = function() {
+      this.socket.onopen = function () {
         console.log("Socket 已打开");
         //socket.send("这是来自客户端的消息" + location.href + new Date());
       };
-      this.socket.onmessage = function() {
-        console.log(msg.data);
+      this.socket.onmessage = e => {
+        console.log(e, 'onmessage');
+        this.count = +e.data;
         //发现消息进入    开始处理前端触发逻辑
       };
     },
@@ -140,6 +143,7 @@
       },
       /* 跳转信息 */
       toMessage() {
+        this.count = '0';
         this.$router.push('/msg/index')
       }
     }
@@ -157,6 +161,9 @@
       color: #71777c;
       cursor: pointer;
       &:hover {
+        color: #009688;
+      }
+      &.active {
         color: #009688;
       }
     }

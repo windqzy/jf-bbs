@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jfsoft.bbs.dao.BbsUserDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.jfsoft.bbs.entity.BbsUserEntity" id="bbsUserMap">
         <result property="id" column="id"/>
         <result property="icon" column="icon"/>
@@ -20,6 +20,7 @@
         <result property="unionId" column="union_id"/>
         <result property="city" column="city"/>
         <result property="isAdmin" column="is_admin"/>
+        <result property="background" column="background"/>
     </resultMap>
 
 

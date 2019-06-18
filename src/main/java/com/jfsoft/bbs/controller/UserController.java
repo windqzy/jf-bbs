@@ -167,6 +167,7 @@ public class UserController extends AbstractController {
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
         bbsUser.setSex(userForm.getSex());
+        bbsUser.setBackground(userForm.getBackground());
         bbsUserService.updateById(bbsUser);
         return R.ok().put("data", bbsUser);
     }

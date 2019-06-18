@@ -16,6 +16,16 @@ public class UserForm {
 
     private int sex;
 
+    private String background;
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
+    }
+
     public int getSex() {
         return sex;
     }

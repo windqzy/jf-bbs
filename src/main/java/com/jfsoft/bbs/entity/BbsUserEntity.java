@@ -8,222 +8,247 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
- * 
  * @author chenxc
  * @email 997909544@qq.com
  * @date 2019-02-23 14:33:16
  */
 @TableName("bbs_user")
 public class BbsUserEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	@TableId
-	private Integer id;
-	/**
-	 * 
-	 */
-	private String icon;
-	/**
-	 * 
-	 */
-	private Integer enable;
-	/**
-	 * 
-	 */
+    /**
+     *
+     */
+    @TableId
+    private Integer id;
+    /**
+     *
+     */
+    private String icon;
+    /**
+     *
+     */
+    private Integer enable;
+    /**
+     *
+     */
 
-	private Date initTime;
-	/**
-	 * 
-	 */
-	private String password;
-	/**
-	 * 
-	 */
-	private Integer sex;
-	/**
-	 * 
-	 */
-	private String signature;
-	/**
-	 * 
-	 */
-	private String username;
-	/**
-	 * 
-	 */
-	private String email;
+    private Date initTime;
+    /**
+     *
+     */
+    private String password;
+    /**
+     *
+     */
+    private Integer sex;
+    /**
+     *
+     */
+    private String signature;
+    /**
+     *
+     */
+    private String username;
+    /**
+     *
+     */
+    private String email;
 
-	private String position;
+    private String position;
 
-	private String name;
+    private String name;
 
-	private String mobile;
+    private String mobile;
 
-	private String unionId;
+    private String unionId;
 
-	private String city;
+    private String city;
 
-	private Boolean isAdmin;
+    private Boolean isAdmin;
 
-	public Boolean getAdmin() {
-		return isAdmin;
-	}
+    private String background;
 
-	public void setAdmin(Boolean admin) {
-		isAdmin = admin;
-	}
+    public String getBackground() {
+        return background;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public void setBackground(String background) {
+        this.background = background;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public String getMobile() {
-		return mobile;
-	}
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUnionId() {
-		return unionId;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUnionId(String unionId) {
-		this.unionId = unionId;
-	}
+    public String getMobile() {
+        return mobile;
+    }
 
-	/**
-	 * 设置：
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getIcon() {
-		return icon;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setEnable(Integer enable) {
-		this.enable = enable;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getEnable() {
-		return enable;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setInitTime(Date initTime) {
-		this.initTime = initTime;
-	}
-	/**
-	 * 获取：
-	 */
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	public Date getInitTime() {
-		return initTime;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getPassword() {
-		return password;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setSex(Integer sex) {
-		this.sex = sex;
-	}
-	/**
-	 * 获取：
-	 */
-	public Integer getSex() {
-		return sex;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getSignature() {
-		return signature;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getUsername() {
-		return username;
-	}
-	/**
-	 * 设置：
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	/**
-	 * 获取：
-	 */
-	public String getEmail() {
-		return email;
-	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getEnable() {
+        return enable;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setInitTime(Date initTime) {
+        this.initTime = initTime;
+    }
+
+    /**
+     * 获取：
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    public Date getInitTime() {
+        return initTime;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getSex() {
+        return sex;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getSignature() {
+        return signature;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * 设置：
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getEmail() {
+        return email;
+    }
 }

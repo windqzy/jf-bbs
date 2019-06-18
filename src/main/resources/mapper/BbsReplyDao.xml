@@ -112,10 +112,10 @@
 
     <resultMap id="RelayMap" type="com.jfsoft.bbs.form.ReplayVo">
         <result column="id" property="id" jdbcType="INTEGER"/>
-        <result column="content" property="content" jdbcType="VARCHAR"/>
-        <result column="initTime" property="initTime" jdbcType="DATE" javaType="TIMESTAMP"/>
-        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
-        <result column="postsId" property="postsId" jdbcType="VARCHAR"/>
+        <result column="content" property="content"/>
+        <result column="initTime" property="initTime"/>
+        <result column="parentId" property="parentId"/>
+        <result column="postsId" property="postsId"/>
         <collection property="upCount" ofType="java.lang.Integer"
                     column="{id=id}"
                     select="selectUpCount"/>

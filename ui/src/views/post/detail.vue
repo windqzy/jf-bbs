@@ -98,22 +98,32 @@
             </el-divider>
             <div class="comment-form">
               <el-row type="flex">
-                <el-col :span="2">
-                  <img src="http://iph.href.lu/72x72">
+                <el-col :span="2" :xs="4">
+                  <img :src="userInfo.icon">
                 </el-col>
-                <el-col :span="22">
-                  <el-input @focus="replyId = -1"
+                <el-col :span="22" :xs="20">
+                  <!--<el-input @focus="replyId = -1"
                             placeholder="输入评论..."
                             @input="commentChange"
                             size="small"
                             v-model="comment">
-                  </el-input>
+                  </el-input>-->
+                  <edit-div v-model="comment" @focus="replyId = -1" @input="commentChange" placeholder="输入评论..."
+                            class="rich-input"></edit-div>
                   <el-row class="action-box" type="flex" justify="space-between" align="middle" v-show="replyId == -1">
-                    <el-col :span="2">
-                      <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
+                    <el-col :span="4" :xs="6">
+                      <el-popover width="300">
+                        <ul class="face-list">
+                          <li v-for="item in face" @click="appendComment(item)">
+                            <img :src="item.src" :alt="item.alt">
+                          </li>
+                        </ul>
+                        <el-button slot="reference" type="text" icon="el-icon-warning-outline">表情</el-button>
+                      </el-popover>
                     </el-col>
-                    <el-col :span="2">
-                      <el-button type="primary" size="small" :disabled="disable" @click="postComment">评论</el-button>
+                    <el-col :span="4" :xs="12" class="tr">
+                      <el-button type="primary" size="small" :disabled="disable" @click="postComment({},0)">评论
+                      </el-button>
                     </el-col>
                   </el-row>
                 </el-col>
@@ -121,7 +131,7 @@
             </div>
             <div class="comment-list">
               <div class="comment-item" v-for="reply in replyList">
-                <img src="http://iph.href.lu/72x72" alt="">
+                <img :src="reply.replyUser.icon" alt="">
                 <div class="comment-content">
                   <div class="author">
                     {{reply.replyUser.username}}
@@ -129,43 +139,52 @@
                   <div class="content" v-html="reply.content"></div>
                   <div class="stat">
                     <el-row type="flex" justify="space-between">
-                      <el-col :span="4">
+                      <el-col :span="4" :xs="12">
                         <span>{{reply.initTime | dateStr}}</span>
-                        <span v-if="reply.replyUser.id == userInfo.id">·删除</span>
+                        <span v-if="reply.replyUser.id == userInfo.id">· 删除</span>
                       </el-col>
-                      <el-col :span="16"></el-col>
-                      <el-col :span="4" class="action tr">
+                      <el-col :span="4" :xs="12" class="action tr">
                         <div>
                           <i class="el-icon-goblet-square"></i>
                           <span>{{reply.upCount}}</span>
                         </div>
                         <div>
                           <i class="el-icon-chat-round"></i>
-                          <label @click="replyComment(reply)" :for="replyId">回复</label>
+                          <label @click="replyComment(reply)">回复</label>
                         </div>
                       </el-col>
                     </el-row>
                   </div>
                   <el-card shadow="never" v-if="replyId == reply.id">
-                    <el-col :span="24">
-                      <el-input autofocus :id="replyId"
-                                :placeholder="'回复' + reply.replyUser.username+ '...'"
-                                size="small"
-                                v-model="commentText">
-                      </el-input>
-                      <el-row class="action-box" type="flex" justify="space-between" align="middle">
-                        <el-col :span="2">
-                          <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
-                        </el-col>
-                        <el-col :span="2" class="tr">
-                          <el-button type="primary" size="small" @click="postComment(reply)">评论</el-button>
-                        </el-col>
-                      </el-row>
-                    </el-col>
+                    <!--<el-input autofocus :id="replyId"
+                              :placeholder="'回复' + reply.replyUser.username+ '...'"
+                              size="small"
+                              v-model="commentText">-->
+                    <edit-div v-model="commentText" @input="commentChange"
+                              :placeholder="'回复' + reply.replyUser.username+ '...'"
+                              class="rich-input" :id="replyId"></edit-div>
+                    <!--</el-input>-->
+                    <el-row class="action-box" type="flex" justify="space-between" align="middle">
+                      <el-col :span="2" :xs="12">
+                        <el-popover width="300">
+                          <ul class="face-list">
+                            <li v-for="item in face" @click="appendComment(item,reply)">
+                              <img :src="item.src" :alt="item.alt">
+                            </li>
+                          </ul>
+                          <el-button slot="reference" type="text" icon="el-icon-warning-outline">表情</el-button>
+                        </el-popover>
+                      </el-col>
+                      <el-col :span="2" :xs="12" class="tr">
+                        <el-button type="primary" size="small" :disabled="!commentText" @click="postComment(reply,1)">
+                          评论
+                        </el-button>
+                      </el-col>
+                    </el-row>
                   </el-card>
                   <div class="sub-comment-list">
                     <div v-for="item in reply.replayVoList" style="display: flex">
-                      <img src="http://iph.href.lu/72x72" alt="">
+                      <img :src="item.replyUser.icon" alt="">
                       <div class="item">
                         <div class="author">
                           {{item.replyUser.username}}
@@ -176,40 +195,47 @@
                         </div>
                         <div class="stat">
                           <el-row type="flex" justify="space-between">
-                            <el-col :span="6">
+                            <el-col :span="6" :xs="10">
                               <span>{{item.initTime | dateStr}}</span>
                               <span v-if="item.userId == userInfo.id">·删除</span>
                             </el-col>
-                            <el-col :span="14"></el-col>
-                            <el-col :span="6" class="action tr">
-                              <div>
+                            <el-col :span="6" :xs="14" class="action tr">
+                              <div @click="upCount">
                                 <i class="el-icon-goblet-square"></i>
                                 <span>{{item.upCount}}</span>
                               </div>
                               <div>
                                 <i class="el-icon-chat-round"></i>
-                                <label :for="replyId" @click="replyComment(item)">回复</label>
+                                <label @click="replyComment(item)">回复</label>
                               </div>
                             </el-col>
                           </el-row>
                         </div>
                         <el-card shadow="never" type="flex" v-if="replyId == item.id">
-                          <el-col :span="24">
-                            <el-input autofocus :id="replyId"
-                                      :placeholder="'回复' + item.replyUser.username+ '...'"
-                                      size="small"
-                                      v-model="commentText">
-                            </el-input>
-                            <el-row class="action-box" type="flex" justify="space-between" align="middle">
-                              <el-col :span="2">
-                                <el-button type="text" icon="el-icon-warning-outline">表情</el-button>
-                              </el-col>
-                              <el-col :span="2" class="tr">
-                                <el-button type="primary" size="small" @click="postComment(item)">评论
-                                </el-button>
-                              </el-col>
-                            </el-row>
-                          </el-col>
+                          <!--<el-input autofocus :id="replyId"
+                                    :placeholder="'回复' + item.replyUser.username+ '...'"
+                                    size="small"
+                                    v-model="commentText">
+                          </el-input>-->
+                          <edit-div v-model="commentText" :placeholder="'回复' + reply.replyUser.username+ '...'"
+                                    class="rich-input" :id="replyId"></edit-div>
+                          <el-row class="action-box" type="flex" justify="space-between" align="middle">
+                            <el-col :span="2">
+                              <el-popover width="300">
+                                <ul class="face-list">
+                                  <li v-for="face in face" @click="appendComment(face,item)">
+                                    <img :src="face.src" :alt="face.alt">
+                                  </li>
+                                </ul>
+                                <el-button slot="reference" type="text" icon="el-icon-warning-outline">表情</el-button>
+                              </el-popover>
+                            </el-col>
+                            <el-col :span="4" class="tr">
+                              <el-button type="primary" size="small" :disabled="!commentText"
+                                         @click="postComment(item,2)">评论
+                              </el-button>
+                            </el-col>
+                          </el-row>
                         </el-card>
                       </div>
                     </div>
@@ -230,11 +256,11 @@
           </div>
           <div class="author-about">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="6" :xs="4">
                 <el-image :src="userInfo.icon == null? defaultAvatar : userInfo.icon"
                           :alt="userInfo.username"></el-image>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="18" :xs="20">
                 <div class="info-box">
                   <a class="username">{{userInfo.username}}</a>
                   <div class="position">暂无成就</div>
@@ -267,9 +293,12 @@
   import * as post from '@/api/post'
   import * as reply from '@/api/reply'
   import * as timeUtils from '@/utils/time';
+  import * as face from '@/assets/face.json';
+  import editDiv from '@/components/EditDiv';
 
   export default {
     name: "detail",
+    components: {editDiv},
     data() {
       return {
         actionBox: false,
@@ -284,6 +313,7 @@
         fileList: [],
         replyList: [],// 评论列表
         replyId: '',
+        face: require('@/assets/face.json')
       }
     },
     created() {
@@ -306,6 +336,18 @@
           this.disable = true;
         }
       },
+      /**
+       * 评论添加表情
+       **/
+      appendComment(face, item = {}) {
+        let imgStr = `<img src="${face.src}" alt="${face.alt}"/>`;
+        if (!item.id) {
+          this.comment += imgStr;
+        } else {
+          this.commentText += imgStr;
+        }
+        this.commentChange();
+      },
       getDetailById() {
         this.loadDetail = true;
         post.getDetail(this.postId).then(res => {
@@ -326,6 +368,10 @@
           this.fileList = res.data;
         })
       },
+      /* 评论点赞 */
+      upCount() {
+
+      },
       /* 回复评论 */
       replyComment(item) {
         if (this.replyId == item.id) {
@@ -333,22 +379,31 @@
         } else {
           this.replyId = item.id
         }
-        this.commentText = ''
+        this.commentText = '';
+        /* 获得焦点 */
+        this.$nextTick(() => {
+          if (this.replyId) {
+            document.getElementById(this.replyId).focus();
+          }
+        })
       },
-      /* 发布评论 */
-      postComment(item) {
-        this.replyId = !item.id ? '-1' : item.id;
+      /**
+       * 发布评论
+       * @param item 评论对象
+       * @param status 0 一级回复 1 二级回复 2 三级回复
+       */
+      postComment(item, status) {
+        this.replyId = status == 0 ? '-1' : item.id;
         let data = {
-          content: !item.id ? this.comment : this.commentText,
+          content: status == 0 ? this.comment : this.commentText,
           postsId: +this.postId,
           userId: this.userInfo.id,
-          parentId: item.parentId == undefined ? '' : item.parentId,
+          parentId: status == 2 ? item.parentId : status == 0 ? '' : item.id,
           replyTo: !item.replyUser ? '' : item.replyUser.id
         }
-        console.log(data);
-        return false;
         reply.add(data).then(res => {
-          this.$message({type: 'success', message: res.message, duration: 1000});
+          this.replyId = '';
+          this.$message({type: 'success', message: res.msg, duration: 1000});
           this.getReplyList();
         })
       },
@@ -406,7 +461,7 @@
       margin: 10px 0;
       /*display: flex;*/
       /*position: relative;*/
-      padding: 10px;
+      padding: 10px 8px;
       background-color: #fafbfc;
       border-radius: 3px;
 
@@ -461,15 +516,14 @@
           cursor: default;
           margin: 7px;
           font-weight: 400;
-
           .action {
             div {
               display: inline-block;
               margin-left: 18px;
+              cursor: pointer;
             }
           }
         }
-
         .sub-comment-list {
           display: flex;
           flex-direction: column;
@@ -481,6 +535,12 @@
             width: 100%;
             padding: 0 2px;
             border-bottom: 1px solid #f1f1f1;
+            .content {
+              a {
+                color: #406599;
+                cursor: pointer;
+              }
+            }
           }
         }
       }
@@ -553,6 +613,24 @@
       background-color: #33aba0;
       color: #fff;
       text-align: center;
+    }
+  }
+
+  .face-list {
+    display: flex;
+    flex-wrap: wrap;
+    height: 200px;
+    overflow: auto;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .comment-box {
+      .comment-form {
+
+      }
+      .comment-list {
+        margin: 20px 0px 0 0px;
+      }
     }
   }
 </style>

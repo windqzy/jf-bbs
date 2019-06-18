@@ -53,7 +53,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filterMap);
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/401");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/login.html");
 //        shiroFilterFactoryBean.setSuccessUrl("/remote/index.html");
 
         /**
@@ -65,13 +65,19 @@ public class ShiroConfig {
 //        filterChainMap.put("/**", "jwt");
         filterChainMap.put("/webjars/**", "anon");
         filterChainMap.put("/static/**", "anon");
-        filterChainMap.put("/img/**", "anon");
+        filterChainMap.put("/images/**", "anon");
         filterChainMap.put("/js/**", "anon");
         filterChainMap.put("/css/**", "anon");
+        filterChainMap.put("/layui/**", "anon");
+        filterChainMap.put("/fonts/**", "anon");
+        filterChainMap.put("/lib/**", "anon");
+        filterChainMap.put("/less/**", "anon");
+        filterChainMap.put("/admin/**", "anon");
         filterChainMap.put("/login/free", "anon");
         filterChainMap.put("/ding/action", "anon");
         filterChainMap.put("/turnAccount", "anon");
         filterChainMap.put("/login/ding", "anon");
+        filterChainMap.put("/admin/login", "anon");
         filterChainMap.put("/upload/**", "anon");
         filterChainMap.put("/game/**", "anon");
         filterChainMap.put("/**", "jwt");

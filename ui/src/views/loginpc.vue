@@ -1,6 +1,8 @@
 <template>
   <div class="container demo-1">
-    <div class="content">
+    <div class="content" unselectable="on" onselectstart="return false;"
+         oncontextmenu="return false"
+         onmousedown="return false;">
       <div id="large-header" class="large-header">
         <a style="cursor: pointer; color: blue; float: right; margin: 5px" @click="testLogin" v-if="true">开发者登录</a>
         <canvas></canvas>
@@ -137,10 +139,9 @@
     },
     methods: {
       testLogin() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiZ0RKdjR4UVQyaWl2TWZTYVR' +
-          'vYmVORkFpYWFhIiwiZXhwIjoxNTUyNzQzODk1LCJ1c2VySWQiOiI3NyJ9.2bO2b-pDKn_GHK9f1nfxGB-h4QQKyZX8l1P1x9eVy4U';
+        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiaWlnRFNuRFdnVHRpU2lpRjVDOGQ2SkxkZ2lFaUUiLCJleHAiOjE1NjE5NzY5MDAsInVzZXJJZCI6Ijc5In0.BFrcIyk0WVnLAKQ7BMPEdKBkr45zfWVau3dj1qA9Dac';
         let userInfo = {
-          id: 77
+          id: 78
         }
         window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
         this.$router.push('/home/index');

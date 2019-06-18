@@ -69,9 +69,34 @@ export function getPersonReplyList(userId) {
 
 
 //采纳回复
-export  function acceptReply(replyId,userId) {
+export function acceptReply(replyId, userId) {
   return request({
     url: '/reply/acceptReply?id=' + replyId + '&userId=' + userId,
     method: 'GET',
+  })
+}
+
+
+/******************** 回复API 2.0 *******************/
+/**
+ * 查询文章回复列表
+ * @param postId
+ */
+export function getReplyList(postId) {
+  return request({
+    url: `/reply/posts/${postId}`,
+    method: 'GET',
+  })
+}
+
+/**
+ * 查询文章回复列表
+ * @param data
+ */
+export function add(data) {
+  return request({
+    url: `/reply/add`,
+    method: 'POST',
+    data: data
   })
 }

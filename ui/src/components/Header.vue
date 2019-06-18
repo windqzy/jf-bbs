@@ -45,28 +45,27 @@
         </el-col>
         <el-col :span="1">
           <!-- 消息 -->
-          <!--<el-popover-->
-          <!--placement="top"-->
-          <!--width="215"-->
-          <!--&gt;-->
-          <!--<div style="text-align: right; margin: 0">-->
-          <!--<el-tabs>-->
-          <!--<el-tab-pane label="通知" name="first">通知</el-tab-pane>-->
-          <!--<el-tab-pane label="关注" name="second">关注</el-tab-pane>-->
-          <!--<el-tab-pane label="系统" name="third">系统</el-tab-pane>-->
-          <!--</el-tabs>-->
-          <!--</div>-->
-          <!--<el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>-->
-          <!--</el-popover>-->
+          <!-- <el-popover
+           placement="top"
+           width="215">
+           <div style="text-align: right; margin: 0">
+           <el-tabs>
+           <el-tab-pane label="通知" name="first">通知</el-tab-pane>
+           <el-tab-pane label="关注" name="second">关注</el-tab-pane>
+           <el-tab-pane label="系统" name="third">系统</el-tab-pane>
+           </el-tabs>
+           </div>
+           <el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>
+           </el-popover>-->
 
-          <!--<el-badge :value="12" class="item">-->
-          <!--<i class="el-icon-message-solid message" ></i>-->
-          <!--</el-badge>-->
+          <el-badge :value="12" class="item">
+            <i class="el-icon-message-solid message" @click="toMessage"></i>
+          </el-badge>
         </el-col>
         <el-col :span="2">
           <el-dropdown @command="handleCommand">
             <router-link to="/user/home" class="el-dropdown-link">
-              <img src="http://iph.href.lu/32x32" alt="">
+              <img :src="$store.state.user.icon" alt="">
               阿拉灯
             </router-link>
             <el-dropdown-menu slot="dropdown">
@@ -87,6 +86,7 @@
     name: "Header",
     data() {
       return {
+        socket: null,
         activeIndex: '1',
         searchText: '',
       }
@@ -96,7 +96,16 @@
 
     },
     mounted() {
-
+      let socketUrl = window.localStorage.baseUrl + "/websocket/" + this.$store.state.user.id;
+      this.socket = new WebSocket(socketUrl.replace("http", "ws"));
+      this.socket.onopen = function() {
+        console.log("Socket 已打开");
+        //socket.send("这是来自客户端的消息" + location.href + new Date());
+      };
+      this.socket.onmessage = function() {
+        console.log(msg.data);
+        //发现消息进入    开始处理前端触发逻辑
+      };
     },
     methods: {
       handleSelect(key, keyPath) {
@@ -118,7 +127,7 @@
       },
       handleCommand(command) {
         this.$message('click on item ' + command);
-        if(command =='c') {
+        if (command == 'c') {
           this.$router.push('/login');
           window.localStorage['B-Token'] = '';
         }
@@ -128,6 +137,10 @@
       },
       search() {
         alert('111111111111');
+      },
+      /* 跳转信息 */
+      toMessage() {
+        this.$router.push('/msg/index')
       }
     }
   }
@@ -140,7 +153,7 @@
     background-color: #fff;
     border-bottom: 1px solid #ddd;
     .message {
-      font-size: 23px;
+      font-size: 22px;
       color: #71777c;
       cursor: pointer;
       &:hover {
@@ -149,6 +162,7 @@
     }
     img {
       width: 32px;
+      height: 32px;
       border-radius: 50%;
       cursor: pointer;
     }

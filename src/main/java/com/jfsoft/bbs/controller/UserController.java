@@ -160,12 +160,14 @@ public class UserController extends AbstractController {
 //            vestEntity.setIcon(userForm.getIcon());
 //            bbsVestService.insert(vestEntity);
         }
+        bbsUser.setIcon(userForm.getIcon());
         bbsUser.setEmail(userForm.getEmail());
         bbsUser.setUsername(userForm.getUsername());
         bbsUser.setCity(userForm.getCity());
         bbsUser.setSignature(userForm.getSignature());
         bbsUser.setMobile(userForm.getMobile());
         bbsUser.setSex(userForm.getSex());
+        bbsUser.setBackground(userForm.getBackground());
         bbsUserService.updateById(bbsUser);
         return R.ok().put("data", bbsUser);
     }

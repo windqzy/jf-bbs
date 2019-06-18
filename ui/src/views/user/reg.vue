@@ -80,7 +80,8 @@
     <!--</div>-->
     <el-card shadow="never">
       <div class="reg-avatar" align="center">
-        <el-upload class="avatar-uploader"
+        <el-upload  accept="image/png,image/jpg,image/jpeg"
+                    class="avatar-uploader"
                    :action="actionUrl"
                    :show-file-list="false"
                    :on-success="handleAvatarSuccess"
@@ -123,7 +124,7 @@
     name: "reg",
     data() {
       return {
-        username: '请输入您的昵称',
+        username: '',
         // mobile: '',
         actionUrl: window.localStorage.baseUrl + '/upload/file',
         imageUrl: '',
@@ -131,7 +132,6 @@
       }
     },
     mounted() {
-      this.username = this.$store.getters.user.username;
       this.imageUrl = this.$store.getters.user.imageUrl;
       // this.mobile = this.$store.getters.user.mobile;
       // layui.use(['form', 'layer'], function () {
@@ -148,45 +148,62 @@
       })
     },
     methods: {
+      // 判断是否为空
+      isnull(val) {
+      var str = val.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+      if (str == '' || str == undefined || str == null) {
+       return true;
+      // console.log('空')
+      } else {
+      return false;
+      // console.log('非空');
+      }
+    },
       //上传头像
-      handleAvatarSuccess(res, file) {
+      handleAvatarSuccess(res) {
         this.imageUrl = res.data.src;
         console.log(this.imageUrl)
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isGIF = file.type === 'image/gif';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 0.2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+        if (!isJPG && !isGIF && !isPNG) {
+          this.$message.error('上传头像图片只能是 JPG、PNG、GIF 格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传头像图片大小不能超过 200KB!');
         }
-        return isJPG && isLt2M;
+        return (isJPG || isGIF || isPNG) && isLt2M;
       },
       upDateUser() {
         if (this.imageUrl == null) {
           this.$message.error('请上传您的头像！')
         } else {
-          let UserForm = {
-            username: this.username,
-            // mobile: this.mobile,
-            sex: this.selectSex,
-            icon: this.imageUrl
-          };
-          user.upDateUser(UserForm).then(res => {
-            // res.data.email = this.email;
-            res.data.username = this.username;
-            res.data.icon = this.imageUrl;
-            res.data.selectSex = this.selectSex;
-            // res.data.mobile = this.mobile;
-            // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
-            // this.$router.push('/home/index');
-            this.$store.dispatch('addUserInfo').then(() => {
-              this.$router.push('/home/index');
+          if(this.isnull(this.username) == true){
+            this.$message.error('请填写您的昵称！')
+          }else {
+            let UserForm = {
+              username: this.username,
+              // mobile: this.mobile,
+              sex: this.selectSex,
+              icon: this.imageUrl
+            };
+            user.upDateUser(UserForm).then(res => {
+              // res.data.email = this.email;
+              res.data.username = this.username;
+              res.data.icon = this.imageUrl;
+              res.data.selectSex = this.selectSex;
+              // res.data.mobile = this.mobile;
+              // window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+              // this.$router.push('/home/index');
+              this.$store.dispatch('addUserInfo').then(() => {
+                this.$router.push('/home/index');
+              })
             })
-          })
+          }
         }
         // let _this = this;
         // _this.$nextTick(() => {

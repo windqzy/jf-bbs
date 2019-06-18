@@ -145,6 +145,15 @@ export default new Router({
           component: () => import('@/views/faq/index')
         }
       ]
+    }, {
+      path: '/msg',
+      component: Layer,
+      children: [
+        {
+          path: 'index',
+          component: () => import('@/views/message/index')
+        }
+      ]
     }
   ]
 })

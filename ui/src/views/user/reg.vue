@@ -170,12 +170,12 @@
             username: this.username,
             // mobile: this.mobile,
             sex: this.selectSex,
-            imageUrl: this.imageUrl
+            icon: this.imageUrl
           };
           user.upDateUser(UserForm).then(res => {
             // res.data.email = this.email;
             res.data.username = this.username;
-            res.data.imageUrl = this.imageUrl;
+            res.data.icon = this.imageUrl;
             res.data.selectSex = this.selectSex;
             // res.data.mobile = this.mobile;
             // window.localStorage.setItem('userInfo', JSON.stringify(res.data));

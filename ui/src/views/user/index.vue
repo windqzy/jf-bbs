@@ -1,82 +1,141 @@
 <template>
-    <div class="layui-container">
-      <el-row :gutter="8">
-        <el-col :span="18">
-          <el-card shadow="never">
-            <div class="info">
-              <el-row>
-                <el-col :span="6">
-                  <el-upload
-                    class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="avatarUrl" :src="avatarUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
-                </el-col>
-                <el-col :span="18">
-                  个人信息
-                  <el-button type="primary" size="small">修改</el-button>
-                </el-col>
+  <div class="layui-container">
+    <el-card shadow="never" class="info">
+      <div class="info-cover">
+        <img src="http://placehold.it/64x64" alt="">
+        <el-upload
+          class="info-cover-upload"
+          :show-file-list="false"
+          action="https://jsonplaceholder.typicode.com/posts/">
+          <el-button size="small" type="primary" icon="el-icon-camera-solid">编辑封面图片</el-button>
+        </el-upload>
+      </div>
+      <div class="info-user">
+        <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="avatarUrl" :src="avatarUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <div class="avatar-hover">
+            <i class="el-icon-camera-solid"></i>
+            <p>修改我的头像</p>
+          </div>
+        </el-upload>
+
+        <div class="info-user-content">
+          <h1>
+            <span class="name">姓名 <i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
+            <span>标签</span>
+          </h1>
+          <p>这里是用户个性签名</p>
+          <el-button type="primary" size="small" class="hidden-sm-and-down">编辑个人资料</el-button>
+        </div>
+      </div>
+    </el-card>
+    <el-row :gutter="8" class="post-content">
+      <el-col :span="18" :xs="24">
+        <el-card shadow="never" class="post">
+          <el-tabs stretch>
+            <el-tab-pane label="帖子">
+              <el-row type="flex" justify="space-between">
+                <p>我的帖子</p>
+                <div>
+                  <span>按时间排序</span>
+                  <el-divider direction="vertical" content-position="right"></el-divider>
+                  <span>赞同数排序</span>
+                </div>
               </el-row>
+            </el-tab-pane>
+            <!-- <el-tab-pane label="回复"></el-tab-pane>-->
+            <el-tab-pane label="收藏">
+              <el-row type="flex" justify="space-between">
+                <p>我的收藏</p>
+                <div>
+                  <span>按时间排序</span>
+                  <el-divider direction="vertical" content-position="right"></el-divider>
+                  <span>赞同数排序</span>
+                </div>
+              </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="草稿">
+              <el-row type="flex" justify="space-between">
+                <p>我的草稿</p>
+              </el-row>
+            </el-tab-pane>
+          </el-tabs>
+          <el-card v-for="post in 5" shadow="never" class="fly-list">
+            <a class="fly-avatar">
+              <el-image src="http://placehold.it/64x64" alt=""></el-image>
+            </a>
+            <h2>
+              <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
+              <!--<router-link :to="'/post/detail?postId=' + post.id">{{post.title}}</router-link>-->
+              <router-link :to="'/post/detail?postId=' + post.id">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</router-link>
+            </h2>
+            <div class="fly-list-info">
+              <a>
+                <cite>{{post.author == null ? '匿名' : post.author}}</cite>
+              </a>
+              <span> {{post.initTime | dateStr}}</span>
+              <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+              <span class="fly-list-nums">
+                    <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
+                  </span>
             </div>
-            <div class="post">
-              <el-tabs>
-                <el-tab-pane label="我的消息">我的消息</el-tab-pane>
-                <el-tab-pane label="我的帖子">我的帖子</el-tab-pane>
-                <el-tab-pane label="我的回复">我的回复</el-tab-pane>
-                <el-tab-pane label="我的收藏">我的收藏</el-tab-pane>
-              </el-tabs>
+            <div class="fly-list-badge">
+              <span v-if="post.good" class="layui-badge layui-bg-red">精帖</span>
             </div>
           </el-card>
-        </el-col>
-        <el-col :span="6">
-          <el-card shadow="never">
-            <div slot="header">
-              统计信息
-            </div>
-          </el-card>
-          <el-card shadow="never">
-            <div slot="header">
-              活跃
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6" :xs="24">
+        <el-card shadow="never">
+          <div slot="header">
+            统计信息
+          </div>
+        </el-card>
+        <el-card shadow="never">
+          <div slot="header">
+            活跃
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
-    export default {
-      name: "index",
-      data() {
-        return {
-          avatarUrl: ''
-        }
-      },
-      created() {
+  export default {
+    name: "index",
+    data() {
+      return {
+        avatarUrl: ''
+      }
+    },
+    created() {
 
+    },
+    methods: {
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
       },
-      methods: {
-        handleAvatarSuccess(res, file) {
-          this.imageUrl = URL.createObjectURL(file.raw);
-        },
-        beforeAvatarUpload(file) {
-          const isJPG = file.type === 'image/jpeg';
-          const isLt2M = file.size / 1024 / 1024 < 2;
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
-          if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
-          }
-          if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
-          }
-          return isJPG && isLt2M;
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
         }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
       }
     }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -86,35 +145,193 @@
       padding: 10px 20px;
     }
   }
+
   .post {
-    margin-top: 8px;
+    /deep/ .el-card__body {
+      padding: 8px 20px;
+    }
   }
+
   .info {
-    .el-button {
-      float: right;
+    /deep/ .el-card__body {
+      padding: 0;
     }
-    /deep/ .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
+  }
+
+  .info-cover {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    background: #f6f6f6;
+    border-top-right-radius: 1px;
+    border-top-left-radius: 1px;
+    -webkit-transition: height .3s;
+    transition: height .3s;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &-upload {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 3;
       overflow: hidden;
+      button {
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 14px;
+        line-height: 32px;
+        color: #8590a6;
+        text-align: center;
+        cursor: pointer;
+        background: none;
+        border: 1px solid;
+        border-radius: 3px;
+        color: rgba(26, 26, 26, .6);
+        border-color: rgba(26, 26, 26, .12);
+      }
     }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 150px;
-      height: 150px;
-      line-height: 150px;
-      text-align: center;
+  }
+
+  .info-user {
+    position: relative;
+    margin: 0 20px 24px;
+    .avatar-uploader {
+      position: absolute;
+      top: -60px;
+      background-color: #fff;
+      /deep/ .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 0px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        &:hover {
+          border-color: #009688;
+          .avatar-uploader-icon {
+            color: #009688;
+          }
+          .avatar-hover {
+            display: flex;
+          }
+        }
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 150px;
+          height: 150px;
+          line-height: 150px;
+          text-align: center;
+        }
+      }
+      .avatar-hover {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 150px;
+        text-align: center;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.18);
+        i, p {
+          font-size: 34px;
+          line-height: 50px;
+        }
+        p {
+          font-size: 16px;
+          line-height: 30px;
+        }
+      }
     }
     .avatar {
       width: 150px;
       height: 150px;
       display: block;
+    }
+    &-content {
+      padding-top: 16px;
+      padding-left: 32px;
+      border-left: 164px solid transparent;
+      h1 {
+        margin-bottom: 16px;
+        span {
+          font-size: 18px;
+          &.name {
+            font-size: 26px;
+            font-weight: 500;
+            i {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      p {
+        padding-top: 8px;
+      }
+      button {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 14px;
+        line-height: 32px;
+        text-align: center;
+        cursor: pointer;
+        background: none;
+        border: 1px solid #009688;
+        border-radius: 3px;
+        color: #009688;
+      }
+    }
+  }
+
+  .post-content {
+    .fly-list {
+      position: relative;
+      min-height: 45px;
+      line-height: 22px;
+      padding: 15px 15px 15px 75px;
+      border-bottom: 1px dotted #e2e2e2;
+      margin-top: 10px;
+      /deep/ .el-card__body {
+        padding: 0;
+      }
+      h2 {
+        min-height: 26px;
+        font-size: 18px;
+      }
+    }
+  }
+
+  /* 手机端兼容 */
+  @media only screen and (max-width: 767px) {
+    .info-user {
+      .avatar-uploader {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &-content {
+        padding: 100px 0 0;
+        border: none;
+        text-align: center;
+        h1 {
+          margin-top: 4px;
+          span {
+            display: block;
+            padding-top: 8px;
+          }
+        }
+      }
+    }
+    .post-content {
+      padding: 0 8px;
     }
   }
 </style>

@@ -86,6 +86,7 @@
     name: "Header",
     data() {
       return {
+        socket: null,
         activeIndex: '1',
         searchText: '',
       }
@@ -95,7 +96,16 @@
 
     },
     mounted() {
-
+      let socketUrl = window.localStorage.baseUrl + "/websocket/" + this.$store.state.user.id;
+      this.socket = new WebSocket(socketUrl.replace("http", "ws"));
+      this.socket.onopen = function() {
+        console.log("Socket 已打开");
+        //socket.send("这是来自客户端的消息" + location.href + new Date());
+      };
+      this.socket.onmessage = function() {
+        console.log(msg.data);
+        //发现消息进入    开始处理前端触发逻辑
+      };
     },
     methods: {
       handleSelect(key, keyPath) {

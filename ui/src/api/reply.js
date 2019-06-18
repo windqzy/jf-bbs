@@ -100,3 +100,13 @@ export function add(data) {
     data: data
   })
 }
+
+/**
+ * 获取信息列表
+ */
+export function msgList() {
+  return request({
+    url: `/new/msg/list`,
+    method: 'get'
+  })
+}

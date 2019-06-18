@@ -1,7 +1,10 @@
 package com.jfsoft.bbs.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
+import com.jfsoft.bbs.entity.BbsMessageUserEntity;
 import com.jfsoft.bbs.form.MessageVo;
+import com.jfsoft.bbs.service.BbsMessageUserService;
 import com.jfsoft.bbs.service.BbsNewMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,9 @@ public class NewMessageController extends AbstractController {
     @Autowired
     private BbsNewMessageService bbsNewMessageService;
 
+    @Autowired
+    private BbsMessageUserService bbsMessageUserService;
+
     /**
      * 查询所有用户消息
      *
@@ -34,6 +40,15 @@ public class NewMessageController extends AbstractController {
     @RequestMapping("/list")
     public R list() {
         List<MessageVo> messageVoList = bbsNewMessageService.querySelfMessage(getUserId());
+
+        BbsMessageUserEntity bbsMessageUserEntity = new BbsMessageUserEntity();
+        bbsMessageUserEntity.setIsRead("1");
+
+        /** 将消息标记为已读 */
+        EntityWrapper<BbsMessageUserEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("USER_ID", getUserId());
+        bbsMessageUserService.update(bbsMessageUserEntity, wrapper);
+
         return R.ok().put("data", messageVoList);
     }
 

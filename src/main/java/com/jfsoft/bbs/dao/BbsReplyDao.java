@@ -50,4 +50,6 @@ public interface BbsReplyDao extends BaseMapper<BbsReplyEntity> {
     BbsUserEntity selectUserInfo(Map<String, Object> params);
 
     Integer selectUpCount(Map<String, Object> params);
+
+    Integer selectReplyCount(Integer id);
 }

@@ -7,8 +7,8 @@
       <!--<i class="iconfont icon-renzheng" title="Fly社区认证"></i>-->
       <h1>
         {{userInfo.username}}
-        <i class="iconfont icon-nan" v-if="userInfo.sex == 1"></i>
-        <i class="iconfont icon-nv" v-if="userInfo.sex == 0"></i>
+        <i class="el-icon-female" v-if="userInfo.sex == 1"></i>
+        <i class="el-icon-male" v-if="userInfo.sex == 0"></i>
         <!--<i class="layui-badge fly-badge-vip">VIP3</i>-->
         <!--
         <span style="color:#c00;">（管理员）</span>

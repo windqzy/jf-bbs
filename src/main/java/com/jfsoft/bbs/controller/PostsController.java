@@ -12,10 +12,8 @@ import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author chenxc
@@ -30,6 +28,9 @@ public class PostsController extends AbstractController {
     private BbsPostsService bbsPostsService;
 
     @Autowired
+    private BbsReplyService bbsReplyService;
+
+    @Autowired
     private BbsLogService bbsLogService;
 
     @Autowired
@@ -40,6 +41,9 @@ public class PostsController extends AbstractController {
 
     @Autowired
     private BbsLabelService bbsLabelService;
+
+    @Autowired
+    private BbsCollectionService bbsCollectionService;
 
     @Autowired
     private BbsLabelManageService bbsLabelManageService;
@@ -67,20 +71,71 @@ public class PostsController extends AbstractController {
 
 
     /**
-     * 个人中心发布文章列表
-     * * @return
-     */
+     * 获取用户的帖子列表
+     *
+     * @Author Mjp
+     * @Date 16:20 2019/6/18
+     * @Param [userId 传入的userId, type 获取的列表类型(0 帖子 1 收藏 2 草稿),
+     * order 排序方式(0 按发表时间排序 1 按回复数排序)]
+     * @Return
+     **/
     @RequestMapping("/personList")
-    public R getPersonList(Integer userId) {
-        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+    public R getPersonList(Integer userId, String type, String order) {
         if (userId == null) {
-            wrapper.eq("user_id", getUserId());
-        } else {
-            wrapper.eq("user_id", userId);
+            userId = getUserId();
         }
-        wrapper.eq("is_del", false);
-        List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
-        return R.ok().put("data", list);
+        if (type.equals("0")) {
+            EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+            wrapper.eq("user_id", userId);
+            wrapper.eq("is_del", false);
+            wrapper.eq("is_temp", false);
+            List<BbsPostsEntity> posts = bbsPostsService.selectList(wrapper);
+            for (int i = 0; i < posts.size(); i++) {
+                Integer id = posts.get(i).getId();
+                posts.get(i).setReplyCount(bbsReplyService.replyCount(id));
+            }
+            if (order.equals("0")) {
+                List<BbsPostsEntity> list = posts.stream().sorted(Comparator.comparing(BbsPostsEntity::getInitTime).reversed()).collect(Collectors.toList());
+                return R.ok().put("data", list);
+            } else {
+                List<BbsPostsEntity> list = posts.stream().sorted(Comparator.comparing(BbsPostsEntity::getReplyCount).reversed()).collect(Collectors.toList());
+                return R.ok().put("data", list);
+            }
+        } else if (type.equals("1")) {
+            EntityWrapper<BbsCollectionEntity> wrapper = new EntityWrapper<>();
+            wrapper.eq("user_id", userId);
+            wrapper.eq("status", true);
+            List<BbsCollectionEntity> list = bbsCollectionService.selectList(wrapper);
+
+            List<BbsPostsEntity> posts = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                Integer pid = list.get(i).getPostId();
+                EntityWrapper<BbsPostsEntity> postWrapper = new EntityWrapper<>();
+                wrapper.eq("id", pid);
+                wrapper.eq("is_temp", false);
+                wrapper.eq("is_del", false);
+                BbsPostsEntity postsEntity = bbsPostsService.selectOne(postWrapper);
+                Integer id = postsEntity.getId();
+                postsEntity.setReplyCount(bbsReplyService.replyCount(id));
+                posts.add(postsEntity);
+            }
+            if (order.equals("0")) {
+                List<BbsPostsEntity> postList = posts.stream().sorted(Comparator.comparing(BbsPostsEntity::getInitTime).reversed()).collect(Collectors.toList());
+                return R.ok().put("data", postList);
+            } else {
+                List<BbsPostsEntity> postList = posts.stream().sorted(Comparator.comparing(BbsPostsEntity::getReplyCount).reversed()).collect(Collectors.toList());
+                return R.ok().put("data", postList);
+            }
+        } else {
+            EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+            wrapper.eq("user_id", userId);
+            wrapper.eq("is_temp", true);
+            wrapper.eq("is_del", false);
+            wrapper.orderDesc(Arrays.asList(new String[]{"init_time"}));
+            List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
+            return R.ok().put("data", list);
+        }
+
     }
 
 
@@ -335,7 +390,7 @@ public class PostsController extends AbstractController {
     public R publish(@RequestBody BbsPostsEntity bbsPosts) {
         bbsPosts.setInitTime(new Date());
 //        bbsPosts.setUpdateTime(new Date());
-        if (!bbsPosts.getAnonymous()) {
+        if (bbsPosts.getAnonymous() == false) {
             bbsPosts.setUserId(getUserId());
         }
         bbsPostsService.insert(bbsPosts);
@@ -343,7 +398,7 @@ public class PostsController extends AbstractController {
     }
 
     /**
-     * 跟新文件路径
+     * 更新文件路径
      *
      * @param bbsPostsFiles
      * @return
@@ -356,6 +411,7 @@ public class PostsController extends AbstractController {
 
     /**
      * 根据文章ID
+     *
      * @param postsId
      * @return
      */

@@ -38,5 +38,7 @@ public interface BbsReplyService extends IService<BbsReplyEntity> {
     Integer upEnd(Integer id);
 
     List<ReplayVo> getReplayByPostsId(Integer postsId);
+
+    Integer replyCount(Integer id);
 }
 

@@ -132,7 +132,7 @@
       }
     },
     mounted() {
-      this.imageUrl = this.$store.getters.user.imageUrl;
+      this.imageUrl = this.$store.getters.user.icon;
       // this.mobile = this.$store.getters.user.mobile;
       // layui.use(['form', 'layer'], function () {
       //   var form = layui.form;

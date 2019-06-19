@@ -2,18 +2,21 @@
   <div class="layui-container">
     <el-card shadow="never" class="info">
       <div class="info-cover">
-        <img src="http://placehold.it/64x64" alt="">
+        <img :src="background" alt="">
         <el-upload
           class="info-cover-upload"
           :show-file-list="false"
-          action="https://jsonplaceholder.typicode.com/posts/">
+          :action="actionUrl"
+          :on-success="handleBackgroundSuccess"
+          :before-upload="beforeBackgroundUpload">
           <el-button size="small" type="primary" icon="el-icon-camera-solid">编辑封面图片</el-button>
         </el-upload>
       </div>
       <div class="info-user">
         <el-upload
+          accept="image/png,image/jpg,image/jpeg"
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="actionUrl"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -27,53 +30,52 @@
 
         <div class="info-user-content">
           <h1>
-            <span class="name">姓名 <i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
+            <span class="name">{{userInfo.username}}<i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
             <span>标签</span>
           </h1>
-          <p>这里是用户个性签名</p>
+          <p>{{userInfo.signature}}</p>
           <el-button type="primary" size="small" class="hidden-sm-and-down">编辑个人资料</el-button>
         </div>
       </div>
     </el-card>
     <el-row :gutter="8" class="post-content">
       <el-col :span="18" :xs="24">
-        <el-card shadow="never" class="post">
-          <el-tabs stretch>
-            <el-tab-pane label="帖子">
+        <el-card shadow="never" class="post" @on-click="getCollection()">
+          <el-tabs stretch v-model="tabName" @tab-click="changeTab">
+            <el-tab-pane label="帖子" name="0">
               <el-row type="flex" justify="space-between">
                 <p>我的帖子</p>
                 <div>
-                  <span>按时间排序</span>
+                  <span @click="changeOrder0">按时间排序</span>
                   <el-divider direction="vertical" content-position="right"></el-divider>
-                  <span>赞同数排序</span>
+                  <span @click="changeOrder1">按回复数排序</span>
                 </div>
               </el-row>
             </el-tab-pane>
             <!-- <el-tab-pane label="回复"></el-tab-pane>-->
-            <el-tab-pane label="收藏">
+            <el-tab-pane label="收藏"  name="1">
               <el-row type="flex" justify="space-between">
                 <p>我的收藏</p>
                 <div>
-                  <span>按时间排序</span>
+                  <span @click="changeOrder0">按时间排序</span>
                   <el-divider direction="vertical" content-position="right"></el-divider>
-                  <span>赞同数排序</span>
+                  <span @click="changeOrder1">按回复数排序</span>
                 </div>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="草稿">
+            <el-tab-pane label="草稿"  name="2">
               <el-row type="flex" justify="space-between">
                 <p>我的草稿</p>
               </el-row>
             </el-tab-pane>
           </el-tabs>
-          <el-card v-for="post in 5" shadow="never" class="fly-list">
+          <el-card v-for="post in postList" :key="post.id" shadow="never" class="fly-list">
             <a class="fly-avatar">
               <el-image src="http://placehold.it/64x64" alt=""></el-image>
             </a>
             <h2>
               <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
-              <!--<router-link :to="'/post/detail?postId=' + post.id">{{post.title}}</router-link>-->
-              <router-link :to="'/post/detail?postId=' + post.id">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</router-link>
+              <router-link :to="'/post/detail?postId=' + post.id">{{post.title}}</router-link>
             </h2>
             <div class="fly-list-info">
               <a>
@@ -108,34 +110,141 @@
 </template>
 
 <script>
-  export default {
-    name: "index",
-    data() {
-      return {
-        avatarUrl: ''
-      }
-    },
-    created() {
+  import * as grade from '@/api/grade'
 
-    },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+  import * as post from '@/api/post'
+
+  import * as user from '@/api/user'
+
+  import * as timeUtils from '@/utils/time'
+
+    export default {
+      name: "index",
+      data() {
+        return {
+          actionUrl: window.localStorage.baseUrl + '/upload/file',
+          userInfo: '',
+          postList: [],
+          userId: '',
+          avatarUrl: '',
+          loginUserId: '',
+          order: '0',
+          background: '',
+          tabName:'0'
+        }
       },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+      created() {
+        this.userInfo = this.$store.getters.user;
+        this.avatarUrl = this.userInfo.icon;
+        this.background = this.userInfo.background;
+        this.loginUserId = this.userInfo.id;
+        this.userId = this.$route.query.userId;
+        if (!this.userId) {
+          this.userId = this.userInfo.id;
+        } else {
+          this.getOther();
+        }
+        this.getGrade();
+        this.getList();
+      },
+      methods: {
+        handleAvatarSuccess(res) {
+          this.avatarUrl = res.data.src;
+          this.upDateUser();
+        },
+        beforeAvatarUpload(file) {
+          const isJPG = file.type === 'image/jpeg';
+          const isGIF = file.type === 'image/gif';
+          const isPNG = file.type === 'image/png';
+          const isLt2M = file.size / 1024 / 1024 < 0.2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+          if (!isJPG && !isGIF && !isPNG) {
+            this.$message.error('上传头像图片只能是 JPG、PNG、GIF 格式!');
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 200KB!');
+          }
+          return (isJPG || isGIF || isPNG) && isLt2M;
+        },
+        handleBackgroundSuccess(res){
+          this.background = res.data.src;
+          console.log(this.background);
+          this.upDateUser();
+        },
+        beforeBackgroundUpload(file){
+          const isJPG = file.type === 'image/jpeg';
+          const isLt2M = file.size / 1024 / 1024 < 2;
+
+          if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!');
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!');
+          }
+          return isJPG && isLt2M;
+        },
+        upDateUser() {
+              let UserForm = {
+                background: this.background,
+                icon: this.avatarUrl
+              };
+              user.upDateUser(UserForm).then(res => {
+                res.data.icon = this.avatarUrl;
+                res.data.background = this.background;
+                this.$router.push('/user/home');
+              })
+        },
+
+
+        //获取他人主页用户信息
+        getOther() {
+          user.getOther(this.userId).then(res => {
+            // console.log(res.data);
+            this.userInfo = res.data;
+          })
+        },
+        //获取积分
+        getGrade() {
+          let id = this.userId == undefined ? null : this.userId;
+          grade.getGrade(id).then(res => {
+            // console.log(res.data);
+            this.grade = res.data.grade;
+          })
+        },
+        // 获取用户帖子列表
+        getList(){
+          let id = this.userId == undefined ? null : this.userId;
+          let type = this.tabName;
+          let order = this.order;
+          post.getPersonList(id, type, order).then( res =>{
+            this.postList = res.data;
+          })
+        },
+        // 改变所选帖子类型
+        changeTab(){
+            console.log(this.tabName);
+            this.getList();
+        },
+        // 改变排序
+        changeOrder0(){
+            this.order="0";
+            this.getList();
+        },
+        changeOrder1(){
+          this.order="1";
+          this.getList();
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+      },
+      filters: {
+        dateStr(date) {
+          return timeUtils.dateDiff(date);
+        },
+        formatTime(dateStr) {
+          let date = new Date(dateStr);
+          return timeUtils.dateFormat('YYYY-MM-dd hh:mm', date);
         }
-        return isJPG && isLt2M;
       }
     }
-  }
 </script>
 
 <style scoped lang="scss">

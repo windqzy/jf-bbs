@@ -15,7 +15,8 @@ const user = {
     city: '',
     isAdmin: '',
     enable: '',
-    unionId: ''
+    unionId: '',
+    background: ''
   },
   actions: {
     addUserInfo({commit}) {
@@ -44,6 +45,7 @@ const user = {
       state.isAdmin = data.admin;
       state.enable = data.enable;
       state.unionId = data.unionId;
+      state.background = data.background;
     }
   }
 }

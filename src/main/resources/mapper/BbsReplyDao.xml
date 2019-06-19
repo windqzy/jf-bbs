@@ -156,4 +156,7 @@
         select count(-1) as count from bbs_up where reply_id = #{id}
     </select>
 
+    <select id="selectReplyCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(-1) as count from bbs_reply where posts_id = #{id}
+    </select>
 </mapper>

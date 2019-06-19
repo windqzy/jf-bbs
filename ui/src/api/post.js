@@ -33,14 +33,13 @@ export function search(keyword) {
   })
 }
 
-// 查询个人发布文章列表
-export function getPersonList(id) {
+// 查询帖子列表
+export function getPersonList(id, type, order) {
   return request({
-    url: '/posts/personList?userId=' + id,
+    url: '/posts/personList?userId=' + id + '&type='+type +'&order='+ order,
     method: 'GET'
   })
 }
-
 
 // 发布文章
 export function publish_old(bbsPosts) {

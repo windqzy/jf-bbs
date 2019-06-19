@@ -113,4 +113,9 @@ public class BbsReplyServiceImpl extends ServiceImpl<BbsReplyDao, BbsReplyEntity
         return bbsReplyDao.getReplayByPostsId(params);
     }
 
+    @Override
+    public Integer replyCount(Integer id) {
+        return bbsReplyDao.selectReplyCount(id);
+    }
+
 }

@@ -90,11 +90,10 @@
           grade: 0,
           isTemp: false,
           replyDownload: false,
-          isAnonymous: true
+          isAnonymous: false
         },
         editType: '0',
         fileList: [],
-
         userInfo: '',
         labelList: [],
         tagList: [],

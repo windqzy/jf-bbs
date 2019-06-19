@@ -105,7 +105,7 @@
       </div>
       <div class="reg-username" align="center">
         <div class="layui-input-inline">
-          <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off"
+          <input type="text" id="L_username" maxlength="10" name="username" required lay-verify="required" autocomplete="off"
                  class="layui-input" v-model="username" placeholder="请输入您的昵称">
         </div>
       </div>

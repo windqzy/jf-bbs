@@ -397,6 +397,7 @@ public class PostsController extends AbstractController {
         if (bbsPosts.getAnonymous() == false) {
             bbsPosts.setUserId(getUserId());
         }
+        bbsPosts.setReadCount(0);
         bbsPostsService.insert(bbsPosts);
         return R.ok().put("data", bbsPosts);
     }
@@ -426,4 +427,26 @@ public class PostsController extends AbstractController {
         List<BbsPostsFileEntity> bbsPostsFileList = bbsPostsFileService.selectList(wrapper);
         return R.ok().put("data", bbsPostsFileList);
     }
+
+    /**
+     * 增加用户阅读量
+     *
+     * @Author Mjp
+     * @Date 13:18 2019/6/19
+     * @Param [postsId]
+     * @Return
+     **/
+    @GetMapping("/addRead/{postsId}")
+    public R addRead(@PathVariable Integer postsId) {
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(postsId);
+        if (bbsPostsEntity.getReadCount() == null) {
+            bbsPostsEntity.setReadCount(1);
+        } else {
+            Integer count = bbsPostsEntity.getReadCount();
+            bbsPostsEntity.setReadCount(count + 1);
+        }
+        bbsPostsService.updateById(bbsPostsEntity);
+        return R.ok();
+    }
+
 }

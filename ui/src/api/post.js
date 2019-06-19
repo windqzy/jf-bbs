@@ -133,3 +133,14 @@ export function getPostsList(form) {
     method: 'GET'
   })
 }
+
+/**
+ * 阅读量增加
+ * @param id
+ */
+export function addRead(id) {
+  return request({
+    url: '/posts/addRead/' + id,
+    method: 'GET'
+  })
+}

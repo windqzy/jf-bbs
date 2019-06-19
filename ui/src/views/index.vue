@@ -23,7 +23,7 @@
           <ul class="brief-content">
             <li v-for="item in newPost.goodList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <router-link :to="'/post/detail?postId='+ item.id">{{item.title}}</router-link>
+              <a @click="toPostDetail(item.id)">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -38,7 +38,7 @@
           <ul class="brief-content">
             <li v-for="item in newPost.publishList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <router-link :to="'/post/detail?postId='+ item.id">{{item.title}}</router-link>
+              <a @click="toPostDetail(item.id)">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -53,7 +53,7 @@
           <ul class="brief-content">
             <li v-for="item in newPost.replyList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <router-link :to="'/post/detail?postId='+ item.id">{{item.title}}</router-link>
+              <a @click="toPostDetail(item.id)">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -118,6 +118,11 @@
 
     },
     methods: {
+      toPostDetail(postId){
+        posts.addRead(postId).then(res => {
+          this.$router.push('/post/detail?postId=' + postId);
+        });
+      },
       getAllLabel() {
         label.getList().then(res => {
           this.labelList = res.data;
@@ -132,7 +137,7 @@
         let params = {
           currPage: 1,
           limit: 10
-        }
+        };
         posts.getNewPosts(params).then(res => {
           this.newPost = res.data;
         })

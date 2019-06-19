@@ -52,7 +52,7 @@
               </div>
               <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                 <span>{{postsInfo.initTime | dateStr}}</span>
-                <span>阅读数 200</span>
+                <span>阅读数 {{postsInfo.readCount}}</span>
                 <!--<span style="padding-right: 10px; color: #FF7200">悬赏：{{postsInfo.rewardGrade}}钻石</span>-->
                 <!--<span v-if="postsInfo.id == postsInfo.userId && !postsInfo.end && !postsInfo.vote"-->
                 <!--class="layui-btn layui-btn-xs jie-admin"-->

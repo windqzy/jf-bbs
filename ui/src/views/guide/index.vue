@@ -15,8 +15,7 @@
           <ul class="fly-list">
             <li v-for="top in data">
               <h2>
-                <router-link :to="'/post/detail?postId=' + top.id"
-                             v-html="isSearch?top.content: top.title"></router-link>
+                <a @click="toPostDetail(top.id)">{{top.title}}</a>
               </h2>
               <div class="fly-list-info">
                 <span>{{top.initTime}}</span>
@@ -117,6 +116,11 @@
         }).catch(() => {
           this.data = [];
         })
+      },
+      toPostDetail(postId){
+        post.addRead(postId).then(res => {
+          this.$router.push('/post/detail?postId=' + postId);
+        });
       }
     }
   }

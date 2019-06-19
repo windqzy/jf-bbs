@@ -33,8 +33,8 @@
                 </a>
                 <h2>
                   <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
-                  <router-link :to="'/post/detail?postId=' + post.id">{{post.title}}
-                  </router-link>
+                  <a @click="toPostDetail(post.id)">{{post.title}}
+                  </a>
                 </h2>
                 <div class="fly-list-info">
                   <!--<router-link :to="'/user/index?userId='+ post.userId">-->
@@ -139,6 +139,12 @@
       this.getLabelList();
     },
     methods: {
+      // 先增加次数，然后跳转页面
+      toPostDetail(postId){
+        post.addRead(postId).then(res => {
+          this.$router.push('/post/detail?postId=' + postId);
+        });
+      },
       getTagByLabelId() {
         tag.getList(this.labelId).then(res => {
           this.tagList = res.data;

@@ -100,8 +100,18 @@ public class BbsPostsEntity implements Serializable {
 
     private Date updateTime;
 
+    private Integer readCount;
+
     @TableField(exist = false)
     private Boolean isAnonymous;
+
+    public Integer getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(Integer readCount) {
+        this.readCount = readCount;
+    }
 
     public String getTagName() {
         return tagName;

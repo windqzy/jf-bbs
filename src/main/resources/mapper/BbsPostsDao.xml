@@ -136,7 +136,7 @@
 
     <select id="getPostsList" parameterType="map" resultMap="bbsPostsMap">
         select bp.id, bp.title, bu.name as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id)
-        as reply_count
+        as reply_count, case when max(br.init_time) is not null then max(br.init_time) else bp.init_time end as order_by_time
         from bbs_posts bp
         left join bbs_user bu on bu.id = bp.user_id
         left join bbs_reply br on br.posts_id = bp.id
@@ -149,13 +149,13 @@
         </if>
         group by bp.title, bu.name, bu.icon, bp.init_time
         <if test="sortType == 0">
-            order by last_reply desc
+            order by order_by_time desc
         </if>
         <if test="sortType == 1">
-            order by reply_count desc
+            order by reply_count desc, order_by_time desc
         </if>
         <if test="sortType == 2">
-            order by last_reply desc
+            order by order_by_time desc
         </if>
         LIMIT #{startPage}, #{endPage}
     </select>

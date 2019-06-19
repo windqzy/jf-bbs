@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -8,48 +9,62 @@ import java.util.Date;
 
 @TableName("bbs_tag")
 public class BbsTagEntity implements Serializable {
-	//
+    //
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@TableId
-	private Integer id;
+    @TableId
+    private Integer id;
 
-	private Date initTime;
+    private Date initTime;
 
-	private Integer labelId;
+    private Integer labelId;
 
-	private String name;
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    /**
+     * 板块下的帖子数量
+     */
+    @TableField(exist = false)
+    private Integer postsCount;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getInitTime() {
-		return initTime;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setInitTime(Date initTime) {
-		this.initTime = initTime;
-	}
+    public Date getInitTime() {
+        return initTime;
+    }
 
-	public Integer getLabelId() {
-		return labelId;
-	}
+    public void setInitTime(Date initTime) {
+        this.initTime = initTime;
+    }
 
-	public void setLabelId(Integer labelId) {
-		this.labelId = labelId;
-	}
+    public Integer getLabelId() {
+        return labelId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setLabelId(Integer labelId) {
+        this.labelId = labelId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getPostsCount() {
+        return postsCount;
+    }
+
+    public void setPostsCount(Integer postsCount) {
+        this.postsCount = postsCount;
+    }
 }

@@ -16,6 +16,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 
@@ -73,21 +75,18 @@ public class WebSocketServer {
 
             BbsMessageUserService bbsMessageUserService = applicationContext.getBean(BbsMessageUserService.class);
 
-            /** 查询带读消息数量 */
             /** 查询出有几条未读消息 */
             EntityWrapper<BbsMessageUserEntity> wrapper = new EntityWrapper<>();
             wrapper.eq("USER_ID", sid);
             wrapper.eq("IS_READ", "0");
             int toReadCount = bbsMessageUserService.selectCount(wrapper);
 
-            /** 推送消息 */
-//            try {
-//                WebSocketServer.sendInfo(JSON.toJSONString(toReadCount, SerializerFeature.WriteMapNullValue), sid);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            Map<String, Object> params = new HashMap<>();
+            params.put("toReadCount", toReadCount);
+            params.put("onLineUserCount", getOnlineCount());
 
-            sendMessage(toReadCount+"");
+            sendMessage(JSON.toJSONString(params, SerializerFeature.WriteMapNullValue));
+
         } catch (IOException e) {
             log.error("websocket IO异常");
         }

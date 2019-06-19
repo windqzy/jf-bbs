@@ -43,27 +43,27 @@
         <el-card shadow="never" class="post" @on-click="getCollection()">
           <el-tabs stretch v-model="tabName" @tab-click="changeTab">
             <el-tab-pane label="帖子" name="0">
-              <el-row type="flex" justify="space-between">
+              <el-row type="flex" justify="space-between" class="post-sort">
                 <p>我的帖子</p>
-                <div>
-                  <span @click="changeOrder0">按时间排序</span>
+                <div class="fly-filter">
+                  <a @click="changeOrder('0')" :class="{'layui-this' : order == '0'}">按时间排序</a>
                   <el-divider direction="vertical" content-position="right"></el-divider>
-                  <span @click="changeOrder1">按回复数排序</span>
+                  <a @click="changeOrder('1')" :class="{'layui-this' : order == '1'}">按回复数排序</a>
                 </div>
               </el-row>
             </el-tab-pane>
             <!-- <el-tab-pane label="回复"></el-tab-pane>-->
-            <el-tab-pane label="收藏"  name="1">
-              <el-row type="flex" justify="space-between">
+            <el-tab-pane label="收藏" name="1">
+              <el-row type="flex" justify="space-between" class="post-sort">
                 <p>我的收藏</p>
-                <div>
-                  <span @click="changeOrder0">按时间排序</span>
+                <div class="post-sort fly-filter">
+                  <a @click="changeOrder('0')" :class="{'layui-this' : order == '0'}">按时间排序</a>
                   <el-divider direction="vertical" content-position="right"></el-divider>
-                  <span @click="changeOrder1">按回复数排序</span>
+                  <a @click="changeOrder('1')" :class="{'layui-this' : order == '1'}">按回复数排序</a>
                 </div>
               </el-row>
             </el-tab-pane>
-            <el-tab-pane label="草稿"  name="2">
+            <el-tab-pane label="草稿" name="2">
               <el-row type="flex" justify="space-between">
                 <p>我的草稿</p>
               </el-row>
@@ -91,6 +91,10 @@
               <span v-if="post.good" class="layui-badge layui-bg-red">精帖</span>
             </div>
           </el-card>
+          <div v-if="postList.length == 0" class="post-empty">
+            <svg-icon icon-class="empty"></svg-icon>
+            <p>暂无数据</p>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="6" :xs="24">
@@ -118,136 +122,139 @@
 
   import * as timeUtils from '@/utils/time'
 
-    export default {
-      name: "index",
-      data() {
-        return {
-          actionUrl: window.localStorage.baseUrl + '/upload/file',
-          userInfo: '',
-          postList: [],
-          userId: '',
-          avatarUrl: '',
-          loginUserId: '',
-          order: '0',
-          background: '',
-          tabName:'0'
-        }
+  export default {
+    name: "index",
+    data() {
+      return {
+        actionUrl: window.localStorage.baseUrl + '/upload/file',
+        userInfo: '',
+        postList: [],
+        userId: '',
+        avatarUrl: '',
+        loginUserId: '',
+        order: '0',
+        background: require('@/assets/img/cover-default.jpg'),
+        tabName: '0'
+      }
+    },
+    created() {
+      this.userInfo = this.$store.getters.user;
+      this.avatarUrl = this.userInfo.icon;
+      this.background = this.userInfo.background || this.background;
+      this.loginUserId = this.userInfo.id;
+      this.userId = this.$route.query.userId;
+      if (!this.userId) {
+        this.userId = this.userInfo.id;
+      } else {
+        this.getOther();
+      }
+      this.getGrade();
+      this.getList();
+    },
+    methods: {
+      handleAvatarSuccess(res) {
+        this.avatarUrl = res.data.src;
+        this.upDateUser();
       },
-      created() {
-        this.userInfo = this.$store.getters.user;
-        this.avatarUrl = this.userInfo.icon;
-        this.background = this.userInfo.background;
-        this.loginUserId = this.userInfo.id;
-        this.userId = this.$route.query.userId;
-        if (!this.userId) {
-          this.userId = this.userInfo.id;
-        } else {
-          this.getOther();
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isGIF = file.type === 'image/gif';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 0.2;
+
+        if (!isJPG && !isGIF && !isPNG) {
+          this.$message.error('上传头像图片只能是 JPG、PNG、GIF 格式!');
         }
-        this.getGrade();
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 200KB!');
+        }
+        return (isJPG || isGIF || isPNG) && isLt2M;
+      },
+      handleBackgroundSuccess(res) {
+        this.background = res.data.src;
+        console.log(this.background);
+        this.upDateUser();
+      },
+      beforeBackgroundUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      upDateUser() {
+        let UserForm = {
+          background: this.background,
+          icon: this.avatarUrl
+        };
+        user.upDateUser(UserForm).then(res => {
+          res.data.icon = this.avatarUrl;
+          res.data.background = this.background;
+          this.$router.push('/user/home');
+        })
+      },
+
+
+      //获取他人主页用户信息
+      getOther() {
+        user.getOther(this.userId).then(res => {
+          // console.log(res.data);
+          this.userInfo = res.data;
+        })
+      },
+      //获取积分
+      getGrade() {
+        let id = this.userId == undefined ? null : this.userId;
+        grade.getGrade(id).then(res => {
+          this.grade = res.data.grade;
+        })
+      },
+      // 获取用户帖子列表
+      getList() {
+        let id = this.userId == undefined ? null : this.userId;
+        let type = this.tabName;
+        let order = this.order;
+        post.getPersonList(id, type, order).then(res => {
+          this.postList = res.data;
+        })
+      },
+      // 改变所选帖子类型
+      changeTab() {
         this.getList();
       },
-      methods: {
-        handleAvatarSuccess(res) {
-          this.avatarUrl = res.data.src;
-          this.upDateUser();
-        },
-        beforeAvatarUpload(file) {
-          const isJPG = file.type === 'image/jpeg';
-          const isGIF = file.type === 'image/gif';
-          const isPNG = file.type === 'image/png';
-          const isLt2M = file.size / 1024 / 1024 < 0.2;
-
-          if (!isJPG && !isGIF && !isPNG) {
-            this.$message.error('上传头像图片只能是 JPG、PNG、GIF 格式!');
-          }
-          if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 200KB!');
-          }
-          return (isJPG || isGIF || isPNG) && isLt2M;
-        },
-        handleBackgroundSuccess(res){
-          this.background = res.data.src;
-          console.log(this.background);
-          this.upDateUser();
-        },
-        beforeBackgroundUpload(file){
-          const isJPG = file.type === 'image/jpeg';
-          const isLt2M = file.size / 1024 / 1024 < 2;
-
-          if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
-          }
-          if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
-          }
-          return isJPG && isLt2M;
-        },
-        upDateUser() {
-              let UserForm = {
-                background: this.background,
-                icon: this.avatarUrl
-              };
-              user.upDateUser(UserForm).then(res => {
-                res.data.icon = this.avatarUrl;
-                res.data.background = this.background;
-                this.$router.push('/user/home');
-              })
-        },
-
-
-        //获取他人主页用户信息
-        getOther() {
-          user.getOther(this.userId).then(res => {
-            // console.log(res.data);
-            this.userInfo = res.data;
-          })
-        },
-        //获取积分
-        getGrade() {
-          let id = this.userId == undefined ? null : this.userId;
-          grade.getGrade(id).then(res => {
-            // console.log(res.data);
-            this.grade = res.data.grade;
-          })
-        },
-        // 获取用户帖子列表
-        getList(){
-          let id = this.userId == undefined ? null : this.userId;
-          let type = this.tabName;
-          let order = this.order;
-          post.getPersonList(id, type, order).then( res =>{
-            this.postList = res.data;
-          })
-        },
-        // 改变所选帖子类型
-        changeTab(){
-            console.log(this.tabName);
-            this.getList();
-        },
-        // 改变排序
-        changeOrder0(){
-            this.order="0";
-            this.getList();
-        },
-        changeOrder1(){
-          this.order="1";
-          this.getList();
-        }
-      },
-      filters: {
-        dateStr(date) {
-          return timeUtils.dateDiff(date);
-        },
-        formatTime(dateStr) {
-          let date = new Date(dateStr);
-          return timeUtils.dateFormat('YYYY-MM-dd hh:mm', date);
-        }
+      // 改变排序
+      changeOrder(order) {
+        this.order = order;
+        this.getList();
+      }
+    },
+    filters: {
+      formatTime(dateStr) {
+        let date = new Date(dateStr);
+        return timeUtils.dateFormat('YYYY-MM-dd hh:mm', date);
       }
     }
+  }
 </script>
 
 <style scoped lang="scss">
+  .post-empty {
+    text-align: center;
+    color: #b2bac2;
+    padding: 48px 0;
+    .svg-icon {
+      font-size: 64px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
   .el-card {
     margin-bottom: 8px;
     /deep/ .el-card__header {
@@ -256,6 +263,14 @@
   }
 
   .post {
+    .post-sort {
+      p {
+        font-weight: 600;
+      }
+      a {
+        cursor: pointer;
+      }
+    }
     /deep/ .el-card__body {
       padding: 8px 20px;
     }

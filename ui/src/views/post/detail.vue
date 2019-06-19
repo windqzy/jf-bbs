@@ -75,18 +75,21 @@
             <div class="title">附件下载</div>
           </el-divider>
           <el-row :gutter="10">
-            <el-col :lg="8" :xs="24" v-for="item in fileList" :key="item.id">
-              <el-card shadow="hover">
-                <el-row>
-                  <el-col :span="6">
-                    <div class="file-type">{{item.type}}</div>
-                  </el-col>
-                  <el-col :span="18">
-                    <div>{{item.name}}</div>
-                    <div>{{item.size | formatSize}}</div>
-                  </el-col>
-                </el-row>
-              </el-card>
+            <el-col :lg="8" :xs="24" v-for="item in fileList" :key="item.id" >
+              <div @click="download(item)">
+                <el-card shadow="hover">
+                  <el-row>
+                    <el-col :span="6">
+                      <div class="file-type">{{item.type}}</div>
+                    </el-col>
+                    <el-col :span="18">
+                      <div>{{item.name}}</div>
+                      <div>{{item.size | formatSize}}</div>
+                    </el-col>
+                  </el-row>
+                </el-card>
+              </div>
+
             </el-col>
           </el-row>
         </el-card>
@@ -130,7 +133,7 @@
               </el-row>
             </div>
             <div class="comment-list">
-              <div class="comment-item" v-for="reply in replyList">
+              <div class="comment-item" v-for="reply in replyList" :key="reply.id">
                 <img :src="reply.replyUser.icon" alt="">
                 <div class="comment-content">
                   <div class="author">
@@ -183,7 +186,7 @@
                     </el-row>
                   </el-card>
                   <div class="sub-comment-list">
-                    <div v-for="item in reply.replayVoList" style="display: flex">
+                    <div v-for="item in reply.replayVoList" :key="item.id" style="display: flex">
                       <img :src="item.replyUser.icon" alt="">
                       <div class="item">
                         <div class="author">
@@ -367,6 +370,14 @@
         post.getFileList(this.postId).then(res => {
           this.fileList = res.data;
         })
+      },
+      /* 下载附件 */
+      download(item) {
+        console.log(item);
+        let a = document.createElement('a');
+        a.setAttribute('download',item.name);
+        a.setAttribute('href',item.url);
+        a.click();
       },
       /* 评论点赞 */
       upCount() {

@@ -16,7 +16,8 @@ const user = {
     isAdmin: '',
     enable: '',
     unionId: '',
-    background: ''
+    background: '',
+    onLineUserCount:0 , // 在线人数
   },
   actions: {
     addUserInfo({commit}) {
@@ -46,6 +47,9 @@ const user = {
       state.enable = data.enable;
       state.unionId = data.unionId;
       state.background = data.background;
+    },
+    ONLINEUSERCOUNT:(state,data) => {
+      state.onLineUserCount = data;
     }
   }
 }

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <v-header @change="changeLabel"></v-header>
-    <router-view></router-view>
-    <v-footer></v-footer>
+    <v-header @change="changeLabel" @onLineUserCount="onLineUserCount = $event"></v-header>
+    <template class="layui-container">
+      <router-view></router-view>
+    </template>
+    <v-footer :onLineUserCount="onLineUserCount"></v-footer>
   </div>
 </template>
 
@@ -18,10 +20,10 @@
     },
     data() {
       return {
-
+        onLineUserCount: 0, // 在线人数
       }
     },
-    methods:{
+    methods: {
       changeLabel() {
 
       }
@@ -30,5 +32,7 @@
 </script>
 
 <style scoped>
-
+  .layui-container {
+    padding-top: 60px;
+  }
 </style>

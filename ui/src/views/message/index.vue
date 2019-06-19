@@ -23,7 +23,7 @@
         <button class="follow-btn">关注</button>
       </div>
     </el-card>-->
-    <el-card v-for="msg in msgList" shadow="never" v-else>
+    <el-card v-for="(msg,index) in msgList" :key="index" shadow="never" v-else>
       <div class="msg-img">
         <img :src="msg.sponsor.icon" alt="">
         <div>
@@ -66,6 +66,11 @@
       /* 切换标签页 */
       changeTab(e) {
         console.log(e.name);
+        if(e.name == '0') {
+          this.getMsgList();
+        } else {
+          this.msgList = [];
+        }
       },
       getMsgList() {
         reply.msgList().then(res => {

@@ -3,7 +3,9 @@
     <p>
       <a href="javascript:;" target="_blank">神丁社区</a>
       2019 &copy; <a href="javascript:;" target="_blank">阿拉丁工作室出品</a>
+      <a class="onLineUserCount">当前在线人数：<span>{{onLineUserCount}}</span></a>
     </p>
+
     <!--<p>-->
     <!--<a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>-->
     <!--<a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>-->
@@ -15,12 +17,16 @@
 <script>
   export default {
     name: "Footer",
+    props:{
+      onLineUserCount: Number
+    },
     data() {
       return {
         layUtil: null
       }
     },
     mounted() {
+      // this.onLineUserCount = this.$store.state.user.onLineUserCount;
       // let _this = this;
       // layui.use(['layer', 'util', 'element'], function () {
       //   _this.layUtil = layui.util;
@@ -40,6 +46,11 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.onLineUserCount {
+  color: #666;
+  span {
+    color: #f00;
+  }
+}
 </style>

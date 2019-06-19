@@ -116,9 +116,9 @@ export function getUpdateCount() {
 }
 
 // 查询首页最新文章列表
-export function getNewPosts() {
+export function getNewPosts(data) {
   return request({
-    url: '/posts/getNewPosts',
+    url: `/posts/getNewPosts?currPage=${data.currPage}&limit=${data.limit}`,
     method: 'GET'
   })
 }

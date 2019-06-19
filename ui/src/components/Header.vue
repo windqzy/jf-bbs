@@ -25,50 +25,33 @@
       <!-- PC端 -->
       <el-row type="flex" align="middle" justify="space-between" :gutter="10" class="hidden-sm-and-down">
         <el-col :span="4">
-          <router-link to="/" class="logo">神丁社区</router-link>
+          <router-link to="/" class="logo">
+            <img src="../assets/img/logo-green.png"/>
+            金风社区
+          </router-link>
         </el-col>
         <el-col :span="10">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">首页</el-menu-item>
             <!--<el-menu-item index="2">资讯</el-menu-item>-->
-            <el-menu-item index="3">FAQ</el-menu-item>
+            <!--<el-menu-item index="3">FAQ</el-menu-item>-->
             <!--<el-menu-item index="4">需求墙</el-menu-item>-->
           </el-menu>
         </el-col>
-        <el-col :span="4">
-          <el-input size="small" placeholder="请输入关键词搜索" class="">
-            <i class="el-icon-search el-input__icon" slot="suffix"></i>
+        <el-col :span="10" class="tr right">
+          <el-input size="small" placeholder="请输入关键词搜索" v-model="searchText">
+            <i class="el-icon-search el-input__icon" slot="suffix" @click.stop="search"></i>
           </el-input>
-        </el-col>
-        <el-col :span="2">
           <el-button type="primary" size="small" @click="newPosts">写文章</el-button>
-        </el-col>
-        <el-col :span="1">
-          <!-- 消息 -->
-          <!-- <el-popover
-           placement="top"
-           width="215">
-           <div style="text-align: right; margin: 0">
-           <el-tabs>
-           <el-tab-pane label="通知" name="first">通知</el-tab-pane>
-           <el-tab-pane label="关注" name="second">关注</el-tab-pane>
-           <el-tab-pane label="系统" name="third">系统</el-tab-pane>
-           </el-tabs>
-           </div>
-           <el-button icon="el-icon-message-solid message" type="text" slot="reference"></el-button>
-           </el-popover>-->
-
           <el-badge :value="count" :hidden="count == 0" class="item">
             <i class="el-icon-message-solid message" :class="{'active': $route.fullPath == '/msg/index'}"
                @click="toMessage"></i>
           </el-badge>
-        </el-col>
-        <el-col :span="2">
-          <el-dropdown @command="handleCommand">
-            <router-link to="/user/home" class="el-dropdown-link">
+          <el-dropdown @command="handleCommand" trigger="click">
+            <a class="el-dropdown-link">
               <img :src="$store.state.user.icon" alt="">
-              {{$store.state.user.username}}
-            </router-link>
+              <!--{{$store.state.user.username}}-->
+            </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a">个人中心</el-dropdown-item>
               <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
@@ -76,6 +59,28 @@
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
+        <!--<el-col :span="2">
+          <el-button type="primary" size="small" @click="newPosts">写文章</el-button>
+        </el-col>-->
+        <!--        <el-col :span="1">
+                  <el-badge :value="count" :hidden="count == 0" class="item">
+                    <i class="el-icon-message-solid message" :class="{'active': $route.fullPath == '/msg/index'}"
+                       @click="toMessage"></i>
+                  </el-badge>
+                </el-col>
+                <el-col :span="1" class="tr">
+                  <el-dropdown @command="handleCommand" trigger="click">
+                    <a class="el-dropdown-link">
+                      <img :src="$store.state.user.icon" alt="">
+                      &lt;!&ndash;{{$store.state.user.username}}&ndash;&gt;
+                    </a>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item command="a">个人中心</el-dropdown-item>
+                      &lt;!&ndash;<el-dropdown-item command="b">切换账号</el-dropdown-item>&ndash;&gt;
+                      <el-dropdown-item command="c">注销</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>-->
       </el-row>
     </div>
   </el-header>
@@ -106,7 +111,10 @@
       };
       this.socket.onmessage = e => {
         console.log(e, 'onmessage');
-        this.count = +e.data;
+        let data = JSON.parse(e.data);
+        this.count = +data.toReadCount;
+        this.$store.commit('ONLINEUSERCOUNT', data.onLineUserCount);
+        this.$emit('onLineUserCount',data.onLineUserCount)
         //发现消息进入    开始处理前端触发逻辑
       };
     },
@@ -129,17 +137,20 @@
         }
       },
       handleCommand(command) {
-        this.$message('click on item ' + command);
-        if (command == 'c') {
+        // this.$message('click on item ' + command);
+        if (command == 'a') {
+          this.$router.push('/user/home');
+        } else if (command == 'c') {
           this.$router.push('/login');
           window.localStorage['B-Token'] = '';
         }
       },
       newPosts() {
-        this.$router.push('/post/new')
+        this.$router.push('/post/new');
       },
+      /* 搜索文章 */
       search() {
-        alert('111111111111');
+        this.$router.push('/guide/index?type=0&search=' + this.searchText);
       },
       /* 跳转信息 */
       toMessage() {
@@ -151,7 +162,16 @@
 </script>
 
 <style scoped lang="scss">
+  .tr {
+    text-align: right
+  }
+
   .el-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
     padding: 0;
     margin-bottom: 10px;
     background-color: #fff;
@@ -179,6 +199,21 @@
     .el-icon-arrow-down {
       font-size: 12px;
     }
+    .right {
+      .el-input {
+        width: 180px;
+        /deep/ .el-input__inner {
+          border-radius: 0;
+        }
+      }
+      .el-button {
+        margin: 0 16px;
+      }
+      .el-badge {
+        margin-right: 16px;
+      }
+    }
+
   }
 
   #header {
@@ -189,6 +224,10 @@
       margin-left: 10px;
       font-size: 22px;
       color: #009688;
+      display: flex;
+      img {
+        margin-right: 5px;
+      }
     }
 
     /deep/ .el-button .el-button--text .el-popover__reference {
@@ -223,7 +262,7 @@
         position: absolute;
         top: 50px;
         left: 0;
-        z-index: 1;
+        z-index: 9;
         width: 100%;
         /deep/ input {
           border-radius: 0;

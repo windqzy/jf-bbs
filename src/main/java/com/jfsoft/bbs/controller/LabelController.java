@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsLabelEntity;
 import com.jfsoft.bbs.service.BbsLabelService;
+import com.jfsoft.bbs.service.BbsPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,9 @@ public class LabelController extends AbstractController {
     @Autowired
     private BbsLabelService bbsLabelService;
 
+    @Autowired
+    private BbsPostsService bbsPostsService;
+
     /**
      * 列表
      */
@@ -40,6 +44,10 @@ public class LabelController extends AbstractController {
             EntityWrapper<BbsLabelEntity> labelWrapper2 = new EntityWrapper<>();
             labelWrapper2.eq("parent_id", e.getId());
             List<BbsLabelEntity> childrenList = bbsLabelService.selectList(labelWrapper2);
+            for (int i = 0; i < childrenList.size(); i++) {
+                BbsLabelEntity bbsLabelEntity = childrenList.get(i);
+                bbsLabelEntity.setPostsCount(bbsPostsService.getPostCount(bbsLabelEntity.getId()));
+            }
             e.setChildren(childrenList);
         });
         return R.ok().put("data", parentList);

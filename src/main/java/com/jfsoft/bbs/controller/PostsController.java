@@ -351,9 +351,13 @@ public class PostsController extends AbstractController {
         // 最新精华
         EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("good", true);
+        wrapper.eq("is_del", false);
+        wrapper.eq("is_temp", false);
         PageUtils goodList = bbsPostsService.queryPage(page, wrapper);
         // 最新发布
         EntityWrapper<BbsPostsEntity> wrapper2 = new EntityWrapper<>();
+        wrapper2.eq("is_del", false);
+        wrapper2.eq("is_temp", false);
         wrapper2.orderBy("init_time desc");
         PageUtils publishList = bbsPostsService.queryPage(page, wrapper2);
         // 最新回复

@@ -70,7 +70,7 @@
             </el-tab-pane>
           </el-tabs>
           <el-card v-for="post in postList" :key="post.id" shadow="never" class="fly-list">
-            <a class="fly-avatar">
+            <a class="fly-avatar hidden-sm-and-down">
               <el-image :src="userInfo.icon" alt=""></el-image>
             </a>
             <h2>
@@ -84,8 +84,10 @@
               <span> {{post.initTime | dateStr}}</span>
               <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
               <span class="fly-list-nums">
-                    <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
-                  </span>
+                <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
+                <span v-if="tabName != '1'">编辑</span>
+                <span @click="deletePost(post)" v-if="tabName != '1'">删除</span>
+              </span>
             </div>
             <div class="fly-list-badge">
               <span v-if="post.good" class="layui-badge layui-bg-red">精帖</span>
@@ -231,6 +233,28 @@
       changeOrder(order) {
         this.order = order;
         this.getList();
+      },
+      /**
+       * 删除帖子
+       * @param id 帖子ID
+       */
+      deletePost(item) {
+        this.$confirm(`即将删除标题为【${item.title}】的帖子，是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          post.del(item.id).then(res => {
+            this.getList();
+            this.$message({
+              type: 'success',
+              message: res.msg
+            });
+          })
+
+        }).catch(() => {
+
+        });
       }
     },
     filters: {
@@ -433,7 +457,14 @@
       }
     }
   }
-
+.fly-list-nums {
+  display: flex;
+  align-items: baseline;
+  span {
+    cursor: pointer;
+    margin-left: 6px;
+  }
+}
   /* 手机端兼容 */
   @media only screen and (max-width: 767px) {
     .info-user {
@@ -456,6 +487,9 @@
     }
     .post-content {
       padding: 0 8px;
+      .fly-list {
+        padding-left: 15px;
+      }
     }
   }
 </style>

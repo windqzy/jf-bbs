@@ -1,22 +1,22 @@
 <template>
   <div class="layui-container">
     <el-card shadow="never">
-      <el-radio-group v-model="editType" size="small" @change="switchType">
-        <el-radio-button label="0">富文本</el-radio-button>
-        <!--<el-radio-button label="1">Markdown</el-radio-button>-->
-      </el-radio-group>
+      <!--<el-radio-group v-model="editType" size="small" @change="switchType">
+        &lt;!&ndash;<el-radio-button label="0">富文本</el-radio-button>&ndash;&gt;
+        &lt;!&ndash;<el-radio-button label="1">Markdown</el-radio-button>&ndash;&gt;
+      </el-radio-group>-->
       <el-tabs>
         <el-tab-pane label="发表新帖">
-          <el-row :gutter="8">
-            <el-col :span="12">
+          <el-row :gutter="8" class="post-row">
+            <el-col :span="12" :xs="24">
               <el-input size="small" v-model="post.title" placeholder="请输入文章标题"></el-input>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" :xs="24">
               <el-select v-model="post.labelId" placeholder="请选择板块" size="small" @change="getTagByLabelId">
                 <el-option v-for="item in labelList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" :xs="24">
               <el-select v-model="post.tagId" placeholder="请选择子版块" size="small">
                 <el-option v-for="item in tagList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
@@ -45,8 +45,8 @@
                 :file-list="fileList">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <!--<div slot="tip" class="el-upload__tip">-->
-                  <!--<el-checkbox v-model="post.replyDownload">回复可下载</el-checkbox>-->
-                  <!--只能上传zip文件，且不超过2GB-->
+                <!--<el-checkbox v-model="post.replyDownload">回复可下载</el-checkbox>-->
+                <!--只能上传zip文件，且不超过2GB-->
                 <!--</div>-->
               </el-upload>
             </el-tab-pane>
@@ -73,7 +73,7 @@
   import * as label from '@/api/label';
   import * as tag from '@/api/tag';
   import * as posts from '@/api/post';
-  import { isPC } from '@/utils/common';
+  import {isPC} from '@/utils/common';
 
   export default {
     name: "new",
@@ -209,7 +209,8 @@
               this.$message.success('发布成功');
               this.$router.push('/home/index')
             })
-          };
+          }
+          ;
         });
       }
     }
@@ -240,10 +241,14 @@
     }
   }
 
+  .post-row {
+    .el-col {
+      margin-bottom: 10px;
+    }
+  }
+
   .editor {
     text-align: left;
-    margin-top: 10px;
-
     /deep/ .w-e-toolbar {
       background-color: #fff !important;
       border: 1px solid #DCDFE6 !important;

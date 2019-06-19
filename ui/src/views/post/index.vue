@@ -8,7 +8,8 @@
             <span :class="{'active': activeTag == -1}" @click="selectTag(-1, '')">全部<em> (25)</em></span>
             <span v-for="(item, index) in tagList">
               <el-divider direction="vertical"></el-divider>
-              <span :class="{'active': activeTag == index}" @click="selectTag(index, item.id)">{{item.name}}<em> (25)</em></span>
+              <span :class="{'active': activeTag == index}"
+                    @click="selectTag(index, item.id)">{{item.name}}<em> (25)</em></span>
             </span>
           </div>
         </el-card>
@@ -23,7 +24,11 @@
             </div>
           </div>
           <div class="post-list">
-            <ul class="fly-list">
+            <div v-if="postsList.length == 0" class="post-empty">
+              <svg-icon icon-class="empty"></svg-icon>
+              <p>暂无数据</p>
+            </div>
+            <ul class="fly-list" v-else>
               <li v-for="post in postsList">
                 <!--<router-link :to="'/user/index?userId='+ post.userId" class="fly-avatar">-->
                 <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
@@ -50,7 +55,7 @@
                   <span> {{post.initTime | dateStr}}</span>
                   <!--<span> {{post.initTime | dateStr}} 发表  最后回复 {{post.lastReply | dateStr}}</span>-->
                   <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏钻石" v-show="post.rewardGrade != 0">-->
-                    <!--<i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>-->
+                  <!--<i class="layui-icon layui-icon-diamond"></i> {{post.rewardGrade}}</span>-->
                   <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
                   <span class="fly-list-nums">
                     <!--<i class="iconfont" title="人气">&#xe60b;</i> 99999-->
@@ -62,14 +67,21 @@
                 </div>
               </li>
             </ul>
+
+            <div style="text-align: center;cursor: pointer" v-if="postsList.length != 0 && isMore">
+              <div class="laypage-main">
+                <a @click="getMorePost" class="laypage-next">更多求解</a>
+              </div>
+            </div>
+            <el-divider v-if="!isMore">我是有底线的</el-divider>
           </div>
         </el-card>
       </el-col>
       <el-col :lg="8" :sm="24">
-        <el-card shadow="never">
+        <!--<el-card shadow="never">
           <el-button type="primary" icon="el-icon-edit">发布新主题</el-button>
-        </el-card>
-        <el-card shadow="never" class="mt8">
+        </el-card>-->
+        <el-card shadow="never">
           <el-button type="warning" class="sign" :disabled="isSign" @click="sign">
             <div><i class="el-icon-edit"></i>打卡</div>
             <div>
@@ -87,9 +99,9 @@
           </div>
         </el-card>
         <!--<el-card shadow="never" class="mt8">-->
-          <!--<div slot="header">-->
-            <!--此处应为该板块公告或者广告-->
-          <!--</div>-->
+        <!--<div slot="header">-->
+        <!--此处应为该板块公告或者广告-->
+        <!--</div>-->
         <!--</el-card>-->
       </el-col>
     </el-row>
@@ -125,6 +137,7 @@
         postsList: [],
         defaultAvatar: require('../../../static/images/avatar/4.jpg'),
         isSign: false,
+        isMore: true, // 是否有更多帖子
         signCount: 0,
         signTop: 0
       }
@@ -164,13 +177,24 @@
           this.postsList = res.data;
         })
       },
+      /* 查看更多帖子 */
+      getMorePost() {
+        this.postsForm.pageIndex++;
+        post.getPostsList(this.postsForm).then(res => {
+          if (res.data.length == 0) {
+            this.isMore = false;
+          } else {
+            this.postsList = this.postsList.concat(res.data);
+          }
+        })
+      },
       getIsSignFlag() {
         sign.isSign().then(res => {
           this.isSign = res.data.isSign;
         })
       },
       sign() {
-          sign.save().then(res => {
+        sign.save().then(res => {
           this.$message.success(res.msg);
           this.getIsSignFlag();
           this.getSignCount();
@@ -183,7 +207,7 @@
         })
       },
       getSignRank() {
-        const type= 2;
+        const type = 2;
         sign.list(type).then(res => {
           res.data.forEach((e, index) => {
             if (e.userId == this.$store.getters.user.id) {
@@ -287,6 +311,17 @@
 
     .post-type {
       text-align: left;
+    }
+    .post-empty {
+      text-align: center;
+      color: #b2bac2;
+      padding: 48px 0;
+      .svg-icon {
+        font-size: 64px;
+      }
+      p {
+        font-size: 14px;
+      }
     }
   }
 </style>

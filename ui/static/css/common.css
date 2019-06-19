@@ -1,0 +1,8 @@
+.tc {text-align: center}
+.tr {text-align: right}
+
+@media screen and (max-width: 750px) {
+  .el-message-box {
+    width: 350px!important;
+  }
+}

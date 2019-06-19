@@ -18,4 +18,6 @@ import java.util.Map;
 public interface BbsLabelDao extends BaseMapper<BbsLabelEntity> {
 
     List<BbsLabelEntity> getLabelByUserId(Map<String, Object> params);
+
+    List<BbsLabelEntity> getLabelById(Map<String, Object> params);
 }

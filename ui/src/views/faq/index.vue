@@ -1,14 +1,7 @@
 <template>
     <div class="layui-container">
       <el-row :gutter="10">
-        <el-col :span="6">
-          <el-card shadow="never">
-            <div slot="header">
-              <span style="font-size: 18px">热门问题</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="18">
+        <el-col :lg="18" :xs="24">
           <el-card shadow="never">
             <div slot="header">
               <el-input placeholder="请输入产品或问题" autofocus>
@@ -21,6 +14,13 @@
                   <a href="">选中一个单元格输入，输入括号（）以后，光标会飘到前面一个单元格，怎么办？</a>
                 </dd>
               </dl>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :lg="6" :xs="24">
+          <el-card shadow="never">
+            <div slot="header">
+              <span style="font-size: 18px">热门问题</span>
             </div>
           </el-card>
         </el-col>

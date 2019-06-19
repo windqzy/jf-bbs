@@ -1,20 +1,21 @@
 <template>
     <div class="layui-container">
       <el-row :gutter="8">
-        <el-col :span="18">
+        <el-col :lg="18" :xs="24">
           <el-card shadow="never">
             <div slot="header" class="fly-filter">
-              <a class="layui-this">最新热门</a>
+              <a :class="{'layui-this': type == -1}" @click="changeSort(-1)">全部</a>
               <el-divider direction="vertical"></el-divider>
-              <a>最新精华</a>
+              <a :class="{'layui-this': type == 0}" @click="changeSort(1)">精华推荐</a>
               <el-divider direction="vertical"></el-divider>
-              <a>最新回复</a>
+              <a :class="{'layui-this': type == 2}" @click="changeSort(2)">最新发布</a>
               <el-divider direction="vertical"></el-divider>
-              <a>最新发表</a>
+              <a :class="{'layui-this': type == 3}" @click="changeSort(3)">最新回复</a>
             </div>
           </el-card>
+
         </el-col>
-        <el-col :span="6">
+        <el-col :lg="6" :xs="24">
           <el-card shadow="never">
 
           </el-card>
@@ -35,7 +36,9 @@
         this.type = this.$route.query.type;
       },
       methods: {
+        changeSort(type) {
 
+        }
       }
     }
 </script>

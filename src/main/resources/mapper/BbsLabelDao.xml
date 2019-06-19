@@ -23,4 +23,8 @@
         ORDER BY id;
     </select>
 
+    <select id="getLabelById" parameterType="map" resultMap="bbsLabelMap">
+        select count(id) as postsCount, id, details, name, postManage from bbs_posts
+        where tag_id in (select id from bbs_tag where label_id = 22)
+    </select>
 </mapper>

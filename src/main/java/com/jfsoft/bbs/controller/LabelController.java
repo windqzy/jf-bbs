@@ -94,8 +94,6 @@ public class LabelController extends AbstractController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Integer[] ids) {
         bbsLabelService.deleteBatchIds(Arrays.asList(ids));
-
         return R.ok();
     }
-
 }

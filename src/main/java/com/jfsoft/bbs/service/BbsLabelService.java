@@ -19,5 +19,7 @@ public interface BbsLabelService extends IService<BbsLabelEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<BbsLabelEntity> getLabelByUserId(Map<String, Object> params);
+
+    List<BbsLabelEntity> getLabelById(Map<String, Object> params);
 }
 

@@ -36,4 +36,10 @@ public class BbsLabelServiceImpl extends ServiceImpl<BbsLabelDao, BbsLabelEntity
         return bbsLabelDao.getLabelByUserId(params);
     }
 
+    @Override
+    public List<BbsLabelEntity> getLabelById(Map<String, Object> params) {
+
+        return bbsLabelDao.getLabelById(params);
+    }
+
 }

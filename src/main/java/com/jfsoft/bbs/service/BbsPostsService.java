@@ -35,5 +35,7 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
     int getTodayCount();
 
     int getYesterdayCount();
+
+    Integer getPostCount(Integer id);
 }
 

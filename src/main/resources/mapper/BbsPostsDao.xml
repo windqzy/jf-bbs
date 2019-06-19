@@ -31,12 +31,15 @@
     </resultMap>
 
     <select id="getList" parameterType="map" resultMap="bbsPostsMap">
-        SELECT DISTINCT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as init_time,
+        SELECT DISTINCT bp.id as id, bp.good as good, bp.user_id as user_id, bp.content as content, bp.init_time as
+        init_time,
         bp.label_id as label_id, bl.name as label_name, bp.reply_count as reply_count, bp.title as title, bp.top as top,
-        bp.end as end, bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon, bp.tag_id as tag_id, bt.name as tag_name
-        , IFNULL((select init_time from bbs_reply where posts_id=bp.id order by init_time desc limit 1), bp.init_time) as replytime
+        bp.end as end, bp.reward_grade as reward_grade, bu.username as author, bu.icon as icon, bp.tag_id as tag_id,
+        bt.name as tag_name
+        , IFNULL((select init_time from bbs_reply where posts_id=bp.id order by init_time desc limit 1), bp.init_time)
+        as replytime
         FROM bbs_posts bp
-         LEFT JOIN bbs_user bu ON bp.user_id = bu.id
+        LEFT JOIN bbs_user bu ON bp.user_id = bu.id
         LEFT JOIN bbs_label bl ON bl.id = bp.label_id
         LEFT JOIN bbs_reply br ON bp.id = br.posts_id
         LEFT JOIN bbs_tag bt ON bt.id = bp.tag_id
@@ -130,13 +133,14 @@
     </select>
 
     <select id="getPostsList" parameterType="map" resultMap="bbsPostsMap">
-        select bp.id, bp.title, bu.name as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id) as reply_count
+        select bp.id, bp.title, bu.name as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id)
+        as reply_count
         from bbs_posts bp
-               left join bbs_user bu on bu.id = bp.user_id
-               left join bbs_reply br on br.posts_id = bp.id
+        left join bbs_user bu on bu.id = bp.user_id
+        left join bbs_reply br on br.posts_id = bp.id
         where bp.is_del = false and bp.is_temp = false
         <if test="tagId != null and tagId != ''">
-           and bp.tag_id = #{tagId}
+            and bp.tag_id = #{tagId}
         </if>
         <if test="sortType == 2">
             and bp.good = true
@@ -152,5 +156,9 @@
             order by last_reply desc
         </if>
         LIMIT #{startPage}, #{endPage}
+    </select>
+
+    <select id="getPostCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(-1) from bbs_posts where label_id=#{id} and is_del=false and is_temp=false
     </select>
 </mapper>

@@ -109,4 +109,9 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
     public int getYesterdayCount() {
         return bbsPostsDao.getTodayCount();
     }
+
+    @Override
+    public Integer getPostCount(Integer id) {
+        return bbsPostsDao.getPostCount(id);
+    }
 }

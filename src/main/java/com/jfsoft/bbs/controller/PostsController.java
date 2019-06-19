@@ -288,11 +288,11 @@ public class PostsController extends AbstractController {
      * @return
      */
     @RequestMapping("/getNewPosts")
-    public R getTopPosts() {
+    public R getTopPosts(String currPage, String limit) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> page = new HashMap<>();
-        page.put("currPage", "0");
-        page.put("limit", "10");
+        page.put("currPage", currPage == null ? "0" : currPage);
+        page.put("limit", limit == null ? "10" : limit);
         // 最新精华
         EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("good", true);

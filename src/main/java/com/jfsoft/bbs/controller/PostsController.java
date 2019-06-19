@@ -111,16 +111,15 @@ public class PostsController extends AbstractController {
         } else if (type.equals("1")) {
             EntityWrapper<BbsCollectionEntity> wrapper = new EntityWrapper<>();
             wrapper.eq("user_id", userId);
-            wrapper.eq("status", true);
             List<BbsCollectionEntity> list = bbsCollectionService.selectList(wrapper);
 
             List<BbsPostsEntity> posts = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 Integer pid = list.get(i).getPostId();
                 EntityWrapper<BbsPostsEntity> postWrapper = new EntityWrapper<>();
-                wrapper.eq("id", pid);
-                wrapper.eq("is_temp", false);
-                wrapper.eq("is_del", false);
+                postWrapper.eq("id", pid);
+                postWrapper.eq("is_temp", false);
+                postWrapper.eq("is_del", false);
                 BbsPostsEntity postsEntity = bbsPostsService.selectOne(postWrapper);
                 Integer id = postsEntity.getId();
                 postsEntity.setReplyCount(bbsReplyService.replyCount(id));

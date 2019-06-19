@@ -323,7 +323,8 @@
         fileList: [],
         replyList: [],// 评论列表
         replyId: '',
-        msg:'',
+        msg: '',
+        coll: '',
         face: require('@/assets/face.json')
       }
     },
@@ -332,6 +333,7 @@
       this.getDetailById();
       this.userInfo = this.$store.getters.user;
       this.getFileList();
+      this.isColl();
       this.getReplyList();
     },
     methods: {
@@ -356,6 +358,22 @@
             message: this.msg,
             type: 'success'
           });
+        })
+      },
+      //判断是否是收藏状态
+      isColl(){
+        let id = this.postId;
+        collection.isColl(id).then(res=>{
+          this.coll = res.isColl;
+          let div1 = document.getElementById("collection");
+          let div2 = document.getElementById("noCollection");
+            if(this.coll == "true"){
+              div1.style.display="none";
+              div2.style.display="";
+            }else {
+              div1.style.display="";
+              div2.style.display="none";
+            }
         })
       },
       getReplyList() {

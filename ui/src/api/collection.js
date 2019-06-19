@@ -7,3 +7,11 @@ export function addCollection(postId) {
     method: 'GET'
   })
 }
+
+// 判断是否收藏
+export function isColl(postId) {
+  return request({
+    url: '/collection/isColl/' + postId,
+    method: 'GET'
+  })
+}

@@ -62,6 +62,12 @@
               </div>
               <div class="star">
                 <!--<el-button size="small" type="success">关注</el-button>-->
+                <div id="collection">
+                  <el-button size="small" type="success" @click="changeCollection">收藏</el-button>
+                </div>
+                <div id="noCollection" style="display: none">
+                  <el-button size="small" type="success" plain @click="changeCollection">取消收藏</el-button>
+                </div>
               </div>
             </div>
             <div class="detail-body photos" v-html="postsInfo.content" v-loading="loadDetail">
@@ -298,6 +304,7 @@
   import * as timeUtils from '@/utils/time';
   import * as face from '@/assets/face.json';
   import editDiv from '@/components/EditDiv';
+  import * as collection from '@/api/collection';
 
   export default {
     name: "detail",
@@ -316,6 +323,7 @@
         fileList: [],
         replyList: [],// 评论列表
         replyId: '',
+        msg:'',
         face: require('@/assets/face.json')
       }
     },
@@ -327,6 +335,29 @@
       this.getReplyList();
     },
     methods: {
+      changeCollection(){
+        let div1 = document.getElementById("collection");
+        let div2 = document.getElementById("noCollection");
+        if (div1.style.display == "none"){
+          div1.style.display="";
+          div2.style.display="none";
+          this.addCollection();
+        }else {
+          div1.style.display="none";
+          div2.style.display="";
+          this.addCollection();
+        }
+      },
+      addCollection(){
+        let id = this.postId;
+        collection.addCollection(id).then(res=>{
+          this.msg=res.data;
+          this.$message({
+            message: this.msg,
+            type: 'success'
+          });
+        })
+      },
       getReplyList() {
         reply.getReplyList(this.postId).then(res => {
           this.replyList = res.data;

@@ -71,7 +71,7 @@
           </el-tabs>
           <el-card v-for="post in postList" :key="post.id" shadow="never" class="fly-list">
             <a class="fly-avatar hidden-sm-and-down">
-              <el-image :src="userInfo.icon" alt=""></el-image>
+              <el-image :src="post.icon" alt=""></el-image>
             </a>
             <h2>
               <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
@@ -79,7 +79,7 @@
             </h2>
             <div class="fly-list-info">
               <a>
-                <cite>{{userInfo.username}}</cite>
+                <cite>{{post.author}}</cite>
               </a>
               <span> {{post.initTime | dateStr}}</span>
               <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>

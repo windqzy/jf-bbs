@@ -34,6 +34,9 @@ public class PostsController extends AbstractController {
     private BbsLogService bbsLogService;
 
     @Autowired
+    private BbsUserService bbsUserService;
+
+    @Autowired
     private EsSearchService esSearchService;
 
     @Autowired
@@ -93,6 +96,10 @@ public class PostsController extends AbstractController {
             for (int i = 0; i < posts.size(); i++) {
                 Integer id = posts.get(i).getId();
                 posts.get(i).setReplyCount(bbsReplyService.replyCount(id));
+                Integer uid = posts.get(i).getUserId();
+                BbsUserEntity userEntity = bbsUserService.selectById(uid);
+                posts.get(i).setAuthor(userEntity.getUsername());
+                posts.get(i).setIcon(userEntity.getIcon());
             }
             if (order.equals("0")) {
                 List<BbsPostsEntity> list = posts.stream().sorted(Comparator.comparing(BbsPostsEntity::getInitTime).reversed()).collect(Collectors.toList());
@@ -117,6 +124,10 @@ public class PostsController extends AbstractController {
                 BbsPostsEntity postsEntity = bbsPostsService.selectOne(postWrapper);
                 Integer id = postsEntity.getId();
                 postsEntity.setReplyCount(bbsReplyService.replyCount(id));
+                Integer uid = postsEntity.getUserId();
+                BbsUserEntity userEntity = bbsUserService.selectById(uid);
+                postsEntity.setAuthor(userEntity.getUsername());
+                postsEntity.setIcon(userEntity.getIcon());
                 posts.add(postsEntity);
             }
             if (order.equals("0")) {
@@ -133,6 +144,12 @@ public class PostsController extends AbstractController {
             wrapper.eq("is_del", false);
             wrapper.orderDesc(Arrays.asList(new String[]{"init_time"}));
             List<BbsPostsEntity> list = bbsPostsService.selectList(wrapper);
+            for (int i = 0; i < list.size(); i++) {
+                Integer uid = list.get(i).getUserId();
+                BbsUserEntity userEntity = bbsUserService.selectById(uid);
+                list.get(i).setAuthor(userEntity.getUsername());
+                list.get(i).setIcon(userEntity.getIcon());
+            }
             return R.ok().put("data", list);
         }
 

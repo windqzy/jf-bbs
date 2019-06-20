@@ -229,6 +229,7 @@
       }
       li {
         margin: 5px 2px;
+        cursor: pointer;
       }
     }
   }

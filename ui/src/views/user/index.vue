@@ -30,7 +30,7 @@
 
         <div class="info-user-content">
           <h1>
-            <span class="name" v-if="!isEdit">{{userInfo.username}}<i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
+            <span class="name" v-if="!isEdit">{{userInfo.username}}</span>
             <el-input v-model="user.username" style="width: 150px;" v-else placeholder="请输入昵称"></el-input>
             <span v-if="!isEdit">{{userInfo.sex == 1?'男': '女'}}
               <!--<i class="el-icon-male" v-if="userInfo.sex == 1"></i>

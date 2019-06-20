@@ -82,19 +82,24 @@
             <div class="title">附件下载</div>
           </el-divider>
           <el-row :gutter="10">
-            <el-col :lg="8" :xs="24" v-for="item in fileList" :key="item.id" >
-              <div @click="download(item)">
+            <el-col :lg="8" :xs="24" v-for="item in fileList" :key="item.id">
+              <div class="pointer">
                 <el-card shadow="hover">
                   <el-row>
                     <el-col :span="6">
                       <div class="file-type">{{item.type}}</div>
                     </el-col>
-                    <el-col :span="18">
-                      <div>{{item.name}}</div>
+                    <el-col :span="18" class="attach-info">
+                      <div :title="item.name">{{item.name}}</div>
                       <div>{{item.size | formatSize}}</div>
                     </el-col>
                   </el-row>
                 </el-card>
+                <div class="attach-mask">
+                  <div class="attach-mask-filter"></div>
+                  <el-button type="primary" size="mini" @click="preview(item)">预览</el-button>
+                  <el-button type="primary" size="mini" @click="download(item)">下载</el-button>
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -255,7 +260,6 @@
           </div>
         </el-card>
         <!-- TODO 移动端bar -->
-
       </el-col>
       <!-- 右侧 -->
       <el-col :lg="6" :xs="24">
@@ -340,23 +344,23 @@
       goBack() {
         this.$router.go(-1);
       },
-      changeCollection(){
+      changeCollection() {
         let div1 = document.getElementById("collection");
         let div2 = document.getElementById("noCollection");
-        if (div1.style.display == "none"){
-          div1.style.display="";
-          div2.style.display="none";
+        if (div1.style.display == "none") {
+          div1.style.display = "";
+          div2.style.display = "none";
           this.addCollection();
-        }else {
-          div1.style.display="none";
-          div2.style.display="";
+        } else {
+          div1.style.display = "none";
+          div2.style.display = "";
           this.addCollection();
         }
       },
-      addCollection(){
+      addCollection() {
         let id = this.postId;
-        collection.addCollection(id).then(res=>{
-          this.msg=res.data;
+        collection.addCollection(id).then(res => {
+          this.msg = res.data;
           this.$message({
             message: this.msg,
             type: 'success'
@@ -364,19 +368,19 @@
         })
       },
       //判断是否是收藏状态
-      isColl(){
+      isColl() {
         let id = this.postId;
-        collection.isColl(id).then(res=>{
+        collection.isColl(id).then(res => {
           this.coll = res.isColl;
           let div1 = document.getElementById("collection");
           let div2 = document.getElementById("noCollection");
-            if(this.coll == "true"){
-              div1.style.display="none";
-              div2.style.display="";
-            }else {
-              div1.style.display="";
-              div2.style.display="none";
-            }
+          if (this.coll == "true") {
+            div1.style.display = "none";
+            div2.style.display = "";
+          } else {
+            div1.style.display = "";
+            div2.style.display = "none";
+          }
         })
       },
       getReplyList() {
@@ -423,12 +427,18 @@
           this.fileList = res.data;
         })
       },
+      /* 预览 */
+      preview(item) {
+        let url = encodeURIComponent(item.url); //要预览文件的访问地址
+        let winHeight = window.document.documentElement.clientHeight - 10;
+        window.open('http://127.0.0.1:8012/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+      },
       /* 下载附件 */
       download(item) {
         console.log(item);
         let a = document.createElement('a');
-        a.setAttribute('download',item.name);
-        a.setAttribute('href',item.url);
+        a.setAttribute('download', item.name);
+        a.setAttribute('href', item.url);
         a.click();
       },
       /* 评论点赞 */
@@ -511,6 +521,42 @@
       font-weight: 400;
       text-align: center;
     }
+    &-info {
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 22px;
+      }
+    }
+    .pointer {
+      position: relative;
+      &:hover {
+        .attach-mask {
+          display: flex;
+        }
+      }
+      .attach-mask {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(200, 200, 200, 0.8);
+        &-filter {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          filter: blur(20px);
+        }
+      }
+    }
+
   }
 
   .comment-box {

@@ -1,9 +1,15 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.util.Date;
 
+
+@TableName("bbs_faq")
 public class BbsFaqEntity {
 
+    @TableId
     private Integer id;
 
     private String question;

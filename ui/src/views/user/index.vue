@@ -121,12 +121,11 @@
       <el-col :span="6" :xs="24">
         <el-card shadow="never">
           <div slot="header">统计信息</div>
-          <!--<empty-data></empty-data>-->
+          <empty-data></empty-data>
         </el-card>
         <el-card shadow="never">
-          <div slot="header">
-            活跃
-          </div>
+          <div slot="header">活跃</div>
+          <empty-data></empty-data>
         </el-card>
       </el-col>
     </el-row>
@@ -138,12 +137,12 @@
   import * as post from '@/api/post'
   import * as user from '@/api/user'
   import * as timeUtils from '@/utils/time'
-  /*import emptyData from '@/components/emptyData'*/
+  import emptyData from '@/components/emptyData'
 
   export default {
     name: "index",
-    components:{
-     /* emptyData*/
+    components: {
+      emptyData
     },
     data() {
       return {
@@ -172,7 +171,23 @@
         this.getOther();
       }
       this.getGrade();
+      /* 草稿箱或个人中心 */
+      if(this.$route.query.type == 2) {
+        this.tabName = '2'
+      } else {
+        this.tabName = '0'
+      }
       this.getList();
+    },
+    watch:{
+      '$route.query.type'(val) {
+        if(val == 2) {
+          this.tabName = '2'
+        } else {
+          this.tabName = '0'
+        }
+        this.getList();
+      }
     },
     methods: {
       handleAvatarSuccess(res) {

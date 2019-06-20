@@ -292,10 +292,14 @@
     }
   }
 
+  .post-row {
+    .el-col {
+      margin-bottom: 10px;
+    }
+  }
+
   .editor {
     text-align: left;
-    margin-top: 10px;
-
     /deep/ .w-e-toolbar {
       background-color: #fff !important;
       border: 1px solid #DCDFE6 !important;

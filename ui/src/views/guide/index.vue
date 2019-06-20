@@ -12,10 +12,7 @@
             <el-divider direction="vertical" v-if="!isSearch"></el-divider>
             <a :class="{'layui-this': type == 3}" @click="changeSort(3)" v-if="!isSearch">最新回复</a>
           </div>
-          <div v-if="data.length == 0" class="post-empty fly-list">
-            <svg-icon icon-class="empty"></svg-icon>
-            <p>暂无数据</p>
-          </div>
+          <empty-data v-if="data.length == 0" class="fly-list"></empty-data>
           <ul class="fly-list" v-else>
             <li v-for="top in data">
               <h2>
@@ -39,7 +36,7 @@
       </el-col>
       <el-col :lg="6" :xs="24">
         <el-card shadow="never">
-
+          <empty-data></empty-data>
         </el-card>
       </el-col>
     </el-row>
@@ -48,9 +45,11 @@
 
 <script>
   import * as post from '@/api/post';
+  import emptyData from '@/components/emptyData';
 
   export default {
     name: "index",
+    components: {emptyData},
     data() {
       return {
         type: 0,
@@ -121,7 +120,7 @@
           this.data = [];
         })
       },
-      toPostDetail(postId){
+      toPostDetail(postId) {
         post.addRead(postId).then(res => {
           this.$router.push('/post/detail?postId=' + postId);
         });

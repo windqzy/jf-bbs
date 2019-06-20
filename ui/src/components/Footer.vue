@@ -1,7 +1,7 @@
 <template>
   <div class="fly-footer">
     <p>
-      <a href="javascript:;" target="_blank">神丁社区</a>
+      <a href="javascript:;" target="_blank">金风社区</a>
       2019 &copy; <a href="javascript:;" target="_blank">阿拉丁工作室出品</a>
       <a class="onLineUserCount">当前在线人数：<span>{{onLineUserCount}}</span></a>
     </p>

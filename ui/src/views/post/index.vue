@@ -34,7 +34,11 @@
                 <!--<img :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">-->
                 <!--</router-link>-->
                 <a class="fly-avatar">
-                  <el-image :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author"></el-image>
+                  <el-image :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author">
+                    <div slot="error" class="img-error">
+                      <svg-icon icon-class="img-error"></svg-icon>
+                    </div>
+                  </el-image>
                 </a>
                 <h2 class="pointer">
                   <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
@@ -322,7 +326,16 @@
 
     /*文章*/
     .post-list {
-
+      .el-image {
+        width: 45px;
+        height: 45px;
+        /deep/ .img-error {
+          background-color: #ccc;
+          .svg-icon {
+            font-size: 24px;
+          }
+        }
+      }
     }
 
     .post-type {

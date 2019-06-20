@@ -4,7 +4,9 @@
       <!-- 移动端 -->
       <el-row type="flex" class="hidden-sm-and-up">
         <el-col :span="3">
-          <img src="../assets/img/logo-green.png"/>
+          <router-link to="/">
+            <img src="../assets/img/logo-green.png"/>
+          </router-link>
         </el-col>
         <el-col :span="21">
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -26,9 +28,12 @@
               <!--{{$store.state.user.username}}-->
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a">个人中心</el-dropdown-item>
+              <el-dropdown-item command="a" icon="el-icon-chat-dot-square">消息</el-dropdown-item>
+              <el-dropdown-item command="b" divided icon="el-icon-edit">写文章</el-dropdown-item>
+              <el-dropdown-item command="c" icon="el-icon-document">草稿箱</el-dropdown-item>
+              <el-dropdown-item command="d" divided icon="el-icon-user">个人中心</el-dropdown-item>
               <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
-              <el-dropdown-item command="c">注销</el-dropdown-item>
+              <el-dropdown-item command="e" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -64,9 +69,12 @@
               <!--{{$store.state.user.username}}-->
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a">个人中心</el-dropdown-item>
+              <el-dropdown-item command="a" icon="el-icon-chat-dot-square">消息</el-dropdown-item>
+              <el-dropdown-item command="b" divided icon="el-icon-edit">写文章</el-dropdown-item>
+              <el-dropdown-item command="c" icon="el-icon-document">草稿箱</el-dropdown-item>
+              <el-dropdown-item command="d" divided icon="el-icon-user">个人中心</el-dropdown-item>
               <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
-              <el-dropdown-item command="c">注销</el-dropdown-item>
+              <el-dropdown-item command="e" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -125,7 +133,7 @@
         let data = JSON.parse(e.data);
         this.count = +data.toReadCount;
         this.$store.commit('ONLINEUSERCOUNT', data.onLineUserCount);
-        this.$emit('onLineUserCount',data.onLineUserCount)
+        this.$emit('onLineUserCount', data.onLineUserCount)
         //发现消息进入    开始处理前端触发逻辑
       };
     },
@@ -149,12 +157,30 @@
       },
       handleCommand(command) {
         // this.$message('click on item ' + command);
-        if (command == 'a') {
+        switch (command) {
+          case 'a':
+            this.$router.push('/msg/index');
+            break;
+          case 'b':
+            this.$router.push('/post/new');
+            break;
+          case 'c':
+            this.$router.push('/user/home?type=2');
+            break;
+          case 'd':
+            this.$router.push('/user/home');
+            break;
+          case 'e':
+            this.$router.push('/login');
+            window.localStorage['B-Token'] = '';
+            break;
+        }
+       /* if (command == 'd') {
           this.$router.push('/user/home');
-        } else if (command == 'c') {
+        } else if (command == 'e') {
           this.$router.push('/login');
           window.localStorage['B-Token'] = '';
-        }
+        }*/
       },
       newPosts() {
         this.$router.push('/post/new');

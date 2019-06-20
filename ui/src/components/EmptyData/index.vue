@@ -1,7 +1,9 @@
 <template>
   <div class="post-empty">
     <svg-icon :icon-class="icon"></svg-icon>
-    <slot name="content">暂无数据</slot>
+    <slot name="content">
+      <p>暂无数据</p>
+    </slot>
   </div>
 </template>
 
@@ -10,7 +12,7 @@
     name: "index",
     props: {
       icon: {
-        type: 'String',
+        type: String,
         default: 'empty'
       }
     },

@@ -92,7 +92,9 @@
                 </div>
                 <div>
                   <span class="label-reply">
-                    最后回复:昨天 17:03
+                    最后回复:
+                    <span v-if="!tag.lastReplyTime">无</span>
+                    <span v-else>{{tag.lastReplyTime | dateStr}}</span>
                   </span>
                 </div>
                 <div>
@@ -169,6 +171,9 @@
       formatTime(dateStr) {
         let date = new Date(dateStr);
         return timeUtils.dateFormat('hh:mm', date);
+      },
+      dateStr(date) {
+        return timeUtils.dateDiff(date);
       }
     }
   }

@@ -51,7 +51,7 @@ public class ShiroFilter extends BasicHttpAuthenticationFilter {
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         // 获取请求token
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String authorization = httpServletRequest.getHeader("B-Token");
+        String authorization = httpServletRequest.getHeader("J-Token");
         return authorization != null;
     }
 
@@ -66,7 +66,7 @@ public class ShiroFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String authorization = httpServletRequest.getHeader("B-Token");
+        String authorization = httpServletRequest.getHeader("J-Token");
         AuthToken token = new AuthToken(authorization);
         // 提交给realm进行登入，如果错误会抛出异常并被捕获
         getSubject(request, response).login(token);
@@ -104,7 +104,7 @@ public class ShiroFilter extends BasicHttpAuthenticationFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         //获取请求token，如果token不存在，直接返回401
-        String authorization = httpServletRequest.getHeader("B-Token");
+        String authorization = httpServletRequest.getHeader("J-Token");
         if (StringUtils.isBlank(authorization)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");

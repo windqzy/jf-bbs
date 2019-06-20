@@ -2,7 +2,7 @@
   <div class="fly-footer">
     <p>
       <a href="javascript:;" target="_blank">金风社区</a>
-      2019 &copy; <a href="javascript:;" target="_blank">金风易通科技有限公司出品</a>
+      2019 &copy; <a href="http://www.bjjfsoft.com" target="_blank">金风易通科技有限公司出品</a>
       <a class="onLineUserCount">当前在线人数：<span>{{onLineUserCount}}</span></a>
     </p>
 

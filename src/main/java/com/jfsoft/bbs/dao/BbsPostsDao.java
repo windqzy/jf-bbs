@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,4 +38,9 @@ public interface BbsPostsDao extends BaseMapper<BbsPostsEntity> {
     List<BbsPostsEntity> getListByReplyTime(Map<String, Object> page);
 
     Integer getPostCount(Integer id);
+
+    /**
+     * 查询 label 下最新回帖时间
+     */
+    Date getLastReplyDate(Map<String, Object> params);
 }

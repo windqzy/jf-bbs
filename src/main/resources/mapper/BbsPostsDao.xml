@@ -166,4 +166,9 @@
     <select id="getPostCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(-1) from bbs_posts where label_id=#{id} and is_del=false and is_temp=false
     </select>
+
+    <select id="getLastReplyDate" parameterType="map" resultType="java.util.Date">
+        select count(-1) from bbs_posts where label_id=#{id} and is_del=false and is_temp=false
+    </select>
+
 </mapper>

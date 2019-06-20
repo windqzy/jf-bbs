@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,5 +115,17 @@ public class BbsPostsServiceImpl extends ServiceImpl<BbsPostsDao, BbsPostsEntity
     @Override
     public Integer getPostCount(Integer id) {
         return bbsPostsDao.getPostCount(id);
+    }
+
+    /**
+     * 查询 label 下最新回帖时间
+     *
+     * @param id
+     */
+    @Override
+    public Date getLastReplyDate(Integer id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("labelId", id);
+        return bbsPostsDao.getLastReplyDate(params);
     }
 }

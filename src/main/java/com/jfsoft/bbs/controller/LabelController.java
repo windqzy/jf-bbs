@@ -47,6 +47,8 @@ public class LabelController extends AbstractController {
             for (int i = 0; i < childrenList.size(); i++) {
                 BbsLabelEntity bbsLabelEntity = childrenList.get(i);
                 bbsLabelEntity.setPostsCount(bbsPostsService.getPostCount(bbsLabelEntity.getId()));
+                /** 最新回复时间 */
+//                bbsLabelEntity.setLastReplyTime(bbsPostsService.getLastReplyDate(bbsLabelEntity.getId()));
             }
             e.setChildren(childrenList);
         });

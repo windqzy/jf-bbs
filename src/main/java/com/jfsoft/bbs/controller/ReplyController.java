@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.*;
 
+import static com.jfsoft.bbs.controller.socket.WebSocketServer.getOnlineCount;
+
 
 /**
  * @author chenxc
@@ -237,6 +239,7 @@ public class ReplyController extends AbstractController {
     @PostMapping("/add")
     public R addReply(@RequestBody BbsReplyEntity replyEntity) {
 
+        BbsPostsEntity bbsPostsEntity = bbsPostsService.selectById(replyEntity.getPostsId());
 
         /** 直接评论帖子 */
         if (replyEntity.getReplyTo() == null) {
@@ -251,7 +254,7 @@ public class ReplyController extends AbstractController {
         bbsNewMessageEntity.setCreatePer(replyEntity.getUserId());
         bbsNewMessageEntity.setCreateTime(new Date());
         /** 评论帖子，消息通知作者 */
-        if (replyEntity.getParentId() == 0) {
+        if (replyEntity.getParentId() == 0 || replyEntity.getParentId() == null) {
             bbsNewMessageEntity.setType("0");
         } else {
             bbsNewMessageEntity.setType("1");
@@ -275,8 +278,8 @@ public class ReplyController extends AbstractController {
         bbsMessageUserEntity.setIsRead("0");
 
         /** 评论帖子，消息通知作者 */
-        if (replyEntity.getParentId() == 0) {
-            bbsMessageUserEntity.setUserId(replyEntity.getUserId());
+        if (replyEntity.getParentId() == 0 || replyEntity.getParentId() == null) {
+            bbsMessageUserEntity.setUserId(bbsPostsEntity.getUserId());
         } else {
             bbsMessageUserEntity.setUserId(replyEntity.getReplyTo());
         }
@@ -285,13 +288,17 @@ public class ReplyController extends AbstractController {
 
         /** 查询出有几条未读消息 */
         EntityWrapper<BbsMessageUserEntity> wrapper = new EntityWrapper<>();
-        wrapper.eq("USER_ID", getUserId());
+        wrapper.eq("USER_ID", bbsMessageUserEntity.getUserId());
         wrapper.eq("IS_READ", "0");
         int toReadCount = bbsMessageUserService.selectCount(wrapper);
 
+        Map<String, Object> params = new HashMap<>();
+        params.put("toReadCount", toReadCount);
+        params.put("onLineUserCount", getOnlineCount());
+
         /** 推送消息 */
         try {
-            WebSocketServer.sendInfo(JSON.toJSONString(toReadCount, SerializerFeature.WriteMapNullValue), getUserId() + "");
+            WebSocketServer.sendInfo(JSON.toJSONString(params, SerializerFeature.WriteMapNullValue), bbsMessageUserEntity.getUserId() + "");
         } catch (IOException e) {
             e.printStackTrace();
         }

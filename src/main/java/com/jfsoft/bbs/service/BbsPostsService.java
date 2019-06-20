@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.jfsoft.bbs.common.utils.PageUtils;
 import com.jfsoft.bbs.entity.BbsPostsEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,5 +38,10 @@ public interface BbsPostsService extends IService<BbsPostsEntity> {
     int getYesterdayCount();
 
     Integer getPostCount(Integer id);
+
+    /**
+     * 查询 label 下最新回帖时间
+     */
+    Date getLastReplyDate(Integer id);
 }
 

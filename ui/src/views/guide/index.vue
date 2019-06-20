@@ -12,7 +12,11 @@
             <el-divider direction="vertical" v-if="!isSearch"></el-divider>
             <a :class="{'layui-this': type == 3}" @click="changeSort(3)" v-if="!isSearch">最新回复</a>
           </div>
-          <ul class="fly-list">
+          <div v-if="data.length == 0" class="post-empty fly-list">
+            <svg-icon icon-class="empty"></svg-icon>
+            <p>暂无数据</p>
+          </div>
+          <ul class="fly-list" v-else>
             <li v-for="top in data">
               <h2>
                 <a @click="toPostDetail(top.id)">{{top.title}}</a>
@@ -26,7 +30,7 @@
               </div>
             </li>
           </ul>
-          <div style="text-align: center;cursor: pointer" v-if="!isSearch">
+          <div style="text-align: center;cursor: pointer" v-if="!isSearch && data.length != 0">
             <div class="laypage-main">
               <a @click="getMorePost" class="laypage-next">更多求解</a>
             </div>

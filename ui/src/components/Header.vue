@@ -10,7 +10,7 @@
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1"><i class="el-icon-monitor"></i></el-menu-item>
             <!--<el-menu-item index="2"><i class="el-icon-postcard"></i></el-menu-item>-->
-            <el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>
+            <!--<el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>-->
             <!--<el-menu-item index="4"><i class="el-icon-document"></i></el-menu-item>-->
             <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>
           </el-menu>
@@ -20,6 +20,17 @@
               <i slot="suffix" class="el-input__icon el-icon-close" @click.stop="searchText = ''"></i>
             </el-input>
           </div>
+          <el-dropdown @command="handleCommand" trigger="click">
+            <a class="el-dropdown-link">
+              <img :src="$store.state.user.icon" alt="">
+              <!--{{$store.state.user.username}}-->
+            </a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">个人中心</el-dropdown-item>
+              <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
+              <el-dropdown-item command="c">注销</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-col>
       </el-row>
       <!-- PC端 -->
@@ -171,7 +182,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1;
+    z-index: 98;
     padding: 0;
     margin-bottom: 10px;
     background-color: #fff;
@@ -268,6 +279,9 @@
           border-radius: 0;
         }
       }
+    }
+    .el-dropdown {
+      float: right;
     }
   }
 </style>

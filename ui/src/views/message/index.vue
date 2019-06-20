@@ -91,7 +91,7 @@
   }
 
   .layui-container {
-    padding: 0 10px;
+    padding: 60px 10px 0;
     .el-card {
       margin-bottom: 16px;
       .msg-img {

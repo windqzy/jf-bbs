@@ -30,11 +30,28 @@
 
         <div class="info-user-content">
           <h1>
-            <span class="name">{{userInfo.username}}<i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
-            <span>标签</span>
+            <span class="name" v-if="!isEdit">{{userInfo.username}}<i class="hidden-sm-and-up el-icon-edit-outline"></i></span>
+            <el-input v-model="user.username" style="width: 150px;" v-else placeholder="请输入昵称"></el-input>
+            <span v-if="!isEdit">{{userInfo.sex == 1?'男': '女'}}
+              <!--<i class="el-icon-male" v-if="userInfo.sex == 1"></i>
+              <i class="el-icon-female" v-else></i>-->
+            </span>
+            <span v-else>
+              <el-radio-group v-model="user.sex">
+                <el-radio :label="1">男</el-radio>
+                <el-radio :label="0">女</el-radio>
+              </el-radio-group>
+            </span>
           </h1>
-          <p>{{userInfo.signature}}</p>
-          <el-button type="primary" size="small" class="hidden-sm-and-down">编辑个人资料</el-button>
+          <p v-if="!isEdit">{{userInfo.signature || '用户很懒，还没有设置个性签名...'}}</p>
+          <el-input type="textarea" v-model="user.signature" size="small" v-else
+                    placeholder="请输入个性签名"></el-input>
+          <el-button type="primary" size="small" v-show="!isEdit" @click="openEdit">编辑个人资料
+          </el-button>
+          <el-button-group v-show="isEdit">
+            <el-button type="primary" size="small"  @click="saveUserInfo">保存</el-button>
+            <el-button type="primary" size="small"  @click="isEdit = false">取消</el-button>
+          </el-button-group>
         </div>
       </div>
     </el-card>
@@ -71,7 +88,9 @@
           </el-tabs>
           <el-card v-for="post in postList" :key="post.id" shadow="never" class="fly-list">
             <a class="fly-avatar hidden-sm-and-down">
-              <el-image :src="post.icon" alt=""></el-image>
+              <el-image :src="post.icon" alt="">
+                <div slot="error" class="img-error"></div>
+              </el-image>
             </a>
             <h2>
               <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
@@ -130,13 +149,15 @@
       return {
         actionUrl: window.localStorage.baseUrl + '/upload/file',
         userInfo: '',
+        user:null, // 编辑用户信息
         postList: [],
         userId: '',
         avatarUrl: '',
         loginUserId: '',
         order: '0',
         background: require('@/assets/img/cover-default.jpg'),
-        tabName: '0'
+        tabName: '0',
+        isEdit: false, // 是否编辑信息
       }
     },
     created() {
@@ -189,15 +210,18 @@
         }
         return isJPG && isLt2M;
       },
+      /* 更新头像及封面 */
       upDateUser() {
         let UserForm = {
           background: this.background,
           icon: this.avatarUrl
         };
         user.upDateUser(UserForm).then(res => {
-          res.data.icon = this.avatarUrl;
-          res.data.background = this.background;
+          this.avatarUrl = res.data.icon;
+          this.background = res.data.background;
           this.$router.push('/user/home');
+          this.getList();
+          this.$store.dispatch('addUserInfo');
         })
       },
 
@@ -251,10 +275,32 @@
               message: res.msg
             });
           })
-
         }).catch(() => {
-
         });
+      },
+      openEdit() {
+        this.user = {
+          username: this.userInfo.username,
+          sex: this.userInfo.sex,
+          signature: this.userInfo.signature,
+        }
+        this.isEdit = true;
+      },
+      /* 保存个人信息 */
+      saveUserInfo() {
+        let UserForm = {
+          username: this.user.username,
+          sex: this.user.sex,
+          signature: this.user.signature
+        };
+        user.upDateUser(UserForm).then(res => {
+          this.isEdit = false;
+          this.userInfo.username = UserForm.username;
+          this.userInfo.sex = UserForm.sex;
+          this.userInfo.signature = UserForm.signature;
+          this.getList();
+          this.$store.dispatch('addUserInfo');
+        })
       }
     },
     filters: {
@@ -422,20 +468,30 @@
       p {
         padding-top: 8px;
       }
-      button {
+      .el-textarea {
+        width: 500px;
+      }
+      & > .el-button, & > .el-button-group {
         position: absolute;
         right: 0;
         bottom: 0;
         display: inline-block;
-        padding: 0 16px;
-        font-size: 14px;
-        line-height: 32px;
-        text-align: center;
-        cursor: pointer;
-        background: none;
-        border: 1px solid #009688;
-        border-radius: 3px;
-        color: #009688;
+        border-radius: 0;
+        /deep/ button {
+          padding: 0 16px;
+          font-size: 14px;
+          line-height: 32px;
+          text-align: center;
+          cursor: pointer;
+          background: none;
+          border: 1px solid #009688;
+          border-radius: 0;
+          color: #009688;
+          &:first-child {
+            color: #fff;
+            background: #009688;
+          }
+        }
       }
     }
   }
@@ -457,14 +513,16 @@
       }
     }
   }
-.fly-list-nums {
-  display: flex;
-  align-items: baseline;
-  span {
-    cursor: pointer;
-    margin-left: 6px;
+
+  .fly-list-nums {
+    display: flex;
+    align-items: baseline;
+    span {
+      cursor: pointer;
+      margin-left: 6px;
+    }
   }
-}
+
   /* 手机端兼容 */
   @media only screen and (max-width: 767px) {
     .info-user {
@@ -478,10 +536,18 @@
         text-align: center;
         h1 {
           margin-top: 4px;
+          margin-bottom: 4px;
           span {
             display: block;
             padding-top: 8px;
           }
+        }
+        .el-textarea {
+          width: 315px;
+        }
+        .el-button,.el-button-group {
+          margin-top: 10px;
+          position: relative;
         }
       }
     }

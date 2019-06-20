@@ -1,8 +1,24 @@
 .tc {text-align: center}
 .tr {text-align: right}
+.tl {text-align: left}
 
+.f14 {font-size: 14px;}
+.f16 {font-size: 16px;}
+.f18 {font-size: 18px;}
+.f20 {font-size: 20px;}
+.f22 {font-size: 22px;}
+.f24 {font-size: 24px;}
+
+/* 手机端兼容 */
 @media screen and (max-width: 750px) {
-  .el-message-box {
-    width: 350px!important;
-  }
+  .layui-container {padding: 0 10px;}
+  .el-message-box {width: 350px!important;}
 }
+
+/* 页面组件样式提取 */
+/* 文章数量为空 */
+.post-empty {text-align: center;color: #b2bac2;padding: 48px 0;}
+.post-empty .svg-icon {font-size: 64px;}
+.post-empty p {font-size: 14px;}
+/* 图像加载失败 */
+.img-error {width: 100%;height: 100%;color: #fff;display: flex;align-items: center;justify-content: center;background-color: #009688;}

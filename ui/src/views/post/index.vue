@@ -5,11 +5,11 @@
         <!--<breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>-->
         <el-card shadow="never">
           <div class="post-divider active-form">
-            <span :class="{'active': activeTag == -1}" @click="selectTag(-1, '')">全部<em> (25)</em></span>
+            <span :class="{'active': activeTag == -1}" @click="selectTag(-1, '')">全部<em> ({{postCounts}})</em></span>
             <span v-for="(item, index) in tagList">
               <el-divider direction="vertical"></el-divider>
               <span :class="{'active': activeTag == index}"
-                    @click="selectTag(index, item.id)">{{item.name}}<em> (25)</em></span>
+                    @click="selectTag(index, item.id)">{{item.name}}<em> ({{item.postsCount}})</em></span>
             </span>
           </div>
         </el-card>
@@ -83,19 +83,24 @@
         </el-card>-->
         <el-card shadow="never">
           <el-button type="warning" class="sign" :disabled="isSign" @click="sign">
-            <div><i class="el-icon-edit"></i>打卡</div>
+            <div><i class="el-icon-edit"></i>签到</div>
             <div>
               <p><i class="el-icon-s-data"></i> 今日排名 第{{signTop}}名</p>
-              <p><i class="el-icon-date"></i> 连续打卡 {{signCount}}天</p>
+              <p><i class="el-icon-date"></i> 连续签到 {{signCount}}天</p>
             </div>
           </el-button>
         </el-card>
         <el-card shadow="never" class="mt8">
           <div slot="header">
-            此处应为该板块公告或者广告
+            公告
+            <svg-icon icon-class="notice"></svg-icon>
           </div>
           <div>
-            <p v-html="labelInfo.details"></p>
+            <div v-if="!labelInfo.details" class="post-empty">
+              <svg-icon icon-class="empty"></svg-icon>
+              <p>暂无数据</p>
+            </div>
+            <p v-html="labelInfo.details" v-else></p>
           </div>
         </el-card>
         <!--<el-card shadow="never" class="mt8">-->
@@ -127,6 +132,7 @@
         labelId: '',
         labelInfo: '',
         tagList: [],
+        postCounts: 0, // 总发帖量
         activeTag: -1,
         postsForm: {
           pageIndex: 1,
@@ -150,10 +156,13 @@
       this.getSignCount();
       this.getSignRank();
       this.getLabelList();
+      if (this.$route.query.type == 1) {
+        this.selectSort(2);
+      }
     },
     methods: {
       // 先增加次数，然后跳转页面
-      toPostDetail(postId){
+      toPostDetail(postId) {
         post.addRead(postId).then(res => {
           this.$router.push('/post/detail?postId=' + postId);
         });
@@ -161,6 +170,11 @@
       getTagByLabelId() {
         tag.getList(this.labelId).then(res => {
           this.tagList = res.data;
+          let postCounts = 0;
+          res.data.map(item => {
+            postCounts += item.postsCount
+          })
+          this.postCounts = postCounts;
         })
       },
       selectTag(index, tagId) {

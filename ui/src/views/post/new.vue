@@ -56,9 +56,9 @@
             <!--</el-tab-pane>-->
           </el-tabs>
           <div class="publish-box">
-            <el-button @click="publish" size="small" type="primary">发表帖子</el-button>
-            <el-button @click="anonymousPublish" size="small" type="warning">匿名发表</el-button>
-            <el-button @click="save" size="small">保存草稿</el-button>
+            <el-button @click="postPublish" size="small" type="primary" :loading="loading1">发表帖子</el-button>
+            <el-button @click="anonymousPublish" size="small" type="warning" :loading="loading2">匿名发表</el-button>
+            <el-button @click="save" size="small" :loading="loading3">保存草稿</el-button>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -97,6 +97,9 @@
         userInfo: '',
         labelList: [],
         tagList: [],
+        loading1: false, // 发表帖子
+        loading2: false, // 匿名发表
+        loading3: false, // 保存草稿
       }
     },
     components: {
@@ -159,25 +162,46 @@
       },
       save() {
         this.post.isTemp = true;
-        this.publish();
+        this.valid().then(() => {
+          this.loading3 = true;
+          this.publish();
+        })
       },
       anonymousPublish() {
         this.post.isAnonymous = true;
-        this.publish();
+        this.valid().then(() => {
+          this.loading2 = true;
+          this.publish();
+        })
+      },
+      postPublish() {
+        this.valid().then(() => {
+          this.loading1 = true;
+          this.publish();
+        })
+      },
+      valid() {
+        return new Promise(resolve => {
+          if (!this.post.title) {
+            this.$message.warning('请填写文章标题');
+            return;
+          }
+          if (!this.post.labelId) {
+            this.$message.warning('请选择板块');
+            return;
+          }
+          if (!this.post.tagId) {
+            this.$message.warning('请选择子板块');
+            return;
+          }
+          if (!this.post.content) {
+            this.$message.warning('请填写文章内容');
+            return;
+          }
+          resolve()
+        })
       },
       publish() {
-        if (!this.post.title) {
-          this.$message.warning('请填写文章标题');
-          return;
-        }
-        if (!this.post.labelId || !this.post.tagId) {
-          this.$message.warning('请选择模块');
-          return;
-        }
-        if (!this.post.content) {
-          this.$message.warning('请填写文章内容');
-          return;
-        }
         let bbsPosts = {
           id: this.post.id,
           labelId: this.post.labelId,
@@ -205,12 +229,13 @@
               bbsPostsFiles.push(item);
             });
             // 更新文件路径
-            posts.updateFile(bbsPostsFiles).then(res2 => {
-              this.$message.success('发布成功');
-              this.$router.push('/home/index')
-            })
+            posts.updateFile(bbsPostsFiles);
           }
-          ;
+          this.loading1 = false;
+          this.loading2 = false;
+          this.loading3 = false;
+          this.$message.success('发布成功');
+          this.$router.push('/home/index');
         });
       }
     }

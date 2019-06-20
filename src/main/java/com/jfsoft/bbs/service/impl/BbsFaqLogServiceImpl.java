@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
 
 @Service("bbsFaqLogService")
 public class BbsFaqLogServiceImpl extends ServiceImpl<BbsFaqLogDao, BbsFaqLogEntity> implements BbsFaqLogService {
+
 }

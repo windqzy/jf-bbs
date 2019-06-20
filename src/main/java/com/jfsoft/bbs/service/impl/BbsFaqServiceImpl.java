@@ -8,5 +8,4 @@ import org.springframework.stereotype.Service;
 
 @Service("bbsFaqService")
 public class BbsFaqServiceImpl extends ServiceImpl<BbsFaqDao, BbsFaqEntity> implements BbsFaqService {
-
 }

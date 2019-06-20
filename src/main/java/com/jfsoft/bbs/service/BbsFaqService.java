@@ -6,5 +6,4 @@ import com.jfsoft.bbs.entity.BbsFaqEntity;
 
 public interface BbsFaqService extends IService<BbsFaqEntity> {
 
-
 }

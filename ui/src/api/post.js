@@ -155,7 +155,7 @@ export function downloadFile(fileId) {
     url: window.localStorage.baseUrl + '/download/' + fileId,
     method: 'GET',
     headers:{
-      'B-Token': window.localStorage['B-Token']
+      'J-Token': window.localStorage['J-Token']
     },
     responseType: 'blob'
   })

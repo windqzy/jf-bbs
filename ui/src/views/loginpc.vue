@@ -40,7 +40,7 @@
         // this.getAccessToken();
         // // this.getCompanyToken();
         this.token = this.$route.query.token;
-        window.localStorage['B-Token'] = this.token;
+        window.localStorage['J-Token'] = this.token;
         user.getUser().then(res => {
           // console.log(res.data)
           this.$store.dispatch('addUserInfo').then(() => {
@@ -139,7 +139,7 @@
     },
     methods: {
       testLogin() {
-        window.localStorage['B-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiaWlnRFNuRFdnVHRpU2lpRjVDOGQ2SkxkZ2lFaUUiLCJleHAiOjE1NjE5NzY5MDAsInVzZXJJZCI6Ijc5In0.BFrcIyk0WVnLAKQ7BMPEdKBkr45zfWVau3dj1qA9Dac';
+        window.localStorage['J-Token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlvbklkIjoiaWlnRFNuRFdnVHRpU2lpRjVDOGQ2SkxkZ2lFaUUiLCJleHAiOjE1NjE5NzY5MDAsInVzZXJJZCI6Ijc5In0.BFrcIyk0WVnLAKQ7BMPEdKBkr45zfWVau3dj1qA9Dac';
         let userInfo = {
           id: 78
         }
@@ -211,7 +211,7 @@
       //   login.addUser(loginForm).then(res => {
       //     console.log(res.data);
       //     let token = res.token;
-      //     window.localStorage['B-Token'] = token;
+      //     window.localStorage['J-Token'] = token;
       //     this.$store.dispatch('addUserInfo').then(() => {
       //       if (!res.data.username) {
       //         this.$router.push('/user/reg');

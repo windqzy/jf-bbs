@@ -181,14 +181,14 @@
             break;
           case 'e':
             this.$router.push('/login');
-            window.localStorage['B-Token'] = '';
+            window.localStorage['J-Token'] = '';
             break;
         }
         /* if (command == 'd') {
            this.$router.push('/user/home');
          } else if (command == 'e') {
            this.$router.push('/login');
-           window.localStorage['B-Token'] = '';
+           window.localStorage['J-Token'] = '';
          }*/
       },
       newPosts() {

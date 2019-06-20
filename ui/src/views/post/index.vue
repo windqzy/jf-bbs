@@ -184,11 +184,13 @@
         })
       },
       selectTag(index, tagId) {
+        this.postsForm.pageIndex = 1;
         this.postsForm.tagId = tagId;
         this.activeTag = index;
         this.getPostsList();
       },
       selectSort(index) {
+        this.postsForm.pageIndex = 1;
         this.postsForm.sortType = index;
         this.getPostsList();
       },

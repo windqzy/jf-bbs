@@ -96,7 +96,6 @@
                   </el-row>
                 </el-card>
                 <div class="attach-mask">
-                  <div class="attach-mask-filter"></div>
                   <el-button type="primary" size="mini" @click="preview(item)">预览</el-button>
                   <el-button type="primary" size="mini" @click="download(item)">下载</el-button>
                 </div>
@@ -158,10 +157,11 @@
                         <span v-if="reply.replyUser.id == userInfo.id">· 删除</span>
                       </el-col>
                       <el-col :span="4" :xs="12" class="action tr">
-                        <div>
+                        <!--TODO：点赞-->
+                       <!-- <div>
                           <i class="el-icon-goblet-square"></i>
                           <span>{{reply.upCount}}</span>
-                        </div>
+                        </div>-->
                         <div>
                           <i class="el-icon-chat-round"></i>
                           <label @click="replyComment(reply)">回复</label>
@@ -214,10 +214,11 @@
                               <span v-if="item.userId == userInfo.id">·删除</span>
                             </el-col>
                             <el-col :span="6" :xs="14" class="action tr">
-                              <div @click="upCount">
+                              <!-- TODO：点赞 -->
+                              <!--<div @click="upCount">
                                 <i class="el-icon-goblet-square"></i>
                                 <span>{{item.upCount}}</span>
-                              </div>
+                              </div>-->
                               <div>
                                 <i class="el-icon-chat-round"></i>
                                 <label @click="replyComment(item)">回复</label>
@@ -283,19 +284,16 @@
           </div>
         </el-card>
         <el-card shadow="never">
-          <div slot="header">
-            打赏榜
-          </div>
+          <div slot="header">打赏榜</div>
+          <empty-data></empty-data>
         </el-card>
         <el-card shadow="never">
-          <div slot="header">
-            目录
-          </div>
+          <div slot="header">目录</div>
+          <empty-data></empty-data>
         </el-card>
         <el-card shadow="never">
-          <div slot="header">
-            相关文章
-          </div>
+          <div slot="header">相关文章</div>
+          <empty-data></empty-data>
         </el-card>
       </el-col>
     </el-row>
@@ -303,16 +301,18 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import * as post from '@/api/post'
   import * as reply from '@/api/reply'
   import * as timeUtils from '@/utils/time';
   import * as face from '@/assets/face.json';
   import editDiv from '@/components/EditDiv';
+  import emptyData from '@/components/emptyData';
   import * as collection from '@/api/collection';
 
   export default {
     name: "detail",
-    components: {editDiv},
+    components: {editDiv, emptyData},
     data() {
       return {
         actionBox: false,
@@ -429,7 +429,6 @@
       },
       /* 预览 */
       preview(item) {
-        console.log(item)
         let url = encodeURIComponent(item.url); //要预览文件的访问地址
         let winHeight = window.document.documentElement.clientHeight - 10;
         window.open('http://172.17.0.203:8849/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
@@ -437,10 +436,7 @@
       /* 下载附件 */
       download(item) {
         console.log(item);
-        let a = document.createElement('a');
-        a.setAttribute('download', item.name);
-        a.setAttribute('href', item.url);
-        a.click();
+
       },
       /* 评论点赞 */
       upCount() {
@@ -484,9 +480,6 @@
       },
     },
     filters: {
-      dateStr(date) {
-        return timeUtils.dateDiff(date);
-      },
       formatSize(size) {
         if (size < 1000000) {
           return (size / 1000).toFixed(2) + 'KB'

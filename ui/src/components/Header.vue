@@ -192,7 +192,11 @@
       /* 跳转信息 */
       toMessage() {
         this.count = '0';
-        this.$router.push('/msg/index')
+        if(this.$route.path === '/msg/index') {
+          this.$router.go(0);
+        } else {
+          this.$router.push('/msg/index')
+        }
       }
     }
   }

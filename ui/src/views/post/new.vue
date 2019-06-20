@@ -13,7 +13,13 @@
             </el-col>
             <el-col :span="6" :xs="24">
               <el-select v-model="post.labelId" placeholder="请选择板块" size="small" @change="getTagByLabelId">
-                <el-option v-for="item in labelList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                <el-option-group v-for="label in labelList" :key="label.id" :label="label.name">
+                  <el-option v-for="item in label.children"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-option-group>
               </el-select>
             </el-col>
             <el-col :span="6" :xs="24">
@@ -166,9 +172,9 @@
       },
       getAllLabel() {
         label.getList().then(res => {
-          let arr = [];
-          res.data.forEach(e => arr = arr.concat(e.children));
-          this.labelList = arr;
+          /*let arr = [];
+          res.data.forEach(e => arr = arr.concat(e.children));*/
+          this.labelList = res.data;
         });
       },
       getTagByLabelId() {

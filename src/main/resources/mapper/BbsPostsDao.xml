@@ -135,8 +135,10 @@
     </select>
 
     <select id="getPostsList" parameterType="map" resultMap="bbsPostsMap">
-        select bp.id, bp.title, bu.username as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id)
-        as reply_count, case when max(br.init_time) is not null then max(br.init_time) else bp.init_time end as order_by_time
+        select bp.id, bp.title, bu.username as author, bu.icon, bp.init_time, max(br.init_time) as last_reply,
+        count(br.id)
+        as reply_count, case when max(br.init_time) is not null then max(br.init_time) else bp.init_time end as
+        order_by_time
         from bbs_posts bp
         left join bbs_user bu on bu.id = bp.user_id
         left join bbs_reply br on br.posts_id = bp.id
@@ -168,7 +170,11 @@
     </select>
 
     <select id="getLastReplyDate" parameterType="map" resultType="java.util.Date">
-        select count(-1) from bbs_posts where label_id=#{id} and is_del=false and is_temp=false
+        select max(br.init_time)
+        from bbs_reply br
+        left join bbs_posts bp on bp.id = br.posts_id
+        left join bbs_reply bre on bre.posts_id = bp.id
+        where bp.label_id = #{labelId}
     </select>
 
 </mapper>

@@ -197,6 +197,7 @@
       getPostsList() {
         post.getPostsList(this.postsForm).then(res => {
           this.postsList = res.data;
+          this.isMore = true;
         })
       },
       /* 查看更多帖子 */

@@ -41,12 +41,20 @@
       </el-col>
       <el-col :lg="18" :xs="24" v-show="listBox" class="faq-tabs">
         <el-button size="mini" class="extra" type="primary" v-if="isAdd" @click="addFAQ">新增</el-button>
-        <el-input placeholder="请输入关键字" size="mini"></el-input>
+        <el-input placeholder="请输入关键字" size="mini" v-model="filterText" @input="filterFAQ"></el-input>
         <el-tabs type="border-card">
           <el-tab-pane label="FAQ列表"></el-tab-pane>
           <el-tab-pane label="热门问题"></el-tab-pane>
-          <ul>
+          <ul v-if="!filterText">
             <li v-for="(item, index) in findList">
+              <el-link type="primary" @click="faqDetail(item)">
+                <span>{{index + 1}}</span>. {{item.question}}
+              </el-link>
+            </li>
+          </ul>
+          <!-- 过滤时列表 -->
+          <ul v-else>
+            <li v-for="(item, index) in filterFAQList">
               <el-link type="primary" @click="faqDetail(item)">
                 <span>{{index + 1}}</span>. {{item.question}}
               </el-link>
@@ -98,12 +106,14 @@
     data() {
       return {
         isAdd: false, // 新增
+        filterText: '', // 过滤
         listBox: true,
         detailBox: false,
         addBox: false,
         labelList: [],
         faqList: [],
         findList: [],
+        filterFAQList: [], // 过滤后的结果
         faq: '',
         toFaq: '',
         defaultProps: {
@@ -234,6 +244,13 @@
         this.addBox = false;
         this.listBox = true;
         this.getFaqList(this.faqForm.typeId)
+      },
+      /* 过滤 */
+      filterFAQ(text) {
+        let arr = this.findList.filter(item => {
+          return item.question.indexOf(text) != -1;
+        })
+        this.filterFAQList = arr;
       }
     }
   }

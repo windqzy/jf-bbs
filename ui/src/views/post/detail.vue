@@ -5,7 +5,8 @@
         <!-- 文章内容 -->
         <el-card shadow="never">
           <div class="detail-box">
-            <h1>{{postsInfo.title}}</h1>
+            <el-page-header @back="goBack" :content="postsInfo.title"></el-page-header>
+            <!--<h1>{{postsInfo.title}}</h1>-->
             <div class="fly-detail-info">
               <!-- <span class="layui-badge">审核中</span> -->
               <!--<span class="layui-badge layui-bg-green fly-detail-column">动态</span>-->
@@ -95,7 +96,6 @@
                   </el-row>
                 </el-card>
               </div>
-
             </el-col>
           </el-row>
         </el-card>
@@ -337,6 +337,9 @@
       this.getReplyList();
     },
     methods: {
+      goBack() {
+        this.$router.go(-1);
+      },
       changeCollection(){
         let div1 = document.getElementById("collection");
         let div2 = document.getElementById("noCollection");

@@ -11,6 +11,10 @@ import '@/assets/css/base.scss'
 import '@/icons' // icon
 import './permission' // 权限
 
+//引入nprogress
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 /*引入资源请求插件*/
 import VueResource from 'vue-resource'
 

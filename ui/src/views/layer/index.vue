@@ -5,6 +5,8 @@
       <router-view></router-view>
     </template>
     <v-footer :onLineUserCount="onLineUserCount"></v-footer>
+    <!-- 返回顶部 -->
+    <el-backtop></el-backtop>
   </div>
 </template>
 

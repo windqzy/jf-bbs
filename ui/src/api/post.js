@@ -129,7 +129,7 @@ export function getNewPosts(data) {
 export function getPostsList(form) {
   return request({
     url: '/posts/getPostsList?pageIndex=' + form.pageIndex + '&pageSize=' + form.pageSize + '&sortType=' + form.sortType +
-      '&tagId=' + form.tagId,
+      '&tagId=' + form.tagId + '&labelId=' + form.labelId,
     method: 'GET'
   })
 }

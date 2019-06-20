@@ -36,7 +36,7 @@
                 <a class="fly-avatar">
                   <el-image :src="post.icon == null? defaultAvatar : post.icon" :alt="post.author"></el-image>
                 </a>
-                <h2>
+                <h2 class="pointer">
                   <a v-if="post.tagName != null" class="layui-badge">{{post.tagName}}</a>
                   <a @click="toPostDetail(post.id)">{{post.title}}
                   </a>
@@ -73,7 +73,7 @@
                 <a @click="getMorePost" class="laypage-next">更多求解</a>
               </div>
             </div>
-            <el-divider v-if="!isMore">我是有底线的</el-divider>
+            <el-divider v-if="!isMore && postsList.length != 0">我是有底线的</el-divider>
           </div>
         </el-card>
       </el-col>
@@ -128,6 +128,7 @@
       Breadcrumb
     },
     data() {
+      let labelId = this.$route.query.labelId
       return {
         labelId: '',
         labelInfo: '',
@@ -138,7 +139,8 @@
           pageIndex: 1,
           pageSize: 20,
           tagId: '',
-          sortType: 0
+          sortType: 0,
+          labelId: labelId
         },
         postsList: [],
         defaultAvatar: require('../../../static/images/avatar/4.jpg'),

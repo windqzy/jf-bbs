@@ -45,7 +45,7 @@
 </script>
 
 <style>
-  /*#app {*/
-  /*overflow: hidden;*/
-  /*}*/
+  #nprogress .bar {
+    background: #009688 !important;
+  }
 </style>

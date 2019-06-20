@@ -9,6 +9,8 @@
 .f22 {font-size: 22px;}
 .f24 {font-size: 24px;}
 
+.pointer {cursor: pointer;}
+
 /* 手机端兼容 */
 @media screen and (max-width: 750px) {
   .layui-container {padding: 0 10px;}

@@ -49,8 +49,8 @@
           <el-button type="primary" size="small" v-show="!isEdit" @click="openEdit">编辑个人资料
           </el-button>
           <el-button-group v-show="isEdit">
-            <el-button type="primary" size="small"  @click="saveUserInfo">保存</el-button>
-            <el-button type="primary" size="small"  @click="isEdit = false">取消</el-button>
+            <el-button type="primary" size="small" @click="saveUserInfo">保存</el-button>
+            <el-button type="primary" size="small" @click="isEdit = false">取消</el-button>
           </el-button-group>
         </div>
       </div>
@@ -120,9 +120,8 @@
       </el-col>
       <el-col :span="6" :xs="24">
         <el-card shadow="never">
-          <div slot="header">
-            统计信息
-          </div>
+          <div slot="header">统计信息</div>
+          <!--<empty-data></empty-data>-->
         </el-card>
         <el-card shadow="never">
           <div slot="header">
@@ -136,20 +135,21 @@
 
 <script>
   import * as grade from '@/api/grade'
-
   import * as post from '@/api/post'
-
   import * as user from '@/api/user'
-
   import * as timeUtils from '@/utils/time'
+  /*import emptyData from '@/components/emptyData'*/
 
   export default {
     name: "index",
+    components:{
+     /* emptyData*/
+    },
     data() {
       return {
         actionUrl: window.localStorage.baseUrl + '/upload/file',
         userInfo: '',
-        user:null, // 编辑用户信息
+        user: null, // 编辑用户信息
         postList: [],
         userId: '',
         avatarUrl: '',
@@ -545,7 +545,7 @@
         .el-textarea {
           width: 315px;
         }
-        .el-button,.el-button-group {
+        .el-button, .el-button-group {
           margin-top: 10px;
           position: relative;
         }

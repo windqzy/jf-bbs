@@ -123,11 +123,12 @@ public class CollectionController extends AbstractController {
         EntityWrapper<BbsCollectionEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("user_id", userId);
         wrapper.eq("post_id", postId);
+        wrapper.eq("status", true);
         BbsCollectionEntity bbsCollectionEntity = bbsCollectionService.selectOne(wrapper);
         if (bbsCollectionEntity == null) {
-            return R.ok().put("isColl","false");
+            return R.ok().put("isColl", "false");
         } else {
-            return R.ok().put("isColl","true");
+            return R.ok().put("isColl", "true");
         }
 
     }

@@ -111,6 +111,7 @@ public class PostsController extends AbstractController {
         } else if (type.equals("1")) {
             EntityWrapper<BbsCollectionEntity> wrapper = new EntityWrapper<>();
             wrapper.eq("user_id", userId);
+            wrapper.eq("status", true);
             List<BbsCollectionEntity> list = bbsCollectionService.selectList(wrapper);
 
             List<BbsPostsEntity> posts = new ArrayList<>();

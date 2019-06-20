@@ -431,7 +431,7 @@
       preview(item) {
         let url = encodeURIComponent(item.url); //要预览文件的访问地址
         let winHeight = window.document.documentElement.clientHeight - 10;
-        window.open('http://127.0.0.1:8012/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+        window.open('http://127.0.0.1:8849/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
       },
       /* 下载附件 */
       download(item) {

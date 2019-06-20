@@ -10,6 +10,7 @@ import com.jfsoft.bbs.service.BbsFaqLogService;
 import com.jfsoft.bbs.service.BbsFaqService;
 import com.jfsoft.bbs.service.BbsFaqTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,9 +80,11 @@ public class FaqController extends AbstractController {
 
         EntityWrapper<BbsFaqEntity> wrapper = new EntityWrapper<>();
         if (typeId == null) {
+            wrapper.eq("is_del", false);
             wrapper.orderBy("init_time desc");
         } else {
             wrapper.eq("type_id", typeId);
+            wrapper.eq("is_del", false);
             wrapper.orderBy("init_time desc");
         }
         List<BbsFaqEntity> list = bbsFaqService.selectList(wrapper);
@@ -146,6 +149,22 @@ public class FaqController extends AbstractController {
         } else {
             return R.ok("false");
         }
+    }
+
+    /**
+     * 删除FAQ
+     *
+     * @Author Mjp
+     * @Date 17:11 2019/6/20
+     * @Param [id]
+     * @Return
+     **/
+    @RequestMapping("/del/{id}")
+    public R del(@PathVariable("id") Integer id) {
+        BbsFaqEntity bbsFaqEntity = bbsFaqService.selectById(id);
+        bbsFaqEntity.setDel(true);
+        bbsFaqService.updateById(bbsFaqEntity);
+        return R.ok("删除成功");
     }
 
 }

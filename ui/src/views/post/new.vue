@@ -74,6 +74,7 @@
   import * as tag from '@/api/tag';
   import * as posts from '@/api/post';
   import {isPC} from '@/utils/common';
+  import * as face from '@/assets/face.json';
 
   export default {
     name: "new",
@@ -116,19 +117,44 @@
       initEditor() {
         let _this = this;
         this.editor = new E(this.$refs.editor)
+        this.editor.customConfig.debug = true
+
         this.editor.customConfig.onchange = (html) => {
           this.editorContent = html;
           _this.post.content = html;
         };
+        this.editor.customConfig.uploadImgServer = window.localStorage.baseUrl + '/upload/file2';
+        this.editor.customConfig.uploadFileName = 'file';
         // 移动端
         if (!isPC) {
           editor.customConfig.menus = [
             'head',
             'bold',
             'italic',
-            'underline'
+            'underline',
+            'image'
           ];
         }
+        this.editor.customConfig.emotions = [
+          {
+            // tab 的标题
+            title: '默认',
+            // type -> 'emoji' / 'image'
+            type: 'image',
+            // content -> 数组
+            content: face
+          },
+          {
+            // tab 的标题
+            title: 'emoji',
+            // type -> 'emoji' / 'image'
+            type: 'emoji',
+            // content -> 数组
+            content: [
+              '😀', '😁', '😂', '🤣', '😃', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘'
+            ]
+          }
+        ];
         this.editor.customConfig.zIndex = 1;
         this.editor.create();
       },
@@ -266,14 +292,10 @@
     }
   }
 
-  .post-row {
-    .el-col {
-      margin-bottom: 10px;
-    }
-  }
-
   .editor {
     text-align: left;
+    margin-top: 10px;
+
     /deep/ .w-e-toolbar {
       background-color: #fff !important;
       border: 1px solid #DCDFE6 !important;

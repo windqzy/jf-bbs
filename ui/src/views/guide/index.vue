@@ -15,6 +15,13 @@
           <empty-data v-if="data.length == 0" class="fly-list"></empty-data>
           <ul class="fly-list" v-else>
             <li v-for="top in data">
+              <a class="fly-avatar">
+                <el-image :src="top.icon">
+                  <div slot="error" class="img-error">
+                    <svg-icon icon-class="img-error"></svg-icon>
+                  </div>
+                </el-image>
+              </a>
               <h2>
                 <a @click="toPostDetail(top.id)">{{top.title}}</a>
               </h2>
@@ -134,6 +141,10 @@
     .post {
       /deep/ .el-card__body {
         padding: 0;
+        .el-image {
+          width: 45px;
+          height: 45px;
+        }
       }
     }
     /deep/ .el-card__header {

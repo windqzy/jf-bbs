@@ -110,6 +110,7 @@ public class FaqController extends AbstractController {
             bbsFaqEntity.setTypeId(faqEntity.getTypeId());
             bbsFaqEntity.setUserId(getUserId());
             bbsFaqEntity.setInitTime(new Date());
+            bbsFaqEntity.setUpdateTime(new Date());
             bbsFaqService.insert(bbsFaqEntity);
         } else {
             // 即为更新FAQ
@@ -119,10 +120,10 @@ public class FaqController extends AbstractController {
             bbsFaqEntity.setAnswer(faqEntity.getAnswer());
             bbsFaqEntity.setTypeId(faqEntity.getTypeId());
             bbsFaqEntity.setUserId(getUserId());
-            bbsFaqEntity.setInitTime(new Date());
+            bbsFaqEntity.setUpdateTime(new Date());
             bbsFaqService.updateById(bbsFaqEntity);
         }
-        return R.ok();
+        return R.ok("提交成功！");
     }
 
     /**

@@ -10,6 +10,7 @@
         <result property="answer" column="answer"/>
         <result property="userId" column="user_id"/>
         <result property="initTime" column="init_time"/>
+        <result property="updateTime" column="update_time"/>
         <result property="typeId" column="type_id"/>
         <result property="isDel" column="is_del"/>
     </resultMap>

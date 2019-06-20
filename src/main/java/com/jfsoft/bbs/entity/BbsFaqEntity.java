@@ -22,7 +22,17 @@ public class BbsFaqEntity {
 
     private Integer typeId;
 
+    private Date updateTime;
+
     private Boolean isDel;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Boolean getDel() {
         return isDel;

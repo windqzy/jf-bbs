@@ -2,7 +2,7 @@
   <div>
     <v-header @change="changeLabel" @onLineUserCount="onLineUserCount = $event"></v-header>
     <template class="layui-container">
-      <router-view></router-view>
+      <router-view v-if="isRouterAlive"></router-view>
     </template>
     <v-footer :onLineUserCount="onLineUserCount"></v-footer>
     <!-- 返回顶部 -->
@@ -20,14 +20,26 @@
       'v-header': Header,
       'v-footer': Footer,
     },
+    provide() {
+      return {
+        reload: this.reload
+      }
+    },
     data() {
       return {
         onLineUserCount: 0, // 在线人数
+        isRouterAlive: true
       }
     },
     methods: {
       changeLabel() {
 
+      },
+      reload() {
+        this.isRouterAlive = false;
+        this.$nextTick(() => {
+          this.isRouterAlive = true;
+        })
       }
     }
   }

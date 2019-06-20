@@ -1,3 +1,4 @@
+import axios from 'axios'
 import request from '@/utils/request'
 
 // 查询文章列表
@@ -142,5 +143,20 @@ export function addRead(id) {
   return request({
     url: '/posts/addRead/' + id,
     method: 'GET'
+  })
+}
+
+/**
+ * 下载附件
+ * @param fileId
+ */
+export function downloadFile(fileId) {
+  return axios({
+    url: window.localStorage.baseUrl + '/download/' + fileId,
+    method: 'GET',
+    headers:{
+      'B-Token': window.localStorage['B-Token']
+    },
+    responseType: 'blob'
   })
 }

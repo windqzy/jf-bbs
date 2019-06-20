@@ -37,8 +37,12 @@
               <!--:alt="postInfo.author">-->
               <!--</router-link>-->
               <a class="fly-avatar">
-                <img :src="postsInfo.icon == null ? defaultAvatar : postsInfo.icon"
-                     :alt="postsInfo.author">
+                <el-image :src="postsInfo.icon == null ? defaultAvatar : postsInfo.icon"
+                          :alt="postsInfo.author" style="width: 45px;height: 45px;">
+                  <div slot="error" class="img-error">
+                    <svg-icon icon-class="img-error"></svg-icon>
+                  </div>
+                </el-image>
               </a>
               <div class="fly-detail-user">
                 <!--<router-link :to="'/user/index?userId='+ postInfo.userId" class="fly-link">-->
@@ -158,10 +162,10 @@
                       </el-col>
                       <el-col :span="4" :xs="12" class="action tr">
                         <!--TODO：点赞-->
-                       <!-- <div>
-                          <i class="el-icon-goblet-square"></i>
-                          <span>{{reply.upCount}}</span>
-                        </div>-->
+                        <!-- <div>
+                           <i class="el-icon-goblet-square"></i>
+                           <span>{{reply.upCount}}</span>
+                         </div>-->
                         <div>
                           <i class="el-icon-chat-round"></i>
                           <label @click="replyComment(reply)">回复</label>
@@ -435,8 +439,26 @@
       },
       /* 下载附件 */
       download(item) {
-        console.log(item);
-
+        post.downloadFile(item.id).then(res => {
+          console.log(res);
+          if (!res.data) {
+            return
+          }
+          const fileName = res.headers['content-disposition'].split('=')[1];
+          const blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
+          const url = window.URL.createObjectURL(blob);
+          const aLink = document.createElement("a");
+          aLink.style.display = "none";
+          aLink.href = url;
+          console.log(decodeURI(fileName))
+          aLink.setAttribute("download", decodeURI(fileName));
+          document.body.appendChild(aLink);
+          aLink.click();
+          document.body.removeChild(aLink); //下载完成移除元素
+          window.URL.revokeObjectURL(url); //释放掉blob对象
+        }).catch(() => {
+          this.$message({message: '文件导出异常', type: 'error', duration: 1000});
+        })
       },
       /* 评论点赞 */
       upCount() {

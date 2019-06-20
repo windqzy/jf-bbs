@@ -109,6 +109,7 @@
 
   export default {
     name: "Header",
+    inject: ['reload'], // 注入依赖
     data() {
       return {
         socket: null,
@@ -159,7 +160,11 @@
         // this.$message('click on item ' + command);
         switch (command) {
           case 'a':
-            this.$router.push('/msg/index');
+            if (this.$route.path === '/msg/index') {
+              this.reload();
+            } else {
+              this.$router.push('/msg/index')
+            }
             break;
           case 'b':
             this.$router.push('/post/new');
@@ -168,19 +173,23 @@
             this.$router.push('/user/home?type=2');
             break;
           case 'd':
-            this.$router.push('/user/home');
+            if (this.$route.path === '/user/home') {
+              this.reload();
+            } else {
+              this.$router.push('/user/home')
+            }
             break;
           case 'e':
             this.$router.push('/login');
             window.localStorage['B-Token'] = '';
             break;
         }
-       /* if (command == 'd') {
-          this.$router.push('/user/home');
-        } else if (command == 'e') {
-          this.$router.push('/login');
-          window.localStorage['B-Token'] = '';
-        }*/
+        /* if (command == 'd') {
+           this.$router.push('/user/home');
+         } else if (command == 'e') {
+           this.$router.push('/login');
+           window.localStorage['B-Token'] = '';
+         }*/
       },
       newPosts() {
         this.$router.push('/post/new');
@@ -192,8 +201,8 @@
       /* 跳转信息 */
       toMessage() {
         this.count = '0';
-        if(this.$route.path === '/msg/index') {
-          this.$router.go(0);
+        if (this.$route.path === '/msg/index') {
+          this.reload();
         } else {
           this.$router.push('/msg/index')
         }

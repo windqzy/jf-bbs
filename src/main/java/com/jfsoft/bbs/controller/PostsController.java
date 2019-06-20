@@ -113,7 +113,6 @@ public class PostsController extends AbstractController {
             wrapper.eq("user_id", userId);
             wrapper.eq("status", true);
             List<BbsCollectionEntity> list = bbsCollectionService.selectList(wrapper);
-
             List<BbsPostsEntity> posts = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 Integer pid = list.get(i).getPostId();
@@ -416,6 +415,18 @@ public class PostsController extends AbstractController {
         }
         bbsPosts.setReadCount(0);
         bbsPostsService.insert(bbsPosts);
+        ProductDocument productDocument = ProductDocumentBuilder.create()
+                .addId(bbsPosts.getId().toString())
+                .addProductName(bbsPosts.getTitle())
+                .addLabel(bbsPosts.getLabelId().toString())
+                .addProductDesc(bbsPosts.getContent())
+                .addCreateTime(bbsPosts.getInitTime())
+                .builder();
+        try {
+            esSearchService.save(productDocument);
+        } catch (NoNodeAvailableException e) {
+            e.printStackTrace();
+        }
         return R.ok().put("data", bbsPosts);
     }
 
@@ -465,5 +476,4 @@ public class PostsController extends AbstractController {
         bbsPostsService.updateById(bbsPostsEntity);
         return R.ok();
     }
-
 }

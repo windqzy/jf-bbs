@@ -135,7 +135,7 @@
     </select>
 
     <select id="getPostsList" parameterType="map" resultMap="bbsPostsMap">
-        select bp.id, bp.title, bu.name as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id)
+        select bp.id, bp.title, bu.username as author, bu.icon, bp.init_time, max(br.init_time) as last_reply, count(br.id)
         as reply_count, case when max(br.init_time) is not null then max(br.init_time) else bp.init_time end as order_by_time
         from bbs_posts bp
         left join bbs_user bu on bu.id = bp.user_id

@@ -22,6 +22,16 @@ public class BbsFaqEntity {
 
     private Integer typeId;
 
+    private Boolean isDel;
+
+    public Boolean getDel() {
+        return isDel;
+    }
+
+    public void setDel(Boolean del) {
+        isDel = del;
+    }
+
     public Integer getId() {
         return id;
     }

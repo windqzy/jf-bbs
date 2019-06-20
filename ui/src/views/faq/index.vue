@@ -45,7 +45,7 @@
           <el-tab-pane label="FAQ列表"></el-tab-pane>
           <el-tab-pane label="热门问题"></el-tab-pane>
           <ul>
-            <li v-for="(item, index) in faqList">
+            <li v-for="(item, index) in findList">
               <el-link type="primary" @click="faqDetail(item)">
                 <span>{{index + 1}}</span>. {{item.question}}
               </el-link>
@@ -75,8 +75,9 @@
         listBox: true,
         detailBox: false,
         labelList: [],
-        faq: '',
         faqList: [],
+        findList: [],
+        faq: '',
         toFaq: '',
         defaultProps: {
           id: 'id',
@@ -88,6 +89,7 @@
     },
     created() {
       this.getFaq();
+      this.getFaqList("");
     },
     methods: {
       getFaq() {
@@ -98,12 +100,28 @@
       getFaqList(typeId) {
         faq.getFaqList(typeId).then(res => {
           this.faqList = res.data;
+          this.findList = this.faqList;
+        })
+      },
+      findFaqList(typeId){
+        // 查询结果
+        let arr = [];
+        this.faqList.forEach(e => {
+          if (e.typeId == typeId) {
+            arr.push(e)
+          }
+        });
+        this.findList = arr;
+      },
+      update(){
+
+        faq.update().then(res=>{
+
         })
       },
       handleNodeClick(data) {
         this.faq = data;
-        console.log(this.faq);
-        this.getFaqList(this.faq.id);
+        this.findFaqList(this.faq.id);
       },
       faqDetail(item) {
         this.listBox = false;

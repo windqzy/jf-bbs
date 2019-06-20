@@ -15,3 +15,19 @@ export function getFaqList(typeId) {
     method: 'GET'
   })
 }
+// 修改或新增FAQ
+export function update(faqEntity) {
+  return request({
+    url: '/faq/update',
+    method: 'POST',
+    data: faqEntity
+  })
+}
+
+// 判断有用没用
+export function good(faqId,isGood) {
+  return request({
+    url: '/faq/good?faqId='+ faqId + '&isGood=' + isGood,
+    method: 'GET'
+  })
+}

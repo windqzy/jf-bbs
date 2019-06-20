@@ -4,15 +4,17 @@ package com.jfsoft.bbs.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jfsoft.bbs.common.utils.R;
 import com.jfsoft.bbs.entity.BbsFaqEntity;
+import com.jfsoft.bbs.entity.BbsFaqLogEntity;
 import com.jfsoft.bbs.entity.BbsFaqTypeEntity;
 import com.jfsoft.bbs.service.BbsFaqLogService;
 import com.jfsoft.bbs.service.BbsFaqService;
 import com.jfsoft.bbs.service.BbsFaqTypeService;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/faq")
-public class FaqController {
+public class FaqController extends AbstractController {
 
     @Autowired
     private BbsFaqService bbsFaqService;
@@ -38,7 +40,7 @@ public class FaqController {
 
 
     /**
-     * 获取问题列表
+     * 获取板块列表
      *
      * @Author Mjp
      * @Date 11:36 2019/6/20
@@ -64,7 +66,6 @@ public class FaqController {
         return R.ok().put("data", list);
     }
 
-
     /**
      * 根据板块ID查询所属问题
      *
@@ -75,10 +76,76 @@ public class FaqController {
      **/
     @RequestMapping("/faqList")
     public R getFaqList(Integer typeId) {
+
         EntityWrapper<BbsFaqEntity> wrapper = new EntityWrapper<>();
-        wrapper.eq("type_id", typeId);
+        if (typeId == null) {
+            wrapper.orderBy("init_time desc");
+        } else {
+            wrapper.eq("type_id", typeId);
+            wrapper.orderBy("init_time desc");
+        }
         List<BbsFaqEntity> list = bbsFaqService.selectList(wrapper);
         return R.ok().put("data", list);
+    }
+
+
+    /**
+     * 增添、修改相关FAQ
+     *
+     * @Author Mjp
+     * @Date 14:50 2019/6/20
+     * @Param []
+     * @Return
+     **/
+    @RequestMapping("/update")
+    public R updateFaq(@RequestBody BbsFaqEntity faqEntity) {
+        if (faqEntity.getId() == null) {
+            // 即为新增FAQ
+            BbsFaqEntity bbsFaqEntity = new BbsFaqEntity();
+            bbsFaqEntity.setQuestion(faqEntity.getQuestion());
+            bbsFaqEntity.setAnswer(faqEntity.getAnswer());
+            bbsFaqEntity.setTypeId(faqEntity.getTypeId());
+            bbsFaqEntity.setUserId(getUserId());
+            bbsFaqEntity.setInitTime(new Date());
+            bbsFaqService.insert(bbsFaqEntity);
+        } else {
+            // 即为更新FAQ
+            BbsFaqEntity bbsFaqEntity = new BbsFaqEntity();
+            bbsFaqEntity.setId(faqEntity.getId());
+            bbsFaqEntity.setQuestion(faqEntity.getQuestion());
+            bbsFaqEntity.setAnswer(faqEntity.getAnswer());
+            bbsFaqEntity.setTypeId(faqEntity.getTypeId());
+            bbsFaqEntity.setUserId(getUserId());
+            bbsFaqEntity.setInitTime(new Date());
+            bbsFaqService.updateById(bbsFaqEntity);
+        }
+        return R.ok();
+    }
+
+    /**
+     * 点赞有用
+     *
+     * @Author Mjp
+     * @Date 15:16 2019/6/20
+     * @Param []
+     * @Return
+     **/
+    @RequestMapping("/good")
+    public R isGood(Integer faqId, boolean isGood) {
+        EntityWrapper<BbsFaqLogEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("faq_id", faqId);
+        wrapper.eq("user_id", getUserId());
+        BbsFaqLogEntity bbsFaqLogEntity = bbsFaqLogService.selectOne(wrapper);
+        if (bbsFaqLogEntity == null) {
+            BbsFaqLogEntity faqLogEntity = new BbsFaqLogEntity();
+            faqLogEntity.setFaqId(faqId);
+            faqLogEntity.setGood(isGood);
+            faqLogEntity.setUserId(getUserId());
+            bbsFaqLogService.insert(faqLogEntity);
+            return R.ok("谢谢您的评价");
+        } else {
+            return R.ok("false");
+        }
     }
 
 }

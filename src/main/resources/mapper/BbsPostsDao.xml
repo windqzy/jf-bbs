@@ -141,6 +141,9 @@
         left join bbs_user bu on bu.id = bp.user_id
         left join bbs_reply br on br.posts_id = bp.id
         where bp.is_del = false and bp.is_temp = false
+        <if test="labelId != null and labelId != ''">
+            and bp.label_id = #{labelId}
+        </if>
         <if test="tagId != null and tagId != ''">
             and bp.tag_id = #{tagId}
         </if>

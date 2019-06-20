@@ -1,7 +1,10 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.util.List;
 
 @TableName("bbs_faq_type")
 public class BbsFaqTypeEntity {
@@ -11,7 +14,19 @@ public class BbsFaqTypeEntity {
 
     private String name;
 
-    private Integer parent_id;
+    private Integer parentId;
+
+
+    @TableField(exist = false)
+    private List<BbsFaqTypeEntity> children;
+
+    public List<BbsFaqTypeEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<BbsFaqTypeEntity> children) {
+        this.children = children;
+    }
 
     public Integer getId() {
         return id;
@@ -29,11 +44,11 @@ public class BbsFaqTypeEntity {
         this.name = name;
     }
 
-    public Integer getParent_id() {
-        return parent_id;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(Integer parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

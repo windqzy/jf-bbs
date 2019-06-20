@@ -395,8 +395,8 @@ public class PostsController extends AbstractController {
      * @return
      */
     @RequestMapping("/getPostsList")
-    public R getPostsList(Integer pageIndex, Integer pageSize, Integer sortType, Integer tagId) {
-        List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, sortType, tagId);
+    public R getPostsList(Integer pageIndex, Integer pageSize, Integer sortType, Integer tagId, Integer labelId) {
+        List<BbsPostsEntity> postsList = bbsPostsService.getPostsList(pageIndex, pageSize, sortType, tagId, labelId);
         return R.ok().put("data", postsList);
     }
 

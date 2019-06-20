@@ -27,19 +27,20 @@
     <!--</el-row>-->
     <el-row :gutter="10">
       <el-col :lg="6" :xs="24" class="faq-tree">
-        <el-button size="mini" class="extra" type="primary">新增</el-button>
         <el-tabs type="border-card" class="md8">
           <el-tab-pane label="FAQ分类">
             <el-tree
               default-expand-all
               :data="labelList"
               :props="defaultProps"
+              highlight-current
               @node-click="handleNodeClick">
             </el-tree>
           </el-tab-pane>
         </el-tabs>
       </el-col>
       <el-col :lg="18" :xs="24" v-show="listBox" class="faq-tabs">
+        <el-button size="mini" class="extra" type="primary" v-if="isAdd" @click="addFAQ">新增</el-button>
         <el-input placeholder="请输入关键字" size="mini"></el-input>
         <el-tabs type="border-card">
           <el-tab-pane label="FAQ列表"></el-tab-pane>
@@ -61,20 +62,45 @@
           <p v-html="toFaq.answer"></p>
         </el-card>
       </el-col>
+      <el-col :lg="18" :xs="24" v-show="addBox">
+        <el-card shadow="never">
+          <div slot="header">
+            <el-page-header @back="closeFAQ" content="新增FAQ"></el-page-header>
+          </div>
+          <el-form v-model="faqForm" label-width="60px">
+            <el-form-item label="Q:">
+              <el-input v-model="faqForm.question" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="A:">
+              <!-- 富文本 -->
+              <div v-model="faqForm.answer" ref="editor" class="editor"></div>
+            </el-form-item>
+          </el-form>
+          <el-row type="flex" justify="end">
+            <el-button size="small" @click="closeFAQ">取消</el-button>
+            <el-button size="small" type="primary" @click="saveFAQ">保存</el-button>
+          </el-row>
+        </el-card>
+      </el-col>
     </el-row>
     <!-- 新增 -->
   </div>
 </template>
 
 <script>
+  import E from 'wangeditor'
   import * as faq from '@/api/faq';
+  import {isPC} from '@/utils/common';
+  import * as face from '@/assets/face.json';
 
   export default {
     name: "index",
     data() {
       return {
+        isAdd: false, // 新增
         listBox: true,
         detailBox: false,
+        addBox: false,
         labelList: [],
         faqList: [],
         findList: [],
@@ -86,25 +112,79 @@
           label: 'name',
           parentId: 'parentId'
         },
+        faqForm: {
+          question: '',
+          answer: '',
+          typeId: ''
+        },
+        editor: null
       }
     },
     created() {
       this.getFaq();
       this.getFaqList("");
     },
+    mounted() {
+      this.initEditor();
+    },
     methods: {
+      initEditor() {
+        let _this = this;
+        this.editor = new E(this.$refs.editor)
+        this.editor.customConfig.debug = true
+
+        this.editor.customConfig.onchange = (html) => {
+          _this.faqForm.answer = html;
+        };
+        this.editor.customConfig.uploadImgServer = window.localStorage.baseUrl + '/upload/file2';
+        this.editor.customConfig.uploadFileName = 'file';
+        // 移动端
+        this.editor.customConfig.menus = [
+          'head',
+          'bold',
+          'italic',
+          'underline',
+          'image'
+        ];
+
+        this.editor.customConfig.emotions = [
+          {
+            // tab 的标题
+            title: '默认',
+            // type -> 'emoji' / 'image'
+            type: 'image',
+            // content -> 数组
+            content: face
+          },
+          {
+            // tab 的标题
+            title: 'emoji',
+            // type -> 'emoji' / 'image'
+            type: 'emoji',
+            // content -> 数组
+            content: [
+              '😀', '😁', '😂', '🤣', '😃', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘'
+            ]
+          }
+        ];
+        this.editor.customConfig.zIndex = 1;
+        this.editor.create();
+      },
       getFaq() {
         faq.getFaq().then(res => {
           this.labelList = res.data;
         })
       },
       getFaqList(typeId) {
-        faq.getFaqList(typeId).then(res => {
-          this.faqList = res.data;
-          this.findList = this.faqList;
+        return new Promise(resolve => {
+          faq.getFaqList(typeId).then(res => {
+            this.faqList = res.data;
+            this.findList = this.faqList;
+            resolve()
+          })
         })
       },
-      findFaqList(typeId){
+      findFaqList(typeId) {
         // 查询结果
         let arr = [];
         this.faqList.forEach(e => {
@@ -114,15 +194,13 @@
         });
         this.findList = arr;
       },
-      update(){
-
-        faq.update().then(res=>{
-
-        })
-      },
       handleNodeClick(data) {
-        this.faq = data;
-        this.findFaqList(this.faq.id);
+        if(data.parentId !== 0) {
+          this.isAdd = true;
+          this.faqForm.typeId = data.id;
+          this.faq = data;
+          this.findFaqList(this.faq.id);
+        }
       },
       faqDetail(item) {
         this.listBox = false;
@@ -132,6 +210,30 @@
       goBack() {
         this.listBox = true;
         this.detailBox = false;
+      },
+      /* 新增FAQ */
+      addFAQ() {
+        this.addBox = true;
+        this.listBox = false;
+        this.faqForm.question = '';
+        this.faqForm.answer = '';
+      },
+      /* 保存FAQ */
+      saveFAQ() {
+        let data = {
+          question: this.faqForm.question,
+          answer: this.faqForm.answer,
+          typeId: this.faqForm.typeId
+        }
+        faq.update(data).then(res => {
+          this.$message({type: 'success', message: res.msg, duration: 1000})
+        })
+      },
+      /* 取消FAQ */
+      closeFAQ() {
+        this.addBox = false;
+        this.listBox = true;
+        this.getFaqList(this.faqForm.typeId)
       }
     }
   }
@@ -152,16 +254,17 @@
 
   .faq-tree {
     position: relative;
-    .extra {
-      position: absolute;
-      top: 6px;
-      right: 12px;
-      z-index: 1;
-    }
+
   }
 
   .faq-tabs {
     position: relative;
+    .extra {
+      position: absolute;
+      top: 6px;
+      right: 180px;
+      z-index: 1;
+    }
     & > .el-input {
       position: absolute;
       right: 12px;
@@ -179,6 +282,31 @@
         display: inline-block;
         width: 24px;
       }
+    }
+  }
+
+  .editor {
+    text-align: left;
+    /deep/ .w-e-toolbar {
+      background-color: #fff !important;
+      border: 1px solid #DCDFE6 !important;
+    }
+
+    /deep/ .w-e-text {
+      overflow-y: auto;
+
+      p {
+        margin: 10px 0;
+      }
+    }
+
+    /deep/ .w-e-text-container {
+      height: 500px !important;
+      border: 1px solid #DCDFE6 !important;
+    }
+
+    /deep/ .w-e-toolbar .w-e-menu {
+      line-height: 24px;
     }
   }
 </style>

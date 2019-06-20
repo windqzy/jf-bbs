@@ -133,7 +133,7 @@
         this.editor.customConfig.uploadFileName = 'file';
         // 移动端
         if (!isPC) {
-          editor.customConfig.menus = [
+          this.editor.customConfig.menus = [
             'head',
             'bold',
             'italic',

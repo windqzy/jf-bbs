@@ -3,9 +3,9 @@
     <p>
       <a href="javascript:;" target="_blank">金风社区</a>
       2019 &copy; <a href="http://www.bjjfsoft.com" target="_blank">金风易通科技有限公司出品</a>
-      <a class="onLineUserCount">当前在线人数：<span>{{onLineUserCount}}</span></a>
+      <a class="onLineUserCount hidden-sm-and-down">当前在线人数：<span>{{onLineUserCount}}</span></a>
     </p>
-
+    <p class="onLineUserCount hidden-sm-and-up">当前在线人数：<span>{{onLineUserCount}}</span></p>
     <!--<p>-->
     <!--<a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>-->
     <!--<a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>-->
@@ -17,7 +17,7 @@
 <script>
   export default {
     name: "Footer",
-    props:{
+    props: {
       onLineUserCount: Number
     },
     data() {
@@ -47,10 +47,10 @@
 </script>
 
 <style scoped lang="scss">
-.onLineUserCount {
-  color: #666;
-  span {
-    color: #f00;
+  .onLineUserCount {
+    color: #666;
+    span {
+      color: #f00;
+    }
   }
-}
 </style>

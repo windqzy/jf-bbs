@@ -157,6 +157,7 @@
         }
       },
       handleCommand(command) {
+        this.activeIndex = '';
         // this.$message('click on item ' + command);
         switch (command) {
           case 'a':

@@ -48,5 +48,6 @@
 <style scoped>
   .layui-container {
     padding-top: 60px;
+    min-height: calc(100vh - 140px);
   }
 </style>

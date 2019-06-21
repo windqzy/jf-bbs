@@ -25,7 +25,9 @@
     </el-card>-->
     <el-card v-for="(msg,index) in msgList" :key="index" shadow="never" v-else>
       <div class="msg-img">
-        <img :src="msg.sponsor.icon" alt="">
+        <el-image :src="msg.sponsor.icon" alt="">
+          <div slot="error"><svg-icon icon-class="img-error"></svg-icon></div>
+        </el-image>
         <div>
           <h2>{{msg.sponsor.username}}</h2>
           <p>回复人标签 · {{msg.messageEntity.createTime | dateStr}}</p>
@@ -97,7 +99,7 @@
       .msg-img {
         display: flex;
         cursor: pointer;
-        img {
+        .el-image {
           width: 45px;
           height: 45px;
           margin-right: 20px;

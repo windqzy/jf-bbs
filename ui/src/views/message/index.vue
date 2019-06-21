@@ -26,11 +26,13 @@
     <el-card v-for="(msg,index) in msgList" :key="index" shadow="never" v-else>
       <div class="msg-img">
         <el-image :src="msg.sponsor.icon" alt="">
-          <div slot="error"><svg-icon icon-class="img-error"></svg-icon></div>
+          <div slot="error">
+            <svg-icon icon-class="img-error"></svg-icon>
+          </div>
         </el-image>
         <div>
           <h2>{{msg.sponsor.username}}</h2>
-          <p>回复人标签 · {{msg.messageEntity.createTime | dateStr}}</p>
+          <p> {{msg.messageEntity.createTime | dateStr}}</p>
         </div>
       </div>
       <div class="msg-content">
@@ -42,7 +44,7 @@
             {{msg.messageEntity.type == '0'?'评论了：':'回复了你的评论：'}}
           </span>
           <router-link :to="'/post/detail?postId=' + msg.postsEntity.id ">
-            {{!msg.replyMessageEntity?msg.postsEntity.title :msg.replyMessageEntity.content}}
+            <a v-html="!msg.replyMessageEntity?msg.postsEntity.title :msg.replyMessageEntity.content"></a>
           </router-link>
         </div>
       </div>
@@ -68,7 +70,7 @@
       /* 切换标签页 */
       changeTab(e) {
         console.log(e.name);
-        if(e.name == '0') {
+        if (e.name == '0') {
           this.getMsgList();
         } else {
           this.msgList = [];

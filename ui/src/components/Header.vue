@@ -213,8 +213,8 @@
       },
       // 重新加载路由
       routerReload(path) {
-        if (this.$route.path === route) {
-          this.$router.push(route);
+        if (this.$router.path === path) {
+          this.$router.push(path);
           this.reload();
         } else {
           this.$router.push(path)

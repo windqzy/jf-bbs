@@ -83,13 +83,14 @@
           <div slot="header">
             <el-page-header @back="goBack" :content="toFaq.question"></el-page-header>
           </div>
-          <p v-html="toFaq.answer"></p>
+          <p v-html="toFaq.answer" class="photos" id="detail-body"></p>
+          <el-divider></el-divider>
           <el-row type="flex" justify="center" class="icon-head">
             <span :class="{active: isUseful == '1'}" @click="setUseful('1')">
-              <svg-icon icon-class="head"></svg-icon>有用({{toFaq.useful}})
+              <svg-icon icon-class="head"></svg-icon>有用({{toFaq.useful || 0}})
             </span>
             <span :class="{active: isUseful == '0'}" @click="setUseful('0')">
-              <svg-icon icon-class="head-1"></svg-icon>没用({{toFaq.useless}})
+              <svg-icon icon-class="head-1"></svg-icon>没用({{toFaq.useless || 0}})
             </span>
           </el-row>
         </el-card>
@@ -125,6 +126,7 @@
   import {isPC} from '@/utils/common';
   import * as face from '@/assets/face.json';
 
+
   export default {
     name: "index",
     data() {
@@ -153,7 +155,8 @@
           answer: '',
           typeId: ''
         },
-        editor: null
+        editor: null,
+        layer: null,
       }
     },
     created() {
@@ -164,6 +167,16 @@
       this.initEditor();
     },
     methods: {
+      layui() {
+        let _this = this;
+        layui.use(['layer'], function () {
+          _this.layer = layui.layer;
+          _this.layer.photos({
+            photos: '#detail-body',
+            anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+          });
+        });
+      },
       initEditor() {
         let _this = this;
         this.editor = new E(this.$refs.editor)
@@ -251,6 +264,10 @@
         this.detailBox = true;
         this.toFaq = item;
         this.isUseful = item.thought === null ? '' : item.thought === true ? '1' : '0';
+        /* 包含图片时可大图查看 */
+        this.$nextTick(() => {
+          this.layui();
+        })
       },
       goBack() {
         this.listBox = true;

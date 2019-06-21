@@ -34,11 +34,12 @@
               </div>
             </li>
           </ul>
-          <div style="text-align: center;cursor: pointer" v-if="!isSearch && data.length != 0">
+          <div style="text-align: center;cursor: pointer" v-if="!isSearch && data.length != 0&& isMore">
             <div class="laypage-main">
               <a @click="getMorePost" class="laypage-next">更多求解</a>
             </div>
           </div>
+          <el-divider v-if="!isMore && data.length != 0">我是有底线的</el-divider>
         </el-card>
       </el-col>
       <el-col :lg="6" :xs="24">
@@ -61,6 +62,7 @@
       return {
         type: 0,
         isSearch: true, // 是否为搜索
+        isMore: true, // 是否有更多
         query: {
           currPage: 1,
           limit: 10
@@ -91,6 +93,8 @@
       /* 切换分类标签页 */
       changeSort(type) {
         this.type = type;
+        this.query.currPage = 1;
+        this.isMore = true;
         this.getNewPosts(type);
       },
       /* 通过首页跳转查询 */
@@ -112,7 +116,26 @@
       /* 查询更多 */
       getMorePost() {
         this.query.currPage++;
-        this.getNewPosts();
+        //  this.getNewPosts();
+        let params = {
+          currPage: this.query.currPage,
+          limit: this.query.limit
+        }
+        post.getNewPosts(params).then(res => {
+          let posts = [];
+          if (this.type == 1) {
+            posts = res.data.goodList;
+          } else if (this.type == 2) {
+            posts = res.data.publishList;
+          } else if (this.type == 3) {
+            posts = res.data.replyList;
+          }
+          if (posts.length == 0) {
+            this.isMore = false;
+          } else {
+            this.data = this.data.concat(posts);
+          }
+        })
       },
       /**
        * 搜索内容

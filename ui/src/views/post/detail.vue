@@ -75,9 +75,7 @@
                 </div>
               </div>
             </div>
-            <div class="detail-body photos" v-html="postsInfo.content" v-loading="loadDetail">
-
-            </div>
+            <div class="detail-body photos" id="detail-body" v-html="postsInfo.content" v-loading="loadDetail"></div>
           </div>
         </el-card>
         <!-- 附件区 -->
@@ -344,7 +342,20 @@
       this.isColl();
       this.getReplyList();
     },
+    mounted() {
+      this.layui();
+    },
     methods: {
+      layui() {
+        let _this = this;
+        layui.use(['layer'], function () {
+          _this.layer = layui.layer;
+          _this.layer.photos({
+            photos: '#detail-body',
+            anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+          });
+        });
+      },
       goBack() {
         this.$router.go(-1);
       },
@@ -435,7 +446,7 @@
       preview(item) {
         let url = encodeURIComponent(item.url); //要预览文件的访问地址
         let winHeight = window.document.documentElement.clientHeight - 10;
-        window.open('http://172.17.0.203:8849/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+        window.open('http://oa.bjjfsoft.com:8849/onlinePreview?url=' + url, '_blank', 'height=' + winHeight + ',top=80,left=80,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
       },
       /* 下载附件 */
       download(item) {

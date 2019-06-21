@@ -80,8 +80,8 @@
     <!--</div>-->
     <el-card shadow="never">
       <div class="reg-avatar" align="center">
-        <el-upload  accept="image/png,image/jpg,image/jpeg"
-                    class="avatar-uploader"
+        <el-upload accept="image/png,image/jpg,image/jpeg"
+                   class="avatar-uploader"
                    :action="actionUrl"
                    :show-file-list="false"
                    :on-success="handleAvatarSuccess"
@@ -105,7 +105,8 @@
       </div>
       <div class="reg-username" align="center">
         <div class="layui-input-inline">
-          <input type="text" id="L_username" maxlength="10" name="username" required lay-verify="required" autocomplete="off"
+          <input type="text" id="L_username" maxlength="10" name="username" required lay-verify="required"
+                 autocomplete="off"
                  class="layui-input" v-model="username" placeholder="请输入您的昵称">
         </div>
       </div>
@@ -150,15 +151,15 @@
     methods: {
       // 判断是否为空
       isnull(val) {
-      var str = val.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
-      if (str == '' || str == undefined || str == null) {
-       return true;
-      // console.log('空')
-      } else {
-      return false;
-      // console.log('非空');
-      }
-    },
+        var str = val.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+        if (str == '' || str == undefined || str == null) {
+          return true;
+          // console.log('空')
+        } else {
+          return false;
+          // console.log('非空');
+        }
+      },
       //上传头像
       handleAvatarSuccess(res) {
         this.imageUrl = res.data.src;
@@ -182,9 +183,9 @@
         if (this.imageUrl == null) {
           this.$message.error('请上传您的头像！')
         } else {
-          if(this.isnull(this.username) == true){
+          if (this.isnull(this.username) == true) {
             this.$message.error('请填写您的昵称！')
-          }else {
+          } else {
             let UserForm = {
               username: this.username,
               // mobile: this.mobile,
@@ -250,7 +251,7 @@
   }
 
   .reg-sex input {
-    border: 0px;
+    border: 0;
     width: 50px;
     height: 30px;
     background-color: #333;
@@ -258,46 +259,39 @@
     color: #fff;
   }
 
-  .el-icon-male {
-    /*color: #1E9FFF;*/
+  .el-icon-male, .el-icon-female {
     font-size: 20px;
-  }
-
-  .el-icon-female {
-    /* color: pink;*/
-    font-size: 20px;
-  }
-
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
   }
 
   .reg-avatar {
     margin-top: 40px;
+    .avatar-uploader {
+      .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        &:hover {
+          border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 178px;
+          height: 178px;
+          line-height: 178px;
+          text-align: center;
+        }
+        .avatar {
+          width: 178px;
+          height: 178px;
+          display: block;
+        }
+      }
+    }
   }
+
   .reg-btn {
     margin: 20px;
   }

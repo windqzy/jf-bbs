@@ -30,7 +30,7 @@
           </el-row>
           <!-- 富文本 -->
           <div v-model="post.content" v-show="editType == 0" ref="editor" class="editor"></div>
-          <markdown-editor v-show="editType == 1" v-model="post.content"/>
+         <!-- <markdown-editor v-show="editType == 1" v-model="post.content"/>-->
           <el-tabs type="border-card">
             <!--<el-tab-pane label="回帖奖励">-->
             <!--<div class="reward-box">-->
@@ -75,7 +75,7 @@
 <script>
   import E from 'wangeditor'
   // https://hacpai.com/article/1549638745630?r=Vanessa
-  import MarkdownEditor from '@/components/MarkdownEditor'
+  /*import MarkdownEditor from '@/components/MarkdownEditor'*/
   import * as label from '@/api/label';
   import * as tag from '@/api/tag';
   import * as posts from '@/api/post';
@@ -110,7 +110,7 @@
       }
     },
     components: {
-      'markdown-editor': MarkdownEditor
+     /* 'markdown-editor': MarkdownEditor*/
     },
     created() {
       this.userInfo = this.$store.getters.user;

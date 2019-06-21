@@ -78,43 +78,43 @@
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-    <el-card shadow="never">
-      <div class="reg-avatar" align="center">
-        <el-upload accept="image/png,image/jpg,image/jpeg"
-                   class="avatar-uploader"
-                   :action="actionUrl"
-                   :show-file-list="false"
-                   :on-success="handleAvatarSuccess"
-                   :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+    <h2>用户注册</h2>
+    <div class="reg-avatar" align="center">
+      <el-upload accept="image/png,image/jpg,image/jpeg"
+                 class="avatar-uploader"
+                 :action="actionUrl"
+                 :show-file-list="false"
+                 :on-success="handleAvatarSuccess"
+                 :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </div>
+    <div class="reg-sex" align="center">
+      <!--  <input type="radio" name="sex" v-model="selectSex" value="1" checked >
+        <input type="radio" name="sex" v-model="selectSex" value="0">
+        <button></button>-->
+      <el-radio-group v-model="selectSex">
+        <el-radio-button label="0">
+          <i class="el-icon-male"></i>
+        </el-radio-button>
+        <el-radio-button label="1">
+          <i class="el-icon-female"></i>
+        </el-radio-button>
+      </el-radio-group>
+    </div>
+    <div class="reg-username" align="center">
+      <div class="layui-input-inline">
+        <input type="text" id="L_username" maxlength="10" name="username" required lay-verify="required"
+               autocomplete="off"
+               class="layui-input" v-model="username" placeholder="请输入您的昵称">
       </div>
-      <div class="reg-sex" align="center">
-        <!--  <input type="radio" name="sex" v-model="selectSex" value="1" checked >
-          <input type="radio" name="sex" v-model="selectSex" value="0">
-          <button></button>-->
-        <el-radio-group v-model="selectSex">
-          <el-radio-button label="0">
-            <i class="el-icon-male"></i>
-          </el-radio-button>
-          <el-radio-button label="1">
-            <i class="el-icon-female"></i>
-          </el-radio-button>
-        </el-radio-group>
-      </div>
-      <div class="reg-username" align="center">
-        <div class="layui-input-inline">
-          <input type="text" id="L_username" maxlength="10" name="username" required lay-verify="required"
-                 autocomplete="off"
-                 class="layui-input" v-model="username" placeholder="请输入您的昵称">
-        </div>
-      </div>
-      <div class="reg-btn" align="center">
-        <!--<button class="btn" lay-filter="*" lay-submit @click="upDateUser"><i class="el-icon-right"></i></button>-->
-        <el-button type="primary" icon="el-icon-right" @click="upDateUser" circle></el-button>
-      </div>
-    </el-card>
+    </div>
+    <div class="reg-btn" align="center">
+      <!--<button class="btn" lay-filter="*" lay-submit @click="upDateUser"><i class="el-icon-right"></i></button>-->
+      <el-button type="primary" icon="el-icon-right" @click="upDateUser" circle></el-button>
+    </div>
+
   </div>
 </template>
 
@@ -236,6 +236,14 @@
 </script>
 
 <style type="text/css" lang="scss">
+  .layui-container {
+    h2 {
+      text-align: center;
+      margin: 40px 0;
+      color: #009688;
+    }
+  }
+
   .reg-sex {
     margin: 20px;
     width: auto;
@@ -264,7 +272,6 @@
   }
 
   .reg-avatar {
-    margin-top: 40px;
     .avatar-uploader {
       .el-upload {
         border: 1px dashed #d9d9d9;

@@ -17,6 +17,9 @@ export default new Router({
       path: '/login2',
       component: () => import('@/views/login'),
     }, {
+      path: '/user/reg',
+      component: () => import('@/views/user/reg')
+    }, {
       path: '/home',
       component: Layer,
       children: [
@@ -76,15 +79,6 @@ export default new Router({
         {
           path: 'index',
           component: () => import('@/views/set/index')
-        }
-      ]
-    }, {
-      path: '/user',
-      component: Layer,
-      children: [
-        {
-          path: 'reg',
-          component: () => import('@/views/user/reg')
         }
       ]
     }, {

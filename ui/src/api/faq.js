@@ -24,6 +24,17 @@ export function update(faqEntity) {
   })
 }
 
+/**
+ * 删除FAQ
+ * @param id FAQid
+ */
+export function del(id) {
+  return request({
+    url: `/faq/del/${id}`,
+    method: 'get'
+  })
+}
+
 // 判断有用没用
 export function good(faqId,isGood) {
   return request({

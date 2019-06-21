@@ -44,22 +44,30 @@
         <el-input placeholder="请输入关键字" size="mini" v-model="filterText" @input="filterFAQ"></el-input>
         <el-tabs type="border-card">
           <el-tab-pane label="FAQ列表"></el-tab-pane>
-          <el-tab-pane label="热门问题"></el-tab-pane>
-          <ul v-if="!filterText">
-            <li v-for="(item, index) in findList">
-              <el-link type="primary" @click="faqDetail(item)">
-                <span>{{index + 1}}</span>. {{item.question}}
+          <!-- <el-tab-pane label="热门问题"></el-tab-pane>-->
+          <div class="faq-list" v-if="!filterText">
+            <el-card shadow="never" v-for="(item, index) in findList" :key="index">
+              <el-link type="primary" @click="faqDetail(item)" :title="item.question">
+                <span>{{index + 1}}</span>. {{item.question | subString(18)}}
               </el-link>
-            </li>
-          </ul>
+              <el-row type="flex" justify="center" class="icon-head">
+                <span><svg-icon icon-class="head"></svg-icon>{{item.useful}}</span>
+                <span><svg-icon icon-class="head-1"></svg-icon>{{item.useless}}</span>
+              </el-row>
+              <div v-if="item.userId == $store.state.user.id" class="faq-list-tools">
+                <span @click="editFAQ(item)"><i class="el-icon-edit"></i></span>
+                <span @click="deleteFAQ(item)"><i class="el-icon-delete"></i></span>
+              </div>
+            </el-card>
+          </div>
           <!-- 过滤时列表 -->
-          <ul v-else>
-            <li v-for="(item, index) in filterFAQList">
+          <div class="faq-list" v-else>
+            <el-card shadow="never" v-for="(item, index) in filterFAQList" :key="index">
               <el-link type="primary" @click="faqDetail(item)">
                 <span>{{index + 1}}</span>. {{item.question}}
               </el-link>
-            </li>
-          </ul>
+            </el-card>
+          </div>
         </el-tabs>
       </el-col>
       <el-col :lg="18" :xs="24" v-show="detailBox">
@@ -70,10 +78,10 @@
           <p v-html="toFaq.answer"></p>
           <el-row type="flex" justify="center" class="icon-head">
             <span :class="{active: isUseful == '1'}" @click="setUseful('1')">
-              <svg-icon icon-class="head"></svg-icon>有用
+              <svg-icon icon-class="head"></svg-icon>有用({{toFaq.useful}})
             </span>
             <span :class="{active: isUseful == '0'}" @click="setUseful('0')">
-              <svg-icon icon-class="head-1"></svg-icon>没用
+              <svg-icon icon-class="head-1"></svg-icon>没用({{toFaq.useless}})
             </span>
           </el-row>
         </el-card>
@@ -132,6 +140,7 @@
           parentId: 'parentId'
         },
         faqForm: {
+          id: '',
           question: '',
           answer: '',
           typeId: ''
@@ -163,7 +172,8 @@
           'bold',
           'italic',
           'underline',
-          'image'
+          'image',
+          'emoticon'
         ];
 
         this.editor.customConfig.emotions = [
@@ -196,7 +206,8 @@
       },
       getFaqList(typeId) {
         return new Promise(resolve => {
-          faq.getFaqList(typeId).then(res => {
+          let id = typeId === '' ? '' : Number(typeId);
+          faq.getFaqList(id).then(res => {
             this.faqList = res.data;
             this.findList = this.faqList;
             resolve()
@@ -215,16 +226,22 @@
       },
       handleNodeClick(data) {
         if (data.parentId !== 0) {
-          this.isAdd = true;
-          this.faqForm.typeId = data.id;
-          this.faq = data;
-          this.findFaqList(this.faq.id);
+          if (this.detailBox || this.addBox) {
+            this.detailBox = false;
+            this.closeFAQ();
+          } else {
+            this.isAdd = true;
+            this.faqForm.typeId = data.id;
+            this.faq = data;
+            this.findFaqList(this.faq.id);
+          }
         }
       },
       faqDetail(item) {
         this.listBox = false;
         this.detailBox = true;
         this.toFaq = item;
+        this.isUseful = item.thought === null ? '' : item.thought === true ? '1' : '0';
       },
       goBack() {
         this.listBox = true;
@@ -232,15 +249,19 @@
       },
       /* 评价FAQ是否有用 */
       setUseful(item) {
+        if (this.isUseful !== '') {
+          return this.$message({type: 'success', message: '您已经评价过了！', duration: 1000})
+        }
         this.isUseful = item;
         let faqId = this.toFaq.id;
-        let isGood;
-        if (this.isUseful == '1'){
-          isGood=true;
-        }else {
-          isGood=false;
+        let isGood = this.isUseful == '1' ? true : false;
+        if (item == '0') {
+          this.toFaq.useless += 1;
+        } else {
+          this.toFaq.useful += 1;
         }
-        faq.good(faqId,isGood).then(res=>{
+        faq.good(faqId, isGood).then(res => {
+          this.getFaqList(this.faqForm.typeId)
           this.$message({type: 'success', message: res.msg, duration: 1000})
         })
       },
@@ -250,17 +271,18 @@
         this.listBox = false;
         this.faqForm.question = '';
         this.faqForm.answer = '';
-        faq.update()
-
+        this.faqForm.id = '';
       },
       /* 保存FAQ */
       saveFAQ() {
         let data = {
           question: this.faqForm.question,
           answer: this.faqForm.answer,
-          typeId: this.faqForm.typeId
+          typeId: +this.faqForm.typeId,
+          id: this.faqForm.id
         }
         faq.update(data).then(res => {
+          this.closeFAQ();
           this.$message({type: 'success', message: res.msg, duration: 1000})
         })
       },
@@ -269,6 +291,29 @@
         this.addBox = false;
         this.listBox = true;
         this.getFaqList(this.faqForm.typeId)
+      },
+      /* 编辑FAQ */
+      editFAQ(item) {
+        this.addBox = true;
+        this.listBox = false;
+        this.faqForm.id = item.id;
+        this.faqForm.question = item.question;
+        this.faqForm.typeId = item.typeId;
+        this.editor.txt.html(item.answer);
+      },
+      /* 删除FAQ */
+      deleteFAQ(item) {
+        this.$confirm(`即将删除此FAQ，是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          faq.del(item.id).then(res => {
+            this.$message({type: 'success', message: res.msg, duration: 1000});
+            this.getFaqList(this.faqForm.typeId);
+          })
+        }).catch(() => {
+        });
       },
       /* 过滤 */
       filterFAQ(text) {
@@ -317,12 +362,34 @@
         border-radius: 0;
       }
     }
-    .el-link {
-      margin: 4px 0;
-      span {
-        text-align: center;
-        display: inline-block;
-        width: 24px;
+    .faq-list {
+      .el-card {
+        position: relative;
+        margin-bottom: 10px;
+        /deep/ .el-card__body {
+          padding: 10px;
+          overflow: hidden;
+        }
+      }
+      .el-link {
+        margin: 4px 0;
+        span {
+          text-align: center;
+          display: inline-block;
+          width: 24px;
+        }
+      }
+      &-tools {
+        float: right;
+        margin-top: 8px;
+        span {
+          cursor: pointer;
+          margin: 0px 4px;
+        }
+      }
+      .icon-head {
+        float: right;
+        margin-top: 8px;
       }
     }
   }

@@ -64,8 +64,16 @@
           <div class="faq-list" v-else>
             <el-card shadow="never" v-for="(item, index) in filterFAQList" :key="index">
               <el-link type="primary" @click="faqDetail(item)">
-                <span>{{index + 1}}</span>. {{item.question}}
+                <span>{{index + 1}}</span>. {{item.question | subString(18)}}
               </el-link>
+              <el-row type="flex" justify="center" class="icon-head">
+                <span><svg-icon icon-class="head"></svg-icon>{{item.useful}}</span>
+                <span><svg-icon icon-class="head-1"></svg-icon>{{item.useless}}</span>
+              </el-row>
+              <div v-if="item.userId == $store.state.user.id" class="faq-list-tools">
+                <span @click="editFAQ(item)"><i class="el-icon-edit"></i></span>
+                <span @click="deleteFAQ(item)"><i class="el-icon-delete"></i></span>
+              </div>
             </el-card>
           </div>
         </el-tabs>
@@ -207,6 +215,7 @@
       getFaqList(typeId) {
         return new Promise(resolve => {
           let id = typeId === '' ? '' : Number(typeId);
+          /* TODO:临时解决，此处传空 */
           faq.getFaqList(id).then(res => {
             this.faqList = res.data;
             this.findList = this.faqList;
@@ -233,7 +242,7 @@
             this.isAdd = true;
             this.faqForm.typeId = data.id;
             this.faq = data;
-            this.findFaqList(this.faq.id);
+            this.getFaqList(this.faq.id);
           }
         }
       },

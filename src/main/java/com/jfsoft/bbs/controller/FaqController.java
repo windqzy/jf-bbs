@@ -88,6 +88,8 @@ public class FaqController extends AbstractController {
             } else {
                 list.get(i).setThought(true);
             }
+            list.get(i).setUseful(bbsFaqLogService.useCount(list.get(i).getId(), true));
+            list.get(i).setUseless(bbsFaqLogService.useCount(list.get(i).getId(), false));
         }
         return R.ok().put("data", list);
     }
@@ -137,12 +139,12 @@ public class FaqController extends AbstractController {
      **/
     @RequestMapping("/good")
     public R isGood(Integer faqId, boolean isGood) {
-            BbsFaqLogEntity faqLogEntity = new BbsFaqLogEntity();
-            faqLogEntity.setFaqId(faqId);
-            faqLogEntity.setGood(isGood);
-            faqLogEntity.setUserId(getUserId());
-            bbsFaqLogService.insert(faqLogEntity);
-            return R.ok("谢谢您的评价");
+        BbsFaqLogEntity faqLogEntity = new BbsFaqLogEntity();
+        faqLogEntity.setFaqId(faqId);
+        faqLogEntity.setGood(isGood);
+        faqLogEntity.setUserId(getUserId());
+        bbsFaqLogService.insert(faqLogEntity);
+        return R.ok("谢谢您的评价");
     }
 
     /**

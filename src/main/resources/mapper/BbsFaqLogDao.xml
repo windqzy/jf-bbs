@@ -10,6 +10,7 @@
         <result property="isGood" column="is_good"/>
         <result property="userId" column="user_id"/>
     </resultMap>
-
-
+    <select id="useCount" parameterType="map" resultType="integer">
+        select count(-1) from bbs_faq_log where faq_id = #{faqId} and is_good=#{isGood}
+    </select>
 </mapper>

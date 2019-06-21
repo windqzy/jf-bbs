@@ -30,6 +30,28 @@ public class BbsFaqEntity {
     @TableField(exist = false)
     private Boolean thought;
 
+    @TableField(exist = false)
+    private Integer useful;
+
+    @TableField(exist = false)
+    private Integer Useless;
+
+    public Integer getUseful() {
+        return useful;
+    }
+
+    public void setUseful(Integer useful) {
+        this.useful = useful;
+    }
+
+    public Integer getUseless() {
+        return Useless;
+    }
+
+    public void setUseless(Integer useless) {
+        Useless = useless;
+    }
+
     public Boolean getThought() {
         return thought;
     }

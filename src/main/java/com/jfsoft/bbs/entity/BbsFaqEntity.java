@@ -1,5 +1,6 @@
 package com.jfsoft.bbs.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -25,6 +26,17 @@ public class BbsFaqEntity {
     private Date updateTime;
 
     private Boolean isDel;
+
+    @TableField(exist = false)
+    private Boolean thought;
+
+    public Boolean getThought() {
+        return thought;
+    }
+
+    public void setThought(Boolean thought) {
+        this.thought = thought;
+    }
 
     public Date getUpdateTime() {
         return updateTime;

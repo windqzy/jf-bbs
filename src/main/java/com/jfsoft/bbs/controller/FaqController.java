@@ -78,6 +78,17 @@ public class FaqController extends AbstractController {
     @RequestMapping("/faqList")
     public R getFaqList(Integer typeId) {
         List<BbsFaqEntity> list = bbsFaqService.getFaqList(typeId);
+        for (int i = 0; i < list.size(); i++) {
+            EntityWrapper<BbsFaqLogEntity> wrapper = new EntityWrapper<>();
+            wrapper.eq("faq_id", list.get(i).getId());
+            wrapper.eq("user_id", getUserId());
+            BbsFaqLogEntity bbsFaqLogEntity = bbsFaqLogService.selectOne(wrapper);
+            if (bbsFaqLogEntity == null) {
+                list.get(i).setThought(false);
+            } else {
+                list.get(i).setThought(true);
+            }
+        }
         return R.ok().put("data", list);
     }
 
@@ -126,20 +137,12 @@ public class FaqController extends AbstractController {
      **/
     @RequestMapping("/good")
     public R isGood(Integer faqId, boolean isGood) {
-        EntityWrapper<BbsFaqLogEntity> wrapper = new EntityWrapper<>();
-        wrapper.eq("faq_id", faqId);
-        wrapper.eq("user_id", getUserId());
-        BbsFaqLogEntity bbsFaqLogEntity = bbsFaqLogService.selectOne(wrapper);
-        if (bbsFaqLogEntity == null) {
             BbsFaqLogEntity faqLogEntity = new BbsFaqLogEntity();
             faqLogEntity.setFaqId(faqId);
             faqLogEntity.setGood(isGood);
             faqLogEntity.setUserId(getUserId());
             bbsFaqLogService.insert(faqLogEntity);
             return R.ok("谢谢您的评价");
-        } else {
-            return R.ok("false");
-        }
     }
 
     /**

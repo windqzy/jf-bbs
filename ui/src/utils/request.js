@@ -27,9 +27,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-
     const res = response.data
-
     if (res.code == 500) {
       layer.msg(res.msg);
     } else {

@@ -451,7 +451,6 @@
       /* 下载附件 */
       download(item) {
         post.downloadFile(item.id).then(res => {
-          console.log(res);
           if (!res.data) {
             return
           }
@@ -467,7 +466,8 @@
           aLink.click();
           document.body.removeChild(aLink); //下载完成移除元素
           window.URL.revokeObjectURL(url); //释放掉blob对象
-        }).catch(() => {
+        }).catch(err => {
+          console.log(err);
           this.$message({message: '文件导出异常', type: 'error', duration: 1000});
         })
       },

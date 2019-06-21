@@ -15,9 +15,9 @@
               <el-select v-model="post.labelId" placeholder="请选择板块" size="small" @change="getTagByLabelId">
                 <el-option-group v-for="label in labelList" :key="label.id" :label="label.name">
                   <el-option v-for="item in label.children"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
+                             :key="item.id"
+                             :label="item.name"
+                             :value="item.id">
                   </el-option>
                 </el-option-group>
               </el-select>
@@ -30,7 +30,7 @@
           </el-row>
           <!-- 富文本 -->
           <div v-model="post.content" v-show="editType == 0" ref="editor" class="editor"></div>
-         <!-- <markdown-editor v-show="editType == 1" v-model="post.content"/>-->
+          <!-- <markdown-editor v-show="editType == 1" v-model="post.content"/>-->
           <el-tabs type="border-card">
             <!--<el-tab-pane label="回帖奖励">-->
             <!--<div class="reward-box">-->
@@ -48,6 +48,7 @@
                 :action="actionUrl"
                 :on-change="handleChange"
                 :on-success="handleSuccess"
+                :on-remove="handleRemove"
                 :file-list="fileList">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <!--<div slot="tip" class="el-upload__tip">-->
@@ -110,7 +111,7 @@
       }
     },
     components: {
-     /* 'markdown-editor': MarkdownEditor*/
+      /* 'markdown-editor': MarkdownEditor*/
     },
     created() {
       this.userInfo = this.$store.getters.user;
@@ -175,6 +176,10 @@
           /*let arr = [];
           res.data.forEach(e => arr = arr.concat(e.children));*/
           this.labelList = res.data;
+          /* 是否为编辑帖子 */
+          if (this.$route.query.id) {
+            this.getDetail(this.$route.query.id)
+          }
         });
       },
       getTagByLabelId() {
@@ -191,6 +196,10 @@
           res: res.data.src
         };
         this.fileList.push(obj);
+      },
+      /* 文件列表移除文件时的钩子 */
+      handleRemove(file, fileList) {
+        this.fileList = fileList;
       },
       save() {
         this.post.isTemp = true;
@@ -261,15 +270,59 @@
               bbsPostsFiles.push(item);
             });
             // 更新文件路径
-            posts.updateFile(bbsPostsFiles);
+            let postId = this.post.id || '';
+            posts.updateFile(postId, bbsPostsFiles);
           }
           this.loading1 = false;
           this.loading2 = false;
           this.loading3 = false;
-          this.$message.success('发布成功');
+          if (this.post.isTemp = true) {
+            this.$message.success('保存成功');
+          } else {
+            this.$message.success('发布成功');
+          }
           this.$router.push('/home/index');
         });
-      }
+      },
+      /* 编辑时回填帖子内容 */
+      getDetail(postId) {
+        posts.getDetail(postId).then(res => {
+          tag.getList(res.data.labelId).then(e => {
+            this.tagList = e.data;
+            this.post = {
+              id: res.data.id,
+              title: res.data.title,
+              labelId: res.data.labelId,
+              tagId: res.data.tagId,
+              content: res.data.content,
+              grade: 0,
+              isTemp: false,
+              replyDownload: false,
+              isAnonymous: false
+            }
+            this.editor.txt.html(res.data.content);
+          })
+        })
+        this.getFileList(postId);
+      },
+      /* 查询文件列表 */
+      getFileList(postId) {
+        posts.getFileList(postId).then(res => {
+          let arr = [];
+          res.data.forEach(item => {
+            arr.push({
+              name: item.name,
+              response: {
+                data: {
+                  src: item.url
+                }
+              },
+              size: item.size
+            })
+          })
+          this.fileList = arr;
+        })
+      },
     }
   }
 </script>

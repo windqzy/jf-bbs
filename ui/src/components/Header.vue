@@ -72,6 +72,7 @@
               <el-dropdown-item command="a" icon="el-icon-chat-dot-square">消息</el-dropdown-item>
               <el-dropdown-item command="b" divided icon="el-icon-edit">写文章</el-dropdown-item>
               <el-dropdown-item command="c" icon="el-icon-document">草稿箱</el-dropdown-item>
+              <el-dropdown-item command="f" icon="el-icon-star-off">我的收藏</el-dropdown-item>
               <el-dropdown-item command="d" divided icon="el-icon-user">个人中心</el-dropdown-item>
               <!--<el-dropdown-item command="b">切换账号</el-dropdown-item>-->
               <el-dropdown-item command="e" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
@@ -158,7 +159,6 @@
       },
       handleCommand(command) {
         this.activeIndex = '';
-        // this.$message('click on item ' + command);
         switch (command) {
           case 'a':
             if (this.$route.path === '/msg/index') {
@@ -168,21 +168,20 @@
             }
             break;
           case 'b':
-            this.$router.push('/post/new');
+            this.newPosts();
             break;
           case 'c':
-            this.$router.push('/user/home?type=2');
+            this.routerReload('/user/home?type=2');
             break;
           case 'd':
-            if (this.$route.path === '/user/home') {
-              this.reload();
-            } else {
-              this.$router.push('/user/home')
-            }
+            this.routerReload('/user/home');
             break;
           case 'e':
             this.$router.push('/login');
             window.localStorage['J-Token'] = '';
+            break;
+          case 'f':
+            this.routerReload('/user/home?type=1');
             break;
         }
         /* if (command == 'd') {
@@ -193,7 +192,11 @@
          }*/
       },
       newPosts() {
-        this.$router.push('/post/new');
+        if (this.$route.path === '/post/new') {
+          this.reload();
+        } else {
+          this.$router.push('/post/new')
+        }
       },
       /* 搜索文章 */
       search() {
@@ -206,6 +209,15 @@
           this.reload();
         } else {
           this.$router.push('/msg/index')
+        }
+      },
+      // 重新加载路由
+      routerReload(path) {
+        if (this.$route.path === route) {
+          this.$router.push(route);
+          this.reload();
+        } else {
+          this.$router.push(path)
         }
       }
     }

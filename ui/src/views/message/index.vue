@@ -32,7 +32,7 @@
         </el-image>
         <div>
           <h2>{{msg.sponsor.username}}</h2>
-          <p> {{msg.messageEntity.createTime | dateStr}}</p>
+          <p>{{msg.messageEntity.createTime | dateStr}}</p>
         </div>
       </div>
       <div class="msg-content">

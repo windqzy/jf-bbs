@@ -228,7 +228,6 @@
       getFaqList(typeId) {
         return new Promise(resolve => {
           let id = typeId === '' ? '' : Number(typeId);
-          /* TODO:临时解决，此处传空 */
           faq.getFaqList(id).then(res => {
             this.faqList = res.data;
             this.findList = this.faqList;

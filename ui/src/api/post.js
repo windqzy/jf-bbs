@@ -37,7 +37,7 @@ export function search(keyword) {
 // 查询帖子列表
 export function getPersonList(id, type, order) {
   return request({
-    url: '/posts/personList?userId=' + id + '&type='+type +'&order='+ order,
+    url: '/posts/personList?userId=' + id + '&type=' + type + '&order=' + order,
     method: 'GET'
   })
 }
@@ -59,9 +59,13 @@ export function publish(bbsPosts) {
   })
 }
 
-export function updateFile(bbsPostsFiles) {
+/**
+ * 上传文件
+ * @param bbsPostsFiles
+ */
+export function updateFile(postsId, bbsPostsFiles) {
   return request({
-    url: '/posts/updateFile',
+    url: '/posts/updateFile?postsId=' + postsId,
     method: 'POST',
     data: bbsPostsFiles
   })
@@ -130,7 +134,7 @@ export function getNewPosts(data) {
 export function getPostsList(form) {
   return request({
     url: '/posts/getPostsList?pageIndex=' + form.pageIndex + '&pageSize=' + form.pageSize + '&sortType=' + form.sortType +
-      '&tagId=' + form.tagId + '&labelId=' + form.labelId,
+    '&tagId=' + form.tagId + '&labelId=' + form.labelId,
     method: 'GET'
   })
 }
@@ -154,9 +158,20 @@ export function downloadFile(fileId) {
   return axios({
     url: window.localStorage.baseUrl + '/download/' + fileId,
     method: 'GET',
-    headers:{
+    headers: {
       'J-Token': window.localStorage['J-Token']
     },
     responseType: 'blob'
+  })
+}
+
+/**
+ * 删除附件
+ * @param fileId 文件ID
+ */
+export function deleteFile(fileId) {
+  return request({
+    url: '/posts/deleteFile/' + fileId,
+    method: 'GET'
   })
 }

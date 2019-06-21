@@ -104,7 +104,7 @@
               <span v-if="post.end" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
               <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i>{{post.replyCount}}
-                <span v-if="tabName != '1'">编辑</span>
+                <span @click="editPost(post)" v-if="tabName != '1'">编辑</span>
                 <span @click="deletePost(post)" v-if="tabName != '1'">删除</span>
               </span>
             </div>
@@ -172,16 +172,19 @@
       }
       this.getGrade();
       /* 草稿箱或个人中心 */
-      if(this.$route.query.type == 2) {
+      let type = this.$route.query.type;
+      if (type == 2) {
         this.tabName = '2'
+      } else if (type == 1) {
+        this.tabName = '1'
       } else {
         this.tabName = '0'
       }
       this.getList();
     },
-    watch:{
+    watch: {
       '$route.query.type'(val) {
-        if(val == 2) {
+        if (val == 2) {
           this.tabName = '2'
         } else {
           this.tabName = '0'
@@ -272,6 +275,12 @@
       changeOrder(order) {
         this.order = order;
         this.getList();
+      },
+      /**
+       * 编辑帖子
+       **/
+      editPost(item) {
+        this.$router.push(`/post/new?id=${item.id}`);
       },
       /**
        * 删除帖子

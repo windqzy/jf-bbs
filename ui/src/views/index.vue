@@ -79,7 +79,7 @@
                   :class="{'one': label.children.length % 3 == 1,'two': label.children.length % 3 == 2,'zero': label.children.length % 3 == 0}">
             <el-row :gutter="10" type="flex">
               <el-col :span="6">
-                <el-image :src="tag.icon" :alt="tag.name" class="label-col-img">
+                <el-image :src="tag.icon || ''" :alt="tag.name" class="label-col-img">
                   <div slot="error" class="img-error">{{tag.name}}</div>
                 </el-image>
               </el-col>

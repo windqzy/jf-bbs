@@ -273,12 +273,12 @@
           <div class="author-about">
             <el-row>
               <el-col :span="6" :xs="4">
-                <el-image :src="userInfo.icon == null? defaultAvatar : userInfo.icon"
-                          :alt="userInfo.username"></el-image>
+                <el-image :src="postsInfo.icon == null ? defaultAvatar : postsInfo.icon"
+                          :alt="postsInfo.author"></el-image>
               </el-col>
               <el-col :span="18" :xs="20">
                 <div class="info-box">
-                  <a class="username">{{userInfo.username}}</a>
+                  <a class="username">{{postsInfo.author == null ? '匿名' : postsInfo.author}}</a>
                   <div class="position">暂无成就</div>
                 </div>
               </el-col>

@@ -186,6 +186,8 @@
       '$route.query.type'(val) {
         if (val == 2) {
           this.tabName = '2'
+        } else if (val == 1) {
+          this.tabName = '1'
         } else {
           this.tabName = '0'
         }

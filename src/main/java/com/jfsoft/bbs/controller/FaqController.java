@@ -84,9 +84,9 @@ public class FaqController extends AbstractController {
             wrapper.eq("user_id", getUserId());
             BbsFaqLogEntity bbsFaqLogEntity = bbsFaqLogService.selectOne(wrapper);
             if (bbsFaqLogEntity == null) {
-                list.get(i).setThought(false);
+                list.get(i).setThought(null);
             } else {
-                list.get(i).setThought(true);
+                list.get(i).setThought(bbsFaqLogEntity.getGood());
             }
             list.get(i).setUseful(bbsFaqLogService.useCount(list.get(i).getId(), true));
             list.get(i).setUseless(bbsFaqLogService.useCount(list.get(i).getId(), false));

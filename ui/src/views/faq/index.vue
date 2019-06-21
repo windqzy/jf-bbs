@@ -233,7 +233,16 @@
       /* 评价FAQ是否有用 */
       setUseful(item) {
         this.isUseful = item;
-        /* TODO:API接口 */
+        let faqId = this.toFaq.id;
+        let isGood;
+        if (this.isUseful == '1'){
+          isGood=true;
+        }else {
+          isGood=false;
+        }
+        faq.good(faqId,isGood).then(res=>{
+          this.$message({type: 'success', message: res.msg, duration: 1000})
+        })
       },
       /* 新增FAQ */
       addFAQ() {
@@ -241,6 +250,8 @@
         this.listBox = false;
         this.faqForm.question = '';
         this.faqForm.answer = '';
+        faq.update()
+
       },
       /* 保存FAQ */
       saveFAQ() {

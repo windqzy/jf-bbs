@@ -95,10 +95,10 @@
         <input type="radio" name="sex" v-model="selectSex" value="0">
         <button></button>-->
       <el-radio-group v-model="selectSex">
-        <el-radio-button label="0">
+        <el-radio-button label="1">
           <i class="el-icon-male"></i>
         </el-radio-button>
-        <el-radio-button label="1">
+        <el-radio-button label="0">
           <i class="el-icon-female"></i>
         </el-radio-button>
       </el-radio-group>
@@ -114,7 +114,6 @@
       <!--<button class="btn" lay-filter="*" lay-submit @click="upDateUser"><i class="el-icon-right"></i></button>-->
       <el-button type="primary" icon="el-icon-right" @click="upDateUser" circle></el-button>
     </div>
-
   </div>
 </template>
 
@@ -235,71 +234,64 @@
   }
 </script>
 
-<style type="text/css" lang="scss">
+<style type="text/css" lang="scss" scoped>
   .layui-container {
     h2 {
       text-align: center;
       margin: 40px 0;
       color: #009688;
     }
-  }
-
-  .reg-sex {
-    margin: 20px;
-    width: auto;
-    height: 50px;
-    line-height: 50px;
-
-    .el-radio-group {
-      /deep/ .el-radio-button__inner {
-        padding: 8px 34px;
-      }
-    }
-
-  }
-
-  .reg-sex input {
-    border: 0;
-    width: 50px;
-    height: 30px;
-    background-color: #333;
-    font-size: 12px;
-    color: #fff;
-  }
-
-  .el-icon-male, .el-icon-female {
-    font-size: 20px;
-  }
-
-  .reg-avatar {
-    .avatar-uploader {
-      .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        &:hover {
-          border-color: #409EFF;
-        }
-        .avatar-uploader-icon {
-          font-size: 28px;
-          color: #8c939d;
-          width: 178px;
-          height: 178px;
-          line-height: 178px;
-          text-align: center;
-        }
-        .avatar {
-          width: 178px;
-          height: 178px;
-          display: block;
+    .reg-avatar {
+      .avatar-uploader {
+        .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          &:hover {
+            border-color: #409EFF;
+          }
+          .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+          }
+          .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+          }
         }
       }
     }
-  }
-
-  .reg-btn {
-    margin: 20px;
+    .reg-sex {
+      margin: 20px;
+      width: auto;
+      height: 50px;
+      line-height: 50px;
+      .el-radio-group {
+        /deep/ .el-radio-button__inner {
+          padding: 8px 34px;
+          .el-icon-male, .el-icon-female {
+            font-size: 20px;
+          }
+        }
+      }
+      input {
+        border: 0;
+        width: 50px;
+        height: 30px;
+        background-color: #333;
+        font-size: 12px;
+        color: #fff;
+      }
+    }
+    .reg-btn {
+      margin: 20px;
+    }
   }
 </style>

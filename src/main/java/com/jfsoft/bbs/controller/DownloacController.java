@@ -5,11 +5,16 @@ import com.jfsoft.bbs.entity.BbsPostsFileEntity;
 import com.jfsoft.bbs.service.BbsPostsFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.file.Paths;
 
 /**
  * @ClassName DownloacController
@@ -31,6 +36,13 @@ public class DownloacController {
     @Value("${app.staticUrl}")
     private String staticUrl;
 
+    private final ResourceLoader resourceLoader;
+
+    @Autowired
+    public DownloacController(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
     /**
      * 文件下载
      *
@@ -40,51 +52,71 @@ public class DownloacController {
      * @Return
      **/
     @GetMapping("/{fileId}")
-    public void downLoad(HttpServletResponse response, @PathVariable Integer fileId) {
-
+    public void downloadFile(@PathVariable Integer fileId, HttpServletResponse response) {
         BbsPostsFileEntity fileEntity = bbsPostsFileService.selectById(fileId);
-
         String urlPath = fileEntity.getUrl();
-        String downloadName = fileEntity.getName();
-//        进行转码后的文件名，用来下载之后的文件名
-        try {
-            download(response, urlPath, downloadName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private void download(HttpServletResponse resp, String urlPath, String downloadName) throws Exception {
-
-        String path = urlPath.replace(staticUrl, filePath);
-        File file = new File(path);
-        resp.reset();
-        resp.setContentType("application/octet-stream");
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentLength((int) file.length());
-        resp.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downloadName, "UTF-8"));
-        byte[] buff = new byte[1024];
-        BufferedInputStream bis = null;
-        OutputStream os = null;
-        try {
-            os = resp.getOutputStream();
-            bis = new BufferedInputStream(new FileInputStream(file));
-            int i = 0;
-            while ((i = bis.read(buff)) != -1) {
-                os.write(buff, 0, i);
-                os.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        String relPath = urlPath.replace(staticUrl, filePath);
+        String fileName = fileEntity.getName();
+        if (fileName != null) {
+            //设置文件路径
+            File file = new File(relPath);
+            FileInputStream fis = null;
+            BufferedInputStream bis = null;
+            //File file = new File(realPath , fileName);
             try {
-                bis.close();
-            } catch (IOException e) {
+                if (file.exists()) {
+                    response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+                    response.setContentType("application/octet-stream");// 设置强制下载不打开
+                    response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));// 设置文件名
+                    response.setCharacterEncoding("UTF-8");
+                    response.setContentLength((int) file.length());
+                    response.setHeader("Pragma", "No-cache");
+                    response.setHeader("Cache-Control", "No-cache");
+                    response.setDateHeader("Expires", 0);
+                    byte[] buffer = new byte[1024];
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
+//    @GetMapping(value = "/{fileId}")
+//    public ResponseEntity<?> getFile(@PathVariable Integer fileId) {
+//        try {
+//            BbsPostsFileEntity fileEntity = bbsPostsFileService.selectById(fileId);
+//            String urlPath = fileEntity.getUrl();
+//            String relPath = urlPath.replace(staticUrl, filePath);
+//            String fileName = fileEntity.getName();
+//            String path = Paths.get(relPath, fileName).toString();
+//            Resource resource = resourceLoader.getResource("file:" + path);
+//            return ResponseEntity.ok(resource);
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//    }
 
 }
+

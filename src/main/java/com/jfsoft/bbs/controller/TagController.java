@@ -34,14 +34,14 @@ public class TagController {
         EntityWrapper<BbsTagEntity> wrapper = new EntityWrapper<>();
         wrapper.eq("label_id", labelId);
         List<BbsTagEntity> tagList = bbsTagService.selectList(wrapper);
-
         for (BbsTagEntity bbsTagEntity : tagList) {
             EntityWrapper<BbsPostsEntity> wrapper1 = new EntityWrapper<>();
             wrapper1.eq("tag_id", bbsTagEntity.getId());
+            wrapper1.eq("is_del", false);
+            wrapper1.eq("is_temp", false);
             int i = bbsPostsService.selectCount(wrapper1);
             bbsTagEntity.setPostsCount(i);
         }
-
         return R.ok().put("data", tagList);
     }
 

@@ -346,7 +346,10 @@ public class PostsController extends AbstractController {
         Map<String, Object> result = new HashMap<>();
         int todayCount = bbsPostsService.getTodayCount();
         int yesterdayCount = bbsPostsService.getYesterdayCount();
-        int count = bbsPostsService.selectCount(new EntityWrapper<>());
+        EntityWrapper<BbsPostsEntity> wrapper = new EntityWrapper<>();
+        wrapper.eq("is_del", false);
+        wrapper.eq("is_temp", false);
+        int count = bbsPostsService.selectCount(wrapper);
         result.put("todayCount", todayCount);
         result.put("yesterdayCount", yesterdayCount);
         result.put("count", count);
@@ -408,21 +411,32 @@ public class PostsController extends AbstractController {
      */
     @RequestMapping("/publish")
     public R publish(@RequestBody BbsPostsEntity bbsPosts) {
-        bbsPosts.setInitTime(new Date());
-//        bbsPosts.setUpdateTime(new Date());
-        if (bbsPosts.getAnonymous() == false) {
-            bbsPosts.setUserId(getUserId());
+
+        if (bbsPosts.getId() == null) {
+            bbsPosts.setInitTime(new Date());
+            bbsPosts.setUpdateTime(new Date());
+            if (bbsPosts.getAnonymous() == false) {
+                bbsPosts.setUserId(getUserId());
+            }
+            bbsPosts.setReadCount(0);
+            bbsPostsService.insert(bbsPosts);
+        } else {
+            bbsPosts.setUpdateTime(new Date());
+            if (bbsPosts.getAnonymous() == false) {
+                bbsPosts.setUserId(getUserId());
+            }
+            bbsPosts.setReadCount(0);
+            bbsPostsService.updateById(bbsPosts);
         }
-        bbsPosts.setReadCount(0);
-        bbsPostsService.insert(bbsPosts);
-        ProductDocument productDocument = ProductDocumentBuilder.create()
-                .addId(bbsPosts.getId().toString())
-                .addProductName(bbsPosts.getTitle())
-                .addLabel(bbsPosts.getLabelId().toString())
-                .addProductDesc(bbsPosts.getContent())
-                .addCreateTime(bbsPosts.getInitTime())
-                .builder();
+
         try {
+            ProductDocument productDocument = ProductDocumentBuilder.create()
+                    .addId(bbsPosts.getId().toString())
+                    .addProductName(bbsPosts.getTitle())
+                    .addLabel(bbsPosts.getLabelId().toString())
+                    .addProductDesc(bbsPosts.getContent())
+                    .addCreateTime(bbsPosts.getInitTime())
+                    .builder();
             esSearchService.save(productDocument);
         } catch (NoNodeAvailableException e) {
             e.printStackTrace();
@@ -437,9 +451,25 @@ public class PostsController extends AbstractController {
      * @return
      */
     @PostMapping("/updateFile")
-    public R updateFile(@RequestBody List<BbsPostsFileEntity> bbsPostsFiles) {
+    public R updateFile(@RequestBody List<BbsPostsFileEntity> bbsPostsFiles, Integer postsId) {
+        if (postsId != null) {
+            EntityWrapper<BbsPostsFileEntity> wrapper = new EntityWrapper<>();
+            wrapper.eq("posts_id", postsId);
+            bbsPostsFileService.delete(wrapper);
+        }
         bbsPostsFileService.insertBatch(bbsPostsFiles);
         return R.ok();
+    }
+
+    /**
+     * 删除文件
+     * @param fileId
+     * @return
+     */
+    @PostMapping("/deleteFile/{fileId}")
+    public R deleteFile(@PathVariable Integer fileId) {
+        bbsPostsFileService.deleteById(fileId);
+        return R.ok("删除成功");
     }
 
     /**

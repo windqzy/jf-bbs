@@ -15,5 +15,16 @@
         <result property="isDel" column="is_del"/>
     </resultMap>
 
+    <select id="getFaqList" parameterType="integer" resultMap="bbsFaqMap">
+        select id as id,question,answer,user_id,init_time,update_time,type_id
+        from bbs_faq
+        where is_del=false
+        <if test="typeId != null and typeId != ''">
+            AND typeId = #{typeId}
+            OR type_id IN
+            (select id from bbs_faq_type where parent_id = #{typeId});
+        </if>
+        order by init_time desc
+    </select>
 
 </mapper>

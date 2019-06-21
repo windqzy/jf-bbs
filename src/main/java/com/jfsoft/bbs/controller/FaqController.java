@@ -77,17 +77,7 @@ public class FaqController extends AbstractController {
      **/
     @RequestMapping("/faqList")
     public R getFaqList(Integer typeId) {
-
-        EntityWrapper<BbsFaqEntity> wrapper = new EntityWrapper<>();
-        if (typeId == null) {
-            wrapper.eq("is_del", false);
-            wrapper.orderBy("init_time desc");
-        } else {
-            wrapper.eq("type_id", typeId);
-            wrapper.eq("is_del", false);
-            wrapper.orderBy("init_time desc");
-        }
-        List<BbsFaqEntity> list = bbsFaqService.selectList(wrapper);
+        List<BbsFaqEntity> list = bbsFaqService.getFaqList(typeId);
         return R.ok().put("data", list);
     }
 

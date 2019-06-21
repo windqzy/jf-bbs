@@ -31,10 +31,11 @@
     </resultMap>
 
     <select id="querySelfMessage" parameterType="map" resultMap="MessageVoMap">
-        select bmu.USER_ID as sponsorId, bnm.ID as messageId, bp.id as postsId, bnm.parent_id as parentId
+        select br.USER_ID as sponsorId, bnm.ID as messageId, bp.id as postsId, bnm.parent_id as parentId
         from bbs_message_user bmu
         left join bbs_new_message bnm on bmu.MESSAGE_ID = bnm.ID
         left join bbs_posts bp on bp.id = bnm.POSTS_ID
+        left join bbs_reply br on bnm.REPLY_ID = br.id
         where bmu.USER_ID = #{userId}
         order by bnm.id desc
     </select>

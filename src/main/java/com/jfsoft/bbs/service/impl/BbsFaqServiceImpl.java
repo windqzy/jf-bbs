@@ -7,7 +7,9 @@ import com.jfsoft.bbs.service.BbsFaqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("bbsFaqService")
 public class BbsFaqServiceImpl extends ServiceImpl<BbsFaqDao, BbsFaqEntity> implements BbsFaqService {
@@ -17,6 +19,8 @@ public class BbsFaqServiceImpl extends ServiceImpl<BbsFaqDao, BbsFaqEntity> impl
 
     @Override
     public List<BbsFaqEntity> getFaqList(Integer typeId) {
-        return bbsFaqDao.getFaqList(typeId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("typeId", typeId);
+        return bbsFaqDao.getFaqList(params);
     }
 }

@@ -4,7 +4,7 @@
          oncontextmenu="return false"
          onmousedown="return false;">
       <div id="large-header" class="large-header">
-        <a style="cursor: pointer; color: blue; float: right; margin: 5px" @click="testLogin" v-if="true">开发者登录</a>
+        <a style="cursor: pointer; color: blue; float: right; margin: 5px" @click="testLogin" v-if="false">开发者登录</a>
         <canvas></canvas>
         <div class="logo_box">
           <div id="login_container"></div>

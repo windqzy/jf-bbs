@@ -12,7 +12,7 @@
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1"><i class="el-icon-monitor"></i></el-menu-item>
             <!--<el-menu-item index="2"><i class="el-icon-postcard"></i></el-menu-item>-->
-            <!--<el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>-->
+            <el-menu-item index="3"><i class="el-icon-warning-outline"></i></el-menu-item>
             <!--<el-menu-item index="4"><i class="el-icon-document"></i></el-menu-item>-->
             <el-menu-item index="5"><i class="el-icon-search"></i></el-menu-item>
           </el-menu>

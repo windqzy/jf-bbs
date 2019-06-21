@@ -68,6 +68,14 @@
             <el-page-header @back="goBack" :content="toFaq.question"></el-page-header>
           </div>
           <p v-html="toFaq.answer"></p>
+          <el-row type="flex" justify="center" class="icon-head">
+            <span :class="{active: isUseful == '1'}" @click="setUseful('1')">
+              <svg-icon icon-class="head"></svg-icon>有用
+            </span>
+            <span :class="{active: isUseful == '0'}" @click="setUseful('0')">
+              <svg-icon icon-class="head-1"></svg-icon>没用
+            </span>
+          </el-row>
         </el-card>
       </el-col>
       <el-col :lg="18" :xs="24" v-show="addBox">
@@ -116,6 +124,7 @@
         filterFAQList: [], // 过滤后的结果
         faq: '',
         toFaq: '',
+        isUseful: '', // 评价是否有用
         defaultProps: {
           id: 'id',
           children: 'children',
@@ -205,7 +214,7 @@
         this.findList = arr;
       },
       handleNodeClick(data) {
-        if(data.parentId !== 0) {
+        if (data.parentId !== 0) {
           this.isAdd = true;
           this.faqForm.typeId = data.id;
           this.faq = data;
@@ -220,6 +229,11 @@
       goBack() {
         this.listBox = true;
         this.detailBox = false;
+      },
+      /* 评价FAQ是否有用 */
+      setUseful(item) {
+        this.isUseful = item;
+        /* TODO:API接口 */
       },
       /* 新增FAQ */
       addFAQ() {
@@ -298,6 +312,20 @@
         text-align: center;
         display: inline-block;
         width: 24px;
+      }
+    }
+  }
+
+  .icon-head {
+    span {
+      cursor: pointer;
+      margin: 0 10px;
+      color: #666;
+      .svg-icon {
+        margin-right: 4px;
+      }
+      &.active {
+        color: #009688;
       }
     }
   }

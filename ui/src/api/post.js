@@ -18,6 +18,14 @@ export function getTop() {
   })
 }
 
+// 获取一言
+export function hitokoto() {
+  return request({
+    url: '/posts/hitokoto',
+    method: 'GET'
+  })
+}
+
 // 查询文章详情
 export function getDetail(postId) {
   return request({

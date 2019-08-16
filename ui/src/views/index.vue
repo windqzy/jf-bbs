@@ -8,8 +8,9 @@
         <span>昨日: {{updateCount.yesterdayCount}}</span>
         <el-divider direction="vertical"></el-divider>
         <span>帖子: {{updateCount.count}}</span>
-        <div class="hitokoto">
-          <span v-text="hitokoto"></span>
+        <div class="hitokoto hidden-xs-only">
+          <span v-text="hitokoto" v-if="hitokoto.length <= 50"></span>
+          <marquee v-text="hitokoto" v-else></marquee>
           <i class="el-icon-refresh-right" @click="getHitokoto"></i>
         </div>
       </div>
@@ -113,7 +114,6 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   import * as label from '@/api/label';
   import * as posts from '@/api/post';
   import * as timeUtils from '@/utils/time';
@@ -149,8 +149,8 @@
     },
     methods: {
       getHitokoto() {
-        axios.get('https://v1.hitokoto.cn/?c=d&encode=json').then(res => {
-          this.hitokoto = res.data.hitokoto + " —— " + res.data.from
+        posts.hitokoto().then(res => {
+          this.hitokoto = res.data;
         })
       },
       toPostDetail(postId){
@@ -261,8 +261,13 @@
       .divider {
         .hitokoto {
           float: right;
+          display: flex;
+          align-items:center;
           span {
             color: #777;
+          }
+          marquee {
+            width: 500px;
           }
           i {
             margin-left: 10px;

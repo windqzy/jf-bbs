@@ -344,7 +344,7 @@
       this.getReplyList();
     },
     mounted() {
-      this.layui();
+
     },
     methods: {
       layui() {
@@ -429,6 +429,10 @@
         post.getDetail(this.postId).then(res => {
           this.loadDetail = false;
           this.postsInfo = res.data;
+          this.$nextTick(() => {
+            this.layui();
+          })
+
           // this.getReplyList(postId);
           // this.$nextTick(() => {
           //   this.layui();

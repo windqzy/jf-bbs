@@ -32,7 +32,7 @@
           <ul class="brief-content" v-else>
             <li v-for="item in newPost.goodList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <a @click="toPostDetail(item.id)">{{item.title}}</a>
+              <a @click="toPostDetail(item.id)" :title="item.title">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -51,7 +51,7 @@
           <ul class="brief-content" v-else>
             <li v-for="item in newPost.publishList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <a @click="toPostDetail(item.id)">{{item.title}}</a>
+              <a @click="toPostDetail(item.id)" :title="item.title">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -70,7 +70,7 @@
           <ul class="brief-content" v-else>
             <li v-for="item in newPost.replyList">
               <span class="brief-item-time">{{item.initTime | formatTime}}</span>
-              <a @click="toPostDetail(item.id)">{{item.title}}</a>
+              <a @click="toPostDetail(item.id)" :title="item.title">{{item.title}}</a>
             </li>
           </ul>
         </el-col>
@@ -268,6 +268,7 @@
           }
           marquee {
             width: 500px;
+            color: #777;
           }
           i {
             margin-left: 10px;

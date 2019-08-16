@@ -8,6 +8,10 @@
         <span>昨日: {{updateCount.yesterdayCount}}</span>
         <el-divider direction="vertical"></el-divider>
         <span>帖子: {{updateCount.count}}</span>
+        <div class="hitokoto">
+          <span v-text="hitokoto"></span>
+          <i class="el-icon-refresh-right" @click="getHitokoto"></i>
+        </div>
       </div>
     </el-card>
     <div class="brief">
@@ -109,7 +113,7 @@
   </div>
 </template>
 <script>
-
+  import axios from 'axios'
   import * as label from '@/api/label';
   import * as posts from '@/api/post';
   import * as timeUtils from '@/utils/time';
@@ -119,6 +123,7 @@
 
     data() {
       return {
+        hitokoto:"",
         labelList: [],
         briefList: require('../mock/brief.json'),
         updateCount: {
@@ -134,6 +139,7 @@
       }
     },
     created() {
+      this.getHitokoto();
       this.getAllLabel();
       this.getUpdateCount();
       this.getNewPosts();
@@ -142,6 +148,11 @@
 
     },
     methods: {
+      getHitokoto() {
+        axios.get('https://v1.hitokoto.cn/?c=d&encode=json').then(res => {
+          this.hitokoto = res.data.hitokoto + " —— " + res.data.from
+        })
+      },
       toPostDetail(postId){
         posts.addRead(postId).then(res => {
           this.$router.push('/post/detail?postId=' + postId);
@@ -235,6 +246,9 @@
       li {
         margin: 5px 2px;
         cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
@@ -244,6 +258,18 @@
     border-radius: 0px;
     /deep/ .el-card__body {
       padding: 10px;
+      .divider {
+        .hitokoto {
+          float: right;
+          span {
+            color: #777;
+          }
+          i {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+        }
+      }
     }
     /deep/ .el-card__header {
       padding: 12px 20px;

@@ -99,7 +99,7 @@
                 </el-card>
                 <div class="attach-mask">
                   <el-button type="primary" size="mini" @click="preview(item)">预览</el-button>
-                  <el-button type="primary" size="mini" @click="download(item)">下载</el-button>
+                  <el-button type="primary" size="mini" @click="download(item)" :loading="downloadLoading">下载</el-button>
                 </div>
               </div>
             </el-col>
@@ -331,7 +331,8 @@
         replyId: '',
         msg: '',
         coll: '',
-        face: require('@/assets/face.json')
+        face: require('@/assets/face.json'),
+        downloadLoading: false, // 下载
       }
     },
     created() {
@@ -450,6 +451,7 @@
       },
       /* 下载附件 */
       download(item) {
+        this.downloadLoading = true
         post.downloadFile(item.id).then(res => {
           if (!res.data) {
             return
@@ -466,8 +468,9 @@
           aLink.click();
           document.body.removeChild(aLink); //下载完成移除元素
           window.URL.revokeObjectURL(url); //释放掉blob对象
+          this.downloadLoading = false
         }).catch(err => {
-          console.log(err);
+          this.downloadLoading = false
           this.$message({message: '文件导出异常', type: 'error', duration: 1000});
         })
       },
